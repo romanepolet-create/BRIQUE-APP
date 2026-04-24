@@ -35,8 +35,39 @@ async function voirDetails(id) {
   const biere = await response.json();
 
   if(response.ok) {
+    document.getElementById('modaleTitre').innerText = biere.id
+    document.getElementById('modaleInfos').innerHTML = `
+      <b>Type:</b> ${biere.type}<br>
+      <b>Degré :</b> ${biere.degre}%<br>
+      <b>Prix HT (carton de ${biere.nombre}) :</b> ${biere.prix} €<br>
+      <b>PMC :</b> ${biere.PMC} €
+      `;
+
+      const nomPropre = biere.id.replace(/(33cl|75cl|CAN 44cl)/i, '').trim();
+      const nomFichier = nomPropre.toLowerCase().replace(/\s+/g, '-') + ".png";
+      document.getElementById('modaleImage').src = `/images/${nomFichier}`;
+      document.getElementById('modaleBiere').style.display = "block";
+
+    } else {
+      // Si la bière n'existe pas, alerte basique
+      alert(biere.erreur);
+    }
+  }
+
+  function fermerModaleBiere() {
+    document.getElementById('modaleBiere').style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    let modale = document.getElementById('modaleBiere');
+    if (event.target === modale) {
+      modale.style.display = "none";
+    }
+  }
+
+/*  if(response.ok) {
    alert(`Focus sur : ${biere.id}\nType : ${biere.type}\nDegré : ${biere.degre}%\nPrix HT par carton de ${biere.nombre} : ${biere.prix}€\nPMC : ${biere.PMC}€`);
   } else {
   alert(biere.erreur);
-  }
+  }*/
 }
