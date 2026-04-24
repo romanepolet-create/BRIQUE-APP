@@ -1,0 +1,106 @@
+[
+  {"id": "ML",
+  "b": "Mick_Lager",
+  "détail": "Prononcé à la française Mick, non comme le prénom 'Mike' en anglais",
+  "desc": "Bière de soif (5°)",
+  "type": "-> Lager* / German Pils*",
+  "ie": "IBU*: 18 (/150) - EBC*: 7,5 (/140)",
+  "app": "Apparence: Bière pâle*, léger trouble*",
+  "nez": "Nez: Notes délicate de malt*",
+  "bouche": "Bouche: Facile à boire, plutôt sec* mais peu amère*, bel équilibre entre les notes de céréales et le côté parfumé du houblon",
+  "houblon": "Houblons: Mandarina_Bavaria*, Magnum*"},
+
+  {"id": "SH",
+  "b": "Shiny_Hoppy",
+  "type": "IPA* (6°)",
+  "ie": "IBU*: 24 (/150) - EBC*: 9 (/140)",
+  "app": "Apparence: Blond* dorée*, légerement trouble*",
+  "nez": "Nez: fruité et juteux",
+  "bouche": "Bouche: Le houblon apporte une belle aromatique sur les fruits exotiques, amrtume* légère",
+  "houblon": "Houblons: El_Dorado*, Mosaïc*, Magnum*"
+  },
+
+  {"id": "NQ",
+  "b": "New_Queen_In_Town",
+  "desc": "Bière de tous les jours",
+  "type": "Pale_Ale*, American_Pale_Ale* (4,8°)",
+  "ie": "IBU*: 20 (/150) - EBC*: 11,7 (/140)",
+  "app": "Apparence: Robe* cuivrée* et légèrement trouble*",
+  "nez":"Nez: Arômes de malt* - légères notes fruitées et d'agrumes",
+  "bouche": "Bouche: Léger, base maltée* assez présente, ronde*, notes minérales et un houblon aromatique, finit légerement amer*",
+  "houblon": "Houblons: Centennial*, Ekuanot*"
+  },
+
+  {"id": "LB",
+  "b": "La_Bagarre",
+  "type": "Double_IPA* (DIPA) (7,7°)",
+  "ie": "IBU*: 44 (/150) - EBC*: 9,1 (/140)",
+  "app": "Apparence: Couleur claire* et légèrement trouble*, robe* onctueuse",
+  "nez": "Nez: très fruité, des notes d'agrumes et d'abricot",
+  "bouche": "Bouche: Explosion de fruits supportée par un corps riche et rond*, légère sucrosité* et amertume* moyenne",
+  "houblon": "Houblons: Citra*, Mosaïc*, Colombus*"
+  },
+
+  {"id": "YT",
+  "b": "Yankee_Trouble",
+  "type": "NEIPA* (New England IPA) (6,5°)",
+  "ie": "IBU*: 20 (/150), EBC*: 8,7 (/140)",
+  "app": "Apparence: Couleur jaune claire*, bien trouble*, robe* onctueuse, et crêmeuse",
+  "nez": "Très fruitée - fruit de la passion, mangue, ananas",
+  "bouche": "Bouche: Explosion de houblons avec une robe* légère et soyeuse une légère sucrosité*",
+  "houblon": "Houblons: Mosaïc*, Citra*, Amarillo*"
+  },
+
+  {"id": "TC",
+  "b": "Triple_Chuc",
+  "détail": "-> prononcé à la française ('Chuc' = Sucre en patois), et non comme le prénom 'Chuck' en anglais",
+  "type": "Triple* (8°)",
+  "desc": "Faite avec de la vergeoise (sucre de betterave typique du Nord)",
+  "ie": "IBU*: 24 (/150) - EBC*: 13 (/140)",
+  "app": "Apparence: Blond dorée*, légèrement trouble*",
+  "nez": "Nez: Doux et fruitée",
+  "bouche": "Bouche: Les houblons apportent une belle aromatique sur les fruits_jaunes*, amertume* légère, sur la longueur l'alcool se fait sentir",
+  "houblon": "Houblons: Elixir* & Magnum* (houblons_alsaciens*), Barbe_Rouge*"
+  },
+
+  {"id": "UA",
+  "b": "Under_Acid",
+  "type": "Berliner_Weisse* (4,5°)",
+  "desc": "Aromatisé aux fruits rouges",
+  "ie": "IBU*: 17 (/150) - EBC*: 36 (/140)",
+  "app": "Apparence: Rose / Rouge",
+  "nez": "Nez: Grosse présence de fruits rouges",
+  "bouche": "Bouche: Légère acidité* complétée par le fruit et la fraîcheur apportée par le citron vert, belle rondeur* et longueur* également",
+  "houblon": "Houblons & Fruits: Barbe_Rouge* (+ Groseille, Cranberry, Cassis, Citron Vert)"
+  },
+
+  {"id": "YP",
+  "b": "Young_Pug",
+  "type": "Low Alcohol IPA* (0,5°)",
+  "ie": "IBU*: 13 (/150) - EBC*: 10,3 (/140)",
+  "app": "Apparence: Claire* et voilée*, jaune paille* et léger trouble*",
+  "nez": "Nez: Surtout des agrumes",
+  "bouche": "Bouche: Légère avec un côté houblonné*, légèrement herbacé*",
+  "houblon": "Houblons: lupuline*"
+  },
+
+  {"id": "SC",
+  "b": "Super_Coron",
+  "type": "Belgian_Pale_Ale* (6°)",
+  "ie": "IBU*: 20 (/150) - EBC*: 9 (/140)",
+  "app": "Apparence: Bière pâle*, léger trouble*",
+  "nez": "Nez: Maltée*, et une touche de floral* houblonnée*",
+  "bouche": "Le malt* est bien présent pour laisser place à un équilibre entre les arômes floraux de la levure et du houblon",
+  "houblon": "Houblons: Cascade*, Magnum*, Houblons_de_Flandres*"
+  },
+
+  {"id": "AB",
+  "b": "AccroBlanche",
+  "type": "Blanche* (4,5°)",
+  "ie": "IBU*: 20 (/150) - EBC*: 6 (/140)",
+  "app": "Apparence: Bière pâle*, léger trouble*",
+  "nez": "Epices et fraîcheur du pamplemousse",
+  "bouche": "Pamplemousse et épices: cardamome, gingembre et coriandre, plutôt sèche*, facile à boire",
+  "houblon": "Houblons: Magnum*"
+  }
+]
