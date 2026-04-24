@@ -281,7 +281,7 @@ h1 {
 }
 
 #map {
-  height: 600px;
+  height: 55vh;
   width: 50%;
   border: 2px solid #002ab6;
   border-radius: 8px;
@@ -316,11 +316,10 @@ select {
 
 .font-distrib {
   width: 85%;
-  margin: 30px auto;
-  margin-top: 5px;
+  margin: 15px auto;
   background-image: url('/images/fontDistrib.png');
   background-size: cover;
-  padding: 30px;
+  padding: 15px;
   border-radius: 15px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
   background-attachment: fixed;
