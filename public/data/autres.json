@@ -1,0 +1,25 @@
+[
+  {"mot":"Acide lactique",
+  "desc": "Utilisé pour acidifier* le moût lors du brassage, résiste au houblon et à l’éthanol, mais pas à la chaleur"},
+
+  {"mot": "Bactéries Lactiques",
+  "desc": "Groupe de micro-organismes, ce sont des bactéries pouvant tolérer de faibles niveaux de pH, ce qui les rend bien adaptées à l'environnement acide* de la production de bière aigre. Ces bactéries convertissent les sucres en acide_lactique* par fermentation_lactique*, donnant à la bière aigre son acidité* caractéristique"},
+
+  {"mot": "Lactobacillus",
+  "desc": "Type d’acide_lactique*"},
+
+  {"mot": "Lupuline",
+  "desc": "pâte très mielleuse, un concentré de houblon utilisé pour les bières sans alcool, qui remplace le houblon → 'Donne un bon goût de IPA au lieu des jus de céréales qu’on retrouve dans les autres brasseries' - Charly - (Utiliser dans la Young Pug)"},
+
+  {"mot": "Malt",
+  "desc": "Orge transformé par le processus de maltage*"},
+
+  {"mot": "Maltage",
+  "desc": "Trempe ; germination ; séchage ; puis touraillage* plus ou moins fort afin de donner différents goûts & couleurs à la bière"},
+
+  {"mot": "Torréfier",
+  "desc": "/!\\\\ ≠ griller → en surface, plus haute température sur plus courte durée, alors que torréfier → se fait à coeur, température moindre sur plus longue durée"},
+
+  {"mot": "Touraillage",
+  "desc": "Opération consistant à sécher l’orge germée, afin de lui donner un pouvoir colorisant sur la bière"}
+]
