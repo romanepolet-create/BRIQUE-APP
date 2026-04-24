@@ -1,0 +1,40 @@
+[ 
+  {"mot": "Claire",
+  "desc": "(≠ ambrée/brune) -> couleure pâle (dorée à jaune clair), moins de notes torréfiées* ou caramélisées, faite à partir de malts* peu torréfiés*"},
+
+  {"mot": "Cuivrée",
+  "desc": "Couleur ambre chaud à cuivré (orange foncé à brun clair), les malts* utilisés sont caramélisés et torréfiés* légèrement"},
+
+  {"mot": "Dorée",
+  "desc": "Jaune soutenu à dorée profond, malt* un peu plus grillé (arômes légèrement sucrés)"},
+
+  {"mot": "Laiteuse",
+  "desc": "Aspect trouble* et blanc cassé, beaucoup de protéines (blé/avoine), voilée* mais épaisse"},
+
+  {"mot": "Limpide",
+  "desc": "(≠ trouble* / opaque*) - Bière filtrée pour retirer la levure et les protéines en suspension, sans dépôt, c’est la transparence de la bière"},
+
+  {"mot": "Opaque",
+  "desc": "On ne voit rien à travers, très trouble*, aucune brillance, forte concentration de malt* torréfié* et levure"},
+
+  {"mot": "Paille",
+  "desc": "Couleur comme la paille sèche (jaune très clair*, tirant sur le dorée*), un peu plus coloré qu’une pâle*"},
+
+  {"mot": "Pâle",
+  "desc": "Souvent la plus claire* de la gamme (jaune très léger au blond très pâle), très peu de malt* torréfié*"},
+
+  {"mot": "Robe",
+  "desc": "C'est l'aspect visuel global de la bière (couleur, limpidité* / trouble*, etc)"},
+
+  {"mot": "Robe onctueuse / dense",
+  "desc": "La bière semble épaisse (dense), parfois liée à un corps plus riche (teneur en alcool, sucre, avoine, etc)"},
+
+  {"mot": "Trouble",
+  "desc": "(≠ limpide*) - Bière non filtrée, avec de la levure en suspension, goût plus rond*"},
+
+  {"mot": "Voilée",
+  "desc": "Légèrement trouble* mais pas complètement opaque*, un trouble* fin et homogène"},
+
+  {"mot": "EBC (European Brewery Convention)",
+  "desc": "= SRM en Amérique du Nord - Classifie les bières en fonction de leur couleur. Peut aller de 1 (plus clair) à 140 (plus foncé)"}
+]
