@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Encyclopédie</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">🍻 Brique App</div>
+      <ul class="nav-links">
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/lexique.html" class="active">Glossaire</a></li>
+        <li><a href="/gms.html">Espace GMS</a></li>
+        <li><a href="/distrib.html" class="active">Distributeurs</a></li>
+      </ul>
+    </nav>
+    <h1>Description des bières BH</h1>
+                    
+    <div class="menu-boutons">
+      <button class="btn" onclick="afficher('LB')">La Bagarre</button>
+      <button class="btn" onclick="afficher('YT')">Yankee Trouble</button>
+      <button class="btn" onclick="afficher('ML')">Mick Lager</button>
+      <button class="btn" onclick="afficher('SH')">Shiny Hoppy</button>
+      <button class="btn" onclick="afficher('NQ')">New Queen In Town</button>
+      <button class="btn" onclick="afficher('TC')">Triple Chuc</button>
+      <button class="btn" onclick="afficher('UA')">Under Acid</button>
+      <button class="btn" onclick="afficher('YP')">Young Pug</button>
+      <button class="btn" onclick="afficher('SC')">Super Coron</button>
+      <button class="btn" onclick="afficher('AB')">AccroBlanche</button>
+    </div>
+  
+    <div id="ecran-affichage" style="margin-top: 20px; border: 1px solid black; padding: 10px;">
+      <p>Clique sur une bière pour voir sa fiche.</p>
+    </div>
+
+    <div id="overlay" onclick="fermerWiki()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 999;"></div>
+        
+    <div id="modal" style="display:none; 
+                           position:fixed;
+                           top:20%; 
+                           left:50%; 
+                           transform:translate(-50%, 0); 
+                           background:white; padding:30px; 
+                           border-radius:12px; max-width:500px; 
+                           box-shadow: 5px 5px 15px rgba(0,0,0,0.3); 
+                           z-index: 1000;">
+    <h2 id="modal-titre" style="color: #2980b9; 
+                                margin-top: 0; 
+                                border-bottom: 2px solid #eee; 
+                                padding-bottom: 10px;">Titre</h2>
+    <p id="modal-desc">Description...</p>
+    <button onclick="fermerWiki()" style="margin-top:10px; 
+                                          padding:10px 20px; 
+                                          background-color:#333; 
+                                          color:white; 
+                                          border:none; 
+                                          border-radius:6px; 
+                                          cursor:pointer; 
+                                          float:right;">Fermer</button>
+    </div>
+    <script src="js/desc.js"></script>
+    <script src="js/outils.js"</script>
+    <script src="js/desc.js˝</script>
+
+  </body>
+</html>
