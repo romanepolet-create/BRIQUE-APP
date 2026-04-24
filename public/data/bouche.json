@@ -1,0 +1,51 @@
+[
+
+  {"mot": "Acidité",
+  "desc": "(≠ douce* / ronde*) - Une saveur vive, piquante, sensation parfois sèche ou aigre, utilisation de bactérie_lactique* qui transforment le sucre en acide lactique*. Le vieillissement en fût génère aussi de l’acidité"},
+
+  {"mot": "Acidulé",
+  "desc": "Légèrement acide, mais pas agressif, sensation fine pétillante"},
+
+  {"mot": "Amère",
+  "desc": "(/!\\\\ pas = acide) Sensation de picotement ou de sècheresse sur l’arrière de la langue, goût herbacé* => goût sec*, souvent associé au houblon - plus le houblon bout longtemps, plus la bière est amère, grâce aux acides alpha du houblon qui se transforment en iso-acides - les malts* fortement torréfiés* donne aussi une amertume, c’est qui est mesurée par le IBU* - pour une bière non amère = fermentation_spontanée*"},
+
+  {"mot": "Boisé",
+  "desc": "Aromatique apporté par le contact avec le bois, pendant le vieillissement par exemple ou en ajoutant des copeaux/chips/spirales de bois (ex : Min Tcho Sapin - bière de Noël - a été brassé avec un sapin dans la cuve), le goût du bois adoucie* la bière"},
+
+  {"mot": "Douceur",
+  "desc": "Saveur sucré perceptible, peu amère* et peu sèche*. La douceur vient de malts* caramélisés ou torréfiés*, des sucres résiduels ou des sucres ajoutés non fermentescibles (miel, sirop, etc) - /!\\\\ une bière douce n’est pas forcément ronde*"},
+
+  {"mot": "Fruits jaunes",
+  "desc": "Fruits estivaux,  justeux, rafraichissant -> (liste non exhaustive des fruits jaunes : banane, mangue, citron, melon, ananas, papaye, poir, pomme, pamplemousse, mirabelle, framboise jaune, kiwi jaune, coing, etc)"},
+
+  {"mot": "Herbacé",
+  "desc" : "Famille d’arôme = floral, plus sur la plante, plus ‘vert’"},
+
+  {"mot": "Houblonné",
+  "desc": "Goût donné par le houblon mis dans la bière (ex : herbacé* → toutes les bières au goût herbacé* ont un goût houblonné, mais pas l’inverse) → voir les différents types de houblon"},
+
+  {"mot": "Longueur",
+  "desc": "C’est la persistance en bouche, le goût reste longtemps grâce aux sucres résiduels, et arômes de malt* et de houblon"},
+
+  {"mot": "Maltée",
+  "desc": "Le goût du malt* est fort (souvent sucré, caramel), grâce notamment à un malt* torréfié*"},
+
+  {"mot": "Minérale",
+  "desc": "Goût donné par les sels minéraux présents dans l’eau (calcium, magnésium, etc) ou certains phénols produits par la levure - donne un goût salin ou pierreux"},
+
+  {"mot": "Résineux",
+  "desc": "Goût de résine ou qui rappelle le pin, lié au houblon très aromatique. Goût donné par le houblon mis dans la bière (voir : houblonné*)"},
+
+  {"mot": "Rondeur",
+  "desc": "Sensation de volume en bouche ‘enveloppante’ car les différents composants sont bien équilibrés et harmonisés (malt*, houblons, alcool, gaz - sucre, amertume*, acidité*) → la bière ne ‘gratte’ pas la gorge, doux* mais pas forcément sucré"},
+
+  {"mot": "Sec", 
+  "desc": "Peu ou pas de sucre résiduel, pas de douceur* ⇒ fermentation* complète, tout le sucre est transformé en alcool par la levure"},
+
+  {"mot": "Sucrosité / Sucreuse",
+  "desc": "Avec un goût de sucre, grâce au malt* ou à des sucres ajoutés, donne une sensation douce*, parfois sirupeuse ⇒ le malt* utilisé est très riche, ou il y a un ajout de sucre non fermentescible (Miel, sirop, etc)"},
+
+  {"mot": "IBU",
+  "desc": "International Bitterness Unit → Mesure pour évaluer l’amertume* d’une bière, de 1 à 150 → 1 => très peu voir pas du tout amère* ; 150 = extrêmement amère*, une bière dépasse rarement les 90"}
+
+]
