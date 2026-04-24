@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF_8">
+  <title>Le Glossaire du Brasseur</title>
+  </head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">🍻 Brique App</div>
+    <ul class="nav-links">
+      <li><a href="/">Accueil</a></li>
+      <li><a href="/desc.html" class="active">Bières BH</a></li>
+      <li><a href="/gms.html">Espace GMS</a></li>
+      <li><a href="/distrib.html" class="active">Distributeurs</a></li>
+    </ul>
+  </nav>
+  <h1> Le Glossaire du Brasseur </h1>
+
+  <div class="menu-boutons">
+    <button class="btn" onclick="afficherSection('types')">Types de bières</button>
+    <button class="btn" onclick="afficherSection('fermentation')">Fermentation</button>
+    <button class="btn" onclick="afficherSection('apparence')">Apparence</button>
+    <button class='btn' onclick="afficherSection('bouche')">En Bouche</button>
+    <button class='btn' onclick="afficherSection('nez')">Au nez</button>
+    <button class='btn' onclick="afficherSection('houblons')">Les Houblons</button>
+    <button class='btn' onclick="afficherSection('autres')">Autres définition</button>
+  </div>
+
+  <div id="ecran-affichage">
+    <p style="text-align: center; color: gray;">Clique sur un bouton pour ouvrir la section du Glossaire...</p>
+  </div>
+
+ <script src="/js/outils.js"></script>
+ <script src="/js/lexique.js"></script>
+
+ <div id="overlay" onclick="fermerWiki()"></div>
+ <div id="modal">
+   <h2 id="modal-titre" style="color: #002ab6; margin-top: 0;"></h2>
+   <p id="modal-desc" style="font-size: 1.1em;"></p>
+   <button onclick="fermerWiki()" class="btn" style="width:100%;">Fermer</button>
+ </div>
+</body>
+</html>
+
