@@ -1,0 +1,71 @@
+[
+  {"mot": "Amarillo",
+  "desc": "Floral - agrumes ; pamplemousse / fruits à noyaux"},
+
+  {"mot": "Azacca",
+  "desc": "Amertume* franche, arômes fruités, tropicaux, agrumes, et résineux* - Forme de Spectrum*"},
+
+  {"mot": "Barbe Rouge",
+  "desc": "Arômes fruits rouges et fruits des bois (groseilles, fraises, framboises) et d’agrumes (Kumquat, orange, citron vert), parfois côté herbacé* et épice"},
+
+  {"mot": "Cascade",
+  "desc": "Légèrement floral avec notes très agrumes (pamplemousse)"},
+
+  {"mot": "Centennial",
+  "desc": "Fruité, agrumes avec notes de fruits à noyaux"},
+
+  {"mot": "Chinook",
+  "desc": "Epicier, avec notes de pins et d’agrumes"},
+
+  {"mot": "Citra",
+  "desc": "Arôme intense de mangue, fruits tropicaux et agrumes, note de melon, citron vert, groseille ou litchi"},
+
+  {"mot": "Colombus",
+  "desc": "Terreux, résineux*, poivre, réglisse, curry, et un peu d’agrume"},
+
+  {"mot": "Eclipse",
+  "desc": "Arômes sucrés de mandarine, écorces d'agrumes acidulés*, touche résineuse* - Forme de Spectrum*"},
+
+  {"mot" : "Ekuano",
+  "desc": "Citron jaune, citron vert, papaye, pomme verte, florale, et herbeux (herbacé*)"},
+
+  {"mot": "El Dorado",
+  "desc": "Puissants arômes de bonbons cerise, poire ou fruit sucré"},
+
+  {"mot": "Elixir",
+  "desc": "Arômes floraux et résineux* au nez, avec saveurs d’agrumes, boisées*, cuir/tabac"},
+
+  {"mot": "Galaxy",
+  "desc": "Fruit de la passion, fruits tropicaux, agrumes, notes de pêches et de mangues - Forme de Spectrum*"},
+
+  {"mot": "Magnum",
+  "desc": "Amertume* propre, modérée et subtile"},
+
+  {"mot": "Mandarina Bavaria",
+  "desc": "Mandarine, agrumes"},
+
+  {"mot": "Mistral",
+  "desc": "Melon, agrumes, raisin blanc, poire, et touches florales (rose ou jasmin)"},
+
+  {"mot": "Mosaic", 
+  "desc": "Mangue, papaye, rose, fruits à noyaux, 4 baies, melon, chewing gum, parfois herbeux (herbacé*)"},
+
+  {"mot": "Simcoe",
+  "desc": "Pinède, agrumes, baies sucrées et parfumées"},
+
+  {"mot": "Houblons Alsaciens",
+  "desc": "Généralement floral, fruité, épicé"},
+
+  {"mot": "Houblons des Flandres",
+  "desc": "Généralement avec des arômes d’agrumes, de pin, d’herbes"},
+
+  {"mot": "Houblonnage à chaud",
+  "desc": "Ajout du houblon pendant que le moût est en train de bouillir, pour que les acides alpha du houblon se dissolvent, ce qui ajoute de l’amertume*, et pas autant d’arôme puisque qu’une partie des huiles essentielles et des arômes vont s’échapper avec le dégagement des gaz carbonique pendant l’ébullition"},
+
+  {"mot": "Houblonnage à froid (ou à cru) - (dry hopping (DH)",
+  "desc": "EN hop = houblon & dry = sec) → ajout du houblon à froid, après la fermentation primaire de la bière, c’est-à-dire pas au cours de l’ébullition => pour diffuser les arômes dans la bière, sans modifier l’amertume* et en ajouter. Possibilité de le faire 2 fois successivement pour plus d’arômes (= Double Dry Hopping ou DDH)"},
+
+  {"mot": "Spectrum",
+  "desc": "Houblon Liquide - alternative au pelée et cônes entiers"}
+]
+
