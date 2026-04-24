@@ -1,0 +1,328 @@
+/*NAV BAR*/
+.navbar {
+  background-color: #002ab6; 
+  /* Le bleu de ton thème */
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between; 
+  /* Pousse le logo à gauche et les liens à droite */
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-bottom: 40px; 
+  /* Donne de l'espace avant le titre de ta page */
+}
+.navbar .logo {
+  color: #ffcc00; /* Jaune Brique House */
+  font-size: 1.5em;
+  font-weight: 800;
+  font-family: 'Gilroy', 'Lexend Deca', sans-serif;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  font-family: 'Lexend Deca', sans-serif;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Effet au survol ET page active */
+.nav-links a:hover, 
+.nav-links a.active {
+  color: #ffcc00;
+}
+
+/*STYLE INDEX*/
+.indexp {
+  color: white !important;
+  font-size: 20px !important;
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: bold;
+  text-align: center !important;
+}
+
+.indexul {
+  color: #002ab6 !important;
+  font-size: 20px !important;
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif !important;
+  text-align: left !important;
+}
+
+.indexa {
+  color: blue !important;
+}
+
+/* STYLE GMS */
+body {
+  font-family: Lexend Deca; 
+  background: #f3b0cf; 
+  color: #000000; 
+  text-align: center;
+}
+
+.grid {
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 20px; 
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  border: 1px solid #444; 
+  padding: 15px; 
+  border-radius: 12px; 
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.degre {
+  font-weight: bold; 
+  color: #e075aa;
+}
+
+.PrecisionPMC {
+  font-size: 20px; 
+  color: gray;
+  text-align: right;
+}
+
+
+
+/*STYLE GENERAL*/
+
+body {
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3b0cf;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #002ab6;
+  margin-bottom: 30px;
+}
+
+/*BOUTON DE BIERES*/
+.menu-boutons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  background: linear-gradient(110deg, #e41b19 50%, #002ab6 50%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  margin: 2px 2px 2px 2px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-position 0.5s ease-in-out, color 0.5s ease-in-out;
+
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: bold;
+  text-transform: none;
+} 
+
+.btn:hover {
+  background-position: 0 0;
+  color: white;
+  border: solid;
+}
+/*L'ECRAN*/
+
+#ecran-affichage {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px rgba(0,0,0,0.08);
+  border: 2px solid #002ab6;
+  text-align: left;
+  min-height: 200px;
+}
+
+.mot-cle {
+  color: #e075aa;
+  font-size: 1.2em;
+  border-bottom: 3px solid #e67e22;
+  padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.definition {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.definition p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.decale-droite {
+  margin-left: 40px !important;
+  border-left: 4px solid #002ab6 !important;
+  padding-left: 15px !important;
+  background-color: #f4f6f9 !important;
+}
+
+/*LIEN*/
+
+.wiki-link {
+  color: blue;
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #2980b9;
+  transition: color 0.2s;
+}
+
+.wiki-link:hover {
+  color: #e075aa;
+  text-decoration-style: solid;
+}
+
+/*font noir transparent*/
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+/*POPUP*/
+
+#modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  text-align: left;
+  background: white;
+  border-radius: 12px !important;
+  border: none !important;
+  padding: 30px !important;
+}
+
+#modal-titre {
+  color: #2980b9;
+  margin-top: 0;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+#modal button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+#modal button:hover {
+  background-color: #555;
+}
+
+/*CARTE DISTRIB*/
+@media (max-width: 768px) {
+  #map {
+    width: 100%;
+    height: 450px;
+  }
+
+  .controls {
+    align-items: stretch;
+  }
+
+  select, .rechercheInput {
+    width: 100%;
+  }
+}
+
+#map {
+  height: 600px;
+  width: 50%;
+  border: 2px solid #002ab6;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+}
+
+.rechercheInput {
+ padding: 10px;
+ font-size: 16px;
+ width: 300px;
+}
+
+.fontBiere {
+  width: 90%;
+  margin: 0 auto;
+  position: absolute;
+  z-index: 0;
+}
+
+.font-distrib {
+  width: 85%;
+  margin: 30px auto;
+  margin-top: 5px;
+  background-image: url('/images/fontDistrib.png');
+  background-size: cover;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+  background-attachment: fixed;
+  background-position: center;
+}
