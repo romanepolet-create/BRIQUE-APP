@@ -17,3 +17,7 @@
     "helmet": "^8.1.0"
   }
 }
+
+"scripts": {
+  "start": "node serveur.js"
+}
