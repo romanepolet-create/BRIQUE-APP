@@ -1,0 +1,62 @@
+[
+  {"mot": "Ambrée",
+  "desc": "Bières brassées à partir de malt* non torréfié* et torréfié* (10% min) - couleur dit caramel"},
+  
+  {"mot": "Berliner Weisse",
+  "desc": "Bière blanche* (ou bière de blé), peu alcoolisée (3-4°), très claire* et acidulée* (acidulée* dit lactique*, peu amère*). robe jaune assez trouble* car non filtrée"},
+
+  {"mot": "Bitter",
+  "desc": "(EN = Amer) Anglaise, amère* dûe au houblonnage, légères, ale entre 3.5 et 4.5°, couleur du vlond clair au roux foncé"},
+ 
+ {"mot" : "Blanche",
+  "desc": "Forte proportion de blé 40% (= acidité* et fraîcheur), souvent trouble* car non filtrées, et haut taux de protéine dû au blé. Styles allemands = léger parfum de banane (Wiezenbier) ; Styles belges = agrémentées de graines de coriandre et d'écorces d'agrumes (Witbier)"},
+ 
+ {"mot": "Blonde",
+  "desc": "Majorité de malts* pâles* ou clairs* non torréfiés*, son EBC* est entre 12 et 20. Eventails large entre paille* et dorée*, reflets cuivrés* ou pâles"},
+  
+  {"mot": "Brune",
+  "desc": "Bières brassées avec du malts* bruns, fortement torréfiés* (= fort potentiel aromatique) - couleur du marron au noir"},
+  
+  {"mot": "Lager",
+  "desc": "Bière blondes* classique, fermentation_basse*, légère, 4-5°, souvent des notes florales et une amertume* légère (déclinaison = Pils*)"},
+  
+  {"mot": "Pale Ale",
+  "desc": "Bière d'inspiration anglaise à fermentation_haute*, brassée au malt* pâle* (peu torréfié*), goût finement caramélisé typique, corps sucré et céréalié, taux d'alcool faible. Créé par une brasserie anglaise après avoir inventé un nouveau mode de séchage du malt*. Couleur allant du jaune dorée* (rare) à l'ambré clair (commun) (EBC* 10-20)",
+  "sousCategories": [
+ 
+    {"mot": "American_Pale_Ale_(APA)",
+     "desc": "Ajout de houblon, avec un goût bien perceptible, mais taux d'alcool bas (moins de 5°) - Houblonnage à froid* pour plus d'aromatique que d'amertume* (Ex: New_Queen_In_Town*)"},
+  
+    {"mot": "Belgian_Pale_Ale",
+     "desc": "Saveur malté et épicée, faible amertume*, levure belges spéciales pour de puissantes esters (fruits) épicés et floraux. Bière à fermentation_haute*, amertume* moyenne (IBU* : 20-30), ambrée claire* à cuivrée* léger (EBC* : 10-40) avec une robe trouble*, très limpide*, non houblonné_à_froid* pour un goût de houblon bien distinct et sans saveurs fortes et avec un taux d'alcool moyen"},
+ 
+    {"mot": "Indian_Pale_Ale_(IPA)",
+     "desc": "Forte amertume* et arômes intenses d'agrumes, mise au point par les Britanniques au 19e s., ajout de beaucoup de houblons pour la conservation de la bière pendant les longs voyages en bateau (notamment jusqu'aux Indes) - IBU*: 40-60, houblonnage_à_chaud* pour plus d'amertume* et houblonnage_à_froid* pour plus d'aromatique",
+     "sousCategories": [
+  
+      {"mot": "Double_Indian_Pale_Ale_(DIPA)",
+      "desc": "ou Imperial IPA, amertume* plus intense et taux d'alcool élevé (7.5 - 10+°), interprétation plus robuste de la IPA => plus grande quantité de houblon, base maltée plus riche (= plus de rondeur) pour équilibrer l'amertume* (IBU*: 60-120), corps plus riche et texture plus dense* et onctueuse* que les IPA"},
+  
+      {"mot": "Session_Indian_Pale_Ale_(Session_IPA)",
+       "desc": "Plus légère et rafraîchissante, taux d'alcool entre 3 et 5°, amertume* prononcée (IBU* : 30 à 60). Bière à faible taux d'alcool peu importe le style"},
+  
+    {"mot": "New_England_Indian_Pale_Ale_(NEIPA)",
+    "desc": "Robe* dorée* trouble* assez opaque* car ajout de céréales spécifiques (comme de l'avoine) car aspect laiteux* typique, notes fruités très présentes et houblonné avec une amertume* modérée mais profil aromatique intense aux notes tropicales, avec une forte dose de houblon"}
+  ]}
+]},
+  
+  {"mot": "Pils",
+   "desc": "Bière blonde* (de dorée* très pâle* au dorée* intense) type Lager* mais plus sèche* et plus houblonnée, bière de fermentation basse*, avec un degré d'alcool modéré (4 à 5°), tient son nom de la ville de Pilsen en République Tchèque. Elle est gardée à froid en post-brassage pour une bière claire* et une élimination des résidus de levures. Amertume* modérée"},
+  
+  {"mot": "Rouge",
+  "desc": "Ou Rouge Flamande) Bière belge traditionnelle, type ambrée*. Couleur ambrée à rougeâtre, goût légèrement aigre-doux et de fruits mûrs, souvent légère acidité*. Malt* légèrement torréfié*, avec fermentation_haute*"},
+  
+  {"mot": "Sour",
+  "desc": "(EN = Acide / Aigre) Bière de tradition belge, acidité* grâce aux lactobacilles*, moût laissé à l'air libre, donc ensemencé par organismes dans l'air, puis rajout de fruits ou vieillissement en tonnaux, bière à fermentation_spontanée*"},
+  
+  {"mot": "Stout",
+  "desc": "Bières de tradition anglaise (brune), couleur noire plus ou moins opaque*, goût de grillé persistant grâce à des malts* très torréfiés* au goût de café, voir cacao (et de l'orge crue torréfié*, non malté*) - de 4 à 6°, bière à fermentation_haute*"},
+  
+  {"mot": "Triple",
+  "desc": "Plus aromatique et ronde*, fermentation_haute*, saveurs de fruits mûrs grâce à des levures particulières, notes épicées de clou de girofle"}
+]
