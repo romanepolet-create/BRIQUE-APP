@@ -69,5 +69,5 @@ async function voirDetails(id) {
    alert(`Focus sur : ${biere.id}\nType : ${biere.type}\nDegré : ${biere.degre}%\nPrix HT par carton de ${biere.nombre} : ${biere.prix}€\nPMC : ${biere.PMC}€`);
   } else {
   alert(biere.erreur);
-  }*/
-}
+  }
+}*/
