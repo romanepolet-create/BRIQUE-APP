@@ -98,6 +98,32 @@ body {
   text-align: right;
 }
 
+
+/* Bouton Téléchargement Excel */
+.btn-excel {
+  background-color: #002ab6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+  transition: background-color 0.3s, transform 0.1s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-excel:hover {
+  background-color: #ffcc00;
+  color: #002ab6;
+}
+
+.btn-excel:active {
+  transform: scale(0.98);
+}
+
 /*STYLE MODALE BIERES GMS*/
 .modale-fond {
   display: none; /* Cachée par défaut */
