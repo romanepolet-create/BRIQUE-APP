@@ -1,3 +1,5 @@
+let biereActuelle = null;
+
 async function chargerBieres() {
   const response = await fetch('/api/bieres');
   const bieres = await response.json();
@@ -35,12 +37,18 @@ async function voirDetails(id) {
   const biere = await response.json();
 
   if(response.ok) {
+    biereActuelle = biere;
+
     document.getElementById('modaleTitre').innerText = biere.id
+
     document.getElementById('modaleInfos').innerHTML = `
       <b>Type:</b> ${biere.type}<br>
       <b>Degré :</b> ${biere.degre}%<br>
       <b>Prix HT (carton de ${biere.nombre}) :</b> ${biere.prix} €<br>
       <b>PMC :</b> ${biere.PMC} €
+      <button onclick="telechargerExcelGMS()" class="btn-excel">
+        📊 Télécharger la fiche création (Excel)
+      </button>
       `;
 
       let taille = "33";
@@ -75,9 +83,60 @@ async function voirDetails(id) {
     }
   }
 
-/*  if(response.ok) {
-   alert(`Focus sur : ${biere.id}\nType : ${biere.type}\nDegré : ${biere.degre}%\nPrix HT par carton de ${biere.nombre} : ${biere.prix}€\nPMC : ${biere.PMC}€`);
-  } else {
-  alert(biere.erreur);
-  }
-}*/
+
+
+function telechargerExcelGMS() {
+    if (!biereActuelle) return;
+
+    // A. On prépare les lignes de notre tableau Excel (comme sur ta capture PDF !)
+    const donnees = [
+        ["FORMULAIRE DE CRÉATION D'ARTICLE", "BRIQUE HOUSE BREWERY"],
+        [""],
+        ["INFORMATIONS GÉNÉRALES", ""],
+        ["Nom de la bière", biereActuelle.id],
+        ["Type", biereActuelle.type],
+        ["Degré d'alcool", biereActuelle.degre + " %"],
+        ["Degré Plato", biereActuelle.degrePlato + " °P"],
+        ["Nomenclature Douanière", biereActuelle.Nomenclature],
+        ["Droits d'Accises", biereActuelle.DroitsDAccises],
+        ["Type de droits", biereActuelle.typesDroits],
+        ["Pays d'origine", biereActuelle.PaysOrigine],
+        ["Péremption", biereActuelle.Péremption + " MOIS"],
+        ["Code Article GBS / Fournisseur", biereActuelle.codeArticleFournisseur],
+        [""],
+        ["CONDITIONNEMENT (UVC)", ""],
+        ["Type de contenant", biereActuelle.UVC.type],
+        ["Gencod UVC", biereActuelle.UVC.Gencod],
+        ["Poids (kg)", biereActuelle.UVC.poids],
+        ["Dimensions (mm)", `L: ${biereActuelle.UVC.long} x l: ${biereActuelle.UVC.larg} x H: ${biereActuelle.UVC.hauteur}`],
+        [""],
+        ["UNITÉ DE DISTRIBUTION (CARTON)", ""],
+        ["Type", biereActuelle.UD.type],
+        ["Gencod Carton", biereActuelle.UD.Gencod],
+        ["Nombre d'UVC par Carton", biereActuelle.UD.nbUVC],
+        ["Poids du Carton (kg)", biereActuelle.UD.poids],
+        ["Volume (Litres)", biereActuelle.UD.Volume],
+        ["Dimensions (mm)", `L: ${biereActuelle.UD.long} x l: ${biereActuelle.UD.larg} x H: ${biereActuelle.UD.hauteur}`],
+        [""],
+        ["LOGISTIQUE & PALETTE", ""],
+        ["Type de Palette", biereActuelle.palette.type],
+        ["Gencod Palette", biereActuelle.palette.Gencod],
+        ["Disposition", `${biereActuelle.palette.nbCouche} couches de ${biereActuelle.palette.nbPerCouche} UVC`],
+        ["Total UVC sur Palette", biereActuelle.palette.nbUVC],
+        ["Poids Total Palette (kg)", biereActuelle.palette.poids],
+        ["Délai d'approvisionnement", biereActuelle.delaiAppro + " jours"]
+    ];
+
+    // B. On crée le fichier Excel virtuel
+    const feuille = XLSX.utils.aoa_to_sheet(donnees);
+    const classeur = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(classeur, feuille, "Fiche Création GMS");
+
+    // C. On élargit les colonnes pour que ce soit beau et lisible
+    feuille['!cols'] = [{ wch: 35 }, { wch: 50 }];
+
+    // D. On lance le téléchargement sur le PC du client !
+    // Le fichier s'appellera par exemple : Fiche_Creation_LB33.xlsx
+    XLSX.writeFile(classeur, `Fiche_Creation_${biereActuelle.codeArticleFournisseur}.xlsx`);
+}
+
