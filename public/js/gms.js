@@ -49,6 +49,8 @@ async function voirDetails(id) {
       <button onclick="telechargerExcelGMS()" class="btn-excel">
         📊 Télécharger la fiche création (Excel)
       </button>
+
+      ${genererPanneauSaisie(biere)}
       `;
 
       let taille = "33";
