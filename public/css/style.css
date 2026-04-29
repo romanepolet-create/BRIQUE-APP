@@ -430,3 +430,34 @@ select {
   align-items: center;
   gap: 25px;
 }
+
+/* Panneau de saisie rapide */
+.panneau-saisie {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 2px dashed #002ab6;
+}
+
+.badges-saisie {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badges-saisie button {
+    background: #f3b0cf;
+    border: 1px solid #002ab6;
+    color: #002ab6;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.2s ease;
+}
+
+.badges-saisie button:hover {
+    background: #002ab6;
+    color: white;
+}
