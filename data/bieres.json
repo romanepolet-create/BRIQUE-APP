@@ -12,15 +12,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700086,
     "long": 64,
     "larg":64,
     "hauteur": 238,
     "poids": 0.57
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700833,
     "long": 370,
@@ -29,8 +29,8 @@
     "poids": 14,
     "Volume": 7.92,
     "nbUVC": 24
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010494,
     "long": 1200,
@@ -41,7 +41,7 @@
     "nbUVC": 1080,
     "nbPerCouche": 216,
     "nbCouche": 5
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 250,
@@ -62,15 +62,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 37700157000192,
     "long": 82,
     "larg":82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700949,
     "long": 345,
@@ -79,8 +79,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010524,
     "long": 1200,
@@ -91,7 +91,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -112,15 +112,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "CANETTE",
     "Gencod": 3770015700185,
     "long": 70,
     "larg":70,
     "hauteur": 150,
     "poids": 0.46
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700826,
     "long": 270,
@@ -129,8 +129,8 @@
     "poids": 6,
     "Volume": 5.28,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010579,
     "long": 1200,
@@ -141,10 +141,10 @@
     "nbUVC": 1176,
     "nbPerCouche": 168,
     "nbCouche": 7
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "Aluminum",
-  "PoidBout": 14,
+  "PoidBout": 14
  },
                 
   {"id": "New Queen In Town 33cl", 
@@ -160,15 +160,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700000,
     "long": 64,
     "larg":64,
     "hauteur": 238,
     "poids": 0.57
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700789,
     "long": 370,
@@ -177,8 +177,8 @@
     "poids": 14,
     "Volume": 7.92,
     "nbUVC": 24
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010470,
     "long": 1200,
@@ -189,7 +189,7 @@
     "nbUVC": 1080,
     "nbPerCouche": 216,
     "nbCouche": 5
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 250,
@@ -204,21 +204,21 @@
   "PMC": 4.60, 
   "nombre": 12,
   "codeArticleFournisseur": "NQIT75",
-  "degrePlato": 11,10,
+  "degrePlato": 11.10,
   "Nomenclature": 22030001,
   "DroitsDAccises": "03 - DROITS REDUITS PETITES BRASSERIES",
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700147,
     "long": 82,
     "larg":82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700925,
     "long": 345,
@@ -227,8 +227,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010500,
     "long": 1220,
@@ -239,7 +239,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -260,15 +260,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "CANETTE",
     "Gencod": 3770015700123,
     "long": 70,
     "larg":70,
     "hauteur": 150,
     "poids": 0.46
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700802,
     "long": 270,
@@ -277,8 +277,8 @@
     "poids": 6,
     "Volume": 5.28,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010555,
     "long": 1210,
@@ -289,10 +289,10 @@
     "nbUVC": 1176,
     "nbPerCouche": 168,
     "nbCouche": 7
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "Aluminum",
-  "PoidBout": 14,
+  "PoidBout": 14
 },
   
   {"id": "Yankee Trouble 33cl", 
@@ -308,15 +308,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700062,
     "long": 64,
     "larg":64,
     "hauteur": 238,
     "poids": 0.57
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700796,
     "long": 370,
@@ -325,8 +325,8 @@
     "poids": 14,
     "Volume": 7.92,
     "nbUVC": 24
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010487,
     "long": 1200,
@@ -337,7 +337,7 @@
     "nbUVC": 1080,
     "nbPerCouche": 216,
     "nbCouche": 5
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 250,
@@ -358,15 +358,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700161,
     "long": 82,
     "larg":82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700932,
     "long": 345,
@@ -375,8 +375,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010517,
     "long": 1220,
@@ -387,7 +387,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -408,15 +408,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "CANETTE",
     "Gencod": 3770015700154,
     "long": 70,
     "larg":70,
     "hauteur": 150,
     "poids": 0.46
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3770015700819,
     "long": 270,
@@ -425,8 +425,8 @@
     "poids": 6,
     "Volume": 5.28,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010562,
     "long": 1210,
@@ -437,10 +437,10 @@
     "nbUVC": 1176,
     "nbPerCouche": 168,
     "nbCouche": 7
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "Aluminum",
-  "PoidBout": 14,
+  "PoidBout": 14
 },
   
   {"id": "Shiny Hoppy 75cl", 
@@ -456,15 +456,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700086,
     "long": 82,
     "larg":82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3760394010623,
     "long": 345,
@@ -473,8 +473,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010739,
     "long": 1220,
@@ -485,7 +485,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -506,15 +506,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3760394010050,
     "long": 82,
     "larg":82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3760394010098,
     "long": 345,
@@ -523,8 +523,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010548,
     "long": 1220,
@@ -535,7 +535,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -556,15 +556,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": 3770015700536,
     "long": 82,
     "larg": 82,
     "hauteur": 300,
     "poids": 1.45
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3760394010463,
     "long": 345,
@@ -573,8 +573,8 @@
     "poids": 18,
     "Volume": 9,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010531,
     "long": 1220,
@@ -585,7 +585,7 @@
     "nbUVC": 432,
     "nbPerCouche": 108,
     "nbCouche": 4
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 642,
@@ -606,15 +606,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "CANETTE",
     "Gencod": 3770015700529,
     "long": 70,
     "larg": 70,
     "hauteur": 150,
     "poids":46
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": 3760394010715,
     "long": 270,
@@ -623,8 +623,8 @@
     "poids": 6,
     "Volume": 5.28,
     "nbUVC": 12
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": 3760394010722,
     "long": 1210,
@@ -635,10 +635,10 @@
     "nbUVC": 1176,
     "nbPerCouche": 168,
     "nbCouche": 7
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "Aluminum",
-  "PoidBout": 14,
+  "PoidBout": 14
 },
 
   {"id": "Young Pug 33cl",
@@ -654,15 +654,15 @@
   "typesDroits": "Suspendus (avec DAE)",
   "PaysOrigine": "FRANCE",
   "Péremption": 12,
-  "UVC": [
+  "UVC": {
     "type": "BOUTEILLE",
     "Gencod": "",
     "long": 64,
     "larg":64,
     "hauteur": 238,
     "poids": 0.57
-   ],
-  "UD": [
+   },
+  "UD": {
     "type": "Carton",
     "Gencod": "",
     "long": 370,
@@ -671,8 +671,8 @@
     "poids": 14,
     "Volume": 7.92,
     "nbUVC": 24
-  ],
-  "palette": [
+  },
+  "palette": {
     "type": "PALETTE EUROPE",
     "Gencod": "",
     "long": 1200,
@@ -683,7 +683,7 @@
     "nbUVC": 1080,
     "nbPerCouche": 216,
     "nbCouche": 5
-  ],
+  },
   "delaiAppro": 30,
   "MatBout": "verre",
   "PoidBout": 250,
