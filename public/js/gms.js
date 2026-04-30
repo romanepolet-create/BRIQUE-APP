@@ -107,6 +107,16 @@ function telechargerExcelGMS() {
       left: { style: "thin", color: { auto: 1 } },
       right: { style: "thin", color: { auto: 1 } }
     }
+    
+    const sGrandTitre = {
+      font: {name: "Lexend Deca",
+             sz: 14,
+             bold: true,
+             color: {rgb: "000000"}
+      }, fill: {fgColor: {rgb: "FFFFFF"}
+      }, alignment: {vertical: "center", horizontal: "center"
+      }, border: bordureFine
+    };
 
     const sTitreSection = {
       font: {name: "Lexend Deca",
@@ -171,24 +181,24 @@ function telechargerExcelGMS() {
 
 
     // --- EN TÊTE ---
-    setCell(1, 1, "FORMULAIRE DE CREATION D'ARTICLE", sTitreSection); // Ligne 2, Colonne C
+    setCell(1, 1, "FORMULAIRE DE CREATION D'ARTICLE", sGrandTitre); // Ligne 2, Colonne C
 
     // --- INFORMATIONS GENERALES ---
     setCell(4, 1, "INFORMATIONS GENERALES", sTitreSection);
 
     setCell(6, 0, "Adhérent", sLabel);                  setCell(6, 1, "BRIQUE HOUSE BREWERY", sNormal);
-    setCell(6, 4, "Nom de la bière", sLabel);           setCell(6, 5, nomPropre, sNormal);
+    setCell(6, 3, "Nom de la bière", sLabel);           setCell(6, 4, nomPropre, sNormal);
     
     setCell(7, 0, "Code article fournisseur", sLabel);  setCell(7, 1, biereActuelle.codeArticleFournisseur || "", sNormal);
-    setCell(7, 4, "Couleur", sLabel);                   setCell(7, 5, couleur, sNormal);
+    setCell(7, 3, "Couleur", sLabel);                   setCell(7, 4, couleur, sNormal);
     
     setCell(8, 0, "Degré(s) alcool", sLabel);           setCell(8, 1, biereActuelle.degre + "°", sNormal);
-    setCell(8, 4, "Type", sLabel);                      setCell(8, 5, biereActuelle.type, sNormal);
+    setCell(8, 3, "Type", sLabel);                      setCell(8, 4, biereActuelle.type, sNormal);
     
     setCell(9, 0, "Degré(s) plato", sLabel);            setCell(9, 1, biereActuelle.degrePlato + " °P", sNormal);
 
     setCell(10, 0, "Nomenclature douanière", sLabel);   setCell(10, 1, biereActuelle.Nomenclature, sNormal);
-    setCell(10, 4, "Désignation de l'article", sLabel); setCell(10, 5, biereActuelle.id, sNormal);
+    setCell(10, 3, "Désignation de l'article", sLabel); setCell(10, 4, biereActuelle.id, sNormal);
     
     setCell(11, 0, "Droits d'Accises", sLabel);         setCell(11, 1, biereActuelle.DroitsDAccises, sNormal);
     setCell(12, 0, "Type droits", sLabel);              setCell(12, 1, biereActuelle.typesDroits, sNormal);
@@ -205,27 +215,34 @@ function telechargerExcelGMS() {
     // En-têtes du grand tableau
     const colonnesTableau = ["Type", "Gencod", "Longueur (mm)", "Largeur(mm)", "Hauteur(mm)", "Poids (kg)", "Volume (L)", "Nb UVC", "Nb / couche", "Nb couche"];
     colonnesTableau.forEach((titre, index) => {
-        setCell(23, 2 + index, titre, sCentreGrasCouleur); // Commence à la colonne E (index 4)
+        setCell(23, 1 + index, titre, sCentreGrasCouleur); // Commence à la colonne E (index 4)
     });
 
     // Ligne UVC
     setCell(24, 0, "UVC ( Unité Vente Consommateur )", sLabel);
     const donnesUVC = [biereActuelle.UVC.type, biereActuelle.UVC.Gencod, biereActuelle.UVC.long, biereActuelle.UVC.larg, biereActuelle.UVC.hauteur, biereActuelle.UVC.poids, volUVC, 1, "", ""];
-    donnesUVC.forEach((val, i) => setCell(24, 2 + i, val, sCentre));
-
-    // Ligne UD
+    donnesUVC.forEach((val, i) => { 
+      donnees[24][1 + i] = {v: val, t:(i ===1 ? 's' : undefined), s: sCentre};
+    });
+          // Ligne UD
     setCell(25, 0, "UD ( Unité de distribution )", sLabel);
     const donnesUD = [biereActuelle.UD.type, biereActuelle.UD.Gencod, biereActuelle.UD.long, biereActuelle.UD.larg, biereActuelle.UD.hauteur, biereActuelle.UD.poids, biereActuelle.UD.Volume, biereActuelle.UD.nbUVC, "", ""];
-    donnesUD.forEach((val, i) => setCell(25, 2 + i, val, sCentre));
+    donnesUD.forEach((val, i) => {
+      donnees[25][1 + i] = {v: val, t:(i === 1 ? 's' : undefined), s: sCentre};
+    });
+
 
     // Ligne PALETTE
     setCell(26, 0, "PALETTE", sLabel);
     const donnesPal = [biereActuelle.palette.type, biereActuelle.palette.Gencod, biereActuelle.palette.long, biereActuelle.palette.larg, biereActuelle.palette.hauteur, biereActuelle.palette.poids, biereActuelle.palette.Volume, biereActuelle.palette.nbUVC, biereActuelle.palette.nbPerCouche, biereActuelle.palette.nbCouche];
-    donnesPal.forEach((val, i) => setCell(26, 2 + i, val, sCentre));
+    donnesPal.forEach((val, i) => {
+      donnees[26][1 + i] = {v: val, t:(i === 1 ? 's' : undefined), s: sCentre};
+    });
+
 
     // --- APPROVISIONNEMENT ---
     setCell(29, 1, "APPROVISIONNEMENT", sTitreSection);
-    setCell(31, 0, "Délai d'approvisionnement ( en jours )", sLabel); setCell(31, 1, biereActuelle.delaiAppro, sCentre);
+    setCell(31, 0, "Délai d'approvisionnement ( en jours )", sLabel); setCell(31, 1, biereActuelle.delaiAppro, sCentre );
 
     // 4. Création de la feuille
     const feuille = XLSX.utils.aoa_to_sheet(donnees);
@@ -238,10 +255,10 @@ function telechargerExcelGMS() {
     ];
 
     // 5. Ajustement des largeurs de colonnes pour correspondre au design
-    const colWidths = Array(14).fill({ wch: 12 }); // Largeur minimum par défaut
+    const colWidths = Array(14).fill({ wch: 10 }); // Largeur minimum par défaut
 
     donnees.forEach((ligne, indexLigne) => {
-      if ([1, 4, 19, 29].includes(indexLigne)) return;
+      if ([0, 3, 18, 28].includes(indexLigne)) return;
 
       ligne.forEach((cellule, indexCol) => {
         if (cellule && cellule.v) {
@@ -254,7 +271,7 @@ function telechargerExcelGMS() {
       });
     });
 
-    colWidths[3] = { wch: 8 };
+    colWidths[3] = { wch: 18 };
     feuille['!cols'] = colWidths;
 
     feuille['!views'] = [{showGridLines: false}];
