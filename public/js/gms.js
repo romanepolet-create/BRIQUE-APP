@@ -225,7 +225,7 @@ function telechargerExcelGMS() {
 
     // --- APPROVISIONNEMENT ---
     setCell(29, 1, "APPROVISIONNEMENT", sTitreSection);
-    setCell(31, 0, "Délai d'approvisionnement ( en jours )", sLabel); setCell(31, 1, biereActuelle.delaiAppro, sNormal);
+    setCell(31, 0, "Délai d'approvisionnement ( en jours )", sLabel); setCell(31, 1, biereActuelle.delaiAppro, sCentre);
 
     // 4. Création de la feuille
     const feuille = XLSX.utils.aoa_to_sheet(donnees);
