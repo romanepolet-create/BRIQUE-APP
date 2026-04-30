@@ -50,9 +50,6 @@ async function voirDetails(id) {
         📊 Télécharger la fiche création (Excel)
       </button>
 
-      ${genererPanneauSaisie(biere)}
-      `;
-
       let taille = "33";
       if (biere.id.includes("75cl")) {
         taille = "75";
