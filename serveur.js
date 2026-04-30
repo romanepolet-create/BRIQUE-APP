@@ -2,6 +2,7 @@
 // 1. IMPORTS ET CONFIGURATION DE BASE
 // ==========================================
 const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
@@ -13,6 +14,7 @@ const port = process.env.PORT || 3000;
 // 2. SÉCURITÉ ET MIDDLEWARES
 // ==========================================
 app.use(helmet({ contentSecurityPolicy: false }));
+app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
