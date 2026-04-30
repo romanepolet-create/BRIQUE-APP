@@ -48,7 +48,7 @@ async function voirDetails(id) {
       <b>PMC :</b> ${biere.PMC} €
       <button onclick="telechargerExcelGMS()" class="btn-excel">
         📊 Télécharger la fiche création (Excel)
-      </button>
+      </button>`
 
       let taille = "33";
       if (biere.id.includes("75cl")) {
