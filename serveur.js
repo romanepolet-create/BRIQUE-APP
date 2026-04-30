@@ -18,7 +18,7 @@ app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 500,
   skip: (req, res) => {
     console.log(`IP détectée : ${req.ip}`);
     if(req.ip === '::1' || req.ip === '127.0.0.1') {
