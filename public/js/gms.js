@@ -281,8 +281,3 @@ function telechargerExcelGMS() {
     XLSX.utils.book_append_sheet(classeur, feuille, "Formulaire_Article");
     XLSX.writeFile(classeur, `Creation_GMS_${biereActuelle.codeArticleFournisseur}.xlsx`);
 }
-
-function copierInfo(texte) {
-  navigator.clipboard.writeText(texte);
-  // Optionnel : petite notification "Copié !"
-}
