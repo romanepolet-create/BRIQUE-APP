@@ -1,5 +1,5 @@
 [
-  {"id": "ML",
+  {"id": "Mick Lager",
   "b": "Mick_Lager",
   "détail": "Prononcé à la française Mick, non comme le prénom 'Mike' en anglais",
   "desc": "Bière de soif (5°)",
@@ -10,7 +10,7 @@
   "bouche": "Bouche: Facile à boire, plutôt sec* mais peu amère*, bel équilibre entre les notes de céréales et le côté parfumé du houblon",
   "houblon": "Houblons: Mandarina_Bavaria*, Magnum*"},
 
-  {"id": "SH",
+  {"id": "Shiny Hoppy",
   "b": "Shiny_Hoppy",
   "type": "IPA* (6°)",
   "ie": "IBU*: 24 (/150) - EBC*: 9 (/140)",
@@ -20,7 +20,7 @@
   "houblon": "Houblons: El_Dorado*, Mosaïc*, Magnum*"
   },
 
-  {"id": "NQ",
+  {"id": "New Queen In Town",
   "b": "New_Queen_In_Town",
   "desc": "Bière de tous les jours",
   "type": "Pale_Ale*, American_Pale_Ale* (4,8°)",
@@ -31,7 +31,7 @@
   "houblon": "Houblons: Centennial*, Ekuanot*"
   },
 
-  {"id": "LB",
+  {"id": "La Bagarre",
   "b": "La_Bagarre",
   "type": "Double_IPA* (DIPA) (7,7°)",
   "ie": "IBU*: 44 (/150) - EBC*: 9,1 (/140)",
@@ -41,7 +41,7 @@
   "houblon": "Houblons: Citra*, Mosaïc*, Colombus*"
   },
 
-  {"id": "YT",
+  {"id": "Yankee Trouble",
   "b": "Yankee_Trouble",
   "type": "NEIPA* (New England IPA) (6,5°)",
   "ie": "IBU*: 20 (/150), EBC*: 8,7 (/140)",
@@ -51,7 +51,7 @@
   "houblon": "Houblons: Mosaïc*, Citra*, Amarillo*"
   },
 
-  {"id": "TC",
+  {"id": "Triple Chuc",
   "b": "Triple_Chuc",
   "détail": "-> prononcé à la française ('Chuc' = Sucre en patois), et non comme le prénom 'Chuck' en anglais",
   "type": "Triple* (8°)",
@@ -63,7 +63,7 @@
   "houblon": "Houblons: Elixir* & Magnum* (houblons_alsaciens*), Barbe_Rouge*"
   },
 
-  {"id": "UA",
+  {"id": "Under Acid",
   "b": "Under_Acid",
   "type": "Berliner_Weisse* (4,5°)",
   "desc": "Aromatisé aux fruits rouges",
@@ -74,7 +74,7 @@
   "houblon": "Houblons & Fruits: Barbe_Rouge* (+ Groseille, Cranberry, Cassis, Citron Vert)"
   },
 
-  {"id": "YP",
+  {"id": "Young Pug",
   "b": "Young_Pug",
   "type": "Low Alcohol IPA* (0,5°)",
   "ie": "IBU*: 13 (/150) - EBC*: 10,3 (/140)",
@@ -84,7 +84,7 @@
   "houblon": "Houblons: lupuline*"
   },
 
-  {"id": "SC",
+  {"id": "Super Coron",
   "b": "Super_Coron",
   "type": "Belgian_Pale_Ale* (6°)",
   "ie": "IBU*: 20 (/150) - EBC*: 9 (/140)",
@@ -94,7 +94,7 @@
   "houblon": "Houblons: Cascade*, Magnum*, Houblons_de_Flandres*"
   },
 
-  {"id": "AB",
+  {"id": "AccroBlanche",
   "b": "AccroBlanche",
   "type": "Blanche* (4,5°)",
   "ie": "IBU*: 20 (/150) - EBC*: 6 (/140)",
