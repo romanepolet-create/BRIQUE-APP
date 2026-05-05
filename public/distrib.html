@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte des Distributeurs CHR</title>
                 
@@ -27,13 +28,42 @@
     </div>
 
     <div class="controls">
-      <input type= "text" id= "rechercheInput" class="rechercheInput" placeholder="Rechercher un distributeur...">
+    
+
+      <input type= "text" class="rechercheInput" id="rechercheInput" placeholder="Rechercher un distributeur...">
       <select id="distribSelect" onchange="handleSelectChange()">
         <option value="">Choisissez un distributeur...</option>
       </select>
     </div>
+
+    <div class="conteneur-carte-panneau">
+
     <div id="map"></div>
+
+
+    <div id="panneau-distrib" class="panneau-lateral" style="display:none;">
+      <div class="panneau-en-tete">
+        <h3 id="panneau-titre">Sélectionne un distributeur</h3>
+        <button id="btn-modifier-bieres" class="btn-icone" title="modifier la liste">✏️</button>
+      </div>
+
+      <div class="panneau-contenu">
+        <h4>Bières référencées : </h4>
+        <ul id="liste-bieres-ref">
+        </ul>
+
+        <div id="zone-ajout-biere" style="display: flex; gap: 10px; margin-top: 15px; border-top: 2px dashed #ccc; padding-top: 15px;">
+         <select id="select-nouvelle-biere" style="flex-grow: 1; padding: 5px;">
+          <option>La Bagarre 33cl</option>
+          <option>Moulinsart 75cl</option>
+         </select>
+         <button class="btn-action-biere ajouter" title="Ajouter au distributeur">+</button>
+       </div>
+
+        <button id="btn-sauvegarder-bieres" class="btn-excel" style="display: none;">💾 Sauvegarder</button>
+      </div>
     </div>
+  </div> ```
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
