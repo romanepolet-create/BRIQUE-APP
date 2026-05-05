@@ -191,6 +191,7 @@ body {
 
 
 /*STYLE GENERAL*/
+
 *{
   box-sizing: border;
 }
@@ -365,6 +366,8 @@ h1 {
 /*CARTE DISTRIB*/
 @media (max-width: 768px) {
   #map {
+    flex-grow: 1;
+    height: 60vh;
     width: 100%;
     height: 450px;
   }
@@ -379,6 +382,7 @@ h1 {
 }
 
 #map {
+  flex-grow: 1;
   height: 60vh;
   width: 90%;
   border: 5px solid white;
@@ -435,37 +439,118 @@ select {
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
 }
+
+.conteneur-carte-panneau {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.panneau-lateral {
+  background: white;
+  border: 4px solid #e075aa;
+  border-radius: 15px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.panneau-en-tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.panneau-en-tete h3 {
+  margin: 0;
+  color: #002ab6;
+  font-size: 1.2em;
+}
+
+.btn-icone {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-icone:hover {
+  transform: scale(1.2);
+}
+
+  /* Design de la liste avec les boutons + et - */
+#liste-bieres-ref {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+#liste-bieres-ref li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f6f9;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #333;
+  font-weight: bold;
+}
+
+.btn-action-biere {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-action-biere.retirer { color: red; border-color: red; }
+.btn-action-biere.ajouter { color: green; border-color: green; }
+
 
 /* Panneau de saisie rapide */
 .panneau-saisie {
-    background: rgba(255, 255, 255, 0.5);
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    border: 2px dashed #002ab6;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 2px dashed #002ab6;
 }
 
 .badges-saisie {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .badges-saisie button {
-    background: #f3b0cf;
-    border: 1px solid #002ab6;
-    color: #002ab6;
-    padding: 6px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.85em;
-    transition: all 0.2s ease;
+  background: #f3b0cf;
+  border: 1px solid #002ab6;
+  color: #002ab6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s ease;
 }
 
 .badges-saisie button:hover {
-    background: #002ab6;
-    color: white;
+  background: #002ab6;
+  color: white;
 }
