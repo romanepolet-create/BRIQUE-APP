@@ -18,7 +18,7 @@ async function initialiserDonnees() {
     
     maData = await resDistrib.json();
     const donneesGeo = await resGeo.json();
-    const donneesRegion = await resRegion.geojson();
+    const donneesRegion = await resRegion.json();
 
 const select = document.getElementById('distribSelect');
 maData.forEach(d => {
