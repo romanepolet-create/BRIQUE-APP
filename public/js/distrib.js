@@ -273,4 +273,54 @@ document.querySelector('.btn-action-biere.ajouter').addEventListener('click', ()
 });
 
 
+// ==========================================
+// SAUVEGARDE SUR LE SERVEUR
+// ==========================================
+document.getElementById('btn-sauvegarder-bieres').addEventListener('click', async () => {
+  const selectHTML = document.getElementById('distribSelect');
+  const selectedId = selectHTML.value; // L'ID du distributeur
 
+  // On change le texte du bouton pour faire patienter
+  const btn = document.getElementById('btn-sauvegarder-bieres');
+  btn.innerText = "⏳ Sauvegarde...";
+
+  try {
+    // On envoie le colis au serveur !
+    const reponse = await fetch('/api/distrib/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        id: selectedId, 
+        bieres: bieresDistribActuel 
+      })
+    });
+
+    if (reponse.ok) {
+      // 1. On met à jour la donnée locale pour éviter que ça disparaisse si on clique sur la carte
+      const distribDansData = maData.find(d => String(d.id) === String(selectedId));
+      if (distribDansData) distribDansData.bieres = [...bieresDistribActuel];
+
+      // 2. On éteint le mode édition
+      modeEdition = false;
+      mettreAJourAffichageBieres();
+      
+      // 3. Petit message de succès
+      btn.innerText = "✅ Enregistré !";
+      btn.style.backgroundColor = "green";
+      
+      setTimeout(() => {
+        btn.innerText = "💾 Sauvegarder";
+        btn.style.backgroundColor = ""; // Remet la couleur par défaut
+      }, 2000);
+
+    } else {
+      alert("❌ Oups, un problème est survenu côté serveur.");
+      btn.innerText = "💾 Sauvegarder";
+    }
+
+  } catch (erreur) {
+    console.error("Erreur fetch:", erreur);
+    alert("❌ Impossible de joindre le serveur.");
+    btn.innerText = "💾 Sauvegarder";
+  }
+});
