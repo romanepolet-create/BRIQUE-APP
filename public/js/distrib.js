@@ -201,7 +201,7 @@ async function chargerBieresDepuisDesc() {
 
     // 2. On extrait juste les noms ! 
     // ⚠️ IMPORTANT : Si dans ton desc.json la clé s'appelle "id" au lieu de "nom", remplace b.nom par b.id ci-dessous :
-    toutesLesBieres = baseDeDonneesDesc.map(b => b.nom); 
+    toutesLesBieres = baseDeDonneesDesc.map(b => b.id); 
                               
     // Petite sécurité pour enlever les doublons s'il y en a
     toutesLesBieres = [...new Set(toutesLesBieres)];
