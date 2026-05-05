@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
+app.use(express.json()); // 👈 INDISPENSABLE pour que la sauvegarde fonctionne !
 const port = process.env.PORT || 3000;
 
 // ==========================================
