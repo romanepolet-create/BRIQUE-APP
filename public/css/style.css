@@ -191,6 +191,14 @@ body {
 
 
 /*STYLE GENERAL*/
+*{
+  box-sizing: border;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
 
 body {
   font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
