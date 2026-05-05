@@ -1,5 +1,8 @@
 let geojsonLayer;
 let maData = [];
+let modeEdition = false; 
+let bieresDistribActuel = []; 
+let toutesLesBieres = []; // 👈 On la déclare vide pour l'instant
 
 const map = L.map('map').setView([46.603354, 1.888334], 6);
 
@@ -66,21 +69,41 @@ console.error("Erreur de chargement des données :", error);
 initialiserDonnees();
 
 function handleSelectChange() {
-  const selectedId = document.getElementById('distribSelect').value;
+  const selectHTML = document.getElementById('distribSelect');
+  const selectedId = selectHTML.value;
+  const nomDistrib = selectHTML.options[selectHTML.selectedIndex].text;
 
   console.log("ID sélectionné :", selectedId);
 
   if(!selectedId) {
+    document.getElementById('panneau-distrib').style.display = 'none';
+
     geojsonLayer.eachLayer(layer => {
       layer.setStyle({fillColor: '#3388ff', fillOpacity:0.2});
     });
+    
+    map.setView([46.603354, 1.888334], 5);
     return;
+
   }
 
     const selectedDistrib = maData.find(d => String(d.id) === String(selectedId));
     console.log("Distributeur trouvé:", selectedDistrib);
 
   if(selectedDistrib && geojsonLayer) {
+    document.getElementById('panneau-distrib').style.display = 'flex';
+    document.getElementById('panneau-titre').innerText = nomDistrib;
+
+    // On éteint le mode édition à chaque fois qu'on change de distributeur
+    modeEdition = false; 
+    // On charge les bières du distributeur (S'il n'en a pas, on met un tableau vide [])
+    bieresDistribActuel = selectedDistrib.bieres || [];
+    // On lance le pinceau !
+    mettreAJourAffichageBieres();
+    // --------------------
+
+    map.setView([46.603354, 1.888334], 5);
+    
     geojsonLayer.eachLayer(function (layer) {
       const deptCode = String(layer.feature.properties.code);
       const isSelected = selectedDistrib.dpt.map(String).includes(deptCode);
@@ -141,6 +164,7 @@ const dataPourRecherche = maData.map(d => ({
 
 // On configure Fuse.js (Tolérance aux fautes de frappe)
 const optionsFuse = {
+  
   includeScore: true,
   threshold: 0.4, // 0 = strict, 1 = accepte tout. 0.4 est parfait pour les fautes !
   keys: ['nomFacile']
@@ -162,3 +186,91 @@ const optionsFuse = {
     handleSelectChange();
   }
 });
+
+
+// ==========================================
+//  AFFICHAGE DES RÉFÉRENCES CHEZ DISTRIB
+// ==========================================
+// --- CHARGEMENT DES BIÈRES (DEPUIS DESC.JSON) ---
+
+async function chargerBieresDepuisDesc() {
+  try {
+  // 1. On va chercher les données sur ton API (la route qui lit desc.json)
+    const response = await fetch('/api/lexique');
+    const baseDeDonneesDesc = await response.json();
+
+    // 2. On extrait juste les noms ! 
+    // ⚠️ IMPORTANT : Si dans ton desc.json la clé s'appelle "id" au lieu de "nom", remplace b.nom par b.id ci-dessous :
+    toutesLesBieres = baseDeDonneesDesc.map(b => b.nom); 
+                              
+    // Petite sécurité pour enlever les doublons s'il y en a
+    toutesLesBieres = [...new Set(toutesLesBieres)];
+                                          
+  } catch (erreur) {
+       console.error("Erreur lors du chargement des bières:", erreur);
+  }
+}
+
+// 3. On lance le chargement dès l'ouverture de la page !
+chargerBieresDepuisDesc();
+
+// ==========================================
+// CRAYON MODIFICATION
+// ==========================================
+
+
+function mettreAJourAffichageBieres() {
+  const listeHTML = document.getElementById('liste-bieres-ref');
+  const zoneAjout = document.getElementById('zone-ajout-biere');
+  const btnSauvegarde = document.getElementById('btn-sauvegarder-bieres');
+
+  // 1. Afficher/Cacher les outils d'édition selon le mode
+  zoneAjout.style.display = modeEdition ? 'flex' : 'none';
+  btnSauvegarde.style.display = modeEdition ? 'block' : 'none';
+
+  // 2. Dessiner la liste des bières actuelles
+  if (bieresDistribActuel.length === 0 && !modeEdition) {
+    listeHTML.innerHTML = "<p style='color:#666; font-style:italic;'>Aucune bière référencée pour l'instant.</p>";
+  } else {
+    // Si on est en mode édition, on rajoute le bouton [-], sinon on ne met que le nom
+    listeHTML.innerHTML = bieresDistribActuel.map(biere => `
+      <li>
+        ${biere}
+        ${modeEdition ? `<button class="btn-action-biere retirer" onclick="retirerBiere('${biere}')" title="Retirer">-</button>` : ''}
+      </li>
+    `).join('');
+  }
+
+  // 3. Remplir le menu déroulant [+] (On n'affiche que les bières qu'il n'a pas encore !)
+  if (modeEdition) {
+    const selectAjout = document.getElementById('select-nouvelle-biere');
+    const bieresDispo = toutesLesBieres.filter(b => !bieresDistribActuel.includes(b));
+    selectAjout.innerHTML = bieresDispo.map(b => `<option value="${b}">${b}</option>`).join('');
+  }
+}
+
+// Clic sur le Crayon ✏️ (On allume/éteint l'édition)
+document.getElementById('btn-modifier-bieres').addEventListener('click', () => {
+  modeEdition = !modeEdition; // Bascule on/off
+    mettreAJourAffichageBieres(); // On redessine !
+    });
+
+// Clic sur le bouton rouge [-]
+window.retirerBiere = function(biereAEnlever) {
+  // On garde toutes les bières SAUF celle qu'on a cliquée
+  bieresDistribActuel = bieresDistribActuel.filter(b => b !== biereAEnlever);
+  mettreAJourAffichageBieres();
+};
+
+// Clic sur le bouton vert [+]
+document.querySelector('.btn-action-biere.ajouter').addEventListener('click', () => {
+  const selectAjout = document.getElementById('select-nouvelle-biere');
+  const nouvelleBiere = selectAjout.value;
+  if (nouvelleBiere) {
+    bieresDistribActuel.push(nouvelleBiere); // On ajoute à la liste
+    mettreAJourAffichageBieres(); // On redessine !
+  }
+});
+
+
+
