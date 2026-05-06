@@ -57,3 +57,21 @@ app.use('/api/region', routesRegion);
 app.listen(port, () => {
   console.log(`✅ Serveur modulaire en ligne! Navigateur sur http://localhost:${port}`);
 });
+
+// ==========================================
+// 4. LECTURE SUPABASE DISTRIB
+// ==========================================
+
+const { createClient } = require('@supabase/supabase-js');
+
+// Ces clés se trouvent dans tes paramètres Supabase
+const supabaseUrl = 'https://mtvzhpqticnxqcxsadkg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10dnpocHF0aWNueHFjeHNhZGtnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAyOTc1MCwiZXhwIjoyMDkzNjA1NzUwfQ.r2JXBf8hLrukjKOLQFlVqCBXDx8AjxlgVMGKir1a55U';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Ta route GET pour les distribs devient :
+app.get('/api/distrib', async (req, res) => {
+  const { data, error } = await supabase.from('distributeurs').select('*');
+  if (error) return res.status(500).json(error);
+  res.json(data);
+});
