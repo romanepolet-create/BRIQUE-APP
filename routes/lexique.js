@@ -182,23 +182,3 @@ router.get('/:categorie', async (req, res) => {
 });
 
 module.exports = router;
-
-
-// ==========================================
-// CREATION DE LA ROUTE
-// ==========================================
-
-const cheminLexique = path.join(__dirname, '../data', 'desc.json');
-
-router.get('/', async(req, res) => {
-  try {
-    const data = await fs.readFile(cheminLexique, 'utf-8');
-    res.json(JSON.parse(data));
-  } catch (erreur) {
-    console.error("Erreur lecture lexique :", erreur);
-    res.status(500).json({message: 'Impossible de charger le lexique'});
-  }
-})
-
-module.exports = router;
-
