@@ -196,7 +196,7 @@ const optionsFuse = {
 async function chargerBieresDepuisDesc() {
   try {
   // 1. On va chercher les données sur ton API (la route qui lit desc.json)
-    const response = await fetch('/api/lexique');
+    const response = await fetch('/api/lexique/desc');
     const baseDeDonneesDesc = await response.json();
 
     // 2. On extrait juste les noms ! 
