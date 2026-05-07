@@ -1,0 +1,114 @@
+ [
+  {
+    "id": "La Bagarre 33cl",
+    "designation":"LA BAGARRE (24x0,33L) 7,7° VP",
+    "PUbrutHT": 1.55877,
+    "accise" : 0.10,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.67386
+  },
+{
+    "id": "La Bagarre 75cl",
+    "designation": "LA BAGARRE (12x0,75L) 7,7° VP",
+    "PUbrutHT": 3.09593,
+    "accise" : 0.24,
+    "eco": 0.0249,
+    "PUnetHTVA": 3.35876
+  },
+{
+    "id": "La Bagarre 44cl",
+    "designation": "LA BAGARRE (12x0,44L) 7,7° VP",
+    "PUbrutHT" : 1.70113,
+    "accise" : 0.14,
+    "eco": 0.0080,
+    "PUnetHTVA": 1.84875
+  },
+{
+    "id": "New Queen In Town 33cl",
+    "designation": "NEW QUEEN IN TOWN (24x0,33L) 4,8° VP",
+    "PUbrutHT" : 1.44793,
+    "accise" : 0.07,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.52359
+  },
+{
+    "id": "New Queen In Town 75cl",
+    "designation": "NEW QUEEN IN TOWN (12x0,75L) 4,8° VP",
+    "PUbrutHT" : 2.77510,
+    "accise" : 0.15,
+    "eco": 0.0249,
+    "PUnetHTVA": 2.94832
+  },
+{
+    "id": "New Queen In Town 44cl",
+    "designation": "NEW QUEEN IN TOWN (12x0,44L) 4,8° VP",
+    "PUbrutHT" : 1.56113,
+    "accise" : 0.09,
+    "eco": 0.0080,
+    "PUnetHTVA": 1.65618
+  },
+{
+    "id": "Yankee Trouble 33cl",
+    "designation": "YANKEE TROUBLE (24x0,33L) 6,5° VP",
+    "PUbrutHT" : 1.47710,
+    "accise" : 0.09,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.57587
+  },
+{
+    "id": "Yankee Trouble 75cl",
+    "designation": "YANKEE TROUBLE (12x0,75L) 6,5° VP",
+    "PUbrutHT" : 2.96177,
+    "accise" : 0.20,
+    "eco": 0.0249,
+    "PUnetHTVA": 3.18752
+  },
+{
+    "id": "Yankee Trouble 44cl",
+    "designation": "YANKEE TROUBLE (12x0,44L) 6,5° VP",
+    "PUbrutHT" : 1.61363,
+    "accise" : 0.12,
+    "eco": 0.0080,
+    "PUnetHTVA": 1.73950
+  },
+{
+    "id": "Shiny Hoppy 75cl",
+    "designation": "SHINY HOPPY (12x0,75L) 6,0° VP",
+    "PUbrutHT" : 2.79260,
+    "accise" : 0.19,
+    "eco": 0.0249,
+    "PUnetHTVA": 3.00290
+  },
+{
+    "id": "Triple Chuc 75cl",
+    "designation": "TRIPLE CHUC (12x0,75L) 8,0° VP",
+    "PUbrutHT" : 2.60010,
+    "accise" : 0.25,
+    "eco": 0.0249,
+    "PUnetHTVA": 2.87220
+  },
+{
+    "id": "Mick Lager 75cl",
+    "designation": "MICK LAGER (12x0,75L) 5,2° VP",
+    "PUbrutHT" : 2.30260,
+    "accise" : 0.16,
+    "eco": 0.0249,
+    "PUnetHTVA": 2.48818
+  },
+{
+    "id": "Mick Lager 44cl",
+    "designation": "MICK LAGER (12x0,44L) 5,2° VP",
+    "PUbrutHT" : 1.33363,
+    "accise" : 0.09,
+    "eco": 0.0080,
+    "PUnetHTVA": 1.43593
+  },
+{
+    "id": "Young Pug 33cl",
+    "designation": "YOUNG PUG (24x0,33L) 0,5° VP",
+    "PUbrutHT" : "",
+    "accise" : "",
+    "eco": "",
+    "PUnetHTVA": ""
+  },
+
