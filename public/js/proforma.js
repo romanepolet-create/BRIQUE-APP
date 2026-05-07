@@ -1,5 +1,24 @@
 let modeproforma = false;
 let panierProforma = {};
+let donneesProforma = []; // 👈 Va stocker ton nouveau JSON
+
+//===================================
+// --- CHARGEMENT DES PRIX PROFORMA ---
+//===================================
+
+async function chargerDonneesProforma() {
+    try {
+        // Remplace l'URL par le bon chemin vers ton API ou fichier
+        const response = await fetch('/api/proforma'); 
+        if (response.ok) {
+            donneesProforma = await response.json();
+            console.log("💰 Données Proforma chargées :", donneesProforma);
+        }
+    } catch (erreur) {
+        console.error("Erreur de chargement du JSON proforma :", erreur);
+    }
+}
+chargerDonneesProforma();
 
 //===================================
 // Basculer en mode Proforma
