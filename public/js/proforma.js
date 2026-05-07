@@ -12,9 +12,11 @@ window.toggleModeProforma = function () {
   if (modeProforma) {
     btn.style.background = "#27ae60";
     btn.innertext = "🛒 Mode Proforma Actif";
+    zoneJaune.style.display = "flex"; // Affiche la zone jaune
   } else {
     btn.style.backgroundColor = "#e74c3c";
     btn.innerText = "📄 Créer une Proforma";
+    zoneJaune.style.display = "none"; // Cache la zone jaune
   }
 
   const titreActuel = document.querySelector('.mot-cle');
@@ -28,13 +30,19 @@ window.toggleModeProforma = function () {
 // Manipuler le panier
 //===================================
 
-window.ajouterAuPanier = function(id) {
-  panierProforma[id] = (panierProforma[id] || 0) + 1;
-  document.getElementById(`qte-${id}`).value = panierProforma[id];
+window.ajouterAuPanier = function(idBiere) {
+  panierProforma[idBiere] = (panierProforma[idBiere] || 0) + 1;
+  document.getElementById(`qte-${idBiere}`).value = panierProforma[idBiere];
   console.log("Panier actuel :", panierProforma);
 };
 
-window.updateQteManuelle = function(id, valeur) {
-  panierProforma[id] = parseInt(valeur) || 0;
-  console.log("Quantité modifiée :", panierProforma);
+window.updateQteManuelle = function(idBiere, valeur) {
+  const qte = parseInt(valeur);
+    if (isNaN(qte) || qte < 0) {
+        panierProforma[idBiere] = 0;
+        document.getElementById(`qte-${idBiere}`).value = 0;
+    } else {
+        panierProforma[idBiere] = qte;
+    }
+    console.log("Panier mis à jour :", panierProforma);
 };
