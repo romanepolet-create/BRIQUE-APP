@@ -43,13 +43,15 @@ const routesLexique = require('./routes/lexique');
 const routesDistrib = require('./routes/distrib');
 const routesGeo = require('./routes/geo');
 const routesRegion = require('./routes/region');
-
+const routesProforma = require('./routes/proforma');
 
 app.use('/api/bieres', routesBieres);
 app.use('/api/lexique', routesLexique);
 app.use('/api/distrib', routesDistrib);
 app.use('/api/geo', routesGeo);
 app.use('/api/region', routesRegion);
+app.use('/api/proforma', routesProforma);
+
 
 // ==========================================
 // 4. LANCEMENT DU SERVEUR
