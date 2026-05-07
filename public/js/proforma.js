@@ -1,8 +1,12 @@
-let modeproforma = false;
-let panierProforma = {};
-let donneesProforma = []; // 👈 Va stocker ton nouveau JSON
+// ==========================================
+// MOTEUR PROFORMA (FRONT-END)
+// ==========================================
 
+// 🚨 CES DEUX LIGNES AVAIENT DISPARU : ELLES SONT INDISPENSABLES 🚨
+let modeProforma = false;
+let panierProforma = {}; 
 
+// 1. On injecte l'interface (Bouton rouge + Panneau)
 document.addEventListener("DOMContentLoaded", () => {
     const uiHTML = `
         <button id="btn-toggle-proforma" onclick="toggleModeProforma()" style="position: fixed; bottom: 20px; left: 20px; background-color: #e74c3c; color: white; border: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;">
@@ -22,11 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML('beforeend', uiHTML);
 });
 
-
-//===================================
-// Basculer en mode Proforma
-//===================================
-
+// 2. Allumer/éteindre le mode
 window.toggleModeProforma = function() {
     modeProforma = !modeProforma;
     const btn = document.getElementById('btn-toggle-proforma');
@@ -36,43 +36,35 @@ window.toggleModeProforma = function() {
     if (modeProforma) {
         btn.style.backgroundColor = "#27ae60";
         btn.innerText = "❌ Quitter le mode Proforma";
-        panneau.style.display = "block"; // Affiche le panneau
-        boutonsPlus.forEach(b => b.style.display = "inline-block"); // Affiche les '+' bleus
+        panneau.style.display = "block";
+        boutonsPlus.forEach(b => b.style.display = "inline-block");
     } else {
         btn.style.backgroundColor = "#e74c3c";
         btn.innerText = "📄 Créer une Proforma";
-        panneau.style.display = "none"; // Cache le panneau
-        boutonsPlus.forEach(b => b.style.display = "none"); // Cache les '+' bleus
+        panneau.style.display = "none";
+        boutonsPlus.forEach(b => b.style.display = "none");
     }
 };
 
-//===================================
-// Manipuler le panier
-//===================================
-
+// 3. Ajouter 1 au panier (Bouton '+')
 window.ajouterAuPanier = function(idBiere) {
     panierProforma[idBiere] = (panierProforma[idBiere] || 0) + 1;
     afficherPanier();
 };
 
-// 4. Quand on tape manuellement un nombre (ex: 60)
+// 4. Saisie manuelle de la quantité
 window.changerQtePanier = function(idBiere, qte) {
     const val = parseInt(qte);
     if (isNaN(val) || val <= 0) {
-        delete panierProforma[idBiere]; // On supprime si 0
+        delete panierProforma[idBiere];
     } else {
         panierProforma[idBiere] = val;
     }
     afficherPanier();
 };
 
-
-//===================================
-// Afficher le panier
-//===================================
-
-
-function afficherPanier() {
+// 5. Mettre à jour l'affichage du panneau
+window.afficherPanier = function() {
     const conteneur = document.getElementById('liste-panier-proforma');
     
     if (Object.keys(panierProforma).length === 0) {
@@ -90,33 +82,27 @@ function afficherPanier() {
         `;
     }
     conteneur.innerHTML = html;
-}
+};
 
-// ==========================================
-// GÉNÉRATION DU FICHIER EXCEL PROFORMA
-// ==========================================
-
+// 6. GÉNÉRATION EXCEL (Le bouton OK)
 window.validerProforma = async function() {
     if (Object.keys(panierProforma).length === 0) {
         alert("La proforma est vide !");
         return;
     }
 
-    // On change le texte du bouton pour faire patienter
     const btn = document.querySelector('#panneau-panier-proforma button');
-    btn.innerText = "⏳ Génération de l'Excel...";
+    btn.innerText = "⏳ Génération...";
 
     try {
-        // 1. On va chercher les deux bases de données (Bières + Finance Proforma)
         const [resBieres, resProforma] = await Promise.all([
             fetch('/api/bieres'),
-            fetch('/api/proforma') // Modifie cette route si ton proforma.json est ailleurs
+            fetch('/api/proforma') 
         ]);
 
         const bieresDB = await resBieres.json();
         const proformaDB = await resProforma.json();
 
-        // 2. On prépare le tableau de données pour l'Excel (comme tu l'as fait dans gms.js)
         const donnees = [];
         
         // --- EN-TÊTE DU FICHIER ---
@@ -128,7 +114,6 @@ window.validerProforma = async function() {
         donnees.push([]);
         
         const dateAujourdhui = new Date().toLocaleDateString('fr-FR');
-        // Date dans 1 mois
         const d = new Date(); d.setMonth(d.getMonth() + 1);
         const dateEcheance = d.toLocaleDateString('fr-FR');
 
@@ -140,7 +125,6 @@ window.validerProforma = async function() {
         donnees.push(["Code magasin", "", "", "", "", "N° de TVA", ""]);
         donnees.push([]);
 
-        // --- EN-TÊTE DU TABLEAU DES ARTICLES ---
         donnees.push([
             "N°", "Désignation", "Qté", "Unité", "Qté UV", 
             "P.U. brut HT", "Montant brut HT", "TVA", "Degré alcool", 
@@ -148,39 +132,31 @@ window.validerProforma = async function() {
             "P.U. net HTVA", "Montant net HTVA"
         ]);
 
-        // --- VARIABLES POUR LES TOTAUX ---
         let totalHT = 0;
         let totalAccises = 0;
         let totalEco = 0;
         let indexLigne = 1;
 
-        // --- BOUCLE SUR LE PANIER ---
         for (const [idBiere, qteCartons] of Object.entries(panierProforma)) {
-            // On cherche la bière dans la DB
             const biere = bieresDB.find(b => b.id === idBiere);
-            // On cherche la data finance correspondante (on suppose que l'id est le même, ou la désignation)
             const finance = proformaDB.find(p => p.id === idBiere || p.designation === idBiere);
 
             if (biere && finance) {
-                const qteUV = qteCartons * biere.nombre; // ex: 2 cartons * 24 = 48 UV
+                const qteUV = qteCartons * biere.nombre; 
                 
-                // Déduction du volume unitaire (0.33, 0.44 ou 0.75)
                 let volUnit = 0.33;
                 if (idBiere.includes("75cl")) volUnit = 0.75;
                 if (idBiere.includes("44cl")) volUnit = 0.44;
 
-                // Calculs financiers
                 const montantBrutHT = qteUV * finance.PUbrutHT;
-                const montantAccises = qteUV * finance.accise; // ou qteUV * volUnit * taux selon ta vraie formule
+                const montantAccises = qteUV * finance.accise; 
                 const montantEco = qteUV * finance.eco;
                 const montantNetHTVA = qteUV * finance.PUnetHTVA;
 
-                // Ajout aux totaux
                 totalHT += montantNetHTVA;
                 totalAccises += montantAccises;
                 totalEco += montantEco;
 
-                // Ajout de la ligne au tableau Excel
                 donnees.push([
                     indexLigne,
                     finance.designation,
@@ -189,7 +165,7 @@ window.validerProforma = async function() {
                     qteUV,
                     finance.PUbrutHT,
                     montantBrutHT.toFixed(2),
-                    "01", // Code TVA 20%
+                    "01", 
                     biere.degre + "°",
                     volUnit,
                     montantAccises.toFixed(2),
@@ -201,7 +177,6 @@ window.validerProforma = async function() {
             }
         }
 
-        // --- PIED DE PAGE (TOTAUX) ---
         donnees.push([]);
         donnees.push(["TOTAL", "", "", "", "", "", "", "", "", "", totalAccises.toFixed(2), totalEco.toFixed(2), "", totalHT.toFixed(2)]);
         donnees.push([]);
@@ -220,45 +195,13 @@ window.validerProforma = async function() {
         donnees.push(["", "", "", "", "", "", "", "", "", "", "", "BIC", "..........................................."]);
         donnees.push([totalHT.toFixed(2), "", "", montantTVA.toFixed(2), "", "", "", "", "Date d'échéance", "", dateEcheance]);
 
-        // Conditions générales
         donnees.push([]);
         donnees.push(["Toute commande passée à notre société est soumise à nos conditions générales de vente."]);
         donnees.push(["Réserve de propriété : en application des dispositions de la loi n°80.335 du 12 mai 1980..."]);
 
-        // --- CRÉATION ET TÉLÉCHARGEMENT ---
         const feuille = XLSX.utils.aoa_to_sheet(donnees);
         
-        // Ajustement de la largeur des colonnes
         const colWidths = [
-            { wch: 5 },  // N°
-            { wch: 35 }, // Désignation
-            { wch: 8 },  // Qté
-            { wch: 10 }, // Unité
-            { wch: 8 },  // Qté UV
-            { wch: 12 }, // P.U brut
-            { wch: 15 }, // Montant Brut
-            { wch: 5 },  // TVA
-            { wch: 10 }, // Degré
-            { wch: 10 }, // Vol
-            { wch: 15 }, // Accises
-            { wch: 15 }, // Ecotaxe
-            { wch: 12 }, // P.U net
-            { wch: 15 }  // Montant net
-        ];
-        feuille['!cols'] = colWidths;
-
-        const classeur = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(classeur, feuille, "Proforma");
-        
-        // On génère le fichier !
-        XLSX.writeFile(classeur, `Proforma_BriqueHouse_${Date.now()}.xlsx`);
-
-        // On remet le bouton à la normale
-        btn.innerText = "✅ OK (Générer Excel)";
-
-    } catch (erreur) {
-        console.error("Erreur lors de la génération de l'Excel :", erreur);
-        alert("Oups, impossible de générer le fichier. Vérifiez que la base de données est accessible.");
-        btn.innerText = "✅ OK (Générer Excel)";
-    }
-};
+            { wch: 5 }, { wch: 35 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, 
+            { wch: 12 }, { wch: 15 }, { wch: 5 }, { wch: 10 }, { wch: 10 }, 
+            { wch: 15 },
