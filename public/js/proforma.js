@@ -84,7 +84,11 @@ window.afficherPanier = function() {
     conteneur.innerHTML = html;
 };
 
-// 6. GÉNÉRATION EXCEL (Le bouton OK)
+
+//=========================================
+// GÉNÉRATION EXCEL (Le bouton OK)
+//=========================================
+
 window.validerProforma = async function() {
     if (Object.keys(panierProforma).length === 0) {
         alert("La proforma est vide !");
@@ -103,105 +107,392 @@ window.validerProforma = async function() {
         const bieresDB = await resBieres.json();
         const proformaDB = await resProforma.json();
 
-        const donnees = [];
-        
-        // --- EN-TÊTE DU FICHIER ---
-        donnees.push(["Commande Proforma n°", "", "", "", "", "", "", "", "BRIQUE HOUSE BREWERY"]);
-        donnees.push([]);
-        donnees.push(["ADRESSE DE LIVRAISON", "", "", "", "", "", "", "ADRESSE DE FACTURATION"]);
-        donnees.push([]);
-        donnees.push(["ADRESSE DU SIEGE SOCIAL"]);
-        donnees.push([]);
-        
+       
+        //STYLES
+
+        const bordureFine = {
+          top: {style:"thin"}, bottom: {style: "thin"},
+          left: {style: "thin"}, right: {style: "thin"}
+        };
+
+        const sEnteteBleu = {
+          font: {
+            name: "Lexend Deca", 
+            sz: 10, 
+            bold: true, 
+            color: {rgb: "FFFFFF"}
+          }, fill: {
+            fgColor: { rgb: "002AB6" }
+          }, alignment: {
+              horizontal: "center",
+              vertical: "center",
+              wrapText: true 
+          }, border: bordureFine
+        };
+
+        const sTitreSection = {
+          font : {
+            name: "Lexend Deca",
+            sz: 11,
+            bold: true,
+            color: { rgb: "002AB6" }
+          }, fill: { fgColor: { rgb: "F3B0CF"}
+          }, alignment: {vertical: "center"
+          }, border: bordureFine
+        };
+
+        const sNormal = { 
+          font: {
+            name: "Lexend Deca",
+            sz: 10
+          }, border: bordureFine
+        };
+
+        const sParagraphe = {
+          font: {
+            name: "Lexend Deca",
+            sz: 7
+          }, alignment: {horizontal: "left"}
+        };
+
+        const sReste = {
+          font: {
+            name: "Lexend Deca",
+            sz: 10
+          }, alignment: {horizontal: "center"}
+        };
+
+
+        const sGras = {
+          font: {
+            name: "Lexend Deca",
+            sz: 9,
+            bold: true
+          }, border: bordureFine
+        };
+
+        const sChiffre = {
+          font: {
+            name: "Lexend Deca",
+            sz: 9
+          }, alignment: {horizontal: "right"}
+        };
+
+        const sAdresse = {
+          font: {
+            name: "Lexend Deca",
+            sz: 10},
+          alignment: {
+            horizontal: "right",
+            vertical: "bottom"}
+        };
+
+
+//=================================
+//PREPARATION GRILLE
+//=================================
+      const donnees = Array(100).fill(null).map(() => Array(15).fill({v: "", s: {} }));
+      const setCell = (r, c, v, s) => { donnees[r][c] = {v: v, s: s || {} }; };
+      const merges = [];
+
+
+      //EN TETE
+      setCell(0, 1,'Commande Proforma n°',{font: {bold: true, sz:10}});
+      setCell(0, 2, '...................................................', {font: {sz: 10}});
+      setCell(0, 10,'BRIQUE HOUSE BREWERY',{font:{bold: true, sz:14}});
+      
+      //ADRESSES
+      setCell(5, 0, 'ADRESSE DE LIVRAISON', sAdresse);
+      setCell(9, 0, 'ADRESSE DU SIEGE SOCIAL', sAdresse);
+      setCell(5, 7, 'ADRESSE DE FACTURATION', sAdresse);
+
+      //INFOS DOC
+              
         const dateAujourdhui = new Date().toLocaleDateString('fr-FR');
         const d = new Date(); d.setMonth(d.getMonth() + 1);
         const dateEcheance = d.toLocaleDateString('fr-FR');
+        const libre = "..........................................................."
+      //Question
+      setCell(14, 0, "N° de document", sNormal);
+      setCell(15, 0, "Date", sNormal);
+      setCell(16, 0, "N° de client", sNormal);
+      setCell(17, 0, "Mode de paiement", sNormal);
+      setCell(18, 0, "Date d'échéance", sNormal);
+      setCell(19, 0, "Code Magasin", sNormal);
+      //---
+      setCell(14, 7, "Commande n°", sNormal)
+      setCell(15, 7, "Votre Interlocuteur", sNormal);
+      setCell(16, 7, "", sNormal);
+      setCell(17, 7, "Votre référence", sNormal);
+      setCell(18, 7, "Mode de livraison", sNormal);
+      setCell(19, 7, "N° de TVA", sNormal);
+      //Réponse
+      setCell(14, 2,  sNormal);
+      setCell(15, 2, dateAujourdhui, sNormal);
+      setCell(16, 2, libre, sNormal);
+      setCell(17, 2,libre, sNormal);
+      setCell(18, 2, dateEcheance, sNormal);
+      setCell(19, 2, libre, sNormal);
+      //---
+      setCell(14, 12, libre, sNormal);
+      setCell(15, 12, libre, sNormal);
+      setCell(16, 12, "", sNormal);
+      setCell(17, 12, libre, sNormal);
+      setCell(18, 12, libre, sNormal);
+      setCell(19, 12, libre, sNormal);
 
-        donnees.push(["N° de document", "", "", "", "", "Commande n°", ""]);
-        donnees.push(["Date", dateAujourdhui, "", "", "", "Votre interlocuteur", ""]);
-        donnees.push(["N° de client", "", "", "", "", "", ""]);
-        donnees.push(["Mode de paiement", "", "", "", "", "Votre référence", ""]);
-        donnees.push(["Date d'échéance", dateEcheance, "", "", "", "Mode de livraison", ""]);
-        donnees.push(["Code magasin", "", "", "", "", "N° de TVA", ""]);
-        donnees.push([]);
-
-        donnees.push([
-            "N°", "Désignation", "Qté", "Unité", "Qté UV", 
-            "P.U. brut HT", "Montant brut HT", "TVA", "Degré alcool", 
-            "Vol. unit", "Montant Accises", "Montant Ecotaxe", 
-            "P.U. net HTVA", "Montant net HTVA"
-        ]);
+//TABLEAU DE PRODUITS
+      const colonnes = [
+        "N°", 
+        "Désignation", 
+        "Qté", 
+        "Unité", 
+        "Qté UV",
+        "P.U. brut HT", 
+        "Montant brut HT", 
+        "TVA", 
+        "Degré",
+        "Vol. unité", 
+        "Accises", 
+        "Ecotaxe", 
+        "P.U. net", 
+        "Total HT"
+      ]
+      colonnes.forEach((txt, i) => setCell(21, i, txt, sEnteteBleu));
 
         let totalHT = 0;
         let totalAccises = 0;
         let totalEco = 0;
-        let indexLigne = 1;
+        let ligneIdx = 22;
 
-        for (const [idBiere, qteCartons] of Object.entries(panierProforma)) {
-            const biere = bieresDB.find(b => b.id === idBiere);
-            const finance = proformaDB.find(p => p.id === idBiere || p.designation === idBiere);
+        for (const [id, qte] of Object.entries(panierProforma)) {
+            const biere = bieresDB.find(b => b.id === id);
+            const finance = proformaDB.find(p => p.id === id || p.designation === id);
 
             if (biere && finance) {
-                const qteUV = qteCartons * biere.nombre; 
-                
-                let volUnit = 0.33;
-                if (idBiere.includes("75cl")) volUnit = 0.75;
-                if (idBiere.includes("44cl")) volUnit = 0.44;
+                const qteUV = qte * biere.nombre;
+                const vol = id.includes("75cl")?0.75 : (id.includes("44cl") ? 0.44 : 0.33);
+                const mntBrut = qteUV * finance.PUbrutHT;
+                const mntAccise = qteUV * finance.accise;
+                const mntEco = qteUV * finance.eco;
+                const mntNet = qteUV * finance.PUnetHTVA;
+           
+                totalHT += mntNet ;
+                totalAccises += mntAccise;
+                totalEco += mntEco;
 
-                const montantBrutHT = qteUV * finance.PUbrutHT;
-                const montantAccises = qteUV * finance.accise; 
-                const montantEco = qteUV * finance.eco;
-                const montantNetHTVA = qteUV * finance.PUnetHTVA;
-
-                totalHT += montantNetHTVA;
-                totalAccises += montantAccises;
-                totalEco += montantEco;
-
-                donnees.push([
-                    indexLigne,
-                    finance.designation,
-                    qteCartons,
-                    "cartons",
-                    qteUV,
-                    finance.PUbrutHT,
-                    montantBrutHT.toFixed(2),
-                    "01", 
-                    biere.degre + "°",
-                    volUnit,
-                    montantAccises.toFixed(2),
-                    montantEco.toFixed(2),
-                    finance.PUnetHTVA,
-                    montantNetHTVA.toFixed(2)
-                ]);
-                indexLigne++;
+                const ligne = [
+                  ligneIdx - 22,
+                  finance.designation,
+                  qte, 
+                  "cartons", 
+                  qteUV,
+                  finance.PUbrutHT, 
+                  mntBrut.toFixed(2), 
+                  "01", 
+                  biere.degre + "°",
+                  vol, 
+                  mntAccise.toFixed(2), 
+                  mntEco.toFixed(2), 
+                  finance.PUnetHTVA, 
+                  mntNet.toFixed(2)
+                ];
+                ligne.forEach((val, i) => setCell(ligneIdx, i, val, sNormal));
+                merges.push({s: {r: ligneIdx, c: 1}, e: {r: ligneIdx, c: 2}});
+                ligneIdx++;
             }
         }
 
-        donnees.push([]);
-        donnees.push(["TOTAL", "", "", "", "", "", "", "", "", "", totalAccises.toFixed(2), totalEco.toFixed(2), "", totalHT.toFixed(2)]);
-        donnees.push([]);
-        
-        const montantTVA = totalHT * 0.20;
-        const totalTTC = totalHT + montantTVA;
+        const rT = ligneIdx + 2;
+        setCell(rT, 1, "TOTAL", sGras);
+        setCell(rT, 11, totalAccises.toFixed(2), sChiffre);
+        setCell(rT, 12, totalEco.toFixed(2), sChiffre);
+        setCell(rT, 14, totalHT.toFixed(2), sChiffre);
 
-        donnees.push(["TVA", "", "", "", "", "", "Autres Taxes"]);
-        donnees.push(["BASE", "Taux", "", "Montant", "", "", "Taxes Accises", "", totalAccises.toFixed(2), "", "", "Total HT EUR", "", totalHT.toFixed(2)]);
-        donnees.push([totalHT.toFixed(2), "01", "20%", montantTVA.toFixed(2), "", "", "Eco-Taxes", "", totalEco.toFixed(2), "", "", "TVA", "", montantTVA.toFixed(2)]);
-        donnees.push(["", "", "", "", "", "", "", "", "", "", "", "Total TTC EUR", "", totalTTC.toFixed(2)]);
+//===========
+//TABLEAU TVA
+//===========
         
-        donnees.push([]);
-        donnees.push(["", "", "", "", "", "", "", "", "", "", "", "PAIEMENT"]);
-        donnees.push(["", "", "", "", "", "", "", "", "", "", "", "IBAN", "..........................................."]);
-        donnees.push(["", "", "", "", "", "", "", "", "", "", "", "BIC", "..........................................."]);
-        donnees.push([totalHT.toFixed(2), "", "", montantTVA.toFixed(2), "", "", "", "", "Date d'échéance", "", dateEcheance]);
+        //TVA
+        setCell(rT+1, 0, "TVA", sEnteteBleu)
+        //Base
+        setCell(rT+2, 0,"BASE", sGras)
+        //=029
+        setCell(rT+3, 0, totalHT, sChiffre)
+        //=SOMME soit =A33
+        setCell(rT+5, 0, totalHT, sChiffre)
+        //=SOMME soit =D33
+        setCell(rT+5, 3, totalHT * 0.20, sChiffre)
+        //Taux
+        setCell(rT+2, 1, "Taux", sNormal)
+        //01
+        setCell(rT+3, 1, "01", sNormal)
+        //20(%)
+        setCell(rT+3, 2, 20, sNormal)
+        //Montant
+        setCell(rT+2, 3, "Montant", sNormal)
+        //=A33*C33
+        setCell(rT+3, 3, totalHT * 0.20, sChiffre)
+       
+//============
+//TABLEAU AUTRES TAXES
+//============
 
-        donnees.push([]);
-        donnees.push(["Toute commande passée à notre société est soumise à nos conditions générales de vente."]);
-        donnees.push(["Réserve de propriété : en application des dispositions de la loi n°80.335 du 12 mai 1980..."]);
 
-        const feuille = XLSX.utils.aoa_to_sheet(donnees);
+        //Autres Taxes
+        setCell(rT+1, 6, "Autres Taxes", sEnteteBleu);
+        //Taxes Accises
+        setCell(rT+2, 6, "Taxes Accises", sNormal);
+        //=L29
+        setCell(rT+2, 8, totalAccises, sChiffre);
+        //Eco-Taxes
+        setCell(rT+3, 6, "Eco-Taxes", sNormal);
+        //=M29
+        setCell(rT+3, 8, totalEco, sChiffre);
+
+//================
+//TABLEAU RESUME
+//================
+
+        //Total HT EUR
+        setCell(rT+2, 11, "Total HT EUR", sNormal);
+        //TVA
+        setCell(rT+3, 11, "TVA", sNormal)
+        //Total TTC EUR
+        setCell(rT+4, 11, "Total TTC EUR");
+        //=O29
+        setCell(rT+2, 13, totalHT, sChiffre);
+        //=D39
+        setCell(rT+3, 13, totalHT*0.20, sChiffre);
+        //=SOMME
+        setCell(rT+4, 13, totalHT*1.20, sChiffre);
+
+
+//==============
+//TABLEAU PAIEMENT
+//==============
+        //Paiement
+        setCell(rT+6, 11, "PAIEMENT", sEnteteBleu);
+        //rep IBAN
+        setCell(rT+7, 12, libre, sNormal);
+        //rep BIC
+        setCell(rT+8, 12, libre, sNormal)
+        //Date d'échéance
+        setCell(rT+9, 11, "Date d'échéance", sNormal);
+        //=C20
+        setCell(rT+9, 13, dateEcheance, sNormal);
+        //IBAN
+        setCell(rT+7, 11, "IBAN", sNormal);
+        //BIC
+        setCell(rT+8, 11, "BIC", sNormal);
+
+
+//===============
+//LE RESTE
+//===============
+        //Paragraphe
+        setCell(rT+11, 0, 
+        `Toute commande passée à notre société est soumise à nos conditions générales de vente.
+        Réserve de propriété : en application des dispositions de la loi n°80.335 du 12 mai 1980, les biens vendus demeurent la propriété du vendeur jusqu'à complet paiement
+        Aucun escompte ne sera accordé en cas de paiement anticipé.
+        Une indemnité pour frais de recouvrement de 40 EUR et des intérêts de retard (3 fois le taux d'intérêt légal) sont décomptés dès le lendemain de l'échéance de la facture.`, sParagraphe);                     
+
+        //BHB - 91...
+        setCell(rT+15, 0, "BRIQUE HOUSE BREWERY -  91 Rue de la Croix Waresquel - 59273 FRETIN - tel : 06 30 90 97 05", sReste);
+        //SIRET...
+        setCell(rT+16, 0, "SIRET : 85055928700014 - N° TVA : FR 44 850 559 287 - ACTIVITE (NAF / APE) : 1105Z - Fabrication de bière", sReste);
+
+      merges.push(       
+        {s: {r: 0, c: 0}, e: {r: 1, c: 1}},
+        {s: {r: 0, c: 2}, e: {r: 1, c: 4}},
+        {s: {r: 0, c: 10}, e: {r: 1, c: 13}},
+        {s: {r: 5, c: 0}, e: {r: 8, c: 5}},
+        {s: {r: 9, c: 0}, e: {r: 12, c: 5}},
+        {s: {r: 5, c: 7}, e: {r: 12, c: 14}},
+        //
+        {s: {r: 14, c: 0}, e: {r: 14, c: 1}},
+        {s: {r: 14, c: 2}, e: {r: 14, c: 5}},
+        {s: {r: 14, c: 7}, e: {r: 14, c: 11}},
+        {s: {r: 14, c: 12}, e: {r: 14, c: 14}},
+        {s: {r: 15, c: 0}, e: {r: 15, c: 1}},
+        {s: {r: 15, c: 2}, e: {r: 15, c: 5}},
+        {s: {r: 15, c: 7}, e: {r: 15, c: 11}},
+        {s: {r: 15, c: 12}, e: {r: 15, c: 14}},
+        {s: {r: 16, c: 0}, e: {r: 16, c: 1}},
+        {s: {r: 16, c: 2}, e: {r: 16, c: 5}},
+        {s: {r: 16, c: 7}, e: {r: 16, c: 11}},
+        {s: {r: 16, c: 12}, e: {r: 16, c: 14}},
+        {s: {r: 17, c: 0}, e: {r: 17, c: 1}},
+        {s: {r: 17, c: 2}, e: {r: 17, c: 5}},
+        {s: {r: 17, c: 7}, e: {r: 17, c: 11}},
+        {s: {r: 17, c: 12}, e: {r: 17, c: 14}},
+        {s: {r: 18, c: 0}, e: {r: 18, c: 1}},
+        {s: {r: 18, c: 2}, e: {r: 18, c: 5}},
+        {s: {r: 18, c: 7}, e: {r: 18, c: 11}},
+        {s: {r: 18, c: 12}, e: {r: 18, c: 14}},
+        {s: {r: 19, c: 0}, e: {r: 19, c: 1}},
+        {s: {r: 19, c: 2}, e: {r: 19, c: 5}},
+        {s: {r: 19, c: 7}, e: {r: 19, c: 11}},
+        {s: {r: 19, c: 12}, e: {r: 19, c: 14}},
+        //
+        {s: {r: rT+1, c: 0}, e: {r: rT+1, c: 4}},
+        {s: {r: rT+5, c:3}, e: {r: rT+4, c: 5}},
+        {s: {r: rT+2, c: 1}, e: {r: rT+2, c: 2}},
+        {s: {r: rT+2, c: 3}, e: {r: rT+2, c: 4}},
+        {s: {r: rT+3, c: 3}, e: {r: rT+3, c: 4}},
+        {s: {r: rT+1, c: 6}, e: {r: rT+1, c: 9}},
+        {s: {r: rT+2, c: 6}, e: {r: rT+2, c: 7}},
+        {s: {r: rT+2, c: 8}, e: {r: rT+2, c: 9}},
+        {s: {r: rT+3, c: 6}, e: {r: rT+3, c: 7}},
+        {s: {r: rT+3, c: 8}, e: {r: rT+3, c: 9}},
+        {s: {r: rT+2, c: 11}, e: {r: rT+2, c: 12}},
+        {s: {r: rT+3, c: 11}, e: {r: rT+3, c: 12}},
+        {s: {r: rT+4, c: 11}, e: {r: rT+4, c: 12}},
+        {s: {r: rT+2, c: 13}, e: {r: rT+2, c: 14}},
+        {s: {r: rT+3, c: 13}, e: {r: rT+3, c: 14}},
+        {s: {r: rT+4, c: 13}, e: {r: rT+4, c: 14}},
+        {s: {r: rT+6, c: 11}, e: {r: rT+6, c: 14}},
+        {s: {r: rT+7, c: 12}, e: {r: rT+7, c: 14}},
+        {s: {r: rT+8, c: 12}, e: {r: rT+8, c:14}},
+        {s: {r: rT+9, c: 11}, e: {r: rT+9, c: 12}},
+        {s: {r: rT+9, c: 13}, e: {r: rT+9, c: 14}},
+        {s: {r: rT+11, c: 0}, e: {r: rT+13, c: 14}},
+        {s: {r: rT+15, c: 0}, e: {r: rT+15, c: 14}},
+        {s: {r: rT+16, c: 0}, e: {r: rT+16, c: 14}}
+      );
+
+        const feuille = XLSX.utils.aoa_to_sheet(donnees, { origin: "A1" });
+
+        feuille['!merges'] = merges;
+
+        feuille['!cols'] = [
+          { wpx: 108 }, // colonne A
+          { wpx: 100 }, // colonne B
+          { wpx: 100 }, // colonne C
+          { wpx: 50  }, // colonne D
+          { wpx: 64  }, // colonne E
+          { wpx: 50  }, // colonne F
+          { wpx: 100 }, // colonne G
+          { wpx: 63  }, // colonne H
+          { wpx: 50  }, // colonne I
+          { wpx: 50  }, // colonne J
+          { wpx: 50  }, // colonne K
+          { wpx: 60  }, // colonne L
+          { wpx: 60  }, // colonne M
+          { wpx: 92  }, // colonne N
+          { wpx: 77  }, // colonne O
+        ]
+
+        const classeur = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(classeur, feuille, "Proforma");
         
-        const colWidths = [
-            { wch: 5 }, { wch: 35 }, { wch: 8 }, { wch: 10 }, { wch: 8 }, 
-            { wch: 12 }, { wch: 15 }, { wch: 5 }, { wch: 10 }, { wch: 10 }, 
-            { wch: 15 },
+        XLSX.writeFile(classeur, `Proforma_BriqueHouse_${dateAujourdhui.replace(/\//g,'-')}.xlsx`);
+
+        btn.innerText = "✅ OK (Générer Excel)";
+
+    } catch (e) {
+        console.error("Erreur Excel :", e);
+        alert("Erreur lors de la génération. Vérifiez la console.");
+        btn.innerText = "✅ OK (Générer Excel)";
+    }
+};
