@@ -187,32 +187,41 @@ window.validerProforma = async function() {
             vertical: "bottom"}
         };
 
+        const donnees = Array(150).fill(null).map(() => Array(15).fill(null).map(() => ({v: "", s: {}})));
+        const merges = [];
 
-        function setOuterBorder(ws, r1, c1, r2, c2, style = 'medium') {
-          for (let r = r1; r <= r2; r++) {
-            for (let c = c1; c <= c2; c++) {
-              if (!donnees[r][c]) donnees[r][c] = { v: "", s: {} };
-              if (!donnees[r][c].s) donnees[r][c].s = {};
-
-              donnees[r][c].s.border = {
-                top:    r === r1 ? { style } : cell.border?.top,
-                bottom: r === r2 ? { style } : cell.border?.bottom,
-                left:   c === c1 ? { style } : cell.border?.left,
-                right:  c === c2 ? { style } : cell.border?.right
-              };
-            }
+        const setCell = (r, c, v, s) => { 
+          if (!donnees[r] || !donnees[r][c]) return;
+          if (typeof v === "string" && !isNaN(v) && v !== "") {
+              donnees[r][c].v = Number(v);
+          } else {
+            donnees[r][c].v = v;
           }
-        }
+          if (s) Object.assign(donnees[r][c].s, s);
+        };
 
+        
+        function setOuterBorder(grille, r1, c1, r2, c2, style = 'medium') {
+         for (let r = r1; r <= r2; r++) {
+           for (let c = c1; c <= c2; c++) {
+             if (!grille[r][c]) grille[r][c] = { v: "", s: {} };
+             if (!grille[r][c].s) grille[r][c].s = {};
+             if (!grille[r][c].s.border) grille[r][c].s.border = {};
+
+             const bord = grille[r][c].s.border;
+             grille[r][c].s.border = {
+               top:    r === r1 ? { style } : bord.top,
+               bottom: r === r2 ? { style } : bord.bottom,
+               left:   c === c1 ? { style } : bord.left,
+               right:  c === c2 ? { style } : bord.right
+             };
+           }
+         }
+       }
 
 //=================================
 //PREPARATION GRILLE
 //=================================
-      const donnees = Array(100).fill(null).map(() => Array(15).fill({v: "", s: {} }));
-      const setCell = (r, c, v, s) => { donnees[r][c] = {v: v, s: s || {} }; };
-      const merges = [];
-
-
       //EN TETE
       setCell(0, 0,'Commande Proforma n°',{font: {bold: true, sz:10, color: "black"}});
       setCell(0, 2, '...................................................', {font: {sz: 10}});
@@ -262,6 +271,7 @@ window.validerProforma = async function() {
       const colonnes = [
         "N°", 
         "Désignation", 
+        "",
         "Qté", 
         "Unité", 
         "Qté UV",
@@ -293,9 +303,7 @@ window.validerProforma = async function() {
                 const mntAccise = qteUV * finance.accise;
                 const mntEco = qteUV * finance.eco;
                 const mntNet = qteUV * finance.PUnetHTVA
-                const unVvingt = totalHT * 1.20
-                const vingtPcent = totalHT * 0.20
-
+                
 
            
                 totalHT += mntNet ;
@@ -323,6 +331,10 @@ window.validerProforma = async function() {
                 ligneIdx++;
             }
         }
+
+        const unVvingt = totalHT * 1.20
+        const vingtPcent = totalHT * 0.20
+
 
         const rTT = ligneIdx + 1;
         setCell(rTT, 1, "TOTAL", sGras);
@@ -438,6 +450,28 @@ window.validerProforma = async function() {
       setOuterBorder(donnees, rT + 2, 6, rT + 5, 9);
 
       setOuterBorder(donnees, rT + 6, 11, rT + 9, 14);
+      //
+      setOuterBorder(donnees, rT+1, 0, rT+1, 0); 
+      setOuterBorder(donnees, rT+2, 0, rT+2, 0)
+      setOuterBorder(donnees, rT+5, 0, rT+5, 0);
+      setOuterBorder(donnees, rT+5, 3, rT+5, 3);
+      setOuterBorder(donnees, rT+2, 1, rT+2, 1);
+      setOuterBorder(donnees, rT+2, 3, rT+2, 3);
+      setOuterBorder(donnees, rT+1, 6, rT+1, 6);
+      setOuterBorder(donnees, rT+2, 11, rT+2, 11); 
+      setOuterBorder(donnees, rT+3, 11, rT+3, 11)
+      setOuterBorder(donnees, rT+4, 11, rT+4, 11)
+      setOuterBorder(donnees, rT+2, 13, rT+2, 13)
+      setOuterBorder(donnees, rT+3, 13, rT+3, 13)
+      setOuterBorder(donnees, rT+4, 13, rT+4, 13) 
+      setOuterBorder(donnees, rT+6, 11, rT+6, 11)
+      setOuterBorder(donnees, rT+7, 12, rT+7, 12)
+      setOuterBorder(donnees, rT+8, 12, rT+8, 12)
+      setOuterBorder(donnees, rT+9, 11, rT+9, 11)
+      setOuterBorder(donnees, rT+9, 13, rT+9, 13)
+      setOuterBorder(donnees, rT+7, 11, rT+7, 11)
+      setOuterBorder(donnees, rT+8, 11, rT+8, 11)
+
 
       merges.push(       
         {s: {r: 0, c: 0}, e: {r: 1, c: 1}},
@@ -473,7 +507,7 @@ window.validerProforma = async function() {
         {s: {r: 19, c: 12}, e: {r: 19, c: 14}},
         //
         {s: {r: rT+1, c: 0}, e: {r: rT+1, c: 4}},
-        {s: {r: rT+5, c:3}, e: {r: rT+4, c: 5}},
+        {s: {r: rT+5, c:3}, e: {r: rT+5, c: 5}},
         {s: {r: rT+2, c: 1}, e: {r: rT+2, c: 2}},
         {s: {r: rT+2, c: 3}, e: {r: rT+2, c: 4}},
         {s: {r: rT+3, c: 3}, e: {r: rT+3, c: 4}},
