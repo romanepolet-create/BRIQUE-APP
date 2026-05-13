@@ -6,13 +6,12 @@ const path = require('path');
 // ==========================================
 // ROUTE POUR LIRE LE JSON FINANCIER PROFORMA
 // ==========================================
+const cheminProforma = path.join (__dirname, '../data', 'proforma.json');
+
 router.get('/', async (req, res) => {
   try {
-    // Il va chercher ton fichier (vérifie que proforma.json est bien dans le dossier data/)
-    const cheminFichier = path.join(__dirname, '../data', 'proforma.json');
-    const data = await fs.readFile(cheminFichier, 'utf-8');
-    
-    // Il l'envoie au navigateur
+    const data = await fs.readFile(cheminProforma, 'utf-8');
+                  
     res.json(JSON.parse(data));
   } catch (erreur) {
     console.error("Erreur de lecture de proforma.json :", erreur);
