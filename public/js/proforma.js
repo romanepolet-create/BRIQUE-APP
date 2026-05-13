@@ -110,9 +110,9 @@ window.validerProforma = async function() {
        
         //STYLES
 
-        const bordureFine = {
-          top: {style:"thin"}, bottom: {style: "thin"},
-          left: {style: "thin"}, right: {style: "thin"}
+        const sBord = {
+          top: {style:"medium"}, bottom: {style: "medium"},
+          left: {style: "medium"}, right: {style: "medium"}
         };
 
         const sEnteteBleu = {
@@ -127,7 +127,7 @@ window.validerProforma = async function() {
               horizontal: "center",
               vertical: "center",
               wrapText: true 
-          }, border: bordureFine
+          } 
         };
 
         const sTitreSection = {
@@ -138,14 +138,14 @@ window.validerProforma = async function() {
             color: { rgb: "002AB6" }
           }, fill: { fgColor: { rgb: "F3B0CF"}
           }, alignment: {vertical: "center"
-          }, border: bordureFine
+          }
         };
 
         const sNormal = { 
           font: {
             name: "Lexend Deca",
             sz: 10
-          }, border: bordureFine
+          }
         };
 
         const sParagraphe = {
@@ -168,7 +168,7 @@ window.validerProforma = async function() {
             name: "Lexend Deca",
             sz: 9,
             bold: true
-          }, border: bordureFine
+          } 
         };
 
         const sChiffre = {
@@ -188,6 +188,23 @@ window.validerProforma = async function() {
         };
 
 
+        function setOuterBorder(ws, r1, c1, r2, c2, style = 'medium') {
+          for (let r = r1; r <= r2; r++) {
+            for (let c = c1; c <= c2; c++) {
+              if (!donnees[r][c]) donnees[r][c] = { v: "", s: {} };
+              if (!donnees[r][c].s) donnees[r][c].s = {};
+
+              donnees[r][c].s.border = {
+                top:    r === r1 ? { style } : cell.border?.top,
+                bottom: r === r2 ? { style } : cell.border?.bottom,
+                left:   c === c1 ? { style } : cell.border?.left,
+                right:  c === c2 ? { style } : cell.border?.right
+              };
+            }
+          }
+        }
+
+
 //=================================
 //PREPARATION GRILLE
 //=================================
@@ -197,14 +214,14 @@ window.validerProforma = async function() {
 
 
       //EN TETE
-      setCell(0, 1,'Commande Proforma n°',{font: {bold: true, sz:10}});
+      setCell(0, 0,'Commande Proforma n°',{font: {bold: true, sz:10, color: "black"}});
       setCell(0, 2, '...................................................', {font: {sz: 10}});
       setCell(0, 10,'BRIQUE HOUSE BREWERY',{font:{bold: true, sz:14}});
       
       //ADRESSES
-      setCell(5, 0, 'ADRESSE DE LIVRAISON', sAdresse);
-      setCell(9, 0, 'ADRESSE DU SIEGE SOCIAL', sAdresse);
-      setCell(5, 7, 'ADRESSE DE FACTURATION', sAdresse);
+      setCell(5, 0, 'ADRESSE DE LIVRAISON', sAdresse, sBord);
+      setCell(9, 0, 'ADRESSE DU SIEGE SOCIAL', sAdresse, sBord);
+      setCell(5, 7, 'ADRESSE DE FACTURATION', sAdresse, sBord);
 
       //INFOS DOC
               
@@ -227,10 +244,10 @@ window.validerProforma = async function() {
       setCell(18, 7, "Mode de livraison", sNormal);
       setCell(19, 7, "N° de TVA", sNormal);
       //Réponse
-      setCell(14, 2,  sNormal);
+      setCell(14, 2, libre, sNormal);
       setCell(15, 2, dateAujourdhui, sNormal);
       setCell(16, 2, libre, sNormal);
-      setCell(17, 2,libre, sNormal);
+      setCell(17, 2, libre, sNormal);
       setCell(18, 2, dateEcheance, sNormal);
       setCell(19, 2, libre, sNormal);
       //---
@@ -258,7 +275,7 @@ window.validerProforma = async function() {
         "P.U. net", 
         "Total HT"
       ]
-      colonnes.forEach((txt, i) => setCell(21, i, txt, sEnteteBleu));
+      colonnes.forEach((txt, i) => setCell(21, i, txt, sEnteteBleu, sBord));
 
         let totalHT = 0;
         let totalAccises = 0;
@@ -272,10 +289,14 @@ window.validerProforma = async function() {
             if (biere && finance) {
                 const qteUV = qte * biere.nombre;
                 const vol = id.includes("75cl")?0.75 : (id.includes("44cl") ? 0.44 : 0.33);
-                const mntBrut = qteUV * finance.PUbrutHT;
+                const mntBrut = qteUV * finance.PUbrutHT
                 const mntAccise = qteUV * finance.accise;
                 const mntEco = qteUV * finance.eco;
-                const mntNet = qteUV * finance.PUnetHTVA;
+                const mntNet = qteUV * finance.PUnetHTVA
+                const unVvingt = totalHT * 1.20
+                const vingtPcent = totalHT * 0.20
+
+
            
                 totalHT += mntNet ;
                 totalAccises += mntAccise;
@@ -303,36 +324,38 @@ window.validerProforma = async function() {
             }
         }
 
-        const rT = ligneIdx + 2;
-        setCell(rT, 1, "TOTAL", sGras);
-        setCell(rT, 11, totalAccises.toFixed(2), sChiffre);
-        setCell(rT, 12, totalEco.toFixed(2), sChiffre);
-        setCell(rT, 14, totalHT.toFixed(2), sChiffre);
+        const rTT = ligneIdx + 1;
+        setCell(rTT, 1, "TOTAL", sGras);
+        setCell(rTT, 11, totalAccises.toFixed(2), sChiffre);
+        setCell(rTT, 12, totalEco.toFixed(2), sChiffre);
+        setCell(rTT, 14, totalHT.toFixed(2), sChiffre);
+
+        const rT = rTT+1;
 
 //===========
 //TABLEAU TVA
 //===========
         
         //TVA
-        setCell(rT+1, 0, "TVA", sEnteteBleu)
+        setCell(rT+1, 0, "TVA", sEnteteBleu, sBord)
         //Base
-        setCell(rT+2, 0,"BASE", sGras)
+        setCell(rT+2, 0,"BASE", sGras, sBord)
         //=029
-        setCell(rT+3, 0, totalHT, sChiffre)
+        setCell(rT+3, 0, totalHT.toFixed(2), sChiffre)
         //=SOMME soit =A33
-        setCell(rT+5, 0, totalHT, sChiffre)
+        setCell(rT+5, 0, totalHT.toFixed(2), sChiffre, sBord)
         //=SOMME soit =D33
-        setCell(rT+5, 3, totalHT * 0.20, sChiffre)
+        setCell(rT+5, 3, vingtPcent.toFixed(2), sChiffre, sBord)
         //Taux
-        setCell(rT+2, 1, "Taux", sNormal)
+        setCell(rT+2, 1, "Taux", sNormal, sBord)
         //01
         setCell(rT+3, 1, "01", sNormal)
         //20(%)
         setCell(rT+3, 2, 20, sNormal)
         //Montant
-        setCell(rT+2, 3, "Montant", sNormal)
+        setCell(rT+2, 3, "Montant", sNormal, sBord)
         //=A33*C33
-        setCell(rT+3, 3, totalHT * 0.20, sChiffre)
+        setCell(rT+3, 3, vingtPcent, sChiffre)
        
 //============
 //TABLEAU AUTRES TAXES
@@ -340,51 +363,51 @@ window.validerProforma = async function() {
 
 
         //Autres Taxes
-        setCell(rT+1, 6, "Autres Taxes", sEnteteBleu);
+        setCell(rT+1, 6, "Autres Taxes", sEnteteBleu, sBord);
         //Taxes Accises
         setCell(rT+2, 6, "Taxes Accises", sNormal);
         //=L29
-        setCell(rT+2, 8, totalAccises, sChiffre);
+        setCell(rT+2, 8, totalAccises.toFixed(2) , sChiffre);
         //Eco-Taxes
         setCell(rT+3, 6, "Eco-Taxes", sNormal);
         //=M29
-        setCell(rT+3, 8, totalEco, sChiffre);
+        setCell(rT+3, 8, totalEco.toFixed(2), sChiffre);
 
 //================
 //TABLEAU RESUME
 //================
 
         //Total HT EUR
-        setCell(rT+2, 11, "Total HT EUR", sNormal);
+        setCell(rT+2, 11, "Total HT EUR", sNormal, sBord);
         //TVA
-        setCell(rT+3, 11, "TVA", sNormal)
+        setCell(rT+3, 11, "TVA", sNormal, sBord)
         //Total TTC EUR
-        setCell(rT+4, 11, "Total TTC EUR");
+        setCell(rT+4, 11, "Total TTC EUR", sBord);
         //=O29
-        setCell(rT+2, 13, totalHT, sChiffre);
+        setCell(rT+2, 13, totalHT.toFixed(2), sChiffre, sBord);
         //=D39
-        setCell(rT+3, 13, totalHT*0.20, sChiffre);
+        setCell(rT+3, 13, vingtPcent.toFixed(2), sChiffre, sBord);
         //=SOMME
-        setCell(rT+4, 13, totalHT*1.20, sChiffre);
+        setCell(rT+4, 13, unVvingt.toFixed(2), sChiffre, sBord);
 
 
 //==============
 //TABLEAU PAIEMENT
 //==============
         //Paiement
-        setCell(rT+6, 11, "PAIEMENT", sEnteteBleu);
+        setCell(rT+6, 11, "PAIEMENT", sEnteteBleu, sBord);
         //rep IBAN
-        setCell(rT+7, 12, libre, sNormal);
+        setCell(rT+7, 12, libre, sNormal, sBord);
         //rep BIC
-        setCell(rT+8, 12, libre, sNormal)
+        setCell(rT+8, 12, libre, sNormal, sBord)
         //Date d'échéance
-        setCell(rT+9, 11, "Date d'échéance", sNormal);
+        setCell(rT+9, 11, "Date d'échéance", sNormal, sBord);
         //=C20
-        setCell(rT+9, 13, dateEcheance, sNormal);
+        setCell(rT+9, 13, dateEcheance, sNormal, sBord);
         //IBAN
-        setCell(rT+7, 11, "IBAN", sNormal);
+        setCell(rT+7, 11, "IBAN", sNormal, sBord);
         //BIC
-        setCell(rT+8, 11, "BIC", sNormal);
+        setCell(rT+8, 11, "BIC", sNormal, sBord);
 
 
 //===============
@@ -392,15 +415,29 @@ window.validerProforma = async function() {
 //===============
         //Paragraphe
         setCell(rT+11, 0, 
-        `Toute commande passée à notre société est soumise à nos conditions générales de vente.
-        Réserve de propriété : en application des dispositions de la loi n°80.335 du 12 mai 1980, les biens vendus demeurent la propriété du vendeur jusqu'à complet paiement
-        Aucun escompte ne sera accordé en cas de paiement anticipé.
+        `Toute commande passée à notre société est soumise à nos conditions générales de vente.\n
+        Réserve de propriété : en application des dispositions de la loi n°80.335 du 12 mai 1980, les biens vendus demeurent la propriété du vendeur jusqu'à complet paiement\n
+        Aucun escompte ne sera accordé en cas de paiement anticipé.\n
         Une indemnité pour frais de recouvrement de 40 EUR et des intérêts de retard (3 fois le taux d'intérêt légal) sont décomptés dès le lendemain de l'échéance de la facture.`, sParagraphe);                     
 
         //BHB - 91...
         setCell(rT+15, 0, "BRIQUE HOUSE BREWERY -  91 Rue de la Croix Waresquel - 59273 FRETIN - tel : 06 30 90 97 05", sReste);
         //SIRET...
         setCell(rT+16, 0, "SIRET : 85055928700014 - N° TVA : FR 44 850 559 287 - ACTIVITE (NAF / APE) : 1105Z - Fabrication de bière", sReste);
+
+      setOuterBorder(donnees, 14, 0, 19, 14);
+
+      setOuterBorder(donnees, ligneIdx, 0, ligneIdx, 14);
+
+      setOuterBorder(donnees, rTT, 0, rTT, 14);
+
+      setOuterBorder(donnees, rT + 3, 0, rT + 4, 0);
+      setOuterBorder(donnees, rT + 3, 1, rT + 4, 2);
+      setOuterBorder(donnees, rT + 3, 3, rT + 4, 4);
+
+      setOuterBorder(donnees, rT + 2, 6, rT + 5, 9);
+
+      setOuterBorder(donnees, rT + 6, 11, rT + 9, 14);
 
       merges.push(       
         {s: {r: 0, c: 0}, e: {r: 1, c: 1}},
