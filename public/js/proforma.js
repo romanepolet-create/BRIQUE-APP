@@ -545,6 +545,26 @@ window.validerProforma = async function() {
           { wpx: 77  }, // colonne O
         ]
 
+
+       //=========================
+       //PARAMETRE D'IMPRESSION
+       //=========================
+       feuille['!printOptions'] = {
+        gridLines: false,
+        horizontalCentered : true
+      };
+
+      feuille['!pageSetup'] = {
+        orientation : "portrait",
+        fitToWidth: 1,
+        fitToHeight: 999
+      };
+
+      if(!feuille['!views']) feuille['!views'] = [];
+      feuille['!views'].push({ showGridLines: false });
+
+
+
         const classeur = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(classeur, feuille, "Proforma");
         
