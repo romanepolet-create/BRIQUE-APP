@@ -34,7 +34,33 @@ async function afficher(idBiere) {
                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);">📥</a>
 
         <h2 class="mot-cle">${titrePropre}</h2>
-                </div> `;
+        `;
+
+        if(biere.seconde_video) {
+          let minute = Math.floor(biere.seconde_video / 60);
+          let secondes = biere.seconde_video % 60;
+          let tempsFormatte = minute + ":" + (secondes < 10 ? "0" : "") + secondes;
+
+          html+= `
+            <button onclick="jouerVideoA(${biere.seconde_video})" 
+                    style="color: #0000ee; 
+                           font-family: arial, sans-serif;
+                           background-color: light-gray;
+                           border: transparent;
+                           border-radius: 30px;
+                           margin: 8px;
+                           padding: 8px 8px; 
+                           font-weight: bold; 
+                           cursor: pointer; 
+                           font-size: 12px; 
+                           transition: 0.2s;">
+                           Vidéo : ${tempsFormatte}
+            </button>
+          `;
+        }
+
+        html += `</div>`;
+
         
         if (biere.détail) html += `
         <div>
@@ -49,8 +75,7 @@ async function afficher(idBiere) {
         <div>
         `;
         
-        html += `</div>`;
-
+        
         ecran.innerHTML = html;
  
       } else {
@@ -64,3 +89,11 @@ async function afficher(idBiere) {
     ecran.innerHTML = "<p style='color:red;'>Erreur de chargement.</p>";
   }
 }
+
+window.jouerVideoA = function(secondes) {
+  const video = document.getElementById('(44r17_F3(2_33_P73423');
+  // On avance la vidéo à la seconde exacte
+  video.currentTime = secondes;
+  // On lance la lecture
+  video.play();
+};
