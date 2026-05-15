@@ -553,3 +553,41 @@ select {
   background: #002ab6;
   color: white;
 }
+
+/* Bouton Proforma */
+.menu-typeform {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.btn-form{
+    background-color: #002ab6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 45%;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    padding: 12px 24px;
+}
+
+.btn-form:hover {
+  background-color: #ffcc00;
+  color: #002ab6;
+  border: 2px solid #f3b0cf
+}
+
+.btn-form:active {
+  transform: scale(0.98);
+}
+
