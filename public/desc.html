@@ -31,11 +31,61 @@
       <button class="btn" onclick="afficher('AccroBlanche')">AccroBlanche</button>
     </div>
   
-    <div id="ecran-affichage" style="margin-top: 20px; border: 1px solid black; padding: 10px;">
-      <p>Clique sur une bière pour voir sa fiche.</p>
-    </div>
+    <div style="display: flex; 
+                gap: 20px; 
+                max-width: 1200px; 
+                margin: 30px auto; 
+                align-items: flex-start; 
+                padding: 0 20px;"> 
+      
+      <div id="ecran-affichage" 
+           style="flex: 1; 
+                  background: white; 
+                  border-radius: 10px; 
+                  border: 2px solid #333; 
+                  padding: 20px;
+                  min-height: 350px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center">
 
-    <div id="overlay" onclick="fermerWiki()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 999;"></div>
+        <div style="text-align: center;">
+
+          <p>Clique sur une bière pour voir sa fiche.</p>
+
+          <img src="/images/bières.png" 
+               alt="Choix bière"
+               style="max-width: 500px;
+                      margin-bottom: 20px;
+                      border-radius: 10px;">
+
+        </div>
+      </div>
+
+      <div style="flex: 1;">
+        <video id="video-sales" 
+               src="/videos/(44r17_F3(2_33_P73423.mp4" 
+               controls style="width: 100%; 
+                                border-radius: 10px; 
+                                border: 2px solid #002ab6; 
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+        </video>
+      </div>
+
+    </div>
+            
+
+
+    <div id="overlay" onclick="fermerWiki()" 
+         style="display:none; 
+                position:fixed; 
+                top:0; 
+                left:0; 
+                width:100%; 
+                height:100%; 
+                background:rgba(0,0,0,0.5); 
+                z-index: 999;">
+    </div>
         
     <div id="modal" style="display:none; 
                            position:fixed;
@@ -60,6 +110,8 @@
                                           cursor:pointer; 
                                           float:right;">Fermer</button>
     </div>
+
+
     <script src="js/desc.js"></script>
     <script src="js/outils.js"</script>
     <script src="js/desc.js˝</script>
