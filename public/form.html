@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Formulaire Sales - CHR</title>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🍻 Brique App</div>
+    <ul class="nav-links">
+      <li> <a href="/"> Accueil</a></li>
+      <li> <a href="/lexique.html" class="active">Glossaire</a></li>
+      <li> <a href="/desc.html">Bières BH</a></li>
+      <li> <a href="/distrib.html" class="active">Distributeurs</a></li>
+      <li> <a href="/gms.html">Espace GMS</a></li>
+    </ul>
+  </nav>
+
+
+  <h1>Les formulaires de commandes & PLV</h1>
+
+  <ul class="menu-typeform">
+    <li onclick="chargerFormulaire('https://briquehouse.typeform.com/to/HgMDQAeN', 'Formulaire de commande')" class="btn-form">
+    📝 Formulaire de Commande
+    </li>
+    <li onclick="chargerFormulaire('https://briquehouse.typeform.com/commande-PLV', 'Demande de PLV')"  class="btn-form"> 
+    📝Demande de PLV
+    </li>
+  </ul>
+
+
+
+  <div id="message-accueil" 
+       style="text-align: center; 
+              margin: 40px 20px; 
+              padding: 60px 20px; 
+              border: 3px dashed #f3b0cf; 
+              border-radius: 10px; 
+              background-color: white;
+              position: relative;
+              overflow: hidden;">
+
+
+    <img src="/images/fontDistrib.png" alt="Іmage Sales"
+         style="top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                position: absolute;
+                z-index: 0;
+                opacity: 0.3;">
+
+
+    <h2 style="color: #002ab6;
+               margin-bottom: 10px;
+               position: relative;
+               z-index: 1;">👋 Bienvenue dans l'espace Sales
+     </h2>
+     <p style="color: #666; 
+               font-size: 16px; 
+               font-weight: bold;
+               position: relative;
+               z-index: 1;">
+       👆 Cliquez sur l'un des boutons ci-dessus pour ouvrir un formulaire.
+    </p>
+      </div>
+
+
+
+  <div id="zone-typeform" style="display: none; 
+                                 margin: 20px auto; 
+                                 border: 2px solid #002ab6;
+                                 border-radius: 10px;
+                                 overflow: hіdden;
+                                 height: 100vh;
+                                 width: 75%;
+                                 element-align: center"
+                                 >  
+  
+
+  <div style="background-color: #002ab6; 
+              color: #fafafa; 
+              padding: 15px; 
+              display: flex; 
+              justify-content: space-between; 
+              align-items: center;
+              border-radius: 10px">
+    <h2 id="titre-formulaire" style="margin: 0;">Chargement...</h2>
+    <span onclick="fermerFormulaire()" 
+      style="cursor: pointer; 
+             font-size: 20px; 
+             transition: 0.2s;" 
+      onmouseover="this.style.transform='scale(1.2)'" 
+      onmouseout="this.style.transform='scale(1)'">❌</span>
+  </div>
+
+  <iframe
+     id="iframe-typeform"
+     src=""
+     width="100%"
+     style="height: 85vh; min-height: 600px; display:block; border-radius:10px;"
+     frameborder="0"
+     allow="camera; microphone; autoplay; encrypted-media;">
+    </iframe>
+  </div>
+
+  <script src="/js/form.js"></script>
+</body>
+</html>
