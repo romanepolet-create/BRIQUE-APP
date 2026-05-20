@@ -11,13 +11,22 @@ const PORTAL_ID = "146794478"; //ID HS
 const map = L.map('map').setView([46.603354, 1.888334], 5);
 
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors, © CARTO'
   }).addTo(map);
 
- 
+markerConteneur = L.layerGroup().addTo(map);
+
+async function initialiserCarte() {
+  console.log("Démarrage de la carte...");
+  await chargerGeoJSON();
+  await chargerDonneesMagasins();
+};
+
+initialiserCarte();
+
 // ===========================================================
-// CHARGEMENT DES FICHIERS GEOJSON (Frontières)
+// CHARGEMENT DES FICHIERS GEOJSON
 // ===========================================================
 async function chargerGeoJSON() {
   try {
@@ -35,7 +44,7 @@ async function chargerGeoJSON() {
         weight: 1,
         opacity: 0.5,
         color: 'gray',
-        FillOpacity: 0.3
+        fillOpacity: 0.3
       },
     }).addTo(map);
 
@@ -46,8 +55,8 @@ async function chargerGeoJSON() {
         fillColor: 'transparent',
         weight: 3,
         opacity: 0.5,
-        color: 'C7C3C2',
-        FillOpacity: false
+        color: '#C7C3C2',
+        fillOpacity: false
       },
     }).addTo(map);
 
@@ -57,14 +66,6 @@ async function chargerGeoJSON() {
     console.error("Erreur de chargement des données :", error);
   }
 }
-
-markerConteneur = L.layerGroup().addTo(map);
-
-chargerGeoJSON();
-
-chargerDonneesMagasins();
-
-
 
 // =========================================================
 // GÉOLOCALISATION
@@ -124,7 +125,6 @@ async function chargerDonneesMagasins() {
     console.error("Impossible de charger les magasins :", err);
   }
 }
-
 
 function afficherMagasinsSurCarte(magasins) {
   // On vide la carte avant de remettre les nouveaux pins filtrés
