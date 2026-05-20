@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brique App - Cartographie GMS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+ <nav class="navbar">
+  <div class="logo">🍻 Brique App</div>
+  <ul class="nav-links">
+    <li><a href="/index.html" class="active">Accueil</a></li>
+    <li><a href="/desc.html">Bières BH</a></li>
+    <li><a href="/lexique.html" class="active">Glossaire</a></li>
+    <li><a href="/gms.html">Espace GMS</a></li>
+    <li><a href="/distrib.html" class="active">Distributeurs</a></li>
+    <li><a href="/form.html">Formulaires</a></li>
+  </ul>
+</nav>
+
+<div class="map-container">
+    
+  <div class="sidebar-filters">
+    <h2>Filtres GMS 🗺️</h2>
+    
+    <!--GEOLOCALISATION-->
+    <button class="btn-gps" onclick="activerGeolocalisation()">📍 Me géolocaliser</button>
+
+    <!--FILTRES-->
+    <!--Regions-->
+    <div class="filter-group">
+        <label for="filter-region">Région</label>
+        <select id="filter-region" onchange="filtrerMagasins()">
+          <option value="">Toutes les régions</option>
+        </select>
+      </div>
+      
+      <!--Departement-->
+      <div class="filter-group">
+        <label for="filter-dpt">Département</label>
+        <select id="filter-dpt" onchange="filtrerMagasins()">
+          <option value="">Tous les départements</option>
+        </select>
+      </div>
+
+      <!--Enseignes-->
+      <div class="filter-group">
+        <label for="filter-enseigne">Enseigne</label>
+        <select id="filter-enseigne" onchange="filtrerMagasins()">
+          <option value="">Toutes les enseignes</option>
+          <option value="CRF">Carrefour (CRF)</option>
+          <option value="LCL">Leclerc (LCL)</option>
+          <option value="ITM">Intermarché (ITM)</option>
+          <option value="U">Système U (U)</option>
+          <option value="FRANPRIX">Franprix</option>
+          <option value="MONOPRIX">Monoprix</option>
+          <option value="CASINO">Casino</option>
+          <option value="AUCHAN">Auchan</option>
+          <option value="OTERA">OTERA</option>
+        </select>
+      </div>
+
+      <!--Distance (grâce à la géolocalisation)-->
+      <div class="filter-group">
+        <label for="filter-rayon">Rayon autour de moi</label>
+        <select id="filter-rayon" onchange="filtrerMagasins()">
+          <option value="99999">Illimité</option>
+          <option value="10">10 km</option>
+          <option value="30">30 km</option>
+          <option value="50">50 km</option>
+          <option value="100">100 km</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/js/mapGMS.js"></script>
+</body>
+</html>
