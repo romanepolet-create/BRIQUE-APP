@@ -5,7 +5,6 @@ const path = require('path');
 
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient('https://mtvzhpqticnxqcxsadkg.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10dnpocHF0aWNueHFjeHNhZGtnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODAyOTc1MCwiZXhwIjoyMDkzNjA1NzUwfQ.r2JXBf8hLrukjKOLQFlVqCBXDx8AjxlgVMGKir1a55U');
-=====================================
 
 router.get('/', async (req, res) => {
   try {
