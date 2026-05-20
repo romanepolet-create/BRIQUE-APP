@@ -42,6 +42,8 @@ const routesDistrib = require('./routes/distrib');
 const routesGeo = require('./routes/geo');
 const routesRegion = require('./routes/region');
 const routesProforma = require('./routes/proforma');
+const routesMapGMS = require('./routes/mapGMS');
+
 
 
 app.use('/api/bieres', routesBieres);
@@ -50,6 +52,8 @@ app.use('/api/distrib', routesDistrib);
 app.use('/api/geo', routesGeo);
 app.use('/api/region', routesRegion);
 app.use('/api/proforma', routesProforma);
+app.use('/api/mapGMS', routesMapGMS);
+
 
 // ==========================================
 // 4. LANCEMENT DU SERVEUR
