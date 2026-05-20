@@ -110,17 +110,21 @@ window.activerGeolocalisation = function() {
 // =================================================
 // GESTION DES MAGASINS ET DE LA BULLE HUBSPOT
 // =================================================
-function chargerDonneesMagasins() {
-  // PLACEHOLDER : fetch Supabase.
-  // Pour l'instant, je te mets 2 faux magasins pour voir le comportement :
-  listeMagasins = [
-    { id: 1, nom: "Auchan Englos", adresse: "Route Nationale 352", ville: "Lille", code_postal: "59320", region: "Hauts-de-France", dpt: "59", enseigne: "AMC", lat: 50.6276, lng: 2.9592, hubspot_id: "123456789" },
-    { id: 2, nom: "Carrefour Market Lomme", adresse: "786 Avenue de Dunkerque", ville: "Lomme", code_postal: "59160", region: "Hauts-de-France", dpt: "59", enseigne: "CRF", lat: 50.6432, lng: 3.0041, hubspot_id: "987654321" }
-  ];
+async function chargerDonneesMagasins() {
+  try {
+    const response = await fetch('/api/gms');
 
-  // Remplir la carte dès le départ
-  afficherMagasinsSurCarte(listeMagasins);
+    if (!response.ok) throw new Error("Erreur réseau GMS");
+    
+    listeMagasins = await response.json();
+
+    // Remplir la carte dès le départ
+    afficherMagasinsSurCarte(listeMagasins);
+  } catch (err) {
+    console.error("Impossible de charger les magasins :", err);
+  }
 }
+
 
 function afficherMagasinsSurCarte(magasins) {
   // On vide la carte avant de remettre les nouveaux pins filtrés
