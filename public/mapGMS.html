@@ -5,10 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brique App - Cartographie GMS</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
 
 <body>
+<div id="popup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1000
+  ">
+   <p>
+     Limit of 10 stores for itinerary optimization, Bitches
+   </p>
+   <p>Reason : <b><i>Maths</i></b>
+   </p>
+   <button onclick='hidePopup()'>OK</button>
+</div>
+
+<div id="secPopup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1001;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  ">
+   <p>
+    Please stop ?
+   </p>
+   <button onclick='this.parentElement.remove()'>OK</button>
+</div>
+
+<div id="lastPopup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1002;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  ">
+   <p> Seriously, this is getting annoying</p>
+   <p> Just click on the OK button and get done with it</p>
+   <p> This will be better for litteraly everyone</p>
+   <button onclick='this.parentElement.remove()'>OK</button>
+</div>
+
+
+
+
  <nav class="navbar">
   <div class="logo">🍻 Brique App</div>
   <ul class="nav-links">
@@ -21,8 +85,9 @@
   </ul>
 </nav>
 
+
 <div class="map-container">
-    
+ <div id="left">  
   <div class="sidebar-filters">
     <h2>Filtres GMS 🗺️</h2>
     
@@ -74,6 +139,21 @@
           <option value="100">100 km</option>
         </select>
       </div>
+
+      </div>
+
+      <div id="panneau-tournee">
+        <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
+        <ul id="liste-tournee"></ul>
+
+        <button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
+                    
+        <div id="DGMAPS">
+          <button onclick="ouvrirGoogleMaps()" id="BGMAPS">🗺️ G. Maps</button>
+          <button id="btn-waze" onclick="ouvrirWaze()">🚗 Waze</button>
+        </div>
+        <button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
+     </div>
     </div>
 
     <div id="map"></div>
@@ -81,6 +161,7 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
   <script src="/js/mapGMS.js"></script>
 </body>
 </html>
