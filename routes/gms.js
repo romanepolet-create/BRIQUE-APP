@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
     // On demande à Supabase de récupérer toutes les lignes de la table GMS
     const { data, error } = await supabase
       .from('GMS')
-      .select('*');
+      .select('*')
+      .limit(5000);
 
     if (error) {
       throw error;
