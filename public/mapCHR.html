@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brique App - Cartographie CHR</title>
+  <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🍻 Brique App</div>
+      <ul class="nav-links">
+       <li><a href="/">Accueil</a></li>
+       <li><a href="/desc.html" class="active">Bières BH</a></li>
+       <li><a href="/lexique.html">Glossaire</a></li>
+       <li><a href="/gms.html" class="active">Espace GMS</a></li>
+       <li><a href="/distrib.html">Distributeurs</a></li>
+       <li><a href="/form.html" class="active">Formulaires</a></li>
+       <li><a href="/mapGMS.html">Map GMS</a></li>
+     </ul>
+   </nav>
+
+   <h1>Carte d'Optimisation d'itinéraire CHR</h1>
+ </div>
+
+
+  <div id="popup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1000
+  ">
+   <p>
+     Limit of 10 stores for itinerary optimization, Bitches
+   </p>
+   <p>Reason : <b><i>Maths</i></b>
+   </p>
+   <button onclick='hidePopup()'>OK</button>
+</div>
+
+<div id="secPopup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1001;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  ">
+   <p>
+    Please stop ?
+   </p>
+   <button onclick='this.parentElement.remove()'>OK</button>
+</div>
+
+<div id="lastPopup" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1002;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  ">
+   <p> Seriously, this is getting annoying</p>
+   <p> Just click on the OK button and get done with it</p>
+   <p> This will be better for litteraly everyone</p>
+   <button onclick='this.parentElement.remove()'>OK</button>
+</div>
+
+  <div class="map-container" style="position: relative;">
+
+   <div id="panneau-tournee">
+
+    <button class="btn-gps" onclick="activerGeolocalisation()">📍 Me géolocaliser</button>
+
+    <div 
+      id="search-container"
+      style="margin: 30px auto;"
+      >
+      
+      <h3 style="
+      margin-top: 0;
+      font-size: 14px;
+      color: #002ab6;">
+      🔎 Chercher un établissement
+    </h3>
+    <div style= "display: flex; gap: 5px;">
+      <input 
+        type="text" 
+        id="input-chr" 
+        placeholder="Nom du resto, Ville, ..."
+        style="flex: 1; padding: 5px;">
+      <button onclick="lancerRecherche()" 
+        style="
+          background: #4285F4; 
+          color: white; 
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;">Go</button>
+    </div>
+      <ul 
+        id="resultats-recherche" 
+        style="
+          list-style: none;
+          padding: 0; 
+          margin: 10px 0 0 0;
+          max-height: 150px;
+          overflow-y: auto;
+          font-size: 12px;">
+      </ul>
+    </div>
+   <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
+     <ul id="liste-tournee"></ul>
+     
+     <button id="btn-opti" onclick="optimiserTournee()">✨ Optimiser l'itinéraire</button>
+
+     <div id="DGMAPS">
+       <button onclick="ouvrirGoogleMaps()" id="BGMAPS">🗺️ G. Maps</button>
+     </div>
+     <button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
+  </div>
+
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/js/mapCHR.js"></script>
+</body>
+</html>
