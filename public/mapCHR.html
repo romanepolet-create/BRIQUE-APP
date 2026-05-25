@@ -104,8 +104,9 @@
       <input 
         type="text" 
         id="input-chr" 
-        placeholder="Nom du resto, Ville, ..."
-        style="flex: 1; padding: 5px;">
+        placeholder="Nom du resto, Ville, ...";
+        style="flex: 1; padding: 5px;"
+        onkeydown= "if(event.key === 'Enter') lancerRecherche()">
       <button onclick="lancerRecherche()" 
         style="
           background: #4285F4; 
