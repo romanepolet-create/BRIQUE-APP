@@ -30,17 +30,17 @@
     {"mot": "Belgian_Pale_Ale",
      "desc": "Saveur malté et épicée, faible amertume*, levure belges spéciales pour de puissantes esters (fruits) épicés et floraux. Bière à fermentation_haute*, amertume* moyenne (IBU* : 20-30), ambrée claire* à cuivrée* léger (EBC* : 10-40) avec une robe trouble*, très limpide*, non houblonné_à_froid* pour un goût de houblon bien distinct et sans saveurs fortes et avec un taux d'alcool moyen"},
  
-    {"mot": "Indian_Pale_Ale_(IPA)",
+    {"mot": "India_Pale_Ale_(IPA)",
      "desc": "Forte amertume* et arômes intenses d'agrumes, mise au point par les Britanniques au 19e s., ajout de beaucoup de houblons pour la conservation de la bière pendant les longs voyages en bateau (notamment jusqu'aux Indes) - IBU*: 40-60, houblonnage_à_chaud* pour plus d'amertume* et houblonnage_à_froid* pour plus d'aromatique",
      "sousCategories": [
   
-      {"mot": "Double_Indian_Pale_Ale_(DIPA)",
+      {"mot": "Double_India_Pale_Ale_(DIPA)",
       "desc": "ou Imperial IPA, amertume* plus intense et taux d'alcool élevé (7.5 - 10+°), interprétation plus robuste de la IPA => plus grande quantité de houblon, base maltée plus riche (= plus de rondeur) pour équilibrer l'amertume* (IBU*: 60-120), corps plus riche et texture plus dense* et onctueuse* que les IPA"},
   
-      {"mot": "Session_Indian_Pale_Ale_(Session_IPA)",
+      {"mot": "Session_India_Pale_Ale_(Session_IPA)",
        "desc": "Plus légère et rafraîchissante, taux d'alcool entre 3 et 5°, amertume* prononcée (IBU* : 30 à 60). Bière à faible taux d'alcool peu importe le style"},
   
-    {"mot": "New_England_Indian_Pale_Ale_(NEIPA)",
+    {"mot": "New_England_India_Pale_Ale_(NEIPA)",
     "desc": "Robe* dorée* trouble* assez opaque* car ajout de céréales spécifiques (comme de l'avoine) car aspect laiteux* typique, notes fruités très présentes et houblonné avec une amertume* modérée mais profil aromatique intense aux notes tropicales, avec une forte dose de houblon"}
   ]}
 ]},
