@@ -52,10 +52,10 @@
   "desc": "Ou Rouge Flamande) Bière belge traditionnelle, type ambrée*. Couleur ambrée à rougeâtre, goût légèrement aigre-doux et de fruits mûrs, souvent légère acidité*. Malt* légèrement torréfié*, avec fermentation_haute*"},
   
   {"mot": "Sour",
-  "desc": "(EN = Acide / Aigre) Bière de tradition belge, acidité* grâce aux lactobacilles*, moût laissé à l'air libre, donc ensemencé par organismes dans l'air, puis rajout de fruits ou vieillissement en tonnaux, bière à fermentation_spontanée*"},
+  "desc": "(EN = Acide / Aigre) Bière de tradition belge, acidité* grâce aux lactobacilles*, moût laissé à l'air libre, donc ensemencé par des organismes dans l'air, puis rajout de fruits ou vieillissement en tonneaux, bière à fermentation_spontanée*"},
   
   {"mot": "Stout",
-  "desc": "Bières de tradition anglaise (brune), couleur noire plus ou moins opaque*, goût de grillé persistant grâce à des malts* très torréfiés* au goût de café, voir cacao (et de l'orge crue torréfié*, non malté*) - de 4 à 6°, bière à fermentation_haute*"},
+  "desc": "Bières de tradition anglaise (brune), couleur noire plus ou moins opaque*, goût de grillé persistant grâce à des malts* très torréfiés* au goût de café, voire cacao (et de l'orge crue torréfiée*, non maltée*) - de 4 à 6°, bière à fermentation_haute*"},
   
   {"mot": "Triple",
   "desc": "Plus aromatique et ronde*, fermentation_haute*, saveurs de fruits mûrs grâce à des levures particulières, notes épicées de clou de girofle"}
