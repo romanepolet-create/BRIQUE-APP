@@ -28,7 +28,7 @@
      "desc": "Ajout de houblon, avec un goût bien perceptible, mais taux d'alcool bas (moins de 5°) - Houblonnage à froid* pour plus d'aromatique que d'amertume* (Ex: New_Queen_In_Town*)"},
   
     {"mot": "Belgian_Pale_Ale",
-     "desc": "Saveur maltée et épicée, faible amertume*, levures belges spéciales pour de puissantes esters (fruits) épicés et floraux. Bière à fermentation_haute*, amertume* moyenne (IBU* : 20-30), ambrée claire* à cuivrée* léger (EBC* : 10-40) avec une robe trouble*, très limpide*, non houblonnée_à_froid* pour un goût de houblon bien distinct et sans saveurs fortes et avec un taux d'alcool moyen"},
+     "desc": "Saveur maltée et épicée, faible amertume*, levures belges spéciales pour de puissants esters (fruits) épicés et floraux. Bière à fermentation_haute*, amertume* moyenne (IBU* : 20-30), ambrée claire* à cuivrée* léger (EBC* : 10-40) avec une robe trouble*, très limpide*, non houblonnée_à_froid* pour un goût de houblon bien distinct et sans saveurs fortes et avec un taux d'alcool moyen"},
  
     {"mot": "India_Pale_Ale_(IPA)",
      "desc": "Forte amertume* et arômes intenses d'agrumes, mise au point par les Britanniques au 19e s., ajout de beaucoup de houblons pour la conservation de la bière pendant les longs voyages en bateau (notamment jusqu'aux Indes) - IBU*: 40-60, houblonnage_à_chaud* pour plus d'amertume* et houblonnage_à_froid* pour plus d'aromatique",
@@ -41,7 +41,7 @@
        "desc": "Plus légère et rafraîchissante, taux d'alcool entre 3 et 5°, amertume* prononcée (IBU* : 30 à 60). Bière à faible taux d'alcool peu importe le style"},
   
     {"mot": "New_England_India_Pale_Ale_(NEIPA)",
-    "desc": "Robe* dorée* trouble* assez opaque* car ajout de céréales spécifiques (comme de l'avoine) car aspect laiteux* typique, notes fruitées très présentes et houblonnée avec une amertume* modérée mais profil aromatique intense aux notes tropicales, avec une forte dose de houblon"}
+    "desc": "Robe* dorée* trouble* assez opaque* grâce à l'ajout de céréales spécifiques (comme de l'avoine) qui lui donnent son aspect laiteux* typique, notes fruitées très présentes et houblonnée avec une amertume* modérée mais profil aromatique intense aux notes tropicales, avec une forte dose de houblon"}
   ]}
 ]},
   
