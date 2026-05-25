@@ -8,6 +8,35 @@
   cursor: pointer;
 }
 
+@media (max-width: 950px) {
+	.menu-burger {
+		display: block;
+		margin-left: auto;
+		padding-right: 20px;
+	}
+
+	.nav-links {
+		display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #002ab6;
+    padding: 10px 0;
+    z-index: 999;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+
+	.nav-links li {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+	 .nav-links.active {
+    display: flex;
+  }
+}
 
 
 .navbar {
