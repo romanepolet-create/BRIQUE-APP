@@ -664,6 +664,10 @@ select {
   box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
   text-align: center; 
   width: 300px;
+	display: flex;
+	flex-direction: column;
+  flex-shrink: 0;
+  height: fit-content;
 }
 
 #ma_tournee {
