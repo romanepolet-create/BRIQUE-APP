@@ -9,7 +9,7 @@
   "desc": " Ajout d’une levure ‘haute’ à température élevée (15 à 25°C), sur un laps de temps plus court (3 à 8j). Ce type de fermentation est associée aux Ales et dérivées - production plus importante d’esters (fruits) et de phénols (épices) ⇒ bière plus aromatique et fruité"},
 
   {"mot": "Fermentation lactique",
-  "desc": "Ajout de levure de fermentation_haute* et cultures de bactéries lactiques* ajoutée, production d’acides organiques, esters (fruits) sauvages et phénols (épices) ⇒ bière acide*, parfois boisée*, acidité* forte"},
+  "desc": "Ajout de levure de fermentation_haute* et cultures de bactéries lactiques* ajoutées, production d’acides organiques, esters (fruits) sauvages et phénols (épices) ⇒ bière acide*, parfois boisée*, acidité* forte"},
 
   {"mot": "Fermentation spontanée",
   "desc": "Ajout de levures ‘sauvages’, considéré comme contamination, généralement peu amère* (IBU* = ~10)"}
