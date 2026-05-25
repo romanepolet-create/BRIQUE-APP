@@ -495,7 +495,8 @@ function actualiserPanneauGPS() {
   if (compteur) compteur.textContent = etapesItineraire.length;
 
   if (etapesItineraire.length === 0) {
-    panneau.style.display = 'none';
+    panneau.style.display = "block";
+    liste.innerHTML= "<li style='color: #888; font-style: italic; font-size: 12px;'>Aucune étape sélectionnée</li>";
     return;
   }
 
