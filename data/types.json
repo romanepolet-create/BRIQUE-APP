@@ -9,7 +9,7 @@
   "desc": "(EN = Amer) Anglaise, amère* due au houblonnage, légère, ale entre 3.5° et 4.5°, couleur du blond clair au roux foncé"},
  
  {"mot" : "Blanche",
-  "desc": "Forte proportion de blé 40% (= acidité* et fraîcheur), souvent trouble* car non filtrées, et haut taux de protéine dû au blé. Styles allemands = léger parfum de banane (Weizenbier) ; Styles belges = agrémentées de graines de coriandre et d'écorces d'agrumes (Witbier)"},
+  "desc": "Forte proportion de blé 40% (= acidité* et fraîcheur), souvent trouble* car non filtrée, et haut taux de protéines dû au blé. Styles allemands = léger parfum de banane (Weizenbier) ; Styles belges = agrémentées de graines de coriandre et d'écorces d'agrumes (Witbier)"},
  
  {"mot": "Blonde",
   "desc": "Majorité de malts* pâles* ou clairs* non torréfiés*, son EBC* est entre 12 et 20. Eventails large entre paille* et dorée*, reflets cuivrés* ou pâles"},
@@ -18,10 +18,10 @@
   "desc": "Bières brassées avec du malts* bruns, fortement torréfiés* (= fort potentiel aromatique) - couleur du marron au noir"},
   
   {"mot": "Lager",
-  "desc": "Bière blondes* classique, fermentation_basse*, légère, 4-5°, souvent des notes florales et une amertume* légère (déclinaison = Pils*)"},
+  "desc": "Bière blonde* classique, fermentation_basse*, légère, 4-5°, souvent des notes florales et une amertume* légère (déclinaison = Pils*)"},
   
   {"mot": "Pale Ale",
-  "desc": "Bière d'inspiration anglaise à fermentation_haute*, brassée au malt* pâle* (peu torréfié*), goût finement caramélisé typique, corps sucré et céréalié, taux d'alcool faible. Créé par une brasserie anglaise après avoir inventé un nouveau mode de séchage du malt*. Couleur allant du jaune dorée* (rare) à l'ambré clair (commun) (EBC* 10-20)",
+  "desc": "Bière d'inspiration anglaise à fermentation_haute*, brassée aux malts* pâles* (peu torréfié*), goût finement caramélisé typique, corps sucré et céréalier, taux d'alcool faible. Créée par une brasserie anglaise après avoir inventé un nouveau mode de séchage du malt*. Couleur allant du jaune doré* (rare) à l'ambré clair (commun) (EBC* 10-20)",
   "sousCategories": [
  
     {"mot": "American_Pale_Ale_(APA)",
