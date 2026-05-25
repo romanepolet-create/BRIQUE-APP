@@ -57,49 +57,84 @@ async function lancerRecherche() {
   const input = document.getElementById('input-chr').value;
   const listeResultats = document.getElementById('resultats-recherche');
 
-  if(!input) { 
-    return;
-  }
-
+  if(!input) return ;
+  
   listeResultats.innerHTML = "<li>⏳ Recherche en cours...</li>";
 
   const query = encodeURIComponent(input);
-  const url = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=fr&format=json&limit=5://photon.komoot.io/api/?q=${query}&limit=5&lat=46.6&lon=1.8`;
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
+
+    const urlPhoton = `https://photon.komoot.io/api/?q=${query}&limit=3`;
+    const reqPhoton = fetch(urlPhoton).then(r => r.json()).catch(() => ({features: []}));
+
+    const urlGouv = `https://api-adresse.data.gouv.fr/search/?q=${query}&limit=3`;
+    const reqGouv = fetch(urlGouv).then(r => r.json()).catch(() => ({features: []}));
+
+    const [dataPhoton, dataGouv] = await Promise.all([reqPhoton, reqGouv]);
+
 
     listeResultats.innerHTML = "";
+    let aTrouveQuelqueChose = false;
 
-    if (data.length === 0) {
-      listeResultats.innerHTML = "<li style='color:red'>Aucun résultat trouvé.</li>";
-      return;
+    if (dataPhoton.features && dataPhoton.features.length > 0) {
+      aTrouveQuelqueChose = true;
+      ajouterTitreListe(listeResultats, "🏢 Établissements (OSM)");
+
+    	dataPhoton.features.forEach(place => {
+      	const lng = place.geometry.coordinates[0];
+      	const lat = place.geometry.coordinates[1];
+      	const props = place.properties;
+      	const nom = props.name || props.street || "Établissement inconnu";
+      	const ville = props.city || props.state || "";
+      	const nomPropre = `${nom}, ${ville}`;
+
+				ajouterElementListe(listeResultats, lat, lng, nomPropre, "📍");
+      })
+    };
+
+	  if (dataGouv.features && dataGouv.features.length > 0) {
+      aTrouveQuelqueChose = true;
+      ajouterTitreListe(listeResultats, "📮 Adresses Exactes (BAN)");
+
+      dataGouv.features.forEach(place => {
+        const lng = place.geometry.coordinates[0];
+        const lat = place.geometry.coordinates[1];
+        const nomPropre = place.properties.label; 
+
+        ajouterElementListe(listeResultats, lat, lng, nomPropre, "🏠");
+      });
+    }	
+
+    if (!aTrouveQuelqueChose) {
+      listeResultats.innerHTML = "<li style='color:red;'>Aucun résultat trouvé.</li>";
     }
-
-    data.forEach(place => {
-      const lat = parseFloat(place.lat);
-      const lng = parseFloat(place.lon);
-
-      const nomPropre = place.display_name.split(',').slice(0, 2).join(',');
-
-      const li = document.createElement('li');
-      li.style = 'padding: 8px; border-bottom: 1px solid #eee; cursor: pointer;';
-      li.innerHTML = `📍 ${nomPropre}`;
-
-      li.onclick = () => {
-        ajouterPointCHR(lat, lng, nomPropre);
-        listeResultats.innerHTML = "";
-        document.getElementById('input-chr').value = "";
-      };
-
-      listeResultats.appendChild(li);
-    });
-
+      
   } catch (error) {
-    listeResultats.innerHTML = "<li style='color: red;'>Erreur réseau.</li>";
+    listeResultats.innerHTML = `<li style='color: red;'>Erreur réseau. ${error}</li>`;
   }
 }
+
+function ajouterTitreListe(liste, texte) {
+  const titre = document.createElement('li');
+  titre.innerHTML = `<b>${texte}</b>`;
+  titre.style = 'background-color: #f0f0f0; padding: 4px 8px; font-size: 10px; color: #555; text-transform: uppercase; margin-top: 5px;';
+  liste.appendChild(titre);
+}
+
+function ajouterElementListe(liste, lat, lng, nom, icone) {
+  const li = document.createElement('li');
+  li.style = 'padding: 8px; border-bottom: 1px solid #eee; cursor: pointer;';
+  li.innerHTML = `${icone} ${nom}`;
+  
+  li.onclick = () => {
+    ajouterPointCHR(lat, lng, nom);
+    liste.innerHTML = "";
+    document.getElementById('input-chr').value = "";
+  };
+liste.appendChild(li);
+}
+
 
 //====================================
 //POINT SUR LA CARTE
@@ -108,15 +143,21 @@ let spamLevel = 0;
 
 function showPopup() {
   spamLevel++;
+  const PopupNoEaster = document.getElementById("PopupNoEaster");
   const mainPopup = document.getElementById("popup");
   const secPopup = document.getElementById("secPopup")
   const lastPopup = document.getElementById("lastPopup")
+	console.log(spamLevel);
 
-  if(spamLevel === 1) {
+  if (spamLevel === 1) {
+    NoEasterPopup()
+  }
+
+  if(spamLevel === 3) {
     if(mainPopup) mainPopup.style.display = "block";
   }
 
-  else if (spamLevel === 3) {
+  else if (spamLevel === 5) {
     if(secPopup) {
       secPopup.style.top = (48 + Math.random() * 4) + "%";
       secPopup.style.left = (48 + Math.random() * 4) + "%";
@@ -124,14 +165,14 @@ function showPopup() {
     }
   }
 
-  else if (spamLevel=== 5) {
+  else if (spamLevel=== 7) {
     if(lastPopup) {
       lastPopup.style.top = (52 + Math.random() * 4) + "%";
       lastPopup.style.left = (52 + Math.random() * 4) + "%";
       lastPopup.style.display = "block";
     }
   }
-  else if (spamLevel >= 6) {
+  else if (spamLevel >= 8) {
     spawnExtraPopup();
   }
 }
@@ -156,8 +197,8 @@ function spawnExtraPopup() {
   extraPopup.style.transform = "translate(-50%, -50%)";
   extraPopup.style.backgroundColor = "white";
   extraPopup.style.padding = "20px";
-  extraPopup.style.border = "2px solid red";
-  extraPopup.style.color = "red";
+  extraPopup.style.border = "2px solid black";
+  extraPopup.style.color = "black";
   extraPopup.style.fontWeight = "bold";
   extraPopup.style.textAlign = "center";
   extraPopup.style.zIndex = "9999";
@@ -172,6 +213,30 @@ function spawnExtraPopup() {
   document.body.appendChild(extraPopup);
 }
 
+// The chaotic infinite spam generator
+function NoEasterPopup() {
+  const PopupNoEaster = document.createElement("div");
+         
+  PopupNoEaster.style.position = "fixed";
+  PopupNoEaster.style.top = 50 + "%";
+  PopupNoEaster.style.left = 50 + "%" ;
+  PopupNoEaster.style.transform = "translate(-50%, -50%)";
+  PopupNoEaster.style.backgroundColor = "white";
+  PopupNoEaster.style.padding = "20px";
+  PopupNoEaster.style.border = "2px solid black";
+  PopupNoEaster.style.color = "black";
+  PopupNoEaster.style.textAlign = "center";
+  PopupNoEaster.style.zIndex = "500";
+  PopupNoEaster.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
+
+
+  PopupNoEaster.innerHTML = `
+    <p>Limite de 10* distinations atteinte</p>
+    <p>* 9 établissements + Position de départ</p>
+    <button onclick="this.parentElement.remove()">OK</button>
+  `;
+  document.body.appendChild(PopupNoEaster);
+}
 
 function ajouterPointCHR(lat, lng, nom) {
   L.marker([lat, lng]).addTo(map).bindPopup(`<b>${nom}</b>`).openPopup();
@@ -202,7 +267,37 @@ function actualiserPanneauGPS() {
   liste.innerHTML = "";
 
   etapesItineraire.forEach((etape, index) => {
-    liste.innerHTML += `<li style="margin-bottom: 5px"><strong>${index+1}.</strong>${etape.nom}</li>`;
+    liste.innerHTML += `
+      <li style="
+        margin-bottom: 8px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        text-align: left; 
+        font-size: 13px;"
+      >
+        <span style="
+          max-width: 85%; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          white-space: nowrap;"
+        >
+          <strong>${index + 1}.</strong> ${etape.nom}
+        </span>
+        <button 
+          onclick="supprimerEtape(${index})" 
+          style="
+            background: none; 
+            border: none; 
+            color: #dc3545; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 14px; 
+            padding: 0 5px;">
+            ×
+        </button>
+      </li>
+    `;
   });
 }
 
@@ -295,4 +390,12 @@ window.ouvrirGoogleMaps = function() {
   const coordonneesMagasins = etapesItineraire.map(etape => `${etape.lat},${etape.lng}`).join('/');
   url += coordonneesMagasins;
   window.open(url,'_blank');
+};
+
+window.supprimerEtape = function(index) {
+  // Supprime 1 élément à la position 'index'
+  etapesItineraire.splice(index, 1); 
+  
+  // Rafraîchit le panneau d'affichage
+  actualiserPanneauGPS();
 };
