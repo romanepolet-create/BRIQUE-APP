@@ -2,7 +2,7 @@ let geojsonLayer;
 let maData = [];
 let modeEdition = false; 
 let bieresDistribActuel = []; 
-let toutesLesBieres = []; // 👈 On la déclare vide pour l'instant
+let toutesLesBieres = []; 
 
 const map = L.map('map').setView([46.603354, 1.888334], 6);
 
@@ -12,7 +12,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 
 async function initialiserDonnees() {
   try {
-    // On va chercher ton fichier JSON
     const [resDistrib, resGeo, resRegion] = await Promise.all([
       fetch('/api/distrib'),
       fetch('/api/geo'),
@@ -73,7 +72,6 @@ function handleSelectChange() {
   const selectedId = selectHTML.value;
   const nomDistrib = selectHTML.options[selectHTML.selectedIndex].text;
 
-  console.log("ID sélectionné :", selectedId);
 
   if(!selectedId) {
     document.getElementById('panneau-distrib').style.display = 'none';
@@ -88,25 +86,38 @@ function handleSelectChange() {
   }
 
     const selectedDistrib = maData.find(d => String(d.id) === String(selectedId));
-    console.log("Distributeur trouvé:", selectedDistrib);
+
+
 
   if(selectedDistrib && geojsonLayer) {
+    // ==========================================
+    // DEBUG : CE QUE VOIT JAVASCRIPT
+    // ==========================================
+    console.log("🎯 Distributeur :", selectedDistrib.nom);
+    console.log("📦 Valeur brute 'dpt' :", selectedDistrib.dpt);
+    console.log("🧐 Type de 'dpt' :", typeof selectedDistrib.dpt);
+    console.log("📊 Est-ce un vrai tableau ?", Array.isArray(selectedDistrib.dpt));
+    // ==========================================
+  
     document.getElementById('panneau-distrib').style.display = 'flex';
     document.getElementById('panneau-titre').innerText = nomDistrib;
 
-    // On éteint le mode édition à chaque fois qu'on change de distributeur
     modeEdition = false; 
-    // On charge les bières du distributeur (S'il n'en a pas, on met un tableau vide [])
     bieresDistribActuel = selectedDistrib.bieres || [];
-    // On lance le pinceau !
     mettreAJourAffichageBieres();
-    // --------------------
 
     map.setView([46.603354, 1.888334], 5);
+
+    const dptsDistributeur = selectedDistrib.dpt || [];
     
     geojsonLayer.eachLayer(function (layer) {
       const deptCode = String(layer.feature.properties.code);
-      const isSelected = selectedDistrib.dpt.map(String).includes(deptCode);
+      const isSelected = dptsDistributeur.some(codeBdd => {
+        let codePropre = String(codeBdd).replace(/[^0-9a-zA-Z]/g, '');
+
+        if(codePropre.length === 1) codePropre = "0" + codePropre;
+        return codePropre === deptCode;
+      });
 
       layer.setStyle({
         fillColor: isSelected ? 'red' : '#3388ff',
@@ -120,7 +131,15 @@ document.getElementById('distribSelect').addEventListener('change', handleSelect
 
 function onDeptClick(e) {
   const deptCode = String(e.target.feature.properties.code);
-  const list = maData.filter(d => d.dpt.map(String).includes(deptCode));
+  const list = maData.filter(d => {
+    const dpts = d.dpt || [];
+    return dpts.some(codeBdd => {
+      let codePropre = String(codeBdd).replace(/[^0-9a-zA-Z]/g, '');
+
+      if(codePropre.length === 1) codePropre = "0" + codePropre;
+      return codePropre === deptCode;
+    });
+  });
   let textePopup = `<b> Département ${deptCode}</b><br>`;
   if(list.length > 0) {
     textePopup += "Distributeurs : <ul>";
@@ -195,15 +214,10 @@ const optionsFuse = {
 
 async function chargerBieresDepuisDesc() {
   try {
-  // 1. On va chercher les données sur ton API (la route qui lit desc.json)
     const response = await fetch('/api/lexique/desc');
     const baseDeDonneesDesc = await response.json();
-
-    // 2. On extrait juste les noms ! 
-    // ⚠️ IMPORTANT : Si dans ton desc.json la clé s'appelle "id" au lieu de "nom", remplace b.nom par b.id ci-dessous :
     toutesLesBieres = baseDeDonneesDesc.map(b => b.id); 
                               
-    // Petite sécurité pour enlever les doublons s'il y en a
     toutesLesBieres = [...new Set(toutesLesBieres)];
                                           
   } catch (erreur) {
@@ -211,7 +225,6 @@ async function chargerBieresDepuisDesc() {
   }
 }
 
-// 3. On lance le chargement dès l'ouverture de la page !
 chargerBieresDepuisDesc();
 
 // ==========================================
