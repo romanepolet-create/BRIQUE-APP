@@ -15,6 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   } else {
-    console.error("BUG MENU : Il manque 'menu-burger' ou 'nav-links' dans le html"
+    console.error("BUG MENU : Il manque 'menu-burger' ou 'nav-links' dans le html")
   }
 });
