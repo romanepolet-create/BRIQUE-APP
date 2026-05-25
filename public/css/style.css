@@ -40,16 +40,14 @@
 
 
 .navbar {
+	position: relative;
   background-color: #002ab6; 
-  /* Le bleu de ton thème */
   padding: 15px 40px;
   display: flex;
   justify-content: space-between; 
-  /* Pousse le logo à gauche et les liens à droite */
   align-items: center;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   margin-bottom: 40px; 
-  /* Donne de l'espace avant le titre de ta page */
 }
 .navbar .logo {
   color: #ffcc00; /* Jaune Brique House */
@@ -233,7 +231,7 @@ body {
 /*STYLE GENERAL*/
 
 *{
-  box-sizing: border;
+  box-sizing: border-box;
 }
 
 html, body {
