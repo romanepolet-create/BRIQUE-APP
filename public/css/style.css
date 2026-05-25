@@ -6,7 +6,6 @@
   color: #FFD700;
   font-size: 28px;
   cursor: pointer;
-  z-index: 9999;
 }
 
 @media (max-width: 950px) {
@@ -20,19 +19,24 @@
 		display: none;
     flex-direction: column;
     position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
+    top: 65px;
+    right: 20px;
+    width: 220px;
     background-color: #002ab6;
     padding: 10px 0;
-    z-index: 9999;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+		border-radius: 10px;
   }
 
 	.nav-links li {
     text-align: center;
     padding: 15px 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
+
+	.nav-links li:last-child {
+    border-bottom: none;
+	}
 
 	 .nav-links.active {
     display: flex;
@@ -41,7 +45,8 @@
 
 
 .navbar {
-	position: relative;
+	z-index: 9999;
+  position: relative;
   background-color: #002ab6; 
   padding: 15px 40px;
   display: flex;
