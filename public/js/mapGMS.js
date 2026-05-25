@@ -386,12 +386,17 @@ function showPopup() {
   const mainPopup = document.getElementById("popup");
   const secPopup = document.getElementById("secPopup")
   const lastPopup = document.getElementById("lastPopup")
+  const PopupNoEaster = document.getElementById("PopupNoEaster")
 
   if(spamLevel === 1) {
+    NoEasterPopup()
+  }
+
+  if(spamLevel === 3) {
     if(mainPopup) mainPopup.style.display = "block";
   }
 
-  else if (spamLevel === 3) {
+  else if (spamLevel === 5) {
     if(secPopup) {
       secPopup.style.top = (48 + Math.random() * 4) + "%";
       secPopup.style.left = (48 + Math.random() * 4) + "%";
@@ -399,14 +404,14 @@ function showPopup() {
     }
   }
 
-  else if (spamLevel=== 5) {
+  else if (spamLevel=== 7) {
     if(lastPopup) {
       lastPopup.style.top = (52 + Math.random() * 4) + "%";
       lastPopup.style.left = (52 + Math.random() * 4) + "%";
       lastPopup.style.display = "block";
     }
   }
-  else if (spamLevel >= 6) {
+  else if (spamLevel >= 8) {
     spawnExtraPopup();
   }
 }
@@ -431,8 +436,8 @@ function spawnExtraPopup() {
   extraPopup.style.transform = "translate(-50%, -50%)";
   extraPopup.style.backgroundColor = "white";
   extraPopup.style.padding = "20px";
-  extraPopup.style.border = "2px solid red";
-  extraPopup.style.color = "red";
+  extraPopup.style.border = "2px solid black";
+  extraPopup.style.color = "black";
   extraPopup.style.fontWeight = "bold";
   extraPopup.style.textAlign = "center";
   extraPopup.style.zIndex = "9999";
@@ -445,6 +450,29 @@ function spawnExtraPopup() {
     <button onclick="this.parentElement.remove()">OK</button>
   `;
   document.body.appendChild(extraPopup);
+}
+
+function NoEasterPopup () {
+  const PopupNoEaster = document.createElement("div");
+        
+  PopupNoEaster.style.position = "fixed";
+  PopupNoEaster.style.top = 50 + "%";
+  PopupNoEaster.style.left = 50 + "%";
+  PopupNoEaster.style.transform = "translate(-50%, -50%)";
+  PopupNoEaster.style.backgroundColor = "white";
+  PopupNoEaster.style.padding = "20px";
+  PopupNoEaster.style.border = "2px solid black";
+  PopupNoEaster.style.color = "black";
+  PopupNoEaster.style.textAlign = "center";
+  PopupNoEaster.style.zIndex = "500";
+  PopupNoEaster.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
+
+  PopupNoEaster.innerHTML = `
+    <p>Limite de 10* distinations atteinte.</p>
+    <p>* 9 établissements + Position de départ</p>
+    <button onclick="this.parentElement.remove()">OK</button>
+  `;
+  document.body.appendChild(PopupNoEaster);
 }
 
 
