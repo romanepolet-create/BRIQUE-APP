@@ -1,4 +1,15 @@
 /*NAV BAR*/
+.menu-burger {
+  display: none;
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+
+
 .navbar {
   background-color: #002ab6; 
   /* Le bleu de ton thème */
