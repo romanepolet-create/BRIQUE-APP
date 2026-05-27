@@ -644,6 +644,13 @@ select {
   height: calc(100vh - 70px); /* Prend tout l'écran moins la navbar */
   overflow: hidden;
 }
+
+#left {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+}
+
 .sidebar-filters {
   width: 320px;
   background-color: #fafafa;
