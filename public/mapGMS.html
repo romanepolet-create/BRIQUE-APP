@@ -75,18 +75,13 @@
 
  <nav class="navbar">
   <div class="logo">🍻 Brique App</div>
-   <button class="menu-burger" id="menu-burger">
-      ☰
-    </button>
-  <ul class="nav-links" id="nav-links">
+  <ul class="nav-links">
     <li><a href="/index.html" class="active">Accueil</a></li>
     <li><a href="/desc.html">Bières BH</a></li>
     <li><a href="/lexique.html" class="active">Glossaire</a></li>
     <li><a href="/gms.html">Espace GMS</a></li>
     <li><a href="/distrib.html" class="active">Distributeurs</a></li>
     <li><a href="/form.html">Formulaires</a></li>
-    <li><a href="/mapCHR.html" class="active">Map CHR</a></li>
-
   </ul>
 </nav>
 
@@ -95,44 +90,74 @@
  <div id="left">  
   <div class="sidebar-filters">
     <h2>Filtres GMS 🗺️</h2>
+
+    <input 
+      type="text" 
+      id="search-bar" 
+      placeholder="🔍 Rechercher (nom, ville...)"
+      onkeyup="filtrerMagasins()" class="search-input"
+    >
+    <div class="toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+        <span class="slider round"></span>
+      </label>
+      <span class="toggle-label">Afficher uniquement ma tournée</span>
+    </div>
     
     <!--GEOLOCALISATION-->
     <button class="btn-gps" onclick="activerGeolocalisation()">📍 Me géolocaliser</button>
 
+    <!--Enseignes-->
+      <div class="filter-group">
+        <label>Enseigne(s)</label>
+				<div class="custom-select">
+          <div class="select-box" onclick="toggleDropdown('dropdown-enseigne')">
+          <span>Sélectionner...</span> <span>▼</span>
+          </div>
+        <div class="dropdown-list" id="dropdown-enseigne">
+    			<label><input type="checkbox" value="CRF" onchange="filtrerMagasins()"> Carrefour (CRF)</label>
+    	  	<label><input type="checkbox" value="LCL" onchange="filtrerMagasins()"> Leclerc (LCL)</label>
+    			<label><input type="checkbox" value="ITM" onchange="filtrerMagasins()"> Intermarché (ITM)</label>
+    			<label><input type="checkbox" value="U" onchange="filtrerMagasins()"> Système U (U)</label>
+    			<label><input type="checkbox" value="FRANPRIX" onchange="filtrerMagasins()"> Franprix</label>
+    			<label><input type="checkbox" value="MONOPRIX" onchange="filtrerMagasins()"> Monoprix</label>
+    			<label><input type="checkbox" value="CASINO" onchange="filtrerMagasins()"> Casino</label>
+    			<label><input type="checkbox" value="AUCHAN" onchange="filtrerMagasins()"> Auchan</label>
+    			<label><input type="checkbox" value="OTERA" onchange="filtrerMagasins()"> OTERA</label>
+  			</div>
+      </div>
+    </div>
+
+    <details class="geo-details">
+      <summary>Filtres Géographiques</summary>
+      <div class="details-content">
+
     <!--FILTRES-->
     <!--Regions-->
     <div class="filter-group">
-        <label for="filter-region">Région</label>
-        <select id="filter-region" onchange="filtrerMagasins()">
-          <option value="">Toutes les régions</option>
-        </select>
+      <label>Région(s)</label>
+      <div class="custom-select">
+        <div class="select-box" onclick="toggleDropdown('dropdown-region')">
+          <span>Sélectionner...</span> <span>▼</span>
+        </div>
+        <div class="dropdown-list" id="dropdown-region">
+        </div>
       </div>
+    </div>
       
       <!--Departement-->
       <div class="filter-group">
-        <label for="filter-dpt">Département</label>
-        <select id="filter-dpt" onchange="filtrerMagasins()">
-          <option value="">Tous les départements</option>
-        </select>
-      </div>
-
-      <!--Enseignes-->
-      <div class="filter-group">
-        <label for="filter-enseigne">Enseigne</label>
-        <select id="filter-enseigne" onchange="filtrerMagasins()">
-          <option value="">Toutes les enseignes</option>
-          <option value="CRF">Carrefour (CRF)</option>
-          <option value="LCL">Leclerc (LCL)</option>
-          <option value="ITM">Intermarché (ITM)</option>
-          <option value="U">Système U (U)</option>
-          <option value="FRANPRIX">Franprix</option>
-          <option value="MONOPRIX">Monoprix</option>
-          <option value="CASINO">Casino</option>
-          <option value="AUCHAN">Auchan</option>
-          <option value="OTERA">OTERA</option>
-        </select>
-      </div>
-
+        <label>Département(s)</label>
+        <div class="custom-select">
+          <div class="select-box" onclick="toggleDropdown('dropdown-dpt')">
+            <span>Sélectionner...</span> <span>▼</span>
+         </div>
+         <div class="dropdown-list" id="dropdown-dpt">
+         </div>
+       </div>
+     </div>
+      
       <!--Distance (grâce à la géolocalisation)-->
       <div class="filter-group">
         <label for="filter-rayon">Rayon autour de moi</label>
@@ -146,6 +171,7 @@
       </div>
 
       </div>
+      </details>
 
       <div id="panneau-tournee">
         <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
@@ -158,8 +184,9 @@
           <button id="btn-waze" onclick="ouvrirWaze()">🚗 Waze</button>
         </div>
         <button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
+       </div>
      </div>
-    </div>
+   </div>
 
     <div id="map"></div>
 
@@ -168,6 +195,5 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
   <script src="/js/mapGMS.js"></script>
-  <script src="/js/navbar.js"></script>
 </body>
 </html>
