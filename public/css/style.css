@@ -792,6 +792,12 @@ select {
 
 
 @media (max-width: 768px) {
+	body {
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+	}
+	
 	.map-container {
 		display: flex;
 		flex-direction: column-reverse;
