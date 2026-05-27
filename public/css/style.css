@@ -641,32 +641,178 @@ select {
 /* Styles spécifiques pour la mise en page de la carte */
 .map-container {
   display: flex;
-  height: calc(100vh - 70px); /* Prend tout l'écran moins la navbar */
+  height: calc(100vh - 80px); 
   overflow: hidden;
-}
-
-.sidebar-filters {
-  width: 320px;
-  background-color: #fafafa;
-  border-right: 2px solid #002ab6;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  border-radius: 20px
+	flex-direction: row;
+	width: 100%;
 }
 
 #left {
   height: 100%;
+  overflow-y: auto; /* Scroll uniquement ici */
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: transparent; /* Fond propre */
+  text-align: left; /* Empêche le centrage moche du texte */
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-filters {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  border-right: 2px solid #002ab6;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 20px;
+  flex-shrink: 0;
   overflow-y: auto;
-  padding-bottom: 30px;
 }
 
 #map {
   flex: 1;
   height: 100%;
+	z-index: 1;
 }
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: bold
+}
+.toggle-label {margin-left: 10px}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+.slider:before {
+   position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+input:checked + .slider { background-color: #28a745; }
+input:checked + .slider:before { transform: translateX(20px); }
+.slider.round { border-radius: 24px; }
+.slider.round:before { border-radius: 50%; }
+
+.geo-details {
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+.geo-details summary {
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+.details-content { margin-top: 10px; }
+
+/* Style pour les listes de cases à cocher multi-choix */
+.custom-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.select-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.dropdown-list {
+  display: none; /* Caché par défaut */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto; /* Scroll interne à la liste */
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1000; /* Passe au-dessus du reste */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.dropdown-list.show {
+  display: block; /* S'affiche quand on clique */
+}
+
+.dropdown-list label {
+  display: block;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  margin: 0;
+}
+
+.dropdown-list label:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-list input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.btn-delete-etape {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+}
+
+
 
 .filter-group {
   display: flex;
