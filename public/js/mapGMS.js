@@ -1,9 +1,3 @@
-// Fonction pour vérifier si l'utilisateur est sur mobile
-function isMobile() {
-  return window.matchMedia("(max-width: 768px)").matches;
-}
-
-
 let geojsonLayer
 let modeEdition = false;
 let markerConteneur; //PINS MAGASINS
@@ -15,13 +9,7 @@ let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
 
 //CARTE LEAFLET
-const mapOptions = {
-  center: [46.603354, 1.888334],
-  zoom: 5,
-  tap: false
-};
-
-const map = L.map('map', mapOptions);
+const map = L.map('map').setView([46.603354, 1.888334], 5);
 
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -204,7 +192,7 @@ function afficherMagasinsSurCarte(magasins) {
                   font-size: 12px;">
             🌐 Ouvrir dans HubSpot
         </a>
-        <button onclick="ajouterEtape(${magasin.lng}, ${magasin.lat}, '${nomEchappe}')"
+        <button onclick="ajouterEtape(${magasin.lng}, ${magasin.lat}, '${nomEchappe}', '${magasin.hubspot_id}')"
           style="
             display = block;
             width: 100%;
@@ -263,22 +251,53 @@ map.on('zoomend', function() {
 // FILTRES
 // ================
 window.filtrerMagasins = function() {
-  const regionSelectionnee = document.getElementById('filter-region').value;
-  const dptSelectionne = document.getElementById('filter-dpt').value;
-  const enseigneSelectionnee = document.getElementById('filter-enseigne').value;
+	const rechercheTexte = document.getElementById('search-bar') ? document.getElementById('search-bar').value.toLowerCase() : "";
+	 const afficherSeulementTournee = document.getElementById('toggle-selected') ? document.getElementById('toggle-selected').checked : false;
+
   const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
+
+  // NOUVELLE FONCTION : Lit les cases cochées dans nos divs
+  const getValeursSelectionnees = (id) => {
+    const container = document.getElementById(id);
+    if (!container) return [];
+    // On cherche toutes les checkboxes qui sont cochées dans ce conteneur
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+    // On retourne un tableau avec leurs valeurs
+    return Array.from(checkboxes).map(cb => cb.value);
+  };
+
+
+	const regionsSel = getValeursSelectionnees('dropdown-region');
+  const dptsSel = getValeursSelectionnees('dropdown-dpt');
+  const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
+
+
 
   //FILTER ON DATA
   const magasinsFiltres = listeMagasins.filter(magasin => {
-        
+
+		if (afficherSeulementTournee) {
+      const estDansTournee = etapesItineraire.some(etape => etape.lat === magasin.lat && etape.lng === magasin.lng);
+      if (!estDansTournee) return false;
+    }
+
+		 if (rechercheTexte !== "") {
+      const nom = magasin.nom ? magasin.nom.toLowerCase() : "";
+      const ville = magasin.ville ? magasin.ville.toLowerCase() : "";
+      const adresse = magasin.adresse ? magasin.adresse.toLowerCase() : "";
+      
+      if (!nom.includes(rechercheTexte) && !ville.includes(rechercheTexte) && !adresse.includes(rechercheTexte)) {
+        return false;
+      }
+    }
+
     // 1. ENSEIGNES
-    if (enseigneSelectionnee && magasin.enseigne !== enseigneSelectionnee) return false;
-        
+    if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false;  
     // 2. REGION
-    if (regionSelectionnee && magasin.region !== regionSelectionnee) return false;
+    if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
 
     // 3. DPT
-    if (dptSelectionne && magasin.dpt !== dptSelectionne) return false;
+    if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
 
     // 4. RAYON KM (GEOLOC)
     if (rayonMaximum && rayonMaximum < 99999) {
@@ -326,27 +345,24 @@ function remplirSelectFiltre(idSelect, donneesGeoJSON, clePropriete) {
 
 // Génération automatique des options des filtres à partir de Supabase
 function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
-  const selectRegion = document.getElementById('filter-region');
-  const selectDpt = document.getElementById('filter-dpt');
+  const containerRegion = document.getElementById('dropdown-region');
+  const containerDpt = document.getElementById('dropdown-dpt');
 
   if (!magasins || magasins.length === 0) return;
 
   // 1. Remplissage des Régions uniques (Trié par ordre alphabétique)
-  if (selectRegion && selectRegion.options.length <= 1) {
+  if (containerRegion && containerRegion.innerHTML.trim() === "") {
     const regions = [...new Set(magasins.map(m => m.region))].filter(Boolean).sort();
     regions.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region;
-      option.textContent = region;
-      selectRegion.appendChild(option);
+      const label = document.createElement('label');
+      label.innerHTML = `<input type="checkbox" value="${region}" onchange="filtrerMagasins()"> ${region}`;
+      containerRegion.appendChild(label);
     });
   }
 
   // 2. Remplissage des Départements rangés par Région avec leur Vrai Nom
-  if (selectDpt && donneesGeoJSON && donneesGeoJSON.features) {
-    // On extrait la liste des numéros de départements uniques présents dans Supabase
-    selectDpt.innerHTML = `<option value="">Tous les départements</option>`;
-
+  if (containerDpt && donneesGeoJSON && donneesGeoJSON.features && containerDpt.innerHTML.trim() === "") {
+ 
     const dptsSupabase = [...new Set(magasins.map(m => m.dpt))].filter(Boolean);
 
     // On crée un dictionnaire pour retrouver le Nom et la Région d'un code dpt
@@ -377,13 +393,24 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
 
     // On injecte les options triées dans le HTML (plus besoin de sous-groupes "Autre")
     listeOptionsFinales.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.code;
-      option.textContent = item.texteAffichage;
-      selectDpt.appendChild(option);
+      const label = document.createElement('label');
+      label.innerHTML = `<input type="checkbox" value="${item.code}" onchange="filtrerMagasins()"> ${item.texteAffichage}`;
+      containerDpt.appendChild(label);
     });
   }
 }
+
+// Ouvre ou ferme la liste déroulante cliquée
+window.toggleDropdown = function(id) {
+  document.getElementById(id).classList.toggle('show');
+};
+
+// Ferme les listes si on clique ailleurs sur la page
+window.onclick = function(event) {
+  if (!event.target.closest('.custom-select')) {
+    document.querySelectorAll('.dropdown-list').forEach(el => el.classList.remove('show'));
+  }
+};
 
 
 
@@ -488,14 +515,22 @@ function NoEasterPopup () {
 }
 
 
-window.ajouterEtape = function(lng, lat, nom) {
+window.ajouterEtape = function(lng, lat, nom, hubspot_id) {
   if(etapesItineraire.length >=9) {
       showPopup();
       return;}
 
-  etapesItineraire.push({lat: lat, lng: lng, nom: nom});
+  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id});
   actualiserPanneauGPS();
+  filtrerMagasins();
 };
+
+window.supprimerEtape = function(index) {
+etapesItineraire.splice(index, 1);
+  actualiserPanneauGPS();
+  filtrerMagasins(); 
+};
+
 
 function actualiserPanneauGPS() {
   const panneau = document.getElementById('panneau-tournee');
@@ -516,13 +551,25 @@ function actualiserPanneauGPS() {
   liste.innerHTML = "";
 
   etapesItineraire.forEach((etape, index) => {
-    liste.innerHTML += `<li style="margin-bottom: 5px"><strong>${index+1}.</strong>${etape.nom}</li>`;
+		let contenuTexte = etape.nom;
+    if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
+    	const lien = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${etape.hubspot_id}`;
+      contenuTexte = `<a href="${lien}" target="_blank" style="color: #005baa; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
+    }
+
+    liste.innerHTML += `
+			<li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+        <span><strong>${index+1}.</strong> ${contenuTexte}</span>
+        <button class="btn-delete-etape" onclick="supprimerEtape(${index})" title="Retirer">✖ </button>
+      </li>
+		`
   });
 }
 
 window.viderTournee = function() {
   etapesItineraire = [];
   actualiserPanneauGPS();
+  filtrerMagasins();
 };
 
 window.ouvrirGoogleMaps = function() {
@@ -633,3 +680,6 @@ window.optimiserTournee = async function() {
     if(btnOpti) btnOpti.textContent = "⏳ Optimiser l'itinéraire";
   }
 };
+
+
+
