@@ -1,3 +1,9 @@
+// Fonction pour vérifier si l'utilisateur est sur mobile
+function isMobile() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+
 let geojsonLayer
 let modeEdition = false;
 let markerConteneur; //PINS MAGASINS
@@ -9,7 +15,13 @@ let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
 
 //CARTE LEAFLET
-const map = L.map('map').setView([46.603354, 1.888334], 5);
+const mapOptions = {
+  center: [46.603354, 1.888334],
+  zoom: 5,
+  tap: false
+};
+
+const map = L.map('map', mapOptions);
 
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
