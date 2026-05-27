@@ -645,12 +645,6 @@ select {
   overflow: hidden;
 }
 
-#left {
-	display: flex;
-	flex-direction: column;
-	overflow-y: auto;
-}
-
 .sidebar-filters {
   width: 320px;
   background-color: #fafafa;
@@ -799,12 +793,6 @@ select {
 
 
 @media (max-width: 768px) {
-	body {
-		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
-	}
-	
 	.map-container {
 		display: flex;
 		flex-direction: column-reverse;
