@@ -657,6 +657,12 @@ select {
   border-radius: 20px
 }
 
+#left {
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 30px;
+}
+
 #map {
   flex: 1;
   height: 100%;
