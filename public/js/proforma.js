@@ -297,8 +297,12 @@ window.validerProforma = async function() {
         let ligneIdx = 22;
 
         for (const [id, qte] of Object.entries(panierProforma)) {
-            const biere = bieresDB.find(b => b.id === id);
-            const finance = proformaDB.find(p => p.id === id || p.designation === id);
+            const cleanId = id.trim().toLowerCase();
+            const biere = bieresDB.find(b => b.id.trim().toLowerCase() === cleanId);
+            const finance = proformaDB.find(p => 
+                p.id.trim().toLowerCase() === cleanId || 
+                p.designation.trim().toLowerCase() === cleanId
+        );
 
             if (biere && finance) {
                 const qteUV = qte * biere.nombre;
