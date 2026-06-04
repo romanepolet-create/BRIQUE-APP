@@ -10,12 +10,38 @@ const PORTAL_ID = "146794478"; //ID HS
 
 //CARTE LEAFLET
 const map = L.map('map').setView([46.603354, 1.888334], 5);
-
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors, © CARTO'
   }).addTo(map);
 
+L.Control.Fullscreen = L.Control.extend({
+  onAdd: function(map) {
+    var btn = L.DomUtil.create('button', 'leaflet-bar');
+    btn.innerHTML = '⛶'; // Icône plein écran
+    btn.style.backgroundColor = 'white';
+    btn.style.width = '34px';
+    btn.style.height = '34px';
+    btn.style.fontSize = '20px';
+    btn.style.lineHeight = '30px';
+    btn.style.cursor = 'pointer';
+    btn.style.border = '2px solid rgba(0,0,0,0.2)';
+    btn.title = "Mettre la carte en plein écran";
+
+    btn.onclick = function(){
+      const mapEl = document.getElementById('map');
+      if (!document.fullscreenElement) {
+        if (mapEl.requestFullscreen) mapEl.requestFullscreen();
+        else if (mapEl.webkitRequestFullscreen) mapEl.webkitRequestFullscreen(); // Safari
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); // Safari
+      }
+    }
+    return btn;
+  }
+});
+new L.Control.Fullscreen({ position: 'topleft' }).addTo(map);
 
 markerConteneur = L.markerClusterGroup({
   maxClusterRadius: 20,
