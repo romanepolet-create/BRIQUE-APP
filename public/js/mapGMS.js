@@ -302,12 +302,14 @@ window.filtrerMagasins = function() {
   //FILTER ON DATA
   const magasinsFiltres = listeMagasins.filter(magasin => {
 
-		if (afficherSeulementTournee) {
-      const estDansTournee = etapesItineraire.some(etape => etape.lat === magasin.lat && etape.lng === magasin.lng);
+  // --- FILTRE TOGGLE "MA TOURNEE SEULEMENT" ---
+    if (afficherSeulementTournee) {
+      // On cherche si le magasin est dans la tournée ET qu'il n'est PAS masqué
+      const estDansTournee = etapesItineraire.some(etape => etape.lat === magasin.lat && etape.lng === magasin.lng && !etape.masque);
       if (!estDansTournee) return false;
     }
 
-		 if (rechercheTexte !== "") {
+    if (rechercheTexte !== "") {
       const nom = magasin.nom ? magasin.nom.toLowerCase() : "";
       const ville = magasin.ville ? magasin.ville.toLowerCase() : "";
       const adresse = magasin.adresse ? magasin.adresse.toLowerCase() : "";
@@ -541,22 +543,55 @@ function NoEasterPopup () {
 }
 
 
+// ==========================================
+// GESTION DES ÉTAPES (MASQUER, FINAL, SUPPRIMER)
+// ==========================================
 window.ajouterEtape = function(lng, lat, nom, hubspot_id) {
-  if(etapesItineraire.length >=9) {
+  const activeCount = etapesItineraire.filter(e => !e.masque).length;
+  if(activeCount >= 9) {
       showPopup();
-      return;}
+      return;
+  }
 
-  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id});
+  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, masque: false, isFinal: false});
   actualiserPanneauGPS();
   filtrerMagasins();
+
+  afficherToast(`✅ ${nom} a bien été ajouté à la tournée`);
 };
 
 window.supprimerEtape = function(index) {
-etapesItineraire.splice(index, 1);
+  etapesItineraire.splice(index, 1);
   actualiserPanneauGPS();
   filtrerMagasins(); 
 };
 
+// Fonction pour Masquer / Démasquer un établissement
+window.toggleMasqueEtape = function(index) {
+  // Si on veut démasquer, on vérifie d'abord qu'on ne dépasse pas la limite de 9
+  if (etapesItineraire[index].masque) {
+    const activeCount = etapesItineraire.filter(e => !e.masque).length;
+    if (activeCount >= 9) {
+      showPopup();
+      return;
+    }
+  }
+  etapesItineraire[index].masque = !etapesItineraire[index].masque;
+  actualiserPanneauGPS();
+  filtrerMagasins();
+};
+
+// Fonction pour définir la destination finale (Drapeau)
+window.toggleFinalEtape = function(index) {
+  const currentStatus = etapesItineraire[index].isFinal;
+  // On remet tout à zéro (une seule destination finale possible)
+  etapesItineraire.forEach(e => e.isFinal = false);
+  // Si ce n'était pas déjà la destination finale, on l'active
+  if (!currentStatus) {
+    etapesItineraire[index].isFinal = true;
+  }
+  actualiserPanneauGPS();
+};
 
 function actualiserPanneauGPS() {
   const panneau = document.getElementById('panneau-tournee');
@@ -565,7 +600,9 @@ function actualiserPanneauGPS() {
 
   if (!panneau || !liste) return;
 
-  if (compteur) compteur.textContent = etapesItineraire.length;
+  // Le compteur n'affiche que le nombre d'étapes ACTIVES
+  const activeCount = etapesItineraire.filter(e => !e.masque).length;
+  if (compteur) compteur.textContent = activeCount;
 
   if (etapesItineraire.length === 0) {
     panneau.style.display = "block";
@@ -573,24 +610,42 @@ function actualiserPanneauGPS() {
     return;
   }
 
-  panneau.style.display = 'block'
+  panneau.style.display = 'block';
   liste.innerHTML = "";
 
   etapesItineraire.forEach((etape, index) => {
-		let contenuTexte = etape.nom;
+    let contenuTexte = etape.nom;
     if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
-    	const lien = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${etape.hubspot_id}`;
-      contenuTexte = `<a href="${lien}" target="_blank" style="color: #005baa; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
+      const lien = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${etape.hubspot_id}`;
+      // Si masqué, on grise le lien
+      contenuTexte = `<a href="${lien}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
     }
 
+    const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
+    
+    // Le bouton Oeil (barré par CSS natif si masqué)
+    const btnMasque = etape.masque
+      ? `<button onclick="toggleMasqueEtape(${index})" title="Réafficher" style="background:none; border:none; cursor:pointer; position:relative; font-size:16px;">👁️<span style="position:absolute; top:50%; left:5%; width:90%; height:2px; background:red; transform:rotate(45deg);"></span></button>`
+      : `<button onclick="toggleMasqueEtape(${index})" title="Masquer temporairement" style="background:none; border:none; cursor:pointer; font-size:16px;">👁️</button>`;
+
+    // Le bouton Drapeau (Finale)
+    const btnFinal = etape.isFinal
+      ? `<button onclick="toggleFinalEtape(${index})" title="Retirer de la fin" style="background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; font-size:12px; padding:2px 5px;">🏁</button>`
+      : `<button onclick="toggleFinalEtape(${index})" title="Verrouiller à la fin" style="background:none; border:1px solid #ccc; border-radius:4px; cursor:pointer; font-size:12px; filter:grayscale(100%); opacity:0.5; padding:2px 5px;">🏁</button>`;
+
     liste.innerHTML += `
-			<li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
-        <span><strong>${index+1}.</strong> ${contenuTexte}</span>
-        <button class="btn-delete-etape" onclick="supprimerEtape(${index})" title="Retirer">✖ </button>
+      <li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; ${styleLigne}">
+        <span style="flex:1; text-align:left; padding-right: 5px;"><strong>${index+1}.</strong> ${contenuTexte}</span>
+        <div style="display:flex; gap: 5px; align-items:center;">
+          ${btnFinal}
+          ${btnMasque}
+          <button class="btn-delete-etape" onclick="supprimerEtape(${index})" title="Retirer" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;">✖</button>
+        </div>
       </li>
-		`
+    `;
   });
 }
+
 
 window.viderTournee = function() {
   etapesItineraire = [];
@@ -599,25 +654,25 @@ window.viderTournee = function() {
 };
 
 window.ouvrirGoogleMaps = function() {
-  if (etapesItineraire.length === 0) return;
+  const etapesActives = etapesItineraire.filter(e => !e.masque); // EXCLURE MASQUÉS
+  if (etapesActives.length === 0) return;
   
   let url = 'https://www.google.com/maps/dir/';
+  if (userPosition) url += `${userPosition.lat},${userPosition.lng}/`;
   
-  if (userPosition) {
-   url += `${userPosition.lat},${userPosition.lng}/`;
-  } 
-  
-  const coordonneesMagasins = etapesItineraire.map(etape => `${etape.lat},${etape.lng}`).join('/');
+  const coordonneesMagasins = etapesActives.map(etape => `${etape.lat},${etape.lng}`).join('/');
   url += coordonneesMagasins;
   window.open(url,'_blank');
-  };
+};
 
 
 window.ouvrirWaze = function() {
-  if (etapesItineraire.length === 0) return;
-  const dest = etapesItineraire[0];
+  const etapesActives = etapesItineraire.filter(e => !e.masque);
+  if (etapesActives.length === 0) return;
+  const dest = etapesActives[0]; // Waze ne prend que la 1ère destination
   window.open(`https://waze.com/ul?ll=${dest.lat},${dest.lng}&navigate=yes`, '_blank');
 };
+
 
 //=====================
 //OPTIMISATION D'ITINERAIRE
@@ -637,60 +692,70 @@ function genererPermutation(arr) {
 }
 
 window.optimiserTournee = async function() {
-  if (etapesItineraire.length < 2) {
-    alert("📍 Ajouter au moins 2 magasins pour optimiser l'ordre");
+  const activeStops = etapesItineraire.filter(e => !e.masque);
+  const hiddenStops = etapesItineraire.filter(e => e.masque); // On les garde de côté
+
+  if (activeStops.length < 2) {
+    alert("📍 Ajoutez au moins 2 magasins actifs (non masqués) pour optimiser l'ordre");
+    return;
   }
   
   const btnOpti = document.getElementById('btn-opti');
-  
   if(btnOpti) {
     btnOpti.textContent = "Calcul Routier en cours...";
     btnOpti.style.pointerEvents = "none";
   }
 
-  try {
+ try {
     let pointsPourAPI = [];
+    if(userPosition) pointsPourAPI.push({lat: userPosition.lat, lng: userPosition.lng, isUser: true});
 
-    if(userPosition) {
-      pointsPourAPI.push({lat: userPosition.lat, lng: userPosition.lng, isUser: true});
+    // On cherche l'étape avec le drapeau final
+    let stopsToOptimize = [...activeStops];
+    const finalStopIndex = stopsToOptimize.findIndex(e => e.isFinal);
+    let finalStop = null;
+    let hasDestinationLast = false;
+
+    // Si on a une destination finale, on la retire du milieu pour la forcer à la toute fin
+    if (finalStopIndex !== -1) {
+      finalStop = stopsToOptimize.splice(finalStopIndex, 1)[0];
+      hasDestinationLast = true;
     }
-    pointsPourAPI = pointsPourAPI.concat(etapesItineraire);
 
+pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
+    if (finalStop) pointsPourAPI.push(finalStop); // 🏁 Placée tout à la fin
+
+    // Création de la chaîne de coordonnées
     const coordString = pointsPourAPI.map(p => {
       const cleanLng = parseFloat(String(p.lng).replace(',','.'));
       const cleanLat = parseFloat(String(p.lat).replace(',','.'));
       return `${cleanLng},${cleanLat}`;
     }).join(';');
 
-    const url = `https://router.project-osrm.org/trip/v1/driving/${coordString}?source=first&roundtrip=false`;
-
-    console.log('URL OSRM:', url);
+    let url = `https://router.project-osrm.org/trip/v1/driving/${coordString}?source=first&roundtrip=false`;
+    if (hasDestinationLast) url += `&destination=last`; // Force l'API à garder le dernier point à la fin
 
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.code !== 'Ok') {
-      throw new Error(`Refus API - code = ${data.code} : ${data.message}`);
-    }
+    if (data.code !== 'Ok') throw new Error(`Refus API : ${data.message}`);
 
-    let pointsTries = new Array(pointsPourAPI.length); 
+      let pointsTries = new Array(pointsPourAPI.length); 
     data.waypoints.forEach((wp, indexOrigine) => {
       const indexOptimise = wp.waypoint_index;
       pointsTries[indexOptimise] = pointsPourAPI[indexOrigine];
     });
 
-    if(userPosition) {
-      pointsTries.shift();
-    };
+  if(userPosition) pointsTries.shift(); // Retire la géoloc des étapes affichées
 
-    etapesItineraire = pointsTries;
+    // L'itinéraire final = Les actifs triés + les masqués collés à la fin
+    etapesItineraire = [...pointsTries, ...hiddenStops];
     actualiserPanneauGPS();
     
     if(btnOpti) {
       btnOpti.textContent = "✅ Trajet Optimisé !";
       btnOpti.style.backgroundColor = "#28a745";
       btnOpti.style.color = "white";
-
       setTimeout(() => {
         btnOpti.textContent = "⏳ Optimiser l'itinéraire";
         btnOpti.style.backgroundColor = "#ffc107";
@@ -698,14 +763,34 @@ window.optimiserTournee = async function() {
         btnOpti.style.pointerEvents = "auto";
       }, 3000);
     }
-      
   } catch (error) {
-    console.error("Erreur d'optimisation OSRM :", error);
+    console.error("Erreur OSRM :", error);
     alert("Désolé, impossible de joindre le serveur d'optimisation pour le moment.");
   } finally {
-    if(btnOpti) btnOpti.textContent = "⏳ Optimiser l'itinéraire";
+    if(btnOpti) {
+      btnOpti.textContent = "⏳ Optimiser l'itinéraire";
+      btnOpti.style.pointerEvents = "auto";
+    }
   }
 };
 
 
-
+// Fonction pour afficher le petit message de succès
+window.afficherToast = function(message) {
+  let toast = document.getElementById("toast-notification");
+  
+  // Si le toast n'existe pas encore dans le HTML, on le crée à la volée
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast-notification";
+    document.body.appendChild(toast);
+  }
+  
+  toast.textContent = message;
+  toast.className = "toast-show";
+  
+  // On retire la classe après 3 secondes (3000 ms) pour qu'il disparaisse
+  setTimeout(function() { 
+    toast.className = toast.className.replace("toast-show", ""); 
+  }, 3000);
+};
