@@ -71,7 +71,7 @@ async function chargerGeoJSON() {
 
     geojsonLayer = L.geoJSON(donneesGeo, {
       style: {
-        fillColor: '#3388ff',
+        fillColor: 'transparent',
         weight: 1,
         opacity: 0.5,
         color: 'gray',
