@@ -49,6 +49,15 @@
 <script src="/js/outils.js"></script>
  <script src="/js/lexique.js"></script>
  <script src="/js/navbar.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('Service worker enregistré !', reg))
+        .catch((err) => console.log('Erreur Service Worker', err));
+    });
+  }
+</script>
 </body>
 </html>
 
