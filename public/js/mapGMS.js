@@ -160,7 +160,7 @@ function getCouleurEnseigne(enseigne) {
 		"LECLERC": "#ff99f5",
 		"ITM SM": "#01981e",
 		"ITM PROXI": "#14fa23",
-		"FRANPRIX": "#fef3943,
+		"FRANPRIX": "#fef3943",
 		"CRF PROXI": "#4dbeff",
 		"CRF HYPER": "#4d7fff",
 		"CASINO": "#baab2c",
