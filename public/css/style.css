@@ -926,7 +926,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 #btn-opti {
-  width : 100%;
+  width: 100%;
   background-color: #ffc107;
   color: #333;
   border: none;
