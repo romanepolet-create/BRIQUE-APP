@@ -303,6 +303,7 @@ window.filtrerMagasins = function() {
 	const regionsSel = getValeursSelectionnees('dropdown-region');
   const dptsSel = getValeursSelectionnees('dropdown-dpt');
   const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
+	const prioSel = getValeursSelectionnees('dropdown-prio');
 
 
 
@@ -330,6 +331,8 @@ window.filtrerMagasins = function() {
     if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false;  
     // 2. REGION
     if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
+	// Prio
+	if (regionSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
 
     // 3. DPT
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
