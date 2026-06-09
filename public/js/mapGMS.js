@@ -152,15 +152,21 @@ function getCouleurEnseigne(enseigne) {
   const enseignePropre = enseigne.trim().toUpperCase();
 
     const couleurs = {
-      "CRF": "#005baa",       // Bleu Carrefour
-      "LCL": "#0066cc",       // Bleu Leclerc
-      "ITM": "#e30613",       // Rouge Intermarché
-      "U": "#0055a4",         // Bleu Système U
-      "AUCHAN": "#e3001b",    // Rouge Auchan
-      "CASINO": "#00994d",    // Vert Casino
-      "MONOPRIX": "#e2007a",  // Rose Monoprix
-      "FRANPRIX": "#ff6600",  // Orange Franprix
-      "OTERA": "#6b8e23"      // Vert Otera
+      "SUPER U": "#7304E7",
+	  "MONOPRIX": "#f8de0d",
+		"AUCHAN SM": "#f8190d",
+		"CRF MARKET": "#3002d4",
+		"LECLERC PROXI": "#fa1ee5",
+		"LECLERC": "#ff99f5",
+		"ITM SM": "#01981e",
+		"ITM PROXI": "#14fa23",
+		"FRANPRIX": "#fef3943,
+		"CRF PROXI": "#4dbeff",
+		"CRF HYPER": "#4d7fff",
+		"CASINO": "#baab2c",
+		"AUCHAN HM": "#fe7e71",
+		"OTERA": "#ff871f",
+
     } 
     // Retourne la couleur, ou un gris par défaut si l'enseigne est inconnue
     return couleurs[enseignePropre] || "#555555";
