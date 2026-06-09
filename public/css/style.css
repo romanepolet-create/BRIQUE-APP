@@ -773,7 +773,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   background: white;
   border: 1px solid #ccc;
   border-top: none;
-  z-index: 1000; /* Passe au-dessus du reste */
+  z-index: 1001; /* Passe au-dessus du reste */
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
@@ -852,7 +852,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 /* STYLE POUR L'OPTIMISATION DE TOURNEE */
 #panneau-tournee {
   position: relative; 
-  z-index: 999; 
+  z-index: 1000; 
   background: white;
   margin: 20px auto;
   padding: 15px; 
