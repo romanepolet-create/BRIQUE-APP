@@ -212,7 +212,7 @@ function afficherMagasinsSurCarte(magasins) {
         <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
           ${magasin.adresse || "Adresse non renseignée"}<br>
           <strong>${magasin.code_postal} ${magasin.ville}</strong><br>
-		  <em>${magasin.Priorité}</em>
+		  <em>Priorité : ${magasin.Priorité}</em>
         </p>
         <a href="${lienHubspot}" target="_blank" 
            style="display: block; 
