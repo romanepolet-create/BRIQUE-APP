@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     const { data, error } = await supabase
       .from('GMS')
       .select('*')
-      .limit(10000);
+      .limit(100000);
 
     if (error) {
       throw error;
