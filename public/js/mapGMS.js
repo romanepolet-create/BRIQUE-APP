@@ -187,7 +187,9 @@ async function chargerDonneesMagasins() {
     console.log("Voici le premier magasin :", listeMagasins[0]);
 
     // Remplir la carte dès le départ
+	  console.time("affichage");
     afficherMagasinsSurCarte(listeMagasins);
+	  console.timeEnd("affichage");
   } catch (err) {
     console.error("Impossible de charger les magasins :", err);
   }
@@ -745,8 +747,13 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
     let url = `https://router.project-osrm.org/trip/v1/driving/${coordString}?source=first&roundtrip=false`;
     if (hasDestinationLast) url += `&destination=last`; // Force l'API à garder le dernier point à la fin
 
+
+console.time("chargement");
+	 
     const response = await fetch(url);
     const data = await response.json();
+
+console.timeEnd("chargement");
 
     if (data.code !== 'Ok') throw new Error(`Refus API : ${data.message}`);
 
@@ -804,3 +811,4 @@ window.afficherToast = function(message) {
     toast.className = toast.className.replace("toast-show", ""); 
   }, 3000);
 };
+
