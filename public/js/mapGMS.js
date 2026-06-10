@@ -9,7 +9,7 @@ let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
 
 //CARTE LEAFLET
-const map = L.map('map').setView([46.603354, 1.888334], 5);
+const map = L.map('map', {preferCanvas: true}).setView([46.603354, 1.888334], 5);
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors, © CARTO'
