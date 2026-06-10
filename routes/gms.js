@@ -14,6 +14,8 @@ router.get('/', async (req, res) => {
       .select('*')
       .limit(100000);
 
+    console.log("Nombre reçu depuis Supabase :", data?.length);
+
     if (error) {
       throw error;
     }
