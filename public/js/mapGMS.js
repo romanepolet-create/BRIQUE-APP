@@ -260,7 +260,7 @@ function afficherMagasinsSurCarte(magasins) {
       weight: 13              //épaisseur bordure
     })
     marker.on('click', function() {
-  marker.bindPopup(construirePopup(magasin)).openPopup();
+  marker.bindPopup(contenuBulle).openPopup();
 });
 
 markerConteneur.addLayer(marker);
