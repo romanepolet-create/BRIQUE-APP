@@ -252,15 +252,18 @@ function afficherMagasinsSurCarte(magasins) {
     const couleurPin = getCouleurEnseigne(magasin.enseigne);
 
     // 🚀 LA SOLUTION BLINDÉE : On dessine directement un cercle vectoriel !
-    L.circleMarker(positionMagasin, {
+    const marker = L.circleMarker(positionMagasin, {
       radius: calculerRayonSelonZoom(map.getZoom()), //taille cercle
       fillColor: couleurPin, //couleur
       fillOpacity: 0.85, // Remplissage
       color: 'transparent',//couleur bordure
       weight: 13              //épaisseur bordure
     })
-    .bindPopup(contenuBulle)
-    .addTo(markerConteneur);
+    marker.on('click', function() {
+  marker.bindPopup(construirePopup(magasin)).openPopup();
+});
+
+markerConteneur.addLayer(marker);
   });
 }
 
