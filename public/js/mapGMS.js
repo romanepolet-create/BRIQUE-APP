@@ -45,7 +45,10 @@ new L.Control.Fullscreen({ position: 'topleft' }).addTo(map);
 
 markerConteneur = L.markerClusterGroup({
   maxClusterRadius: 20,
-  disableClusterAtZoom: 11
+  disableClusterAtZoom: 11,
+  chunkedLoading: true,
+  chunkInterval: 50,
+  chunkDelay: 10
 }).addTo(map);
 
 async function initialiserCarte() {
