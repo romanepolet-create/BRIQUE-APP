@@ -174,6 +174,7 @@ function getCouleurEnseigne(enseigne) {
 
 
 async function chargerDonneesMagasins() {
+	console.time("affichage");
   try {
     const response = await fetch('/api/gms');
 
@@ -187,12 +188,16 @@ async function chargerDonneesMagasins() {
     console.log("Voici le premier magasin :", listeMagasins[0]);
 
     // Remplir la carte dès le départ
-	  console.time("affichage");
+	  console.log("avant affichage");
+
     afficherMagasinsSurCarte(listeMagasins);
-	  console.timeEnd("affichage");
+
+	  console.log("apres affichage");
   } catch (err) {
     console.error("Impossible de charger les magasins :", err);
   }
+	console.timeEnd("affichage");
+
 }
 
 let nomEchappe
@@ -748,12 +753,11 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
     if (hasDestinationLast) url += `&destination=last`; // Force l'API à garder le dernier point à la fin
 
 
-console.time("chargement");
+
 	 
     const response = await fetch(url);
     const data = await response.json();
 
-console.timeEnd("chargement");
 
     if (data.code !== 'Ok') throw new Error(`Refus API : ${data.message}`);
 
