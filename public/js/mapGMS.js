@@ -208,15 +208,28 @@ let nomEchappe
 function afficherMagasinsSurCarte(magasins) {
   // On vide la carte avant de remettre les nouveaux pins filtrés
   markerConteneur.clearLayers();
+  const nouveauxMarkers = [];
 
   magasins.forEach(magasin => {
     const positionMagasin = L.latLng(magasin.lat, magasin.lng);
+		const couleurPin = getCouleurEnseigne(magasin.enseigne);
+
+    // 🚀 LA SOLUTION BLINDÉE : On dessine directement un cercle vectoriel !
+    const marker = L.circleMarker(positionMagasin, {
+      radius: 4, //taille cercle
+      fillColor: couleurPin, //couleur
+      fillOpacity: 0.85, // Remplissage
+      color: 'transparent',//couleur bordure
+      weight: 0              //épaisseur bordure
+    })
+
+		
+    marker.on('click', function(e) {
+    const nomEchappe = magasin.nom ? magasin.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${magasin.hubspot_id}`;
+		
 
-    // Contenu HTML de la bulle (Popup)
-    nomEchappe = magasin.nom ? magasin.nom.replace(/'/g, "\\'") : "Magasin";
-
-    const contenuBulle = `
+		const contenuBulle = `
       <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
         <h4 style="color: #002ab6; margin: 0 0 5px 0;">${magasin.nom}</h4>
         <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
@@ -252,46 +265,14 @@ function afficherMagasinsSurCarte(magasins) {
       </div>
     `;
 
-    const couleurPin = getCouleurEnseigne(magasin.enseigne);
+			e.target.bindPopup(contenuBulle).openPopup();
+    });
 
-    // 🚀 LA SOLUTION BLINDÉE : On dessine directement un cercle vectoriel !
-    const marker = L.circleMarker(positionMagasin, {
-      radius: calculerRayonSelonZoom(map.getZoom()), //taille cercle
-      fillColor: couleurPin, //couleur
-      fillOpacity: 0.85, // Remplissage
-      color: 'transparent',//couleur bordure
-      weight: 13              //épaisseur bordure
-    })
-    marker.on('click', function() {
-  marker.bindPopup(contenuBulle).openPopup();
-});
-
-markerConteneur.addLayer(marker);
-  });
+		nouveauxMarkers.push(marker);
+    });
+	
+  markerConteneur.addLayers(nouveauxMarkers);
 }
-
-// Plus le zoom est grand, plus le rayon px est petit
-function calculerRayonSelonZoom(zoom) {
-  if (zoom <= 6) return 5;    
-  if (zoom === 7) return 4;  
-  if (zoom === 8) return 4;
-  if (zoom === 9) return 4;
-  if (zoom === 10) return 4;
-  return 3;                   
-}
-
-//Recalcule la taille des points à chaque changement de zoom
-map.on('zoomend', function() {
-  const nouveauZoom = map.getZoom();
-  const nouveauRayon = calculerRayonSelonZoom(nouveauZoom);
-
-  // On parcourt tous les points affichés pour changer leur taille en direct
-  markerConteneur.eachLayer(function(layer) {
-    if (layer.setRadius) {
-      layer.setRadius(nouveauRayon);
-    }
-  });
-});
 
 // ================
 // FILTRES
