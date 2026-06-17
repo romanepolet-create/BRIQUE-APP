@@ -1082,3 +1082,23 @@ input:checked + .slider:before { transform: translateX(20px); }
   z-index: 1002;
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+@media (max-width: 768px) {
+  #panneau-visibles,
+  #panneau-tournee {
+    width: 100%; /* Makes the panels stretch beautifully across the phone screen */
+    margin: 10px 0; /* Adds breathing room between elements */
+    box-sizing: border-box;
+    height: auto; 
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Restrict the inner lists so they scroll, rather than making the whole page infinitely long */
+  #liste-visibles-content,
+  #liste-tournee {
+    max-height: 250px; /* Adjust this value based on how much you want visible at once */
+    overflow-y: auto;
+    padding: 10px;
+  }
+}
