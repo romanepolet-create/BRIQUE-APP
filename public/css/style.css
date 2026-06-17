@@ -1013,10 +1013,11 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 #panneau-visibles {
 	position: absolute;
-	top: 70px;
+	top: 100px;
 	right: 0px;
 	bottom: 0;
 	width: 250px;
+	height: calc(100vh - 60px);
 	max-height: 85vh;
 	background: white;
 	border-radius: 8px;
@@ -1024,7 +1025,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 	z-index: 10000;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-y: auto;
 }
 
 #panneau-a-l-ecran {
