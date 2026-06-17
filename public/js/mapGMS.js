@@ -268,9 +268,7 @@ function afficherMagasinsSurCarte(magasins) {
 			.setLatLng(positionMagasin)
 			.setContent(contenuBulle)
 			.openOn(map)
-		
-			e.target.bindPopup(contenuBulle).openPopup();
-    });
+	    });
 
 		nouveauxMarkers.push(marker);
     });
