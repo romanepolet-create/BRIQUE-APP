@@ -274,7 +274,7 @@ function afficherMagasinsSurCarte(magasins) {
     });
 	
   markerConteneur.addLayers(nouveauxMarkers);
-  MajListeMagasinsVisibles()
+  majListeMagasinsVisibles()
 }
 
 // ==========================================
