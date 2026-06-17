@@ -960,7 +960,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 	}
 
 	#left {
-		order: 2;
+		order: 3;
 		width: 100%;
 		height: auto;
 		padding: 10px;
@@ -1086,7 +1086,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 @media (max-width: 768px) {
   #panneau-visibles {
-	  order: 3;
+	  order: 2;
 	  width: 100%;
 	  margin-top: 10px;
 	  box-sizing: border-box;
