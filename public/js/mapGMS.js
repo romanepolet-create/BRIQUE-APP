@@ -279,6 +279,54 @@ function afficherMagasinsSurCarte(magasins) {
   MajListeMagasinsVisibles()
 }
 
+// ==========================================
+// LISTE DES MAGASINS VISIBLES À L'ÉCRAN
+// ==========================================
+window.majListeMagasinsVisibles = function() {
+  const conteneurListe = document.getElementById('liste-visibles-content');
+  const compteurListe = document.getElementById('compteur-visibles');
+
+	if (!conteneurListe || !compteurListe) return;
+
+  const limitesEcran = map.getBounds();
+  let html = '';
+  let count = 0;
+
+  markerConteneur.eachLayer(function(layer) {
+    if (limitesEcran.contains(layer.getLatLng())) {
+      const m = layer.magasinData;
+      if (m) {
+        count++;
+        if (count <= 100) {
+          const couleur = getCouleurEnseigne(m.enseigne);
+          html += `
+            <div style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center;">
+              <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
+              <div>
+                <strong style="color: #333;">${m.nom}</strong><br>
+                <span style="color: #777;">${m.ville}</span>
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+  });
+
+  if (count > 100) {
+    html += `<div style="padding: 10px; text-align: center; color: #888; font-style: italic; font-size: 11px;">+ ${count - 100} autres magasins (zoomez pour affiner)</div>`;
+  } else if (count === 0) {
+    html = `<div style="padding: 10px; text-align: center; color: #888; font-style: italic; font-size: 12px;">Zoomer sur la carte pour lister les magasins</div>`;
+  }
+
+  compteurListe.textContent = count;
+  conteneurListe.innerHTML = html;
+};
+
+map.on('moveend', majListeMagasinsVisibles);
+map.on('zoomend', majListeMagasinsVisibles);
+
+
 // ================
 // FILTRES
 // ================
