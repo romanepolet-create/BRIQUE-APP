@@ -212,7 +212,7 @@ function afficherMagasinsSurCarte(magasins) {
 
   magasins.forEach(magasin => {
     const positionMagasin = L.latLng(magasin.lat, magasin.lng);
-		const couleurPin = getCouleurEnseigne(magasin.enseigne);
+	const couleurPin = getCouleurEnseigne(magasin.enseigne);
 
     // 🚀 LA SOLUTION BLINDÉE : On dessine directement un cercle vectoriel !
     const marker = L.circleMarker(positionMagasin, {
@@ -225,51 +225,8 @@ function afficherMagasinsSurCarte(magasins) {
 
 	marker.magasinData = magasin;
     marker.on('click', function(e) {
-    const nomEchappe = magasin.nom ? magasin.nom.replace(/'/g, "\\'") : "Magasin";
-    const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${magasin.hubspot_id}`;
-		
-
-		const contenuBulle = `
-      <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
-        <h4 style="color: #002ab6; margin: 0 0 5px 0;">${magasin.nom}</h4>
-        <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
-          ${magasin.adresse || "Adresse non renseignée"}<br>
-          <strong>${magasin.code_postal} ${magasin.ville}</strong><br>
-		  <em>Priorité : ${magasin.Priorité}</em>
-        </p>
-        <a href="${lienHubspot}" target="_blank" 
-           style="display: block; 
-                  background-color: #f3b0cf; 
-                  color: #002ab6; 
-                  padding: 8px 10px; 
-                  border-radius: 5px; 
-                  font-weight: bold; 
-                  text-decoration: none; 
-                  font-size: 12px;">
-            🌐 Ouvrir dans HubSpot
-        </a>
-        <button onclick="ajouterEtape(${magasin.lng}, ${magasin.lat}, '${nomEchappe}', '${magasin.hubspot_id}')"
-          style="
-            display = block;
-            width: 100%;
-            background-color: #28a745;
-            color: white;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;">
-          📍 Ajouter à l'itinéraire
-        </button>
-      </div>
-    `;
-			L.popup({ autoPanPadding: [50, 50] })
-			.setLatLng(positionMagasin)
-			.setContent(contenuBulle)
-			.openOn(map)
-	    });
-
+     ouvrirPopupDynamique(e.target);
+	});
 		nouveauxMarkers.push(marker);
     });
 	
@@ -280,6 +237,9 @@ function afficherMagasinsSurCarte(magasins) {
 window.ouvrirPopupDynamique = function(layer) {
     const m = layer.magasinData;
     if (!m) return;
+
+	const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
+    const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
 
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
@@ -324,6 +284,14 @@ window.ouvrirPopupDynamique = function(layer) {
         .openOn(map);
 };
 
+window.clicSurListe = function(layerId) {
+    const layer = markerConteneur.getLayer(layerId);
+    
+    if (layer) {
+        map.panTo(layer.getLatLng()); 
+        ouvrirPopupDynamique(layer);
+    }
+};
 
 // ==========================================
 // LISTE DES MAGASINS VISIBLES À L'ÉCRAN
@@ -346,7 +314,7 @@ window.majListeMagasinsVisibles = function() {
         if (count <= 100) {
           const couleur = getCouleurEnseigne(m.enseigne);
           html += `
-            <div style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center;">
+            <div onclick="clicSurListe(${layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
               <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
               <div>
                 <strong style="color: #333;">${m.nom}</strong><br>
