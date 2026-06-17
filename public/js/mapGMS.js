@@ -223,7 +223,7 @@ function afficherMagasinsSurCarte(magasins) {
       weight: 15              //épaisseur bordure
     })
 
-		
+	marker.magasinData = magasin;
     marker.on('click', function(e) {
     const nomEchappe = magasin.nom ? magasin.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${magasin.hubspot_id}`;
