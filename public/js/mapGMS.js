@@ -238,16 +238,16 @@ window.ouvrirPopupDynamique = function(layer) {
     const m = layer.magasinData;
     if (!m) return;
 
-	const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
+    const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
 
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
-        <h4 style="color: #002ab6; margin: 0 0 5px 0;">${magasin.nom}</h4>
+        <h4 style="color: #002ab6; margin: 0 0 5px 0;">${m.nom}</h4>
         <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
-          ${magasin.adresse || "Adresse non renseignée"}<br>
-          <strong>${magasin.code_postal} ${magasin.ville}</strong><br>
-		  <em>Priorité : ${magasin.Priorité}</em>
+          ${m.adresse || "Adresse non renseignée"}<br>
+          <strong>${m.code_postal} ${m.ville}</strong><br>
+          <em>Priorité : ${m.Priorité}</em>
         </p>
         <a href="${lienHubspot}" target="_blank" 
            style="display: block; 
@@ -257,12 +257,13 @@ window.ouvrirPopupDynamique = function(layer) {
                   border-radius: 5px; 
                   font-weight: bold; 
                   text-decoration: none; 
-                  font-size: 12px;">
+                  font-size: 12px;
+                  margin-bottom: 5px;">
             🌐 Ouvrir dans HubSpot
         </a>
-        <button onclick="ajouterEtape(${magasin.lng}, ${magasin.lat}, '${nomEchappe}', '${magasin.hubspot_id}')"
+        <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}')"
           style="
-            display = block;
+            display: block;
             width: 100%;
             background-color: #28a745;
             color: white;
