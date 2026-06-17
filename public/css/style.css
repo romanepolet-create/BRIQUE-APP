@@ -1067,7 +1067,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-#last-popup {
+#lastPopup {
   display: none;
   position: fixed;
   top: 50%;
