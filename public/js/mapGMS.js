@@ -220,7 +220,7 @@ function afficherMagasinsSurCarte(magasins) {
       fillColor: couleurPin, //couleur
       fillOpacity: 0.85, // Remplissage
       color: 'transparent',//couleur bordure
-      weight: 0              //épaisseur bordure
+      weight: 15              //épaisseur bordure
     })
 
 		
@@ -264,7 +264,11 @@ function afficherMagasinsSurCarte(magasins) {
         </button>
       </div>
     `;
-
+			L.popup({ autoPanPadding: [50, 50] })
+			.setLatLng(positionMagasin)
+			.setContent(contenuBulle)
+			.openOn(map)
+		
 			e.target.bindPopup(contenuBulle).openPopup();
     });
 
@@ -272,6 +276,7 @@ function afficherMagasinsSurCarte(magasins) {
     });
 	
   markerConteneur.addLayers(nouveauxMarkers);
+  MajListeMagasinsVisibles()
 }
 
 // ================
