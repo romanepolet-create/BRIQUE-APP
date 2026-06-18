@@ -319,7 +319,7 @@ window.majListeMagasinsVisibles = function() {
               <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
               <div>
                 <strong style="color: #333;">${m.nom}</strong><br>
-                <span style="color: #777;">${m.ville}</span>
+                <span style="color: #777;">${m.Priorité}</span>
               </div>
             </div>
           `;
