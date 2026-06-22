@@ -303,9 +303,8 @@ window.clicSurListe = function(layerId) {
 // ==========================================
 window.majListeMagasinsVisibles = function() {
   const conteneurListe = document.getElementById('liste-visibles-content');
-  const compteurListe = document.getElementById('compteur-visibles');
 
-	if (!conteneurListe || !compteurListe) return;
+	if (!conteneurListe) return;
 
   const limitesEcran = map.getBounds();
   let html = '';
