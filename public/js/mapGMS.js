@@ -511,7 +511,7 @@ window.toggleDropdown = function(id) {
 
 // Ferme les listes si on clique ailleurs sur la page
 window.onclick = function(event) {
-  if (!event.target.closest('.custom-select' || '.select-right')) {
+  if (!event.target.closest('.custom-select') && !event.target.closest('.select-right')) {
     document.querySelectorAll('.dropdown-list').forEach(el => el.classList.remove('show'));
   }
 };
