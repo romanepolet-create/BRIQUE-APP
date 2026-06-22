@@ -55,6 +55,10 @@ async function initialiserCarte() {
   console.log("Démarrage de la carte...");
   await chargerGeoJSON();
   await chargerDonneesMagasins();
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
 };
 
 initialiserCarte();
