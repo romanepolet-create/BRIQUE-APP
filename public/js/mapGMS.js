@@ -302,6 +302,7 @@ window.clicSurListe = function(layerId) {
 // LISTE DES MAGASINS VISIBLES À L'ÉCRAN
 // ==========================================
 window.majListeMagasinsVisibles = function() {
+  const compteurListe = document.getElementById('compteur-visibles'); // ⚠️ IL MANQUAIT CETTE LIGNE !
   const conteneurListe = document.getElementById('liste-visibles-content');
 
 	if (!conteneurListe) return;
