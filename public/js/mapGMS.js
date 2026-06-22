@@ -63,8 +63,6 @@ async function initialiserCarte() {
   }, 300);
 };
 
-initialiserCarte();
-
 // ===========================================================
 // CHARGEMENT DES FICHIERS GEOJSON
 // ===========================================================
@@ -919,3 +917,4 @@ window.afficherToast = function(message) {
   }, 3000);
 };
 
+initialiserCarte();
