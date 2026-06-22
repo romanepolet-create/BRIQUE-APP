@@ -1083,7 +1083,7 @@ flex-grow: 0}
 	z-index: 10000;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto;
+	overflow-y: visible;
 }
 
 #panneau-a-l-ecran {
