@@ -303,32 +303,65 @@ window.clicSurListe = function(layerId) {
 // ==========================================
 window.majListeMagasinsVisibles = function() {
   const conteneurListe = document.getElementById('liste-visibles-content');
-
-	if (!conteneurListe) return;
+  if (!conteneurListe) return;
 
   const limitesEcran = map.getBounds();
-  let html = '';
+	let html = '';
   let count = 0;
+	
+  let magasinsVisiblesTemp = [];
 
   markerConteneur.eachLayer(function(layer) {
     if (limitesEcran.contains(layer.getLatLng())) {
       const m = layer.magasinData;
+			
       if (m) {
-        count++;
-        if (count <= 100) {
-          const couleur = getCouleurEnseigne(m.enseigne);
-          html += `
-            <div onclick="clicSurListe(${layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
-              <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
-              <div>
-                <strong style="color: #333;">${m.nom}</strong>
-                <span style="color: #777;">${m.Priorité}</span>
-              </div>
-            </div>
-          `;
+				let distance = Infinity;
+				if (userPosition) {
+          distance = map.distance(userPosition, layer.getLatLng());
         }
-      }
-    }
+				
+				magasinsVisibles.push({
+          magasin: m,
+          layer: layer,
+          distance: distance
+        });
+			}
+		}
+	});
+
+	if (userPosition) {
+    magasinsVisiblesTemp.sort((a, b) => a.distance - b.distance);
+  } else {
+    magasinsVisiblesTemp.sort((a, b) => a.magasin.nom.localeCompare(b.magasin.nom));
+  }
+
+	magasinsVisiblesTemp.forEach(item => {
+    const m = item.magasin;
+    count++;
+    
+		if (count <= 100) {
+      const couleur = getCouleurEnseigne(m.enseigne);
+			let distanceTexte = '';
+
+			if (userPosition && item.distance !== Infinity) {
+        if (item.distance < 1000) {
+          distanceTexte = `<span style="color: #002ab6; font-weight: bold; font-size: 10px; margin-left: auto;">${Math.round(item.distance)} m</span>`;
+        } else {
+          distanceTexte = `<span style="color: #002ab6; font-weight: bold; font-size: 10px; margin-left: auto;">${(item.distance / 1000).toFixed(1)} km</span>`;
+        }
+			}
+			
+      html += `
+        <div onclick="clicSurListe(${layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
+          <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
+          <div>
+            <strong style="color: #333;">${m.nom}</strong>
+            <span style="color: #777;">${m.Priorité}</span>
+          </div>
+        </div>
+      `;
+		}
   });
 
   if (count > 100) {
