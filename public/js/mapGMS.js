@@ -56,6 +56,8 @@ async function initialiserCarte() {
   await chargerGeoJSON();
   await chargerDonneesMagasins();
 
+  activerGeolocalisation();
+
   setTimeout(() => {
     map.invalidateSize();
   }, 300);
@@ -330,11 +332,22 @@ window.majListeMagasinsVisibles = function() {
 		}
 	});
 
-	if (userPosition) {
-    magasinsVisiblesTemp.sort((a, b) => a.distance - b.distance);
-  } else {
-    magasinsVisiblesTemp.sort((a, b) => a.magasin.nom.localeCompare(b.magasin.nom));
-  }
+	magasinsVisiblesTemp.sort((a, b) => {
+    if (userPosition && a.distance !== Infinity && b.distance !== Infinity) {
+      // Tri par distance GPS (du plus proche au plus loin)
+      return a.distance - b.distance;
+    } else {
+      // Tri alphabétique intelligent : Enseigne d'abord, puis Nom
+      const enseigneA = (a.magasin.enseigne || "").toLowerCase();
+      const enseigneB = (b.magasin.enseigne || "").toLowerCase();
+      if (enseigneA !== enseigneB) {
+        return enseigneA.localeCompare(enseigneB);
+      }
+      const nomA = (a.magasin.nom || "").toLowerCase();
+      const nomB = (b.magasin.nom || "").toLowerCase();
+      return nomA.localeCompare(nomB);
+    }
+  });
 
 	magasinsVisiblesTemp.forEach(item => {
     const m = item.magasin;
