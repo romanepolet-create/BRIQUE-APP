@@ -62,11 +62,50 @@
  <div id="panneau-visibles">
 
 		<div id="panneau-a-l-ecran">
-			À l'écran : <span id="compteur-visibles">0</span>
-		</div>
-		<div id="liste-visibles-content">
-		</div>
-	</div>
+      <div class="toolbar-visibles">
+		  <!--GEOLOCALISATION-->
+        <button class="btn-gps" onclick="activerGeolocalisation()">📍</button>
+
+        <div class="select-right">
+          <div class="select-box" onclick="toggleDropdown('dropdown-enseigne')" title="Filtre Enseignes">🛒<span>▼</span></div>
+          <div class="dropdown-list" id="dropdown-enseigne">
+            <label><input type="checkbox" value="AUCHAN HM" onchange="filtrerMagasins()"> Auchan HM</label>
+    	  	  <label><input type="checkbox" value="AUCHAN SM" onchange="filtrerMagasins()">AUCHAN SM</label>
+    			  <label><input type="checkbox" value="CASINO" onchange="filtrerMagasins()">CASINO</label>
+    			  <label><input type="checkbox" value="FRANPRIX" onchange="filtrerMagasins()">FRANPRIX</label>
+    			  <label><input type="checkbox" value="MONOPRIX" onchange="filtrerMagasins()">MONOPRIX</label>
+    			  <label><input type="checkbox" value="CRF HYPER" onchange="filtrerMagasins()">CRF HYPER</label>
+    			  <label><input type="checkbox" value="CRF MARKET" onchange="filtrerMagasins()">CRF MARKET</label>
+    			  <label><input type="checkbox" value="CRF PROXI" onchange="filtrerMagasins()">CRF PROXI</label>
+    			  <label><input type="checkbox" value="ITM PROXI" onchange="filtrerMagasins()">ITM PROXI</label>
+			      <label><input type="checkbox" value="ITM SM" onchange="filtrerMagasins()">ITM SM</label>
+			      <label><input type="checkbox" value="LECLERC" onchange="filtrerMagasins()">LECLERC</label>
+			      <label><input type="checkbox" value="LECLERC PROXI" onchange="filtrerMagasins()">LECLERC PROXI</label>
+			      <label><input type="checkbox" value="OTERA" onchange="filtrerMagasins()">OTERA</label>
+			      <label><input type="checkbox" value="SUPER U" onchange="filtrerMagasins()">SUPER U</label>
+  		    </div>
+        </div>
+
+	      <div class="select-right">
+          <div class="select-box" onclick="toggleDropdown('dropdown-prio')" title="Filtre Priorités">🎯<span>▼</span></div>
+		      <div class="dropdown-list" id="dropdown-prio">
+		        <label><input type="checkbox" value="A" onchange="filtrerMagasins()">A</label>
+    	  	  <label><input type="checkbox" value="B" onchange="filtrerMagasins()">B</label>
+    			  <label><input type="checkbox" value="C" onchange="filtrerMagasins()">C</label>
+    			  <label><input type="checkbox" value="D" onchange="filtrerMagasins()">D</label>
+    			  <label><input type="checkbox" value="DRIVE" onchange="filtrerMagasins()">DRIVE</label>
+    			  <label><input type="checkbox" value="E" onchange="filtrerMagasins()">E</label>
+    			  <label><input type="checkbox" value="F" onchange="filtrerMagasins()">F</label>
+    			  <label><input type="checkbox" value="URB" onchange="filtrerMagasins()">URB</label>
+    			  <label><input type="checkbox" value="X" onchange="filtrerMagasins()">X</label>
+		      </div>
+		    </div>
+		 </div>
+
+
+   </div>
+	 <div id="liste-visibles-content"></div>
+ </div>
 	
  <div id="left">  
   <div class="sidebar-filters">
@@ -85,51 +124,7 @@
       </label>
       <span class="toggle-label">Afficher uniquement ma tournée</span>
     </div>
-    
-    <!--GEOLOCALISATION-->
-    <button class="btn-gps" onclick="activerGeolocalisation()">📍 Me géolocaliser</button>
 
-    <!--Enseignes-->
-      <div class="filter-group">
-        <label>Enseigne(s)</label>
-				<div class="custom-select">
-          <div class="select-box" onclick="toggleDropdown('dropdown-enseigne')">
-          <span>Sélectionner...</span> <span>▼</span>
-          </div>
-        <div class="dropdown-list" id="dropdown-enseigne">
-    			<label><input type="checkbox" value="AUCHAN HM" onchange="filtrerMagasins()"> Auchan HM</label>
-    	  	    <label><input type="checkbox" value="AUCHAN SM" onchange="filtrerMagasins()">AUCHAN SM</label>
-    			<label><input type="checkbox" value="CASINO" onchange="filtrerMagasins()">CASINO</label>
-    			<label><input type="checkbox" value="FRANPRIX" onchange="filtrerMagasins()">FRANPRIX</label>
-    			<label><input type="checkbox" value="MONOPRIX" onchange="filtrerMagasins()">MONOPRIX</label>
-    			<label><input type="checkbox" value="CRF HYPER" onchange="filtrerMagasins()">CRF HYPER</label>
-    			<label><input type="checkbox" value="CRF MARKET" onchange="filtrerMagasins()">CRF MARKET</label>
-    			<label><input type="checkbox" value="CRF PROXI" onchange="filtrerMagasins()">CRF PROXI</label>
-    			<label><input type="checkbox" value="ITM PROXI" onchange="filtrerMagasins()">ITM PROXI</label>
-			    <label><input type="checkbox" value="ITM SM" onchange="filtrerMagasins()">ITM SM</label>
-			    <label><input type="checkbox" value="LECLERC" onchange="filtrerMagasins()">LECLERC</label>
-			    <label><input type="checkbox" value="LECLERC PROXI" onchange="filtrerMagasins()">LECLERC PROXI</label>
-			    <label><input type="checkbox" value="OTERA" onchange="filtrerMagasins()">OTERA</label>
-			    <label><input type="checkbox" value="SUPER U" onchange="filtrerMagasins()">SUPER U</label>
-  			</div>
-      </div>
-          <label>Priorité(s)</label>
-			  <div class="custom-select">
-          <div class="select-box" onclick="toggleDropdown('dropdown-prio')">
-          <span>Sélectionner...</span> <span>▼</span>
-          </div>
-		  <div class="dropdown-list" id="dropdown-prio">
-			  <label><input type="checkbox" value="A" onchange="filtrerMagasins()">A</label>
-    	  	  <label><input type="checkbox" value="B" onchange="filtrerMagasins()">B</label>
-    			<label><input type="checkbox" value="C" onchange="filtrerMagasins()">C</label>
-    			<label><input type="checkbox" value="D" onchange="filtrerMagasins()">D</label>
-    			<label><input type="checkbox" value="DRIVE" onchange="filtrerMagasins()">DRIVE</label>
-    			<label><input type="checkbox" value="E" onchange="filtrerMagasins()">E</label>
-    			<label><input type="checkbox" value="F" onchange="filtrerMagasins()">F</label>
-    			<label><input type="checkbox" value="URB" onchange="filtrerMagasins()">URB</label>
-    			<label><input type="checkbox" value="X" onchange="filtrerMagasins()">X</label>
-		  </div>
-		</div>
     </div>
 
     <details class="geo-details">
@@ -192,7 +187,6 @@
    </div>
 
     <div id="map"></div>
-
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
