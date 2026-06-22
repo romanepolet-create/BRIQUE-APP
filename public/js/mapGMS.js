@@ -302,7 +302,6 @@ window.clicSurListe = function(layerId) {
 // LISTE DES MAGASINS VISIBLES À L'ÉCRAN
 // ==========================================
 window.majListeMagasinsVisibles = function() {
-  const compteurListe = document.getElementById('compteur-visibles'); // ⚠️ IL MANQUAIT CETTE LIGNE !
   const conteneurListe = document.getElementById('liste-visibles-content');
 
 	if (!conteneurListe) return;
@@ -338,8 +337,7 @@ window.majListeMagasinsVisibles = function() {
     html = `<div style="padding: 10px; text-align: center; color: #888; font-style: italic; font-size: 12px;">Zoomer sur la carte pour lister les magasins</div>`;
   }
 
-  compteurListe.textContent = count;
-  conteneurListe.innerHTML = html;
+	conteneurListe.innerHTML = html;
 };
 
 map.on('moveend', majListeMagasinsVisibles);
