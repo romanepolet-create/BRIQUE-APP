@@ -321,7 +321,7 @@ window.majListeMagasinsVisibles = function() {
           distance = map.distance(userPosition, layer.getLatLng());
         }
 				
-				magasinsVisibles.push({
+				magasinsVisiblesTemp.push({
           magasin: m,
           layer: layer,
           distance: distance
