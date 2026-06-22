@@ -637,6 +637,7 @@ select {
 /* Styles spécifiques pour la mise en page de la carte */
 .map-container {
   display: flex;
+  flex-wrap: nowrap;
   height: calc(100vh - 80px); 
   overflow: hidden;
 	flex-direction: row;
