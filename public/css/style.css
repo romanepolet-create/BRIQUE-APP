@@ -833,20 +833,79 @@ input:checked + .slider:before { transform: translateX(20px); }
   font-weight: bold;
 }
 
-.btn-gps {
-  background-color: #002ab6;
-  color: white;
+#btn-opti {
+  width: 100%;
+  background-color: #ffc107;
+  color: #333;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
+  padding: 8px;
+  border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 10px;
   transition: 0.2s;
 }
 
+.btn-gps {
+	background: transparent;
+  border: none;
+  font-size: 22px; /* Taille de l'émoji */
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
 .btn-gps:hover {
-  background-color: #ffcc00;
-  color: #002ab6;
+  transform: scale(1.2);
+}
+
+.select-right {
+  position: relative;
+  flex-grow: 0;
+}
+
+
+
+.select-right {
+  position: relative;
+flex-grow: 0}
+
+.select-right .select-box {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 22px; /* Taille de l'émoji */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white; /* Pour la petite flèche */
+  transition: transform 0.2s;
+}
+
+
+.select-right .select-box:hover {
+  transform: scale(1.2);
+}
+
+.select-right .select-box span {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* Les listes blanches qui s'ouvrent au clic */
+.select-right .dropdown-list {
+  position: absolute;
+  top: 120%;
+  right: -50px; /* Évite que la liste ne sorte de l'écran à droite */
+  min-width: 180px; /* Largeur fixe pour bien lire les enseignes */
+  background: white;
+  color: #333;
+  z-index: 10001;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  text-align: left;
 }
 
 /* STYLE POUR L'OPTIMISATION DE TOURNEE */
@@ -925,22 +984,24 @@ input:checked + .slider:before { transform: translateX(20px); }
   font-size: 11px;
 }
 
-#btn-opti {
-  width: 100%;
-  background-color: #ffc107;
-  color: #333;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 10px;
-  transition: 0.2s;
-}
 
 #btn-opti:hover {
   background-color: #e0a800;
+}
+
+.select-right {
+  position: relative;
+  width: auto;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.toolbar-visibles {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 25px;
+  padding: 5px 0 10px 0;
 }
 
 
@@ -967,7 +1028,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 		box-sizing: border-box;
 	}
 
-	.btn-gps, #btn-opti, #BGMPS, #btn-waze, #vider {
+	#btn-opti, #BGMPS, #btn-waze, #vider {
 		width: 100%;
 		padding: 15px;
 		font-size: 16px;
