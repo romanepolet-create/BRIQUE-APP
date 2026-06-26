@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Brique App - Connexion</title>
+</head>
+<body 
+  style= "
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    font-family: sans-serif; 
+    background: #f3b0cf;">
+
+  <div 
+    style="
+      background: white; 
+      padding: 40px; 
+      border-radius: 10px; 
+      text-align: center; 
+      border: 3px solid #002ab6;">
+    
+    <h2 style="color: #002ab6;">🍻 Brique App</h2>
+    
+    <input 
+      type="email" 
+      id="email" 
+      placeholder="Adresse e-mail" 
+      style="width: 100%; padding: 10px; margin-bottom: 10px;">
+    
+    <input 
+      type="password" 
+      id="password" 
+      placeholder="Mot de passe" 
+      style="width: 100%; padding: 10px; margin-bottom: 20px;">
+    
+    <button 
+      id="btn-login" 
+      style="
+        background: #002ab6; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px; 
+        width: 100%; 
+        cursor: pointer;">
+      Se connecter
+    </button>
+    
+    <p id="erreur" style="color: red; font-size: 12px; margin-top: 10px;"></p>
+  </div>
+
+  <script>
+    document.getElementById('btn-login').onclick = async function() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        window.location.href = '/index.html';
+      } else {
+        document.getElementById('erreur').innerText = data.error;
+      }
+    };
+  </script>
+</body>
+</html>
