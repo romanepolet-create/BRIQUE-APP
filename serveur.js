@@ -10,6 +10,14 @@ const app = express();
 app.use(express.json()); // 👈 INDISPENSABLE pour que la sauvegarde fonctionne !
 const port = process.env.PORT || 3000;
 
+const session = require('express-session');
+app.use(session({
+  secret: 'Hheell_lo.54-05101996Po.-1aM,15,70v3,w/,68aR&%-&Aè5o,1aM4M5or3',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {secure: true}
+}));
+
 // ==========================================
 // 2. SÉCURITÉ ET MIDDLEWARES
 // ==========================================
@@ -44,8 +52,6 @@ const routesRegion = require('./routes/region');
 const routesProforma = require('./routes/proforma');
 const routesGms = require('./routes/gms');
 
-
-
 app.use('/api/bieres', routesBieres);
 app.use('/api/lexique', routesLexique);
 app.use('/api/distrib', routesDistrib);
@@ -61,4 +67,5 @@ app.use('/api/gms', routesGms);
 app.listen(port, () => {
   console.log(`✅ Serveur modulaire en ligne! Navigateur sur http://localhost:${port}`);
 });
+
 
