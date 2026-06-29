@@ -16,7 +16,7 @@ router.post('/signup', async (req, res) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) return res.status(400).json({ error: error.message });
-  return res.json({ success: true, message: "Vérifie tes emails pour confirmer ton compte." });
+  return res.json({ success: true, message: "Un e-mail de confirmation vient d'être envoyé." });
 });
 
 // --- ROUTE 2 : CONNEXION ---
