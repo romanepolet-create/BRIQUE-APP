@@ -31,6 +31,9 @@ window.sauvegarderTourneeMemoire = async function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ magasins: etapesItineraire }) 
         });
+        
+        if (!response.ok) throw new Error("Erreur " + response.status);
+        
         console.log("💾 Tournée sauvegardée en arrière-plan !");
     } catch (erreur) {
         console.error("Erreur de sauvegarde", erreur);
