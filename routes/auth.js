@@ -34,9 +34,15 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ error: "Email ou mot de passe incorrect (ou non vérifié)." });
   }
 
-  // C'EST BON ! On garde l'email en mémoire dans la session
   req.session.email = email;
-  return res.json({ success: true });
+  req.session.save((err) => {
+    if (err) {
+      console.error("Erreur de session:", err);
+      return res.status(500).json({ error: "Erreur interne du serveur." });
+    }
+    // On ne répond "success" que quand on est SÛR que c'est mémorisé
+    return res.json({ success: true });
+  });
 });
 
 module.exports = router;
