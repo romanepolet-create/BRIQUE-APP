@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brique App - Connexion</title>
 </head>
 <body 
@@ -46,29 +46,69 @@
         cursor: pointer;">
       Se connecter
     </button>
+
+    <button 
+      id="btn-signup" 
+      style="
+        background: #002ab6; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px; 
+        width: 100%; 
+        cursor: pointer;">
+      Créer mon compte
+    </button>
     
-    <p id="erreur" style="color: red; font-size: 12px; margin-top: 10px;"></p>
+    <p id="message" style="font-size: 12px; margin-top: 10px; font-weight: bold;"></p>
   </div>
 
   <script>
-    document.getElementById('btn-login').onclick = async function() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const messageEl = document.getElementById('message');
 
-      const response = await fetch('/api/login', {
+    document.getElementById('btn-signup').onclick = async function() {
+      messageEl.style.color = "blue";
+      messageEl.innerText = "Création en cours...";
+      
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email: emailInput.value, password: passwordInput.value })
       });
-
       const data = await response.json();
 
       if (response.ok) {
-        window.location.href = '/index.html';
+        messageEl.style.color = "green";
+        messageEl.innerText = "✅ " + data.message; // "Vérifie tes emails..."
       } else {
-        document.getElementById('erreur').innerText = data.error;
+        messageEl.style.color = "red";
+        messageEl.innerText = "❌ " + data.error;
       }
     };
+
+    document.getElementById('btn-login').onclick = async function() {
+      messageEl.style.color = "blue";
+      messageEl.innerText = "Connexion...";
+
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput.value, password: passwordInput.value })
+      });
+      
+      const data = await response.json();
+
+      if (response.ok) {
+        messageEl.style.color = "green";
+        messageEl.innerText = "✅ Connexion réussie ! Redirection...";
+        window.location.href = '/index.html'; 
+      } else {
+        messageEl.style.color = "red";
+        messageEl.innerText = "❌ " + data.error;
+      }
+    };
+
   </script>
 </body>
 </html>
