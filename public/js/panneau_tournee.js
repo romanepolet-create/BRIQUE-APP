@@ -26,7 +26,7 @@ window.chargerTourneeMemoire = async function() {
 // 2. Sauvegarder la tournée (La "Photo")
 window.sauvegarderTourneeMemoire = async function() {
     try {
-        const reponseServeur = await fetch('/api/tournee/sauvegarder', {
+        const response = await fetch('/api/tournee/sauvegarder', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ magasins: etapesItineraire }) 
