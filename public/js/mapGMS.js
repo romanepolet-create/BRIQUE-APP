@@ -56,6 +56,8 @@ async function initialiserCarte() {
   await chargerGeoJSON();
   await chargerDonneesMagasins();
 
+  await chargerTourneeMemoire();
+
   activerGeolocalisation();
 
   setTimeout(() => {
@@ -675,6 +677,8 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id) {
   actualiserPanneauGPS();
   filtrerMagasins();
 
+  sauvegarderTourneeMemoire();
+
   afficherToast(`✅ ${nom} a bien été ajouté à la tournée`);
 };
 
@@ -682,6 +686,8 @@ window.supprimerEtape = function(index) {
   etapesItineraire.splice(index, 1);
   actualiserPanneauGPS();
   filtrerMagasins(); 
+
+  sauvegarderTourneeMemoire();
 };
 
 // Fonction pour Masquer / Démasquer un établissement
@@ -697,6 +703,8 @@ window.toggleMasqueEtape = function(index) {
   etapesItineraire[index].masque = !etapesItineraire[index].masque;
   actualiserPanneauGPS();
   filtrerMagasins();
+
+  sauvegarderTourneeMemoire();
 };
 
 // Fonction pour définir la destination finale (Drapeau)
@@ -709,6 +717,7 @@ window.toggleFinalEtape = function(index) {
     etapesItineraire[index].isFinal = true;
   }
   actualiserPanneauGPS();
+  sauvegarderTourneeMemoire();
 };
 
 function actualiserPanneauGPS() {
@@ -769,6 +778,7 @@ window.viderTournee = function() {
   etapesItineraire = [];
   actualiserPanneauGPS();
   filtrerMagasins();
+  sauvegarderTourneeMemoire();
 };
 
 window.ouvrirGoogleMaps = function() {
@@ -873,6 +883,7 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
     // L'itinéraire final = Les actifs triés + les masqués collés à la fin
     etapesItineraire = [...pointsTries, ...hiddenStops];
     actualiserPanneauGPS();
+	sauvegarderTourneeMemoire();
     
     if(btnOpti) {
       btnOpti.textContent = "✅ Trajet Optimisé !";
