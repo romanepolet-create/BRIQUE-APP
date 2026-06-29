@@ -58,6 +58,7 @@ const routesGeo = require('./routes/geo');
 const routesRegion = require('./routes/region');
 const routesProforma = require('./routes/proforma');
 const routesGms = require('./routes/gms');
+const routesTournee = require('./routes/tournee');
 
 app.use('/api/bieres', verifierBriqueHouse, routesBieres);
 app.use('/api/lexique', verifierBriqueHouse, routesLexique);
@@ -66,6 +67,7 @@ app.use('/api/geo', verifierBriqueHouse, routesGeo);
 app.use('/api/region', verifierBriqueHouse, routesRegion);
 app.use('/api/proforma', verifierBriqueHouse, routesProforma);
 app.use('/api/gms', verifierBriqueHouse, routesGms);
+app.use('/api/tournee', verifierBriqueHouse, routesTournee);
 
 app.get('/login.html', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
