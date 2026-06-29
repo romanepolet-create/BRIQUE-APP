@@ -16,7 +16,7 @@ app.use(session({
   secret: process.env.session_secret || 'brique-house-cle-de-secours-2026!',
   resave: false,
   saveUninitialized: false,
-  cookie: {secure: true}
+  cookie: {secure: false}
 }));
 
 // ==========================================
