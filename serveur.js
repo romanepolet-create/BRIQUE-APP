@@ -15,7 +15,7 @@ const session = require('express-session');
 app.use(session({
   secret: process.env.session_secret || 'brique-house-cle-de-secours-2026!',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {secure: true}
 }));
 
