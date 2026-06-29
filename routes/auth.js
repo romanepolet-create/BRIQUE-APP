@@ -33,6 +33,7 @@ router.post('/login', async (req, res) => {
   if (error) {
     return res.status(401).json({ error: "Email ou mot de passe incorrect (ou non vérifié)." });
   }
+  req.session.userId = data.user.id;
 
   req.session.email = email;
   req.session.save((err) => {
