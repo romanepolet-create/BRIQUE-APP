@@ -7,12 +7,12 @@ const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
-app.use(express.json()); // 👈 INDISPENSABLE pour que la sauvegarde fonctionne !
+app.use(express.json()); 
 const port = process.env.PORT || 3000;
 
 const session = require('express-session');
 app.use(session({
-  secret: process.env.session_secret,
+  secret: process.env.session_secret || 'brique-house-cle-de-secours-2026!',
   resave: false,
   saveUninitialized: true,
   cookie: {secure: true}
