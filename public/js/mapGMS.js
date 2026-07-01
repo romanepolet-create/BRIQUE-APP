@@ -529,8 +529,13 @@ window.filtrerMagasins = function() {
     }
 
 	if (propriosSel.length > 0) {
-      const propMagasin = magasin.proprietaire || magasin.Propriétaire || magasin.propriétaire;
-      if (!propriosSel.includes(propMagasin)) return false;
+      const propMagasin = magasin.Propriétaire || "";
+	
+	  const matchProprio = propriosSel.some(propSelectionne =>
+	    normaliserTexte(propSelectionne) === normaliserTexte(propMagasin)
+	  );
+	  
+      if (!matchProprio) return false;
     }
 
     return true; // Le magasin passe tous les filtres !
@@ -622,8 +627,7 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
   }
 
   if (containerProprio && containerProprio.innerHTML.trim() === "") {
-    // Adapter "proprietaire" selon la casse exacte de votre BDD (ex: Propriétaire, proprietaire, owner...)
-    const proprios = [...new Set(magasins.map(m => m.proprietaire || m.Propriétaire || m.propriétaire))].filter(Boolean).sort();
+    const proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean).sort();
     proprios.forEach(prop => {
       const label = document.createElement('label');
       label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()"> ${prop}`;
