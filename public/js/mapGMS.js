@@ -518,6 +518,7 @@ function remplirSelectFiltre(idSelect, donneesGeoJSON, clePropriete) {
 function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
   const containerRegion = document.getElementById('dropdown-region');
   const containerDpt = document.getElementById('dropdown-dpt');
+  const containerProprio = document.getElementById('dropdown-proprio');
 
   if (!magasins || magasins.length === 0) return;
 
@@ -567,6 +568,16 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
       const label = document.createElement('label');
       label.innerHTML = `<input type="checkbox" value="${item.code}" onchange="filtrerMagasins()"> ${item.texteAffichage}`;
       containerDpt.appendChild(label);
+    });
+  }
+
+  if (containerProprio && containerProprio.innerHTML.trim() === "") {
+    // Adapter "proprietaire" selon la casse exacte de votre BDD (ex: Propriétaire, proprietaire, owner...)
+    const proprios = [...new Set(magasins.map(m => m.proprietaire || m.Propriétaire || m.propriétaire))].filter(Boolean).sort();
+    proprios.forEach(prop => {
+      const label = document.createElement('label');
+      label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()"> ${prop}`;
+      containerProprio.appendChild(label);
     });
   }
 }
