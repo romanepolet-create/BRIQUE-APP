@@ -281,7 +281,7 @@ window.ouvrirPopupDynamique = function(layer) {
             font-size: 12px;">
           📍 Ajouter à l'itinéraire
         </button>
-		</button onclick="window.open('/form.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
+		</button onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
           style="
             display: block; 
 			width: 100%; 
@@ -387,7 +387,7 @@ window.majListeMagasinsVisibles = function() {
             <span style="color: #777;">${m.Priorité}</span>
           </div>
 		  <button 
-		  	onclick="window.open('/form.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')" 
+		  	onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')" 
 			title="Ouvrir le formulaire de visite" 
 			style="background:none; 
 				border:none; 
@@ -790,7 +790,7 @@ function actualiserPanneauGPS() {
 
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-    const urlForm = `/form.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}`;
+    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}`;
     const btnForm = `<button onclick="window.open('${urlForm}', '_blank')" title="Ouvrir le formulaire" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0;">📝</button>`;
 
     // Le bouton Oeil (barré par CSS natif si masqué)
