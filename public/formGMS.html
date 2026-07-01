@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visite GMS - Formulaire</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  
+<body>
+  
+  <div class="form-container">
+    <div class="form-header">
+      <h2>📝 Rapport de Visite</h2>
+      <div id="store-info-badges">
+      </div>
+    </div>
+
+    <form id="visiteForm">
+      <input type="hidden" id="hubspot_id" name="hubspot_id">
+      <input type="hidden" id="enseigne" name="enseigne">
+      
+      <div class="form-group">
+        <label>Nom du Magasin</label>
+        <input type="text" id="nom_magasin" name="nom_magasin" readonly style="background-color: #eee;">
+      </div>
+
+      <div class="form-group">
+        <label>Nb Élément Canettes (historique)</label>
+        <input type="number" id="nb_canettes" name="nb_canettes">
+      </div>
+
+      <div class="form-group">
+        <label>Nb Élément Cave à Bière (historique)</label>
+        <input type="number" id="nb_cave" name="nb_cave">
+      </div>
+
+      <hr style="border: 1px solid #eee; margin: 20px 0;">
+      
+      <h3 style="color: #002ab6;">Références Disponibles</h3>
+      <div id="references-container">
+      </div>
+
+      <hr style="border: 1px solid #eee; margin: 20px 0;">
+
+      <div class="form-group">
+        <label>Mise en Avant (MEA) ?</label>
+        <select id="mea_status" name="mea_status" onchange="toggleMEAFields()">
+          <option value="NON">NON</option>
+          <option value="OUI">OUI</option>
+        </select>
+      </div>
+
+      <div id="mea_details" style="display: none; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px dashed #ccc;">
+        <div class="form-group">
+          <label>Volume Associé (colis)</label>
+          <input type="number" id="mea_volume" name="mea_volume">
+        </div>
+        <div class="form-group">
+          <label>Photo de la MEA*</label>
+          <input type="file" id="mea_photo" name="mea_photo" accept="image/*">
+        </div>
+      </div>
+
+      <button type="button" class="submit-btn" onclick="soumettreFormulaire()">Envoyer le rapport</button>
+    </form>
+  </div>
+
+  <script src="/js/formGMS.js"></script>
+</body>
+</html>
