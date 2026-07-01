@@ -386,6 +386,15 @@ window.majListeMagasinsVisibles = function() {
             <strong style="color: #333;">${m.nom}</strong>
             <span style="color: #777;">${m.Priorité}</span>
           </div>
+		  <button 
+		  	onclick="window.open('/form.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')" 
+			title="Ouvrir le formulaire de visite" 
+			style="background:none; 
+				border:none; 
+				cursor:pointer; 
+				font-size:16px;">
+		  	📝
+		  </button>
         </div>
       `;
 		}
