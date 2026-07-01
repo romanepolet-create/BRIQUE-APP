@@ -1172,3 +1172,64 @@ flex-grow: 0}
     padding: 10px;
   }
 }
+
+/*===========================*/
+/*FORMULAIRE DE VISITE EN GMS*/
+/*===========================*/
+
+.form-container { 
+	max-width: 600px; 
+	margin: 40px auto; 
+	background: white; 
+	padding: 25px; 
+	border-radius: 12px; 
+	box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+	border: 2px solid #002ab6; 
+}
+.form-header { 
+	text-align: center; 
+	margin-bottom: 25px; 
+}
+.info-badge { 
+	display: inline-block; 
+	background: #f3b0cf; 
+	color: #002ab6; 
+	padding: 5px 10px; 
+	border-radius: 15px; 
+	font-size: 12px; 
+	font-weight: bold; 
+	margin: 5px; 
+}
+
+.form-group { 
+	margin-bottom: 15px; 
+	text-align: left; 
+}
+
+.form-group label { 
+	display: block; 
+	font-weight: bold; 
+	color: #002ab6; 
+	margin-bottom: 5px; 
+}
+
+.form-group input, .form-group select { 
+	width: 100%; 
+	padding: 10px; 
+	border: 1px solid #ccc; 
+	border-radius: 6px; 
+	box-sizing: border-box; 
+}
+
+.submit-btn { 
+	width: 100%; 
+	background: #28a745; 
+	color: white; 
+	padding: 12px; 
+	border: none; 
+	border-radius: 8px; 
+	font-size: 16px; 
+	font-weight: bold; 
+	cursor: pointer; 
+	margin-top: 20px; 
+}
