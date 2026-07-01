@@ -8,6 +8,21 @@ let donneesGeo;
 let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
 
+
+function formatEmailToName(email) {
+  if (!email) return "Utilisateur inconnu";
+    const namePart = email.split('@')[0]; 
+    const parts = namePart.split('.'); 
+    const formattedName = parts.map(part => {
+    	return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+  }).join(' ');
+  return formattedName;
+}
+
+function normaliserTexte(texte) {
+  return texte.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 //CARTE LEAFLET
 const map = L.map('map', {preferCanvas: true}).setView([46.603354, 1.888334], 5);
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
@@ -53,6 +68,7 @@ markerConteneur = L.markerClusterGroup({
 
 async function initialiserCarte() {
   console.log("Démarrage de la carte...");
+  await chargerUtilisateurConnecte();
   await chargerGeoJSON();
   await chargerDonneesMagasins();
 
@@ -65,6 +81,34 @@ async function initialiserCarte() {
   }, 300);
 };
 
+// ============================================================
+// DETECTION DE L'UTILISATEUR CONNECTE
+// ============================================================
+// Variable globale pour stocker le propriétaire actuel
+let proprietaireActuel = "";
+
+async function chargerUtilisateurConnecte() {
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (session && session.user) {
+      const emailUser = session.user.email;
+
+      proprietaireActuel = formatEmailToName(emailUser); 
+      console.log("Connecté en tant que :", proprietaireActuel); 
+
+      // NOTE POUR PLUS TARD = Possibilité d'afficher le nom d'utilisateur sur le HTML
+	  // coz maybe we're stupid and we don't know our own names
+	  // who knows
+	  // I know I'm stupid enough to forget it
+	  // or crazy / mad enough
+	  // maybe
+	  // or at least someday (soon)
+      // document.getElementById('nom-user-ui').textContent = proprietaireActuel;
+    }
+  } catch (err) {
+    console.error("Erreur d'authentification :", err);
+  }
+}
 // ===========================================================
 // CHARGEMENT DES FICHIERS GEOJSON
 // ===========================================================
