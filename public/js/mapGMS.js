@@ -437,6 +437,7 @@ window.filtrerMagasins = function() {
   const dptsSel = getValeursSelectionnees('dropdown-dpt');
   const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
 	const prioSel = getValeursSelectionnees('dropdown-prio');
+	const propriosSel = getValeursSelectionnees('dropdown-proprio');
 
 
 
@@ -481,6 +482,11 @@ window.filtrerMagasins = function() {
       const distanceKM = map.distance(userPosition, positionMagasin) / 1000;
             
       if (distanceKM > rayonMaximum) return false;
+    }
+
+	if (propriosSel.length > 0) {
+      const propMagasin = magasin.proprietaire || magasin.Propriétaire || magasin.propriétaire;
+      if (!propriosSel.includes(propMagasin)) return false;
     }
 
     return true; // Le magasin passe tous les filtres !
