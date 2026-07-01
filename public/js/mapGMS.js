@@ -281,6 +281,20 @@ window.ouvrirPopupDynamique = function(layer) {
             font-size: 12px;">
           📍 Ajouter à l'itinéraire
         </button>
+		</button onclick="window.open('/form.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
+          style="
+            display: block; 
+			width: 100%; 
+			background-color: #ffc107; 
+			color: #333; padding: 8px 10px;
+            border: none; 
+			border-radius: 5px; 
+			font-weight: bold; 
+			cursor: pointer; 
+			font-size: 12px;">
+          📝 Visite
+        </button>
+
       </div>
     `;
 
