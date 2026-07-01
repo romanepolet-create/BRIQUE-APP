@@ -6,7 +6,7 @@ const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient('https://mtvzhpqticnxqcxsadkg.supabase.co', process.env.SUPABASE_ANON_KEY);
 
-/*router.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // On demande à Supabase de récupérer toutes les lignes de la table GMS
     const { data, error } = await supabase
@@ -29,9 +29,9 @@ const supabase = createClient('https://mtvzhpqticnxqcxsadkg.supabase.co', proces
   }
 });
 
-module.exports = router;*/
+module.exports = router;
 
-const cheminMapGMS = path.join(__dirname, '../data', 'mapGMS.json');
+/*const cheminMapGMS = path.join(__dirname, '../data', 'mapGMS.json');
 
 router.get('/', async (req, res) => {
 	try { 
@@ -44,4 +44,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router;*/
