@@ -44,8 +44,6 @@ window.chargerFormulaire = function(urlTypeform, titre) {
   document.getElementById('zone-typeform').style.display = 'block';
 };
 
-
-
 window.fermerFormulaire = function() {
   // 1. On cache la grande zone
   document.getElementById('zone-typeform').style.display = 'none';          
@@ -55,3 +53,62 @@ window.fermerFormulaire = function() {
   document.getElementById('message-accueil').style.display = 'block';
 
 };
+
+let photoActiveAEnvoyer = null;
+
+function declencherDeclicPhoto(sourceId) {
+  if(sourceId === 'camera') {
+    document.getElementById('media-camera').click();
+  } else if (sourceId === 'galerie') {
+    document.getElementById('media-galerie').click();
+  }
+}
+
+function traiterFichierPhoto(inputSource) {
+  if (inputSource.files && inputSource.files[0]) {
+    const cible = inputSource.files[0];
+    photoActiveAEnvoyer = cible;
+
+    if (inputSource.id === 'media-camera') document.getElementById('media-galerie').value = "";
+    if (inputSource.id === 'media-galerie') docuement.getElementById('media-camera').value = "";
+
+    const lecteur = newFileReader();
+    lecteur.onload = function(evenement) {
+      document.getElementById('image-rendu-apercu').src = evenement.target.result;
+      document.getElementById('bloc-apercu-photo').style.display = 'block';
+
+      const tailleMo = (cible.size / (1024 * 1024)).toFixed(2);
+      document.getElementById('details-taille-photo').textContent = `Fichier lié : ${cible.name} (${tailleMo} Mo)`
+    };
+    lecteur.readAsDataURL(cible);
+  }
+}
+
+async funciton soumettreFormulaire() {
+  const formulaireElement = document.getElemebtById('visiteForm');
+  const chargeUtile = new FormData(formulaireElement);
+
+  if (photoActiveAEnvoyer) {
+    chargeUtile.append('photo', photoActiveAEnvoyer);
+  }
+
+  try {
+    const reponse = await fetch('/api/visite/soumettre', {
+      methode: 'POST',
+      body: chargeUtile
+    });
+
+    const resultat = await reponse.json();
+    if(resultat.success) {
+      alert(`Visite ${resultat.codeVisite} enregistrée`);
+      window.close();
+    } else {
+      alert(`Erreur de sauvegarde : ${resultat.error}`)
+    }
+  } catch(err) {
+    console.error("Echec de la communication avec l'API", err);
+  }
+}
+
+
+
