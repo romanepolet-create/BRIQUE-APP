@@ -2,20 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
 const { createClient } = require('@supabase/supabase-js');
-const multer = require('multer'); // Pour gérer l'envoi de la photo
+const multer = require('multer');
 
-// Configuration de Multer en mémoire (plus simple pour envoyer directement à Google Drive)
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Configuration Supabase
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-// ID de votre Google Sheet central
-const GOOGLE_SHEET_ID = "VOTRE_ID_GOOGLE_SHEET"; 
-// ID du dossier parent dans Google Drive où créer les dossiers du jour
-const DRIVE_PARENT_FOLDER_ID = "VOTRE_ID_DOSSIER_DRIVE_PARENT";
+const GOOGLE_SHEET_ID = process.env.GSHEET_VISITE; 
+const DRIVE_PARENT_FOLDER_ID = process.env.GSHEET_VISITE;
 
-// Authentification Google (via un fichier de clé de compte de service JSON)
 const auth = new google.auth.GoogleAuth({
   keyFile: './config/google-credentials.json', // Chemin vers votre clé d'accès Google
   scopes: [
@@ -29,10 +24,9 @@ const auth = new google.auth.GoogleAuth({
 // =========================================================================
 router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) => {
   try {
-    const data = req.body; // Contient id_hubspot, enseigne, nom, produits, canettes, cave, etc.
+    const data = req.body;
     const codeVisite = `VISITE_${Date.now()}`; // Génération du code unique de visite
-    
-    // Obtenir les dates formatées à la française
+  
     const aujourdhui = new Date();
     const dateJourDrive = `${String(aujourdhui.getDate()).padStart(2, '0')}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`; // DD-MM-YYYY
     const nomOngletSheet = `${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`; // MM-YYYY
