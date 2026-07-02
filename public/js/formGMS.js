@@ -20,6 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
     <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
   `;
 
+  genererMatriceProduits(infos.enseigne);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const infos = getURLParams();
+  
+  document.getElementById('hubspot_id').value = infos.id_hubspot;
+  document.getElementById('nom_magasin').value = infos.nom;
+  document.getElementById('enseigne').value = infos.enseigne;
+
+  document.getElementById('store-info-badges').innerHTML = `
+    <span class="info-badge">🏪 ${infos.enseigne}</span>
+    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
+
+    genererMatriceProduits(infos.enseigne);
+  `;
+
 // La matrice contenant tes règles
 const matriceGMS = {
   "AUCHAN HM": {
@@ -97,7 +114,7 @@ const matriceGMS = {
 // Fonction à appeler dans ton DOMContentLoaded (remplace la ligne commentée précédente)
 function genererMatriceProduits(enseigne) {
   const conteneur = document.getElementById('references-container');
-  const regles = matriceGMS[enseigne];
+  const regles = matriceGMS[enseigne.toUpperCase()];
 
   if (!regles) {
     conteneur.innerHTML = `<p style="color:red; font-style:italic;">Enseigne "${enseigne}" inconnue dans la matrice. Impossible de charger les produits.</p>`;
