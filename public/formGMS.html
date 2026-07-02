@@ -58,7 +58,58 @@
         </div>
         <div class="form-group">
           <label>Photo de la MEA*</label>
-          <input type="file" id="mea_photo" name="mea_photo" accept="image/*">
+          <div 
+            style="
+              display: flex; 
+              gap: 10px; 
+              margin-top: 5px; 
+              margin-bottom: 10px;">
+            <button 
+              type="button" 
+              onclick="declencherDeclicPhoto('camera')" 
+              style="
+                flex: 1; 
+                background-color: #002ab6; 
+                color: white; 
+                padding: 10px; 
+                border: none; 
+                border-radius: 6px; 
+                font-weight: bold; 
+                cursor: pointer; 
+                font-size: 13px;">
+              📸 Ouvrir l'appareil
+            </button>
+            <button 
+              type="button" 
+              onclick="declencherDeclicPhoto('galerie')" 
+              style="
+                flex: 1; 
+                background-color: #e075aa; 
+                color: white; 
+                padding: 10px; 
+                border: none; 
+                border-radius: 6px; 
+                font-weight: bold; 
+                cursor: pointer; 
+                font-size: 13px;">
+              🖼️ Depuis la galerie
+            </button>         
+          </div>
+          <input type="file" id="media-camera" accept="image/*" capture="environment" style="display: none;" onchange="traiterFichierPhoto(this)">
+          <input type="file" id="media-galerie" accept="image/*" style="display: none;" onchange="traiterFichierPhoto(this)">
+          
+          <div id="bloc-apercu-photo" style="display: none; text-align: center; margin-top: 15px;">
+            <img 
+              id="image-rendu-apercu" 
+              src="" 
+              style="max-width: 100%; max-height: 220px; border-radius: 8px; border: 3px solid #002ab6; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+            <p 
+              id="details-taille-photo" 
+              style="font-size: 11px; 
+              color: #666; 
+              font-style: 
+                italic; margin-top: 5px;"></p>
+          </div>
         </div>
       </div>
 
