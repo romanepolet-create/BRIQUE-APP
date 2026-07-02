@@ -156,6 +156,8 @@ function genererMatriceProduits(enseigne) {
 }
 });
 
+let photoActiveAEnvoyer = null;
+
 // Gérer l'affichage conditionnel de la section MEA
 function toggleMEAFields() {
   const status = document.getElementById('mea_status').value;
@@ -168,8 +170,73 @@ function toggleMEAFields() {
   }
 }
 
-// Fonction fictive de soumission (à relier à ton backend / Google Sheets / Zapier / Make)
-function soumettreFormulaire() {
-  // Logique d'envoi des données + nommage de la photo (avec la date et code unique)
-  alert("Le système d'envoi vers Google Sheets / Drive sera branché ici !");
+function declencherDeclicPhoto(sourceId) {
+  if(sourceId === 'camera') {
+    document.getElementById('media-camera').click();
+  } else if (sourceId === 'galerie') {
+    document.getElementById('media-galerie').click();
+  }
+}
+
+function traiterFichierPhoto(inputSource) {
+  if (inputSource.files && inputSource.files[0]) {
+    const cible = inputSource.files[0];
+    photoActiveAEnvoyer = cible;
+
+    if (inputSource.id === 'media-camera') document.getElementById('media-galerie').value = "";
+    if (inputSource.id === 'media-galerie') docuement.getElementById('media-camera').value = "";
+
+    const lecteur = newFileReader();
+    lecteur.onload = function(evenement) {
+      document.getElementById('image-rendu-apercu').src = evenement.target.result;
+      document.getElementById('bloc-apercu-photo').style.display = 'block';
+
+      const tailleMo = (cible.size / (1024 * 1024)).toFixed(2);
+      document.getElementById('details-taille-photo').textContent = `Fichier lié : ${cible.name} (${tailleMo} Mo)`
+    };
+    lecteur.readAsDataURL(cible);
+  }
+}
+
+async funciton soumettreFormulaire() {
+  const btnSubmit = document.querySelector('.submit-btn');
+  const txtInitial = btnSubmit.textContent;
+  btnSubmit.textContent = "⏳ Envoi en cours...";
+  btnSubmit.disabled = true;
+
+  const formulaireElement = document.getElementById('visiteForm');
+  const chargeUtile = new FormData(formulaireElement);
+
+  if (document.getElementById('mea_status').value === 'OUI' && !photoActiveAEnvoyer) {
+    alert("⚠️ Vous avez coché OUI pour la MEA, une photo est obligatoire.");
+    btnSubmit.textContent = txtInitial;
+    btnSubmit.disabled = false;
+    return;
+  }
+
+  if (photoActiveAEnvoyer) {
+    chargeUtile.append('photo', photoActiveAEnvoyer);
+  }
+
+  try {
+    const reponse = await fetch('/api/visite/soumettre', {
+      methode: 'POST',
+      body: chargeUtile
+    });
+
+    const resultat = await reponse.json();
+    if(resultat.success) {
+      alert(`Visite ${resultat.codeVisite} enregistrée`);
+      window.close();
+    } else {
+      alert(`Erreur de sauvegarde : ${resultat.error}`);
+      btnSubmit.textContent = txtInitial;
+      btnSubmit.disabled = false;
+    }
+  } catch(err) {
+    console.error("Echec de la communication avec l'API", err);
+    alert("❌ Impossible de joindre le serveur. Vérifiez votre connexion.");
+    btnSubmit.textContent = txtInitial;
+    btnSubmit.disabled = false;
+  }
 }
