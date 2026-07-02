@@ -25,10 +25,13 @@ const auth = new google.auth.GoogleAuth({
 router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) => {
   try {
     const data = req.body;
-    const codeVisite = `VISITE_${Date.now()}`; // Génération du code unique de visite
-  
+    
     const aujourdhui = new Date();
-    const dateJourDrive = `${String(aujourdhui.getDate()).padStart(2, '0')}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`; // DD-MM-YYYY
+    const dateJourDrive = `${String(aujourdhui.getDate()).padStart(2, '0')}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`;
+
+    const HHMM = `${String(aujourdhui.getHours()).padStart(2, '0')}${String(aujourdhui.getMinutes()).padStart(2, '0')}`;
+    const codeVisite = `${data.id_hubspot}_${dateJourDrive.replace(/-/g, '')}_${HHMM}`;
+    
     const nomOngletSheet = `${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`; // MM-YYYY
     const dateVisiteTexte = aujourdhui.toLocaleString('fr-FR');
 
