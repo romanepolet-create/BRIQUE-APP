@@ -68,17 +68,25 @@ router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) =>
     const sheets = google.sheets({ version: 'v4', auth });
     await verifierOuCreerOngletMensuel(sheets, GOOGLE_SHEET_ID, nomOngletSheet);
 
-    // Préparation de la ligne à insérer
-    // Adapter selon l'ordre exact de vos colonnes produits
+    const HHMM = `${String(aujourdhui.getHours()).padStart(2, '0')}${String(aujourdhui.getMinutes()).padStart(2, '0')}`;
+    const codeVisite = `${data.id_hubspot}_${dateJourDrive.replace(/-/g, '')}_${HHMM}`;
+
+    const val = (ref) => data[ref] ? data[ref] : "NON";
+    
     const ligneData = [
       codeVisite,
       data.id_hubspot,
       data.enseigne,
       data.nom_magasin,
       dateVisiteTexte,
-      data.ref_LB33 || "NON", // Exemple pour vos colonnes produits
-      data.ref_LB75 || "NON",
-      data.ref_LB44 || "NON",
+      data.nb_canettes || 0,
+      data.nb_cave || 0,
+
+      val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), val('ref_Uacid33'),
+      val('ref_LB75'), val('ref_NQ75'), val('ref_YT75'), val('ref_SH75'), val('ref_TC75'), val('ref_ML75'),
+      val('ref_LB44'), val('ref_NQ44'), val('ref_YT44'), val('ref_ML44'),
+      val('ref_ephemeres')
+
       data.mea_status,
       data.mea_volume || "",
       lienPhotoDrive
@@ -142,7 +150,39 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
         requests: [{ addSheet: { properties: { title: sheetName } } }]
       }
     });
-    // Optionnel : Ajouter la ligne d'en-tête ici si l'onglet vient d'être créé
+    const enTetes = [
+      "Code Visite", 
+      "ID Hubspot", 
+      "Enseigne", 
+      "Nom Magasin", 
+      "Date Visite", 
+      "Nb Canettes", 
+      "Nb Cave", 
+      "LB33", 
+      "NQ33", 
+      "YT33", 
+      "U acid33",
+      "LB75", 
+      "NQ75", 
+      "YT75", 
+      "SH75", 
+      "TC75", 
+      "ML75", 
+      "ephemeres",
+      "LB44", 
+      "NQ44", 
+      "YT44", 
+      "ML44",
+      "MEA", 
+      "Volume MEA", 
+      "Lien Photo"
+    ];
+    
+     await sheets.spreadsheets.values.append({
+      spreadsheetId: spreadsheetId,
+      range: `${sheetName}!A1:Z1`,
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: [enTetes] }
   }
 }
 
