@@ -293,11 +293,6 @@ window.validerProforma = async function() {
 
 
         // --- 3. GENERATION DU PDF ---
-         elementFacture.style.position = "absolute";
-        elementFacture.style.left = "-9999px";
-        elementFacture.style.top = "0";
-        document.body.appendChild(elementFacture);
-
         const opt = {
             margin:       10, 
             filename:     `Proforma_BriqueHouse_${dateAujourdhui.replace(/\//g,'-')}.pdf`,
