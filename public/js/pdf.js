@@ -307,7 +307,6 @@ window.validerProforma = async function() {
         };
 
         await html2pdf().set(opt).from(elementFacture).save();
-        document.body.removeChild(elementFacture);
 
         btn.innerText = "✅ OK (Générer PDF)";
 
