@@ -165,45 +165,57 @@ window.validerProforma = async function() {
         elementFacture.style.width = "180mm"; 
         elementFacture.style.boxSizing = "border-box";
 
-        elementFacture.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-                <div>
-                    <b>Commande Proforma n°</b> ..................................<br>
-                </div>
-                <div>
-                    <h2 style="margin:0; font-size: 16px;">BRIQUE HOUSE BREWERY</h2>
-                </div>
-            </div>
+        elementFacture.innerHTML =  `
+            <table style="width: 100%; margin-bottom: 20px; border: none;">
+                <tr>
+                    <td style="width: 50%; text-align: left; vertical-align: top;">
+                        <b>Commande Proforma n°</b> ..................................
+                    </td>
+                    <td style="width: 50%; text-align: right; vertical-align: top;">
+                        <h2 style="margin:0; font-size: 16px;">BRIQUE HOUSE BREWERY</h2>
+                    </td>
+                </tr>
+            </table>
 
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <div style="border: 1px solid #000; padding: 10px; width: 30%;">
-                    <b>ADRESSE DE LIVRAISON</b><br><br><br>
-                </div>
-                <div style="border: 1px solid #000; padding: 10px; width: 30%;">
-                    <b>ADRESSE DU SIEGE SOCIAL</b><br><br><br>
-                </div>
-                <div style="border: 1px solid #000; padding: 10px; width: 30%;">
-                    <b>ADRESSE DE FACTURATION</b><br><br><br>
-                </div>
-            </div>
+            <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 31%; border: 1px solid #000; padding: 10px; vertical-align: top;">
+                        <b>ADRESSE DE LIVRAISON</b><br><br><br>
+                    </td>
+                    <td style="width: 3.5%;"></td>
+                    <td style="width: 31%; border: 1px solid #000; padding: 10px; vertical-align: top;">
+                        <b>ADRESSE DU SIEGE SOCIAL</b><br><br><br>
+                    </td>
+                    <td style="width: 3.5%;"></td>
+                    <td style="width: 31%; border: 1px solid #000; padding: 10px; vertical-align: top;">
+                        <b>ADRESSE DE FACTURATION</b><br><br><br>
+                    </td>
+                </tr>
+            </table>
 
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; border: 1px solid #000; padding: 10px;">
-                <table style="width: 48%; font-size: 10px;">
-                    <tr><td>N° de document</td><td>........................</td></tr>
-                    <tr><td>Date</td><td>${dateAujourdhui}</td></tr>
-                    <tr><td>N° de client</td><td>........................</td></tr>
-                    <tr><td>Mode de paiement</td><td>........................</td></tr>
-                    <tr><td>Date d'échéance</td><td>${dateEcheance}</td></tr>
-                    <tr><td>Code Magasin</td><td>........................</td></tr>
-                </table>
-                <table style="width: 48%; font-size: 10px;">
-                    <tr><td>Commande n°</td><td>........................</td></tr>
-                    <tr><td>Votre Interlocuteur</td><td>........................</td></tr>
-                    <tr><td>Votre référence</td><td>........................</td></tr>
-                    <tr><td>Mode de livraison</td><td>........................</td></tr>
-                    <tr><td>N° de TVA</td><td>........................</td></tr>
-                </table>
-            </div>
+            <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse; border: 1px solid #000;">
+                <tr>
+                    <td style="width: 50%; padding: 10px; vertical-align: top;">
+                        <table style="width: 100%; font-size: 10px;">
+                            <tr><td>N° de document</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Date</td><td style="text-align:right;">${dateAujourdhui}</td></tr>
+                            <tr><td>N° de client</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Mode de paiement</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Date d'échéance</td><td style="text-align:right;">${dateEcheance}</td></tr>
+                            <tr><td>Code Magasin</td><td style="text-align:right;">........................</td></tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%; padding: 10px; vertical-align: top;">
+                        <table style="width: 100%; font-size: 10px;">
+                            <tr><td>Commande n°</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Votre Interlocuteur</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Votre référence</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>Mode de livraison</td><td style="text-align:right;">........................</td></tr>
+                            <tr><td>N° de TVA</td><td style="text-align:right;">........................</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
 
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: right; border: 1px solid #000; font-size: 9px;">
                 <tr style="background-color: #002AB6; color: white; text-align: center;">
@@ -233,30 +245,38 @@ window.validerProforma = async function() {
                 </tr>
             </table>
 
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <table style="width: 30%; border-collapse: collapse; border: 1px solid #000; text-align: right;">
-                    <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="3" style="padding: 3px;">TVA</th></tr>
-                    <tr style="font-weight: bold;"><td>BASE</td><td style="text-align:center;">Taux</td><td>Montant</td></tr>
-                    <tr><td>${totalHT.toFixed(2)}</td><td style="text-align:center;">01 (20%)</td><td>${vingtPcent.toFixed(2)}</td></tr>
-                    <tr style="font-weight: bold; border-top: 1px solid #000;"><td>${totalHT.toFixed(2)}</td><td></td><td>${vingtPcent.toFixed(2)}</td></tr>
-                </table>
-
-                <table style="width: 30%; border-collapse: collapse; border: 1px solid #000;">
-                    <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="2" style="padding: 3px;">Autres Taxes</th></tr>
-                    <tr><td>Taxes Accises</td><td style="text-align: right;">${totalAccises.toFixed(2)}</td></tr>
-                    <tr><td>Eco-Taxes</td><td style="text-align: right;">${totalEco.toFixed(2)}</td></tr>
-                </table>
-
-                <table style="width: 35%; border-collapse: collapse; border: 1px solid #000;">
-                    <tr><td>Total HT EUR</td><td style="text-align: right;">${totalHT.toFixed(2)}</td></tr>
-                    <tr><td>TVA</td><td style="text-align: right;">${vingtPcent.toFixed(2)}</td></tr>
-                    <tr style="font-weight: bold; background-color: #eee;"><td>Total TTC EUR</td><td style="text-align: right;">${unVvingt.toFixed(2)}</td></tr>
-                    <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="2" style="padding: 3px;">PAIEMENT</th></tr>
-                    <tr><td>IBAN</td><td style="text-align: right;">........................</td></tr>
-                    <tr><td>BIC</td><td style="text-align: right;">........................</td></tr>
-                    <tr><td>Date d'échéance</td><td style="text-align: right;">${dateEcheance}</td></tr>
-                </table>
-            </div>
+            <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 31%; vertical-align: top;">
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; text-align: right;">
+                            <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="3" style="padding: 3px;">TVA</th></tr>
+                            <tr style="font-weight: bold;"><td>BASE</td><td style="text-align:center;">Taux</td><td>Montant</td></tr>
+                            <tr><td>${totalHT.toFixed(2)}</td><td style="text-align:center;">01 (20%)</td><td>${vingtPcent.toFixed(2)}</td></tr>
+                            <tr style="font-weight: bold; border-top: 1px solid #000;"><td>${totalHT.toFixed(2)}</td><td></td><td>${vingtPcent.toFixed(2)}</td></tr>
+                        </table>
+                    </td>
+                    <td style="width: 3.5%;"></td>
+                    <td style="width: 31%; vertical-align: top;">
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                            <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="2" style="padding: 3px;">Autres Taxes</th></tr>
+                            <tr><td>Taxes Accises</td><td style="text-align: right;">${totalAccises.toFixed(2)}</td></tr>
+                            <tr><td>Eco-Taxes</td><td style="text-align: right;">${totalEco.toFixed(2)}</td></tr>
+                        </table>
+                    </td>
+                    <td style="width: 3.5%;"></td>
+                    <td style="width: 31%; vertical-align: top;">
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                            <tr><td>Total HT EUR</td><td style="text-align: right;">${totalHT.toFixed(2)}</td></tr>
+                            <tr><td>TVA</td><td style="text-align: right;">${vingtPcent.toFixed(2)}</td></tr>
+                            <tr style="font-weight: bold; background-color: #eee;"><td>Total TTC EUR</td><td style="text-align: right;">${unVvingt.toFixed(2)}</td></tr>
+                            <tr style="background-color: #002AB6; color: white; text-align: center;"><th colspan="2" style="padding: 3px;">PAIEMENT</th></tr>
+                            <tr><td>IBAN</td><td style="text-align: right;">........................</td></tr>
+                            <tr><td>BIC</td><td style="text-align: right;">........................</td></tr>
+                            <tr><td>Date d'échéance</td><td style="text-align: right;">${dateEcheance}</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
 
             <div style="font-size: 8px; text-align: left; margin-bottom: 20px;">
                 Toute commande passée à notre société est soumise à nos conditions générales de vente.<br>
@@ -271,7 +291,13 @@ window.validerProforma = async function() {
             </div>
         `;
 
+
         // --- 3. GENERATION DU PDF ---
+         elementFacture.style.position = "absolute";
+        elementFacture.style.left = "-9999px";
+        elementFacture.style.top = "0";
+        document.body.appendChild(elementFacture);
+
         const opt = {
             margin:       10, 
             filename:     `Proforma_BriqueHouse_${dateAujourdhui.replace(/\//g,'-')}.pdf`,
@@ -281,6 +307,8 @@ window.validerProforma = async function() {
         };
 
         await html2pdf().set(opt).from(elementFacture).save();
+        document.body.removeChild(elementFacture);
+
         btn.innerText = "✅ OK (Générer PDF)";
 
     } catch (e) {
