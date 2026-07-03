@@ -73,6 +73,9 @@ window.afficherPanier = function() {
     }
 
     let html = "";
+    setOuterBorder(donnees, 21, 0, 21, 14);
+
+    
     for (const [idBiere, qte] of Object.entries(panierProforma)) {
         html += `
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
