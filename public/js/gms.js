@@ -1,3 +1,4 @@
+const reponse = await fetch('/api/config');
 let biereActuelle = null;
 
 async function chargerBieres() {
