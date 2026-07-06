@@ -852,8 +852,17 @@ function actualiserPanneauGPS() {
 
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
-    const btnForm = `<button onclick="window.open('${urlForm}', '_blank')" title="Ouvrir le formulaire" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0;">📝</button>`;
+    const urlForm = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
+    const btnForm = `
+		<button data-url="${urlForm}" 
+		onclick="window.open(this.dataset.url, '_blank')" 
+		title="Ouvrir le formulaire" 
+		style="
+			background:none; 
+			border:none; 
+			cursor:pointer; 
+			font-size:14px; 
+			padding:0;">📝</button>`;
 
     // Le bouton Oeil (barré par CSS natif si masqué)
     const btnMasque = etape.masque
