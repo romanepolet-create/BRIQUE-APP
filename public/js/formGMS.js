@@ -149,10 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById('store-info-badges').innerHTML = `
     <span class="info-badge">🏪 ${infos.enseigne}</span>
-    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
+    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>`
 
     genererMatriceProduits(infos.enseigne);
-  `;
 });
 
 // La matrice contenant tes règles
