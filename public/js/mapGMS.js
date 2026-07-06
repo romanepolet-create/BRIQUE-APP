@@ -1,4 +1,15 @@
 let supabaseClient;
+async function initialiserSupabase() {
+  try {
+    const reponse = await fetch('/api/config');
+    const config = await reponse.json();
+    
+    supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    console.log("Supabase connecté avec succès via le .env !");
+  } catch (err) {
+    console.error("Impossible de récupérer la config Supabase :", err);
+  }
+}
 
 let geojsonLayer
 let modeEdition = false;
