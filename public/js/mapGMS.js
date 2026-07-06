@@ -1,3 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const { createClient } = require('@supabase/supabase-js');
+
+const supabaseUrl = process.env.SUPABASE_URL; 
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 let geojsonLayer
 let modeEdition = false;
 let markerConteneur; //PINS MAGASINS
