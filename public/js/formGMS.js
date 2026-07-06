@@ -30,8 +30,8 @@ const matriceGMS = {
     direct: ["LB33", "NQ33", "NQ44", "YT33", "YT44", "SH75"]
   },
   "CRF MARKET": {
-    obligatoire: [],
-    facultatif: ["LB44", "LB75", "NQ75", "YT75", "TC75", "ML44", "ML75"],
+    obligatoire: ["LB44", "LB75", "NQ75", "YT75", "TC75", "ML44", "ML75"],
+    facultatif: [],
     direct: ["LB33", "NQ44", "YT44", "SH75"]
   },
   "CRF PROXI": {
