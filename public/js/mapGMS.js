@@ -754,14 +754,14 @@ function NoEasterPopup () {
 // ==========================================
 // GESTION DES ÉTAPES (MASQUER, FINAL, SUPPRIMER)
 // ==========================================
-window.ajouterEtape = function(lng, lat, nom, hubspot_id) {
+window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   const activeCount = etapesItineraire.filter(e => !e.masque).length;
   if(activeCount >= 9) {
       showPopup();
       return;
   }
 
-  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, masque: false, isFinal: false});
+  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, masque: false, isFinal: false});
   actualiserPanneauGPS();
   filtrerMagasins();
 
@@ -838,7 +838,7 @@ function actualiserPanneauGPS() {
 
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}`;
+    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
     const btnForm = `<button onclick="window.open('${urlForm}', '_blank')" title="Ouvrir le formulaire" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0;">📝</button>`;
 
     // Le bouton Oeil (barré par CSS natif si masqué)
