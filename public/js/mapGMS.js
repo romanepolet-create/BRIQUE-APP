@@ -80,6 +80,7 @@ markerConteneur = L.markerClusterGroup({
 }).addTo(map);
 
 async function initialiserCarte() {
+  await initialiserSupabase();
   console.log("Démarrage de la carte...");
   await chargerUtilisateurConnecte();
   await chargerGeoJSON();
