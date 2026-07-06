@@ -94,13 +94,12 @@ function genererMatriceProduits(enseigne) {
     listeBieres.forEach(biere => {
       // Nettoyage du nom pour l'attribut name (ex: "U acid33" -> "Uacid33")
       const nomInput = `ref_${biere.replace(/\s+/g, '')}`;
+      const estCoche = bieresCocheesAvant.includes(biere) ? "checked" : "";
+      
       html += `
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
-          <span style="font-size: 14px; font-weight: bold; color: #333;">${biere}</span>
-          <div>
-            <label style="margin-right: 10px;"><input type="radio" name="${nomInput}" value="OUI" required> OUI</label>
-            <label><input type="radio" name="${nomInput}" value="NON" required> NON</label>
-          </div>
+        <div style="display: flex; align-items: center; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
+          <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+          <label for="${nomInput}" style="font-size: 14px; font-weight: bold; color: #333; cursor: pointer; user-select: none; flex-grow: 1;">${biere}</label>
         </div>`;
     });
     
@@ -206,6 +205,14 @@ async function soumettreFormulaire() {
 
   const formulaireElement = document.getElementById('visiteForm');
   const chargeUtile = new FormData(formulaireElement);
+
+  const checkboxes = document.querySelectorAll('#references-container input[type="checkbox"]');
+  checkboxes.forEach(cb => {
+    // Si la case n'est PAS cochée, on force l'envoi d'un "NON"
+    if (!cb.checked) {
+      chargeUtile.append(cb.name, 'NON');
+    }
+  });
 
   if (document.getElementById('mea_status').value === 'OUI' && !photoActiveAEnvoyer) {
     alert("⚠️ Vous avez coché OUI pour la MEA, une photo est obligatoire.");
