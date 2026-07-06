@@ -114,7 +114,6 @@ function genererMatriceProduits(enseigne) {
     creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒') +
     creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦');
 }
-});
 
 // Fonction pour extraire les paramètres de l'URL
 function getURLParams() {
@@ -154,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     genererMatriceProduits(infos.enseigne);
   `;
+});
 
 // La matrice contenant tes règles
 
