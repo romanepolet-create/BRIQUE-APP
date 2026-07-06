@@ -1,43 +1,3 @@
-// Fonction pour extraire les paramètres de l'URL
-function getURLParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    id_hubspot: params.get('id_hubspot') || '',
-    nom: params.get('nom') || 'Magasin Inconnu',
-    enseigne: params.get('enseigne') || 'Inconnue'
-  };
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const infos = getURLParams();
-  
-  document.getElementById('hubspot_id').value = infos.id_hubspot;
-  document.getElementById('nom_magasin').value = infos.nom;
-  document.getElementById('enseigne').value = infos.enseigne;
-
-  document.getElementById('store-info-badges').innerHTML = `
-    <span class="info-badge">🏪 ${infos.enseigne}</span>
-    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
-  `;
-
-  genererMatriceProduits(infos.enseigne);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const infos = getURLParams();
-  
-  document.getElementById('hubspot_id').value = infos.id_hubspot;
-  document.getElementById('nom_magasin').value = infos.nom;
-  document.getElementById('enseigne').value = infos.enseigne;
-
-  document.getElementById('store-info-badges').innerHTML = `
-    <span class="info-badge">🏪 ${infos.enseigne}</span>
-    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
-
-    genererMatriceProduits(infos.enseigne);
-  `;
-
-// La matrice contenant tes règles
 const matriceGMS = {
   "AUCHAN HM": {
     obligatoire: ["LB33",  "LB75",  "NQ33", "NQ75", "YT33", "YT75", "ML75"],
@@ -155,6 +115,47 @@ function genererMatriceProduits(enseigne) {
     creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦');
 }
 });
+
+// Fonction pour extraire les paramètres de l'URL
+function getURLParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    id_hubspot: params.get('id_hubspot') || '',
+    nom: params.get('nom') || 'Magasin Inconnu',
+    enseigne: params.get('enseigne') || 'Inconnue'
+  };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const infos = getURLParams();
+  
+  document.getElementById('hubspot_id').value = infos.id_hubspot;
+  document.getElementById('nom_magasin').value = infos.nom;
+  document.getElementById('enseigne').value = infos.enseigne;
+
+  document.getElementById('store-info-badges').innerHTML = `
+    <span class="info-badge">🏪 ${infos.enseigne}</span>
+    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
+  `;
+
+  genererMatriceProduits(infos.enseigne);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const infos = getURLParams();
+  
+  document.getElementById('hubspot_id').value = infos.id_hubspot;
+  document.getElementById('nom_magasin').value = infos.nom;
+  document.getElementById('enseigne').value = infos.enseigne;
+
+  document.getElementById('store-info-badges').innerHTML = `
+    <span class="info-badge">🏪 ${infos.enseigne}</span>
+    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
+
+    genererMatriceProduits(infos.enseigne);
+  `;
+
+// La matrice contenant tes règles
 
 let photoActiveAEnvoyer = null;
 
