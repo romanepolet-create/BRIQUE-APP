@@ -198,7 +198,7 @@ function traiterFichierPhoto(inputSource) {
   }
 }
 
-async funciton soumettreFormulaire() {
+async function soumettreFormulaire() {
   const btnSubmit = document.querySelector('.submit-btn');
   const txtInitial = btnSubmit.textContent;
   btnSubmit.textContent = "⏳ Envoi en cours...";
