@@ -72,7 +72,7 @@ const matriceGMS = {
 };
 
 // Fonction à appeler dans ton DOMContentLoaded (remplace la ligne commentée précédente)
-function genererMatriceProduits(enseigne) {
+function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   const conteneur = document.getElementById('references-container');
   const regles = matriceGMS[enseigne.toUpperCase()];
 
@@ -92,7 +92,6 @@ function genererMatriceProduits(enseigne) {
                   <div style="margin-top: 15px; display: grid; gap: 10px;">`;
                   
     listeBieres.forEach(biere => {
-      // Nettoyage du nom pour l'attribut name (ex: "U acid33" -> "Uacid33")
       const nomInput = `ref_${biere.replace(/\s+/g, '')}`;
       const estCoche = bieresCocheesAvant.includes(biere) ? "checked" : "";
       
@@ -123,21 +122,6 @@ function getURLParams() {
     enseigne: params.get('enseigne') || 'Inconnue'
   };
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const infos = getURLParams();
-  
-  document.getElementById('hubspot_id').value = infos.id_hubspot;
-  document.getElementById('nom_magasin').value = infos.nom;
-  document.getElementById('enseigne').value = infos.enseigne;
-
-  document.getElementById('store-info-badges').innerHTML = `
-    <span class="info-badge">🏪 ${infos.enseigne}</span>
-    <span class="info-badge">🆔 ${infos.id_hubspot || 'N/A'}</span>
-  `;
-
-  genererMatriceProduits(infos.enseigne);
-});
 
 document.addEventListener("DOMContentLoaded", () => {
   const infos = getURLParams();
@@ -183,9 +167,9 @@ function traiterFichierPhoto(inputSource) {
     photoActiveAEnvoyer = cible;
 
     if (inputSource.id === 'media-camera') document.getElementById('media-galerie').value = "";
-    if (inputSource.id === 'media-galerie') docuement.getElementById('media-camera').value = "";
+    if (inputSource.id === 'media-galerie') document.getElementById('media-camera').value = "";
 
-    const lecteur = newFileReader();
+    const lecteur = new FileReader();
     lecteur.onload = function(evenement) {
       document.getElementById('image-rendu-apercu').src = evenement.target.result;
       document.getElementById('bloc-apercu-photo').style.display = 'block';
@@ -227,7 +211,7 @@ async function soumettreFormulaire() {
 
   try {
     const reponse = await fetch('/api/visite/soumettre', {
-      methode: 'POST',
+      method: 'POST',
       body: chargeUtile
     });
 
