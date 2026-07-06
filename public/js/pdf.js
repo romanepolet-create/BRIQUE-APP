@@ -163,7 +163,7 @@ window.validerProforma = async function() {
         elementFacture.style.fontSize = "10px";
         elementFacture.style.color = "#000";
         elementFacture.style.width = "180mm"; 
-        elementFacture.style.minHeight = "280mm";
+        //elementFacture.style.minHeight = "280mm";
         elementFacture.style.boxSizing = "border-box";
 
         elementFacture.innerHTML =  `
@@ -295,12 +295,13 @@ window.validerProforma = async function() {
 
         // --- 3. GENERATION DU PDF ---
         const opt = {
-            margin:       10, 
+            margin:       [2, 10, 2, 10], 
             filename:     `Proforma_BriqueHouse_${dateAujourdhui.replace(/\//g,'-')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2,
-                            scrolly: 0,
-                            windowHeight: 1500
+                            scrollY: 0,
+                            windowHeight: 1500,
+                            y: 0
                           }, 
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' } 
         };
