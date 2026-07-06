@@ -94,7 +94,7 @@ let proprietaireActuel = "";
 
 async function chargerUtilisateurConnecte() {
   try {
-    const { data: { session }, error } = await supabase.auth.getSession();
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
     if (session && session.user) {
       const emailUser = session.user.email;
 
