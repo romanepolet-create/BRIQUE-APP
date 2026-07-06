@@ -325,7 +325,7 @@ window.ouvrirPopupDynamique = function(layer) {
                   margin-bottom: 5px;">
             🌐 Ouvrir dans HubSpot
         </a>
-        <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}')"
+        <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')"
           style="
             display: block;
             width: 100%;
@@ -339,7 +339,7 @@ window.ouvrirPopupDynamique = function(layer) {
             font-size: 12px;">
           📍 Ajouter à l'itinéraire
         </button>
-		</button onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
+		<button onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
           style="
             display: block; 
 			width: 100%; 
