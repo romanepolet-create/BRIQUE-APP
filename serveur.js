@@ -64,8 +64,8 @@ app.get('/api/config', (req, res) => {
   res.json({
     supabaseUrl: process.env.SUPABASE_URL,
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
-    GSHEET_VISITE = '1eJBOYvRDXz2AiL44VuvIacsNC4deqwPUHz82IMooxrQ',
-    GDOSSIER_VISITE = '1CjO7TVZUTIZ5V1jMipbampUfPzDIfExV'
+    xlsxVisite = process.env.GSHEET_VISITE,
+    dossierVisite = process.env.GDOSSIER_VISITE
   });
 });
 
