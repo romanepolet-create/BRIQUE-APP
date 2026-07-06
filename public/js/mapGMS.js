@@ -852,7 +852,7 @@ function actualiserPanneauGPS() {
 
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-    const urlForm = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
+    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
     const btnForm = `
 		<button data-url="${urlForm}" 
 		onclick="window.open(this.dataset.url, '_blank')" 
