@@ -59,6 +59,7 @@ const routesRegion = require('./routes/region');
 const routesProforma = require('./routes/proforma');
 const routesGms = require('./routes/gms');
 const routesTournee = require('./routes/tournee');
+const routesVisite = require('./routes/visite');
 
 app.get('/api/config', (req, res) => {
   res.json({
@@ -75,6 +76,8 @@ app.use('/api/region', verifierBriqueHouse, routesRegion);
 app.use('/api/proforma', verifierBriqueHouse, routesProforma);
 app.use('/api/gms', verifierBriqueHouse, routesGms);
 app.use('/api/tournee', verifierBriqueHouse, routesTournee);
+app.use('/api/visite', verifierBriqueHouse, routesVisite);
+
 
 app.get('/login.html', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
