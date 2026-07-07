@@ -71,9 +71,6 @@ router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) =>
     const sheets = google.sheets({ version: 'v4', auth });
     await verifierOuCreerOngletMensuel(sheets, GOOGLE_SHEET_ID, nomOngletSheet);
 
-    const HHMM = `${String(aujourdhui.getHours()).padStart(2, '0')}${String(aujourdhui.getMinutes()).padStart(2, '0')}`;
-    const codeVisite = `${data.id_hubspot}_${dateJourDrive.replace(/-/g, '')}_${HHMM}`;
-
     const val = (ref) => data[ref] ? data[ref] : "NON";
     
     const ligneData = [
@@ -88,7 +85,7 @@ router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) =>
       val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), val('ref_Uacid33'),
       val('ref_LB75'), val('ref_NQ75'), val('ref_YT75'), val('ref_SH75'), val('ref_TC75'), val('ref_ML75'),
       val('ref_LB44'), val('ref_NQ44'), val('ref_YT44'), val('ref_ML44'),
-      val('ref_ephemeres')
+      val('ref_ephemeres'),
 
       data.mea_status,
       data.mea_volume || "",
@@ -186,6 +183,7 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
       range: `${sheetName}!A1:Z1`,
       valueInputOption: 'USER_ENTERED',
       resource: { values: [enTetes] }
+     });
   }
 }
 
