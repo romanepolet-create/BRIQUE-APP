@@ -22,7 +22,7 @@ const auth = new google.auth.GoogleAuth({
 // =========================================================================
 // ROUTE PRINCIPALE : SOUMISSION DU RAPPORT DE VISITE
 // =========================================================================
-router.post('/api/visite/soumettre', upload.single('photo'), async (req, res) => {
+router.post('/soumettre', upload.single('photo'), async (req, res) => {
   try {
     const data = req.body;
     
