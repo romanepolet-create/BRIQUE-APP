@@ -1,4 +1,4 @@
-const reponse = await fetch('/api/config');
+const reponse = fetch('/api/config');
 let biereActuelle = null;
 
 async function chargerBieres() {
