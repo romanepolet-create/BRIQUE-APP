@@ -30,7 +30,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     const dateJourDrive = `${String(aujourdhui.getDate()).padStart(2, '0')}-${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`;
 
     const HHMM = `${String(aujourdhui.getHours()).padStart(2, '0')}${String(aujourdhui.getMinutes()).padStart(2, '0')}`;
-    const codeVisite = `${data.id_hubspot}_${dateJourDrive.replace(/-/g, '')}_${HHMM}`;
+    const codeVisite = `${data.hubspot_id}_${dateJourDrive.replace(/-/g, '')}_${HHMM}`;
     
     const nomOngletSheet = `${String(aujourdhui.getMonth() + 1).padStart(2, '0')}-${aujourdhui.getFullYear()}`; // MM-YYYY
     const dateVisiteTexte = aujourdhui.toLocaleString('fr-FR');
@@ -75,7 +75,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     
     const ligneData = [
       codeVisite,
-      data.id_hubspot,
+      data.hubspot_id,
       data.enseigne,
       data.nom_magasin,
       dateVisiteTexte,
@@ -107,7 +107,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     const { error: supabaseError } = await supabase
       .from('historique_visites')
       .upsert({
-        hubspot_id: data.id_hubspot,
+        hubspot_id: data.hubspot_id,
         nb_canettes: parseInt(data.nb_canettes) || 0,
         nb_cave: parseInt(data.nb_cave) || 0,
         derniere_visite: aujourdhui.toISOString()
