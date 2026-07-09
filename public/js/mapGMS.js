@@ -441,7 +441,6 @@ window.majListeMagasinsVisibles = function() {
 	  const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
 			
       html += `
-        html += `
         <div onclick="clicSurListe(${item.layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
           <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
           <div style="flex-grow: 1;">
