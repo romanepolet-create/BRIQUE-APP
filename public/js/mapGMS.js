@@ -304,6 +304,7 @@ window.ouvrirPopupDynamique = function(layer) {
 
     const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
+	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
 
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
@@ -339,7 +340,7 @@ window.ouvrirPopupDynamique = function(layer) {
             font-size: 12px;">
           📍 Ajouter à l'itinéraire
         </button>
-		<button onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(nomEchappe)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')"
+		<button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')"
           style="
             display: block; 
 			width: 100%; 
@@ -436,23 +437,27 @@ window.majListeMagasinsVisibles = function() {
           distanceTexte = `<span style="color: #002ab6; font-weight: bold; font-size: 10px; margin-left: auto;">${(item.distance / 1000).toFixed(1)} km</span>`;
         }
 	  }
+
+	  const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
 			
       html += `
+        html += `
         <div onclick="clicSurListe(${item.layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
           <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
-          <div>
+          <div style="flex-grow: 1;">
             <strong style="color: #333;">${m.nom}</strong>
             <span style="color: #777;">${m.Priorité}</span>
           </div>
-		  <button 
-		  	onclick="window.open('/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}', '_blank')" 
-			title="Ouvrir le formulaire de visite" 
-			style="background:none; 
-				border:none; 
-				cursor:pointer; 
-				font-size:16px;">
-		  	📝
-		  </button>
+          <button 
+            data-url="${urlFormList}" 
+            onclick="event.stopPropagation(); window.open(this.dataset.url, '_blank')" 
+            title="Ouvrir le formulaire de visite" 
+            style="background:none; 
+              border:none; 
+              cursor:pointer; 
+              font-size:16px;">
+            📝
+          </button>
         </div>
       `;
 		}
