@@ -22,7 +22,7 @@ const auth = new google.auth.GoogleAuth({
 // =========================================================================
 // ROUTE PRINCIPALE : SOUMISSION DU RAPPORT DE VISITE
 // =========================================================================
-router.post('/soumettre', upload.single('photo'), async (req, res) => {
+router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
   try {
     const data = req.body;
     
@@ -40,17 +40,20 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     // ---------------------------------------------------------------------
     // 1. GESTION DE LA PHOTO SUR GOOGLE DRIVE (Si MEA coché OUI et photo présente)
     // ---------------------------------------------------------------------
-    if (data.mea_status === "OUI" && req.file) {
+    let liensPhotosDrive = [];
+    
+    if (data.mea_status === "OUI" && req.file && req.files.length > 0) {
       const drive = google.drive({ version: 'v3', auth });
       
-      // A. Recherche ou création du dossier du jour [DD-MM-YYYY]
       let folderId = await obtenirOuCreerDossierDrive(drive, dateJourDrive, DRIVE_PARENT_FOLDER_ID);
+
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
       
-      // B. Upload du fichier photo renommé selon le Code Visite
-      const fileMetadata = {
-        name: `${codeVisite}_1.jpg`, // Votre nomenclature validée
-        parents: [folderId]
-      };
+        const fileMetadata = {
+          name: `${codeVisite}_${i + 1}.jpg`, // Votre nomenclature validée
+          parents: [folderId]
+        };
       const media = {
         mimeType: req.file.mimetype,
         body: require('stream').Readable.from(req.file.buffer)
@@ -63,8 +66,10 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
         supportsAllDrives: true
       });
       
-      lienPhotoDrive = fileDrive.data.webViewLink; // Lien hypertexte pour le Google Sheet
+      lienPhotosDrive = fileDrive.data.webViewLink;
     }
+
+    let lienPhotoDriveFinal = liensPhotosDrive.length > 0 ? liensPhotosDrive.join('\n') : "Pas de MEA / Pas de photo";
 
     // ---------------------------------------------------------------------
     // 2. ENREGISTREMENT DANS LE GOOGLE SHEET (Gestion automatique des onglets mensuels)
@@ -90,7 +95,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
 
       data.mea_status,
       data.mea_volume || "",
-      lienPhotoDrive
+      lienPhotoDriveFinal
     ];
 
     await sheets.spreadsheets.values.append({
