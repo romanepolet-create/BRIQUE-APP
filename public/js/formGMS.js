@@ -199,7 +199,6 @@ function traiterFichierPhoto(inputSource) {
 
     document.getElementById('details-taille-photo').textContent = `${photosActivesAEnvoyer.length} photo(s) jointe(s)`;
     
-    inputSource.value = "";
   }
 }
 
