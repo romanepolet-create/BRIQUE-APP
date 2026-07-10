@@ -129,13 +129,13 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
 // =========================================================================
 async function obtenirOuCreerDossierDrive(drive, folderName, parentId) {
   const query = `name = '${folderName}' and '${parentId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`;
-  const response = await drive.files.list({ q: query, fields: 'files(id)' });
+  const response = await drive.files.list({ q: query, fields: 'files(id)', includeItemsFromAllDrives: true, supportsAllDrives: true });
   
   if (response.data.files.length > 0) {
     return response.data.files[0].id;
   } else {
     const fileMetadata = { name: folderName, mimeType: 'application/vnd.google-apps.folder', parents: [parentId] };
-    const folder = await drive.files.create({ resource: fileMetadata, fields: 'id' });
+    const folder = await drive.files.create({ resource: fileMetadata, fields: 'id', supportsAllDrives: true});
     return folder.data.id;
   }
 }
