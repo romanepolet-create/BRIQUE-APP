@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // La matrice contenant tes règles
 
-let photoActiveAEnvoyer = [];
+let photosActivesAEnvoyer = [];
 
 // Gérer l'affichage conditionnel de la section MEA
 function toggleMEAFields() {
