@@ -105,13 +105,21 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     // ---------------------------------------------------------------------
     // On utilise un .upsert() basé sur l'id_hubspot : si le magasin a déjà été visité,
     // on met simplement à jour les compteurs, sinon on crée la ligne.
+    const references_json = {};
+    for (const key in data) {
+      if key.startsWith('ref_')) {
+        references_json[key] = data[key];
+      }
+    }
+    
     const { error: supabaseError } = await supabase
       .from('historique_visites')
       .upsert({
         hubspot_id: data.hubspot_id,
         nb_canettes: parseInt(data.nb_canettes) || 0,
         nb_cave: parseInt(data.nb_cave) || 0,
-        derniere_visite: aujourdhui.toISOString()
+        derniere_visite: aujourdhui.toISOString(),
+        references: references_json
       }, { onConflict: 'hubspot_id' });
 
     if (supabaseError) throw supabaseError;
