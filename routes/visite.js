@@ -9,7 +9,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 const GOOGLE_SHEET_ID = process.env.GSHEET_VISITE; 
-const DRIVE_PARENT_FOLDER_ID = process.env.GSHEET_VISITE;
+const DRIVE_PARENT_FOLDER_ID = process.env.GDOSSIER_VISITE;
 
 const auth = new google.auth.GoogleAuth({
   keyFile: './config/google-credentials.json', // Chemin vers votre clé d'accès Google
