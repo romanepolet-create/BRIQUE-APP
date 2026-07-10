@@ -118,5 +118,44 @@
   </div>
 
   <script src="/js/formGMS.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hubspot_id = urlParams.get('id_hubspot');
+
+      if(!hubspot_id) return ;
+
+      try { const resConfig = await fetch('/api/config');
+      const config = await resConfig.json();
+      const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+      const { data, error } = await supabase
+        .from('historique_visites')
+        .select('*')
+        .eq('hubspot_id', hubspot_id)
+        .single();
+
+      if (data) {
+        const inputCanettes = document.getElementById('nb_canettes');
+        const inputCave = document.getElementById('nb_cave');
+        if(inputCanettes) inputCanettes.value = data.nb_canettes;
+        if(inputCave) inputCave.value = data.nb_cave;
+
+        if (data.references) {
+          for (const [key, value] of Object.entries(data.references)) {
+            // On cherche la checkbox qui a le nom correspondant (ex: name="ref_LB33")
+            const checkbox = document.querySelector(`input[name="${key}"]`);
+            if (checkbox) {
+              checkbox.checked = (value === "OUI");
+            }
+          }
+        }
+        console.log("Historique chargé avec succès !");
+      }
+    } catch (err) {
+      console.error("Impossible de charger l'historique :", err);
+    }
+  });
+  </script>
 </body>
 </html>
