@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // La matrice contenant tes règles
 
-let photoActiveAEnvoyer = null;
+let photoActiveAEnvoyer = [];
 
 // Gérer l'affichage conditionnel de la section MEA
 function toggleMEAFields() {
@@ -162,22 +162,44 @@ function declencherDeclicPhoto(sourceId) {
 }
 
 function traiterFichierPhoto(inputSource) {
-  if (inputSource.files && inputSource.files[0]) {
-    const cible = inputSource.files[0];
-    photoActiveAEnvoyer = cible;
+  if (inputSource.files && inputSource.files.length > 0) {
+    document.getElementById('bloc-apercu-photo').style.display = 'block';
+    
+    const imgUnique = document.getElementById('image-rendu-apercu');
+    if (imgUnique) imgUnique.style.display = 'none';
 
-    if (inputSource.id === 'media-camera') document.getElementById('media-galerie').value = "";
-    if (inputSource.id === 'media-galerie') document.getElementById('media-camera').value = "";
+    let miniGallery = document.getElementById('mini-galerie-mea');
+    if (!miniGallery) {
+        miniGallery = document.createElement('div');
+        miniGallery.id = 'mini-galerie-mea';
+        miniGallery.style.display = 'flex';
+        miniGallery.style.flexWrap = 'wrap';
+        miniGallery.style.gap = '10px';
+        miniGallery.style.justifyContent = 'center';
+        document.getElementById('bloc-apercu-photo').insertBefore(miniGallery, document.getElementById('details-taille-photo'));
+    }
 
-    const lecteur = new FileReader();
-    lecteur.onload = function(evenement) {
-      document.getElementById('image-rendu-apercu').src = evenement.target.result;
-      document.getElementById('bloc-apercu-photo').style.display = 'block';
+    for (let i = 0; i < inputSource.files.length; i++) {
+        const cible = inputSource.files[i];
+        photosActivesAEnvoyer.push(cible);
 
-      const tailleMo = (cible.size / (1024 * 1024)).toFixed(2);
-      document.getElementById('details-taille-photo').textContent = `Fichier lié : ${cible.name} (${tailleMo} Mo)`
-    };
-    lecteur.readAsDataURL(cible);
+        const lecteur = new FileReader();
+        lecteur.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '60px';
+            img.style.height = '60px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '6px';
+            img.style.border = '2px solid #002ab6';
+            miniGallery.appendChild(img);
+        };
+        lecteur.readAsDataURL(cible);
+    }
+
+    document.getElementById('details-taille-photo').textContent = `${photosActivesAEnvoyer.length} photo(s) jointe(s)`;
+    
+    inputSource.value = "";
   }
 }
 
@@ -192,22 +214,21 @@ async function soumettreFormulaire() {
 
   const checkboxes = document.querySelectorAll('#references-container input[type="checkbox"]');
   checkboxes.forEach(cb => {
-    // Si la case n'est PAS cochée, on force l'envoi d'un "NON"
     if (!cb.checked) {
       chargeUtile.append(cb.name, 'NON');
     }
   });
 
-  if (document.getElementById('mea_status').value === 'OUI' && !photoActiveAEnvoyer) {
-    alert("⚠️ Vous avez coché OUI pour la MEA, une photo est obligatoire.");
+  if (document.getElementById('mea_status').value === 'OUI' && photosActivesAEnvoyer.length === 0) {
+    alert("⚠️ Vous avez coché OUI pour la MEA, au moins une photo est obligatoire.");
     btnSubmit.textContent = txtInitial;
     btnSubmit.disabled = false;
     return;
   }
-
-  if (photoActiveAEnvoyer) {
-    chargeUtile.append('photo', photoActiveAEnvoyer);
-  }
+  
+  photosActivesAEnvoyer.forEach((photo) => {
+    chargeUtile.append('photos', photo);
+  });
 
   try {
     const reponse = await fetch('/api/visite/soumettre', {
