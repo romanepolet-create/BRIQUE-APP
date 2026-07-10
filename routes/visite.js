@@ -95,7 +95,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: `${nomOngletSheet}!A:K`,
+      range: `${nomOngletSheet}!A:Z`,
       valueInputOption: 'USER_ENTERED',
       resource: { values: [ligneData] }
     });
@@ -107,7 +107,7 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
     // on met simplement à jour les compteurs, sinon on crée la ligne.
     const references_json = {};
     for (const key in data) {
-      if key.startsWith('ref_')) {
+      if (key.startsWith('ref_')) {
         references_json[key] = data[key];
       }
     }
@@ -176,12 +176,12 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
       "YT75", 
       "SH75", 
       "TC75", 
-      "ML75", 
-      "ephemeres",
+      "ML75",
       "LB44", 
       "NQ44", 
       "YT44", 
-      "ML44",
+      "ML44", 
+      "ephemeres",
       "MEA", 
       "Volume MEA", 
       "Lien Photo"
