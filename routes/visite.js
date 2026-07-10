@@ -41,6 +41,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
     // 1. GESTION DE LA PHOTO SUR GOOGLE DRIVE (Si MEA coché OUI et photo présente)
     // ---------------------------------------------------------------------
     let liensPhotosDrive = [];
+    console.log("Nombres de photos reçues par Node.js :", req.files ? req.files.length : 0);
     
     if (data.mea_status === "OUI" && req.files && req.files.length > 0) {
       const drive = google.drive({ version: 'v3', auth });
