@@ -55,8 +55,8 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
           parents: [folderId]
         };
       const media = {
-        mimeType: req.file.mimetype,
-        body: require('stream').Readable.from(req.file.buffer)
+        mimeType: file.mimetype,
+        body: require('stream').Readable.from(file.buffer)
       };
       
       const fileDrive = await drive.files.create({
@@ -66,7 +66,8 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
         supportsAllDrives: true
       });
       
-      lienPhotosDrive = fileDrive.data.webViewLink;
+      liensPhotosDrive.push(fileDrive.data.webViewLink);
+      }
     }
 
     let lienPhotoDriveFinal = liensPhotosDrive.length > 0 ? liensPhotosDrive.join('\n') : "Pas de MEA / Pas de photo";
