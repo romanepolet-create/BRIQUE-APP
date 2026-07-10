@@ -59,7 +59,8 @@ router.post('/soumettre', upload.single('photo'), async (req, res) => {
       const fileDrive = await drive.files.create({
         resource: fileMetadata,
         media: media,
-        fields: 'id, webViewLink'
+        fields: 'id, webViewLink',
+        supportsAllDrives: true
       });
       
       lienPhotoDrive = fileDrive.data.webViewLink; // Lien hypertexte pour le Google Sheet
