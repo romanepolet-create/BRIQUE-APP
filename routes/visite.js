@@ -42,7 +42,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
     // ---------------------------------------------------------------------
     let liensPhotosDrive = [];
     
-    if (data.mea_status === "OUI" && req.file && req.files.length > 0) {
+    if (data.mea_status === "OUI" && req.files && req.files.length > 0) {
       const drive = google.drive({ version: 'v3', auth });
       
       let folderId = await obtenirOuCreerDossierDrive(drive, dateJourDrive, DRIVE_PARENT_FOLDER_ID);
