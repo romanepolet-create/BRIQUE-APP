@@ -248,17 +248,31 @@ async function chargerDonneesMagasins() {
 	console.time("affichage");
   try {
     const response = await fetch('/api/gms');
-
     if (!response.ok) throw new Error("Erreur réseau GMS");
     
     listeMagasins = await response.json();
 
-    remplirFiltresDepuisDonnees(listeMagasins, donneesGeo);
+	const { data: historique, error } = await supabaseClient
+      .from('historique_visites')
+      .select('hubspot_id, derniere_visite');
 
+	if (!error && historique) {
+      const dicoVisites = {};
+      historique.forEach(h => {
+        dicoVisites[h.hubspot_id] = h.derniere_visite;
+      });
+
+	  listeMagasins.forEach(magasin => {
+        magasin.derniere_visite = dicoVisites[magasin.hubspot_id] || null;
+      });
+    } else {
+      console.warn("Impossible de récupérer l'historique pour le filtrage :", error);
+    }
+
+    remplirFiltresDepuisDonnees(listeMagasins, donneesGeo);
     console.log("Nombre de magasins reçus :", listeMagasins.length);
     console.log("Voici le premier magasin :", listeMagasins[0]);
 
-    // Remplir la carte dès le départ
 	  console.log("avant affichage");
 
     afficherMagasinsSurCarte(listeMagasins);
@@ -498,8 +512,8 @@ map.on('zoomend', majListeMagasinsVisibles);
 // FILTRES
 // ================
 window.filtrerMagasins = function() {
-	const rechercheTexte = document.getElementById('search-bar') ? document.getElementById('search-bar').value.toLowerCase() : "";
-	 const afficherSeulementTournee = document.getElementById('toggle-selected') ? document.getElementById('toggle-selected').checked : false;
+  const rechercheTexte = document.getElementById('search-bar') ? document.getElementById('search-bar').value.toLowerCase() : "";
+  const afficherSeulementTournee = document.getElementById('toggle-selected') ? document.getElementById('toggle-selected').checked : false;
 
   const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
 
@@ -515,15 +529,13 @@ window.filtrerMagasins = function() {
 
 
 	const regionsSel = getValeursSelectionnees('dropdown-region');
-  const dptsSel = getValeursSelectionnees('dropdown-dpt');
-  const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
+    const dptsSel = getValeursSelectionnees('dropdown-dpt');
+    const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
 	const prioSel = getValeursSelectionnees('dropdown-prio');
 	const propriosSel = getValeursSelectionnees('dropdown-proprio');
+	const visiteSel = document.querySelector('input[name="filtre_visite"]:checked')?.value || "all";
 
-
-
-  //FILTER ON DATA
-  const magasinsFiltres = listeMagasins.filter(magasin => {
+    const magasinsFiltres = listeMagasins.filter(magasin => {
 
   // --- FILTRE TOGGLE "MA TOURNEE SEULEMENT" ---
     if (afficherSeulementTournee) {
@@ -551,6 +563,19 @@ window.filtrerMagasins = function() {
 
     // 3. DPT
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
+
+	// DERNIÈRE VISITE (Chronomètre)
+    if (visiteSel !== "all") {
+      if (!magasin.derniere_visite) {
+      } else {
+        const dateVisite = new Date(magasin.derniere_visite);
+        const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
+        
+        if (visiteSel === "2weeks" && joursEcoules <= 14) return false;
+        if (visiteSel === "1month" && joursEcoules <= 30) return false;
+        if (visiteSel === "2months" && joursEcoules <= 60) return false;
+      }
+    }
 
     // 4. RAYON KM (GEOLOC)
     if (rayonMaximum && rayonMaximum < 99999) {
