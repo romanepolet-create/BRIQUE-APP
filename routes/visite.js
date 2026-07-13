@@ -132,7 +132,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
     if (supabaseError) throw supabaseError;
 
     res.status(200).json({ success: true, message: "Rapport envoyé avec succès !", codeVisite });
-
+    }
   } catch (err) {
     console.error("Erreur critique lors de la soumission du rapport :", err);
     res.status(500).json({ success: false, error: err.message });
