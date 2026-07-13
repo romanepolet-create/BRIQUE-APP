@@ -20,6 +20,8 @@ let userMarker = null; //PIN GEOLOC
 let donneesGeo; 
 let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
+let lastUpdatePosition = null; 
+
 
 
 function formatEmailToName(email) {
@@ -178,35 +180,37 @@ window.activerGeolocalisation = function() {
     return;
   }
 
-  // Déclenche le suivi en temps réel du commercial
   navigator.geolocation.watchPosition(function(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
-    userPosition = L.latLng(lat, lng);
+    const newPosition = L.latLng(lat, lng);
 
-    // Si le point bleu existe déjà, on le déplace, sinon on le crée
+	userPosition = newPosition;	  
+
     if (userMarker) {
       userMarker.setLatLng(userPosition);
     } else {
-      // Création d'un marqueur bleu spécial pour le commercial
       const iconeBleue = L.divIcon({
         className: 'user-gps-marker',
         html: '<div style="background-color: #002ab6; width: 14px; height: 14px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>',
         iconSize: [20, 20]
       });
       userMarker = L.marker(userPosition, { icon: iconeBleue }).addTo(map);
-      // Au premier repérage, on zoome automatiquement sur lui
       map.setView(userPosition, 12);
     }
-        
-    // On relance le filtrage pour calculer la distance autour de lui si le filtre est actif
-    filtrerMagasins();
 
+	if (!lastUpdatePosition || map.distance(lastUpdatePosition, userPosition) > 20) {
+        lastUpdatePosition = userPosition;
+        filtrerMagasins();
+    } else {
+        majListeMagasinsVisibles();
+    }
+	  
   }, function(error) {
     console.warn("Erreur GPS : ", error.message);
     alert("Impossible de récupérer ta position GPS.");
   }, {
-    enableHighAccuracy: true // Force l'utilisation du vrai GPS du téléphone
+    enableHighAccuracy: true
   });
 };
 
