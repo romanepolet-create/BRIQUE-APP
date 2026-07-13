@@ -340,19 +340,34 @@ window.ouvrirPopupDynamique = function(layer) {
             font-size: 12px;">
           📍 Ajouter à l'itinéraire
         </button>
-		<button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')"
+		
+		<div style="display: flex; gap: 5px; width: 100%;">
+        <button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')"
           style="
-            display: block; 
-			width: 100%; 
-			background-color: #ffc107; 
-			color: #333; padding: 8px 10px;
+            flex: 1; 
+            background-color: #ffc107; 
+            color: #333; padding: 8px 5px;
             border: none; 
-			border-radius: 5px; 
-			font-weight: bold; 
-			cursor: pointer; 
-			font-size: 12px;">
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 12px;">
           📝 Visite
         </button>
+
+        <button data-url="${urlFormPopup}&open_notes=true" onclick="window.open(this.dataset.url, '_blank')"
+          style="
+            flex: 1; 
+            background-color: #17a2b8; 
+            color: white; padding: 8px 5px;
+            border: none; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 12px;">
+          💬 Notes
+        </button>
+      </div>
 
       </div>
     `;
