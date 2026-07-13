@@ -106,8 +106,18 @@
 		      <div class="dropdown-list" id="dropdown-proprio">
 			  </div>
 		    </div>
-      </div>
-		</div>
+
+		    <div class="select-right">
+  				<div class="select-box" onclick="toggleDropdown('dropdown-visite')" title="Filtre Dernière Visite">⏱️<span>▼</span></div>
+  				<div class="dropdown-list" id="dropdown-visite">
+    				<label><input type="radio" name="filtre_visite" value="all" onchange="filtrerMagasins()" checked> Toutes</label>
+    				<label><input type="radio" name="filtre_visite" value="2weeks" onchange="filtrerMagasins()"> > 2 SEM</label>
+    				<label><input type="radio" name="filtre_visite" value="1month" onchange="filtrerMagasins()"> > 1 M</label>
+   				 	<label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()"> > 2 M (+ Jamais)</label>
+  				</div>
+			</div>
+          </div>
+	  </div>
 
 	 <div id="liste-visibles-content"></div>
  </div>
