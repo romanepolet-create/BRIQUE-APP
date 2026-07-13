@@ -567,15 +567,22 @@ window.filtrerMagasins = function() {
 	// DERNIÈRE VISITE (Chronomètre)
     if (visiteSel !== "all") {
       if (!magasin.derniere_visite) {
-      } else {
-        const dateVisite = new Date(magasin.derniere_visite);
-        const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
+      	if (visiteSel === "2weeks" || visiteSel === "1month") return false;
+      	} else {
+        	const dateVisite = new Date(magasin.derniere_visite);
+        	const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
         
-        if (visiteSel === "2weeks" && joursEcoules <= 14) return false;
-        if (visiteSel === "1month" && joursEcoules <= 30) return false;
-        if (visiteSel === "2months" && joursEcoules <= 60) return false;
+        	if (visiteSel === "2weeks") {
+          	if (joursEcoules <= 14 || joursEcoules > 30) return false;
+        	}
+        	if (visiteSel === "1month") {
+          	if (joursEcoules <= 30 || joursEcoules > 60) return false;
+        	}
+        	if (visiteSel === "2months") {
+          	if (joursEcoules <= 60) return false;
+        }
       }
-    }
+	}
 
     // 4. RAYON KM (GEOLOC)
     if (rayonMaximum && rayonMaximum < 99999) {
