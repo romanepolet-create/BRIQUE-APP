@@ -745,9 +745,9 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 .select-box {
+  background: rgba(255, 255, 255, 0.15);
   border: 1px solid #ccc;
   padding: 10px;
-  background: white;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -841,28 +841,27 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 .btn-gps {
-	background: transparent;
-  border: none;
-  font-size: 22px; /* Taille de l'émoji */
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 15px;
   cursor: pointer;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s;
 }
 
 .btn-gps:hover {
   transform: scale(1.2);
+  rgba(255, 255, 255, 0.3)
 }
 
 .select-right {
   position: relative;
   flex-grow: 0;
+  margin: 0;
 }
-
-
-
-.select-right {
-  position: relative;
-flex-grow: 0}
 
 .select-right .select-box {
   background: transparent;
@@ -994,8 +993,10 @@ flex-grow: 0}
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  gap: 25px;
-  padding: 5px 0 10px 0;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0 5px 0;
+  background-color: #002AB6;
   overflow: visible !important;
 }
 
