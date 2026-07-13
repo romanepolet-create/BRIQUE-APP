@@ -113,8 +113,101 @@
         </div>
       </div>
 
+      <hr style="
+        border: 1px solid #eee; 
+        margin: 20px 0;">
+      <h3 style="
+        color: #002ab6;">
+        Notes / Commentaires (Locaux)
+      </h3>
+      <div class="form-group">
+        <label for="new_note">
+          Ajouter une note 
+        </label>
+        <textarea 
+          id="new_note" 
+          rows="3" 
+          placeholder="Saisissez votre note ici..." 
+          style="
+            width: 100%; 
+            box-sizing: border-box;">
+        </textarea>
+        <button 
+          type="button" 
+          id="btn-save-note" 
+          style="
+            margin-top: 5px; 
+            background-color: #eee;  
+            border: 1px solid #ccc; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            cursor: pointer;">
+          Sauvegarder
+        </button>
+      </div>
+
+      <button 
+        type="button" 
+        id="btn-view-notes" 
+        style="
+          background: none; 
+          border: none; 
+          color: #002ab6; 
+          cursor: pointer; 
+          text-decoration: underline; 
+          font-size: 13px; 
+          margin-top: 10px;"
+        >>> Voir les commentaires
+      </button>
+
+  <div id="notes-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+    <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 8px;">
+      <span id="close-notes-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+      <h3>Historique des Notes</h3>
+      <ul id="notes-list" style="list-style-type: none; padding: 0;">
+        </ul>
+    </div>
+  </div>
+
+
+      
+
       <button type="button" class="submit-btn" onclick="soumettreFormulaire()">Envoyer le rapport</button>
     </form>
+  </div>
+
+    <div 
+      id="notes-modal" 
+      style="
+        display: none; 
+        position: fixed; 
+        z-index: 1000; 
+        left: 0; top: 0; 
+        width: 100%; height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.4);">
+    <div 
+      style="
+        background-color: #fefefe; 
+        margin: 15% auto; 
+        padding: 20px; 
+        border: 1px solid #888; 
+        width: 80%; 
+        border-radius: 8px;">
+      <span 
+        id="close-notes-modal" 
+        style="
+          color: #aaa; 
+          float: right; 
+          font-size: 28px; 
+          font-weight: bold;
+          cursor: pointer;">
+        &times;
+      </span>
+      <h3>Historique des Notes</h3>
+      <ul id="notes-list" style="list-style-type: none; padding: 0;">
+        </ul>
+    </div>
   </div>
 
   <script src="/js/formGMS.js"></script>
