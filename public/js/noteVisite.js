@@ -119,5 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     initialiserNotes();
+
+    if (urlParamsLocal.get('open_notes') === 'true') {
+      setTimeout(() => {
+        btnViewNotes.click();
+      }, 500);
+    }
+    
   }
 });
