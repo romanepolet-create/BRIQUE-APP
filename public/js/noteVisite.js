@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         li.style.borderBottom = '1px solid #ddd';
         li.style.padding = '12px 0';
+        li.style.textAlign = 'left';
 
         const safeTextHTML = note.text
           .replace(/&/g, '&amp;')
