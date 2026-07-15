@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const notesList = document.getElementById('notes-list');
 
     let notesGlobales = [];
+    let currentUser = "Commercial";
 
     function formatEmailToName(email) {
       if (!email) return "Commercial";
