@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const notesList = document.getElementById('notes-list');
 
     let notesGlobales = [];
-    let currentUser = "Commercial";
+
+    function formatEmailToName(email) {
+      if (!email) return "Commercial";
+      const namePart = email.split('@')[0]; 
+      const parts = namePart.split('.'); 
+      return parts.map(part => {
+        return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      }).join(' ');
+    }
 
     async function initialiserNotes() {
       const resConfig = await fetch('/api/config');
@@ -19,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 
       const { data: authData } = await supabase.auth.getSession();
-      if (authData.session && authData.session.user) {
-        let emailPart = authData.session.user.email.split('@')[0];
-        currentUser = emailPart.charAt(0).toUpperCase() + emailPart.slice(1);
+      if (authData && authData.session && authData.session.user && authData.session.user.email) {
+        currentUser = formatEmailToName(authData.session.user.email);
       }
 
       const { data } = await supabase
