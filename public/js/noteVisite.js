@@ -48,19 +48,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         li.style.borderBottom = '1px solid #ddd';
         li.style.padding = '12px 0';
+
+        const safeTextHTML = note.text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
         
         li.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
             <div style="font-size: 11px; color: #555;">
               <strong style="color: #002ab6;">[${note.date}]</strong> par <strong>${note.user}</strong> :
             </div>
-            <button onclick="navigator.clipboard.writeText('${note.text.replace(/'/g, "\\'")}').then(()=> { this.textContent='Copié !'; setTimeout(()=>this.textContent='📋 Copier', 2000); })" 
-                    style="background: #eee; border: 1px solid #ccc; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px;">
+            <button type="button" class="btn-copy-note" style="background: #eee; border: 1px solid #ccc; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px;"> 
               📋 Copier
             </button>
           </div>
-          <div style="font-size: 13px; color: #333; line-height: 1.4; white-space: pre-wrap;">${note.text}</div>
+          <div style="font-size: 13px; color: #333; line-height: 1.4; white-space: pre-wrap;">${safeTextHTML}</div>
         `;
+        
+        const copyBtn = li.querySelector('.btn-copy-note');
+        
+        copyBtn.addEventListener('click', function() {
+          navigator.clipboard.writeText(note.text).then(() => {
+            this.textContent = 'Copié !';
+            setTimeout(() => this.textContent = '📋 Copier', 2000);
+          }).catch(err => {
+            console.error("Erreur de copie :", err);
+            this.textContent = '❌ Erreur';
+          });
+        });
         notesList.appendChild(li);
       });
     }
