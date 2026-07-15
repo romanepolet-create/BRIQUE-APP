@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const config = await resConfig.json();
       const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
 
-      const { data: authData } = await supabase.auth.getSession();
-      if (authData && authData.session && authData.session.user && authData.session.user.email) {
-        currentUser = formatEmailToName(authData.session.user.email);
+      if (config.emailActuel) {
+        currentUser = formatEmailToName(config.emailActuel);
       }
 
       const { data } = await supabase
