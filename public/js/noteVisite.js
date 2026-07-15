@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .from('historique_visites')
         .select('commentaires')
         .eq('hubspot_id', hubspotIdLocal)
-        .single();
+        .maybeSingle();
 
       if (data && data.commentaires) {
         notesGlobales = data.commentaires;
