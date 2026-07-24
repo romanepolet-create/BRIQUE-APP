@@ -533,21 +533,18 @@ window.filtrerMagasins = function() {
   const rechercheTexte = document.getElementById('search-bar') ? document.getElementById('search-bar').value.toLowerCase() : "";
   const afficherSeulementTournee = document.getElementById('toggle-selected') ? document.getElementById('toggle-selected').checked : false;
 
-  const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
+  //const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
 
-  // NOUVELLE FONCTION : Lit les cases cochées dans nos divs
   const getValeursSelectionnees = (id) => {
     const container = document.getElementById(id);
     if (!container) return [];
-    // On cherche toutes les checkboxes qui sont cochées dans ce conteneur
     const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
-    // On retourne un tableau avec leurs valeurs
     return Array.from(checkboxes).map(cb => cb.value);
   };
 
 
-	const regionsSel = getValeursSelectionnees('dropdown-region');
-    const dptsSel = getValeursSelectionnees('dropdown-dpt');
+	//const regionsSel = getValeursSelectionnees('dropdown-region');
+    //const dptsSel = getValeursSelectionnees('dropdown-dpt');
     const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
 	const prioSel = getValeursSelectionnees('dropdown-prio');
 	const propriosSel = getValeursSelectionnees('dropdown-proprio');
@@ -555,9 +552,7 @@ window.filtrerMagasins = function() {
 
     const magasinsFiltres = listeMagasins.filter(magasin => {
 
-  // --- FILTRE TOGGLE "MA TOURNEE SEULEMENT" ---
     if (afficherSeulementTournee) {
-      // On cherche si le magasin est dans la tournée ET qu'il n'est PAS masqué
       const estDansTournee = etapesItineraire.some(etape => etape.lat === magasin.lat && etape.lng === magasin.lng && !etape.masque);
       if (!estDansTournee) return false;
     }
@@ -585,7 +580,8 @@ window.filtrerMagasins = function() {
 	}
 
     // 1. ENSEIGNES
-    if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false;  
+    if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false.
+/*
     // 2. REGION
     if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
 	// Prio
@@ -593,7 +589,7 @@ window.filtrerMagasins = function() {
 
     // 3. DPT
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
-
+*/
 	// DERNIÈRE VISITE (Chronomètre)
     if (visiteSel !== "all") {
       if (!magasin.derniere_visite) {
@@ -613,7 +609,7 @@ window.filtrerMagasins = function() {
         }
       }
 	}
-
+/*
     // 4. RAYON KM (GEOLOC)
     if (rayonMaximum && rayonMaximum < 99999) {
       if (!userPosition) {
@@ -626,6 +622,7 @@ window.filtrerMagasins = function() {
             
       if (distanceKM > rayonMaximum) return false;
     }
+*/
 
 	if (propriosSel.length > 0) {
       const propMagasin = magasin.Propriétaire || "";
