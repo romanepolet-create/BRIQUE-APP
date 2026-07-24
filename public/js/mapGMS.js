@@ -257,14 +257,36 @@ async function chargerDonneesMagasins() {
       .select('hubspot_id, derniere_visite');
 
 	if (!error && historique) {
-      const dicoVisites = {};
-      historique.forEach(h => {
-        dicoVisites[h.hubspot_id] = h.derniere_visite;
-      });
+		const dicoHistorique = {};      
+		
+		historique.forEach(h => {
+        	dicoVisites[h.hubspot_id] = h.derniere_visite;
+      	});
 
-	  listeMagasins.forEach(magasin => {
-        magasin.derniere_visite = dicoVisites[magasin.hubspot_id] || null;
-      });
+	  	listeMagasins.forEach(magasin => {
+        	let aDesBieres = false;
+			if (h.references && typeof h.references === 'object') {
+      			aDesBieres = Object.values(h.references).some(val => val === "OUI");
+    		}
+    		dicoHistorique[h.hubspot_id] = {
+      			derniere_visite: h.derniere_visite,
+      			aFormulaire: true,
+      			possedeBH: aDesBieres
+    		};
+  		});
+
+		listeMagasins.forEach(magasin => {
+    		const hist = dicoHistorique[magasin.hubspot_id];
+    		if (hist) {
+      			magasin.derniere_visite = hist.derniere_visite;
+      			magasin.aFormulaire = true;
+      			magasin.possedeBH = hist.possedeBH;
+    		} else {
+      			magasin.derniere_visite = null;
+      			magasin.aFormulaire = false;
+      			magasin.possedeBH = false;
+    		}
+  		});
     } else {
       console.warn("Impossible de récupérer l'historique pour le filtrage :", error);
     }
@@ -553,6 +575,18 @@ window.filtrerMagasins = function() {
         return false;
       }
     }
+
+	// --- FILTRE TRI-STATE BH ---
+	// -1 : Sans BH (Pas de formulaire OU Formulaire sans aucune réf)
+	//  0 : Tous les magasins (Par défaut)
+	//  1 : Avec BH (Au moins 1 visite ET au moins 1 réf à "OUI")
+	const filtreBH = document.getElementById('toggle-bh') ? parseInt(document.getElementById('toggle-bh').value) : 0;
+
+	if (filtreBH === 1) {
+  		if (!magasin.aFormulaire || !magasin.possedeBH) return false;
+	} else if (filtreBH === -1) {
+  		if (magasin.aFormulaire && magasin.possedeBH) return false;
+	}
 
     // 1. ENSEIGNES
     if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false;  
