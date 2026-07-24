@@ -137,17 +137,32 @@
         <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
         <span class="slider round"></span>
       </label>
-      <span class="toggle-label">Afficher uniquement ma tournée</span>
+      <span class="toggle-label">Ma tournée</span>
+    </div>
+	  
+	<div class="toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+        <span class="slider round"></span>
+      </label>
+      <span class="toggle-label">Magasins BH</span>
+    </div>
+
+	<div class="toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+        <span class="slider round"></span>
+      </label>
+      <span class="toggle-label">Magasins sans BH</span>
     </div>
 
     </div>
 
+<!--
     <details class="geo-details">
       <summary>Filtres Géographiques</summary>
       <div class="details-content">
 
-    <!--FILTRES-->
-    <!--Regions-->
     <div class="filter-group">
       <label>Région(s)</label>
       <div class="custom-select">
@@ -159,7 +174,6 @@
       </div>
     </div>
       
-      <!--Departement-->
       <div class="filter-group">
         <label>Département(s)</label>
         <div class="custom-select">
@@ -170,8 +184,7 @@
          </div>
        </div>
      </div>
-      
-      <!--Distance (grâce à la géolocalisation)-->
+	
       <div class="filter-group">
         <label for="filter-rayon">Rayon autour de moi</label>
         <select id="filter-rayon" onchange="filtrerMagasins()">
@@ -185,6 +198,7 @@
 
       </div>
       </details>
+	 -->
 
       <div id="panneau-tournee">
         <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
