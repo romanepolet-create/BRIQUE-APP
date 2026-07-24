@@ -1236,3 +1236,41 @@ input:checked + .slider:before { transform: translateX(20px); }
 	cursor: pointer; 
 	margin-top: 20px; 
 }
+
+
+.tristate-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f0f2f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.tristate-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+.tristate-switch input[type="range"] {
+  -webkit-appearance: none;
+  width: 60px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.tristate-switch input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #002ab6;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
