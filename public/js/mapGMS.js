@@ -254,16 +254,12 @@ async function chargerDonneesMagasins() {
 
 	const { data: historique, error } = await supabaseClient
       .from('historique_visites')
-      .select('hubspot_id, derniere_visite');
+      .select('hubspot_id, derniere_visite, references');
 
 	if (!error && historique) {
 		const dicoHistorique = {};      
 		
 		historique.forEach(h => {
-        	dicoVisites[h.hubspot_id] = h.derniere_visite;
-      	});
-
-	  	listeMagasins.forEach(magasin => {
         	let aDesBieres = false;
 			if (h.references && typeof h.references === 'object') {
       			aDesBieres = Object.values(h.references).some(val => val === "OUI");
@@ -273,7 +269,7 @@ async function chargerDonneesMagasins() {
       			aFormulaire: true,
       			possedeBH: aDesBieres
     		};
-  		});
+      	});
 
 		listeMagasins.forEach(magasin => {
     		const hist = dicoHistorique[magasin.hubspot_id];
