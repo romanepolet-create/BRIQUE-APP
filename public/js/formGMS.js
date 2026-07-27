@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('hubspot_id').value = infos.id_hubspot;
   document.getElementById('nom_magasin').value = infos.nom;
   document.getElementById('enseigne').value = infos.enseigne;
+  document.getElementById('huspot_link').href = 'https://app.hubspot.com/contacts/$146794478/company/${infos.id_hubspot}'
 
   document.getElementById('store-info-badges').innerHTML = `
     <span class="info-badge">🏪 ${infos.enseigne}</span>
