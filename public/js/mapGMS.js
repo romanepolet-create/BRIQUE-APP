@@ -584,12 +584,12 @@ window.filtrerMagasins = function() {
 /*
     // 2. REGION
     if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
-	// Prio
-	if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
 
     // 3. DPT
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
 */
+	//Prio
+	if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
 	// DERNIÈRE VISITE (Chronomètre)
     if (visiteSel !== "all") {
       if (!magasin.derniere_visite) {
