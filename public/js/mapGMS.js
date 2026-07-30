@@ -446,12 +446,13 @@ window.majListeMagasinsVisibles = function() {
 
   const idsDejaVus = new Set();
 
-  markerConteneur.eachLayer(function(layer) {
+ markerConteneur.eachLayer(function(layer) {
     if (limitesEcran.contains(layer.getLatLng())) {
       const m = layer.magasinData;
+      const cleUnique = (m.hubspot_id && m.hubspot_id !== 'undefined') ? m.hubspot_id : m.nom;
 			
-      if (m && !idsDejaVus.has(m.hubspot_id)) {
-        idsDejaVus.add(m.hubspot_id);
+      if (m && !idsDejaVus.has(cleUnique)) {
+        idsDejaVus.add(cleUnique);
 		let distance = Infinity;
 		if (userPosition) {
           distance = map.distance(userPosition, layer.getLatLng());
