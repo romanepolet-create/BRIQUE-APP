@@ -22,6 +22,8 @@
       border: 3px solid #002ab6;">
     
     <h2 style="color: #002ab6;">🍻 Brique App</h2>
+
+    <form id="login-form">
     
     <input 
       type="email" 
@@ -64,6 +66,8 @@
         cursor: pointer;">
       Créer mon compte
     </button>
+
+    </form>
     
     <p id="message" style="font-size: 12px; margin-top: 10px; font-weight: bold;"></p>
   </div>
@@ -72,6 +76,7 @@
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const messageEl = document.getElementById('message');
+    const loginForm = document.getElementById('login-form');
 
     document.getElementById('btn-signup').onclick = async function() {
       messageEl.style.color = "blue";
@@ -93,7 +98,8 @@
       }
     };
 
-    document.getElementById('btn-login').onclick = async function() {
+    loginForm.onsubmit = async function(e) {
+      e.preventDefault();
       messageEl.style.color = "blue";
       messageEl.innerText = "Connexion...";
 
