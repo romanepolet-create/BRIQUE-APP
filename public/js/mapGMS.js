@@ -4,7 +4,14 @@ async function initialiserSupabase() {
     const reponse = await fetch('/api/config');
     const config = await reponse.json();
     
-    supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storage: window.localStorage
+      }
+    });
     console.log("Supabase connecté avec succès via le .env !");
   } catch (err) {
     console.error("Impossible de récupérer la config Supabase :", err);
