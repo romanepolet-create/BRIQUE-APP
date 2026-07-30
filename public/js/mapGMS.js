@@ -437,13 +437,16 @@ window.majListeMagasinsVisibles = function() {
 	
   let magasinsVisiblesTemp = [];
 
+  const idsDejaVus = new Set();
+
   markerConteneur.eachLayer(function(layer) {
     if (limitesEcran.contains(layer.getLatLng())) {
       const m = layer.magasinData;
 			
-      if (m) {
-				let distance = Infinity;
-				if (userPosition) {
+      if (m && !idsDejaVus.has(m.hubspot_id)) {
+        idsDejaVus.add(m.hubspot_id);
+		let distance = Infinity;
+		if (userPosition) {
           distance = map.distance(userPosition, layer.getLatLng());
         }
 				
@@ -498,6 +501,7 @@ window.majListeMagasinsVisibles = function() {
             <strong style="color: #333;">${m.nom}</strong>
             <span style="color: #777;">${m.Priorité}</span>
           </div>
+		  ${distanceTexte}
           <button 
             data-url="${urlFormList}" 
             onclick="event.stopPropagation(); window.open(this.dataset.url, '_blank')" 
