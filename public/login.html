@@ -28,6 +28,7 @@
     <input 
       type="email" 
       id="email" 
+      name="email"
       placeholder="Adresse e-mail"
       autocomplete="email"
       style="width: 100%; padding: 10px; margin-bottom: 10px;"
@@ -36,6 +37,7 @@
     <input 
       type="password" 
       id="password" 
+      name="password"
       placeholder="Mot de passe" 
       style="width: 100%; padding: 10px; margin-bottom: 20px;"
       autocomplete="current-password"
@@ -91,7 +93,7 @@
 
       if (response.ok) {
         messageEl.style.color = "green";
-        messageEl.innerText = "✅ " + data.message; // "Vérifie tes emails..."
+        messageEl.innerText = "✅ " + data.message;
       } else {
         messageEl.style.color = "red";
         messageEl.innerText = "❌ " + data.error;
@@ -114,7 +116,9 @@
       if (response.ok) {
         messageEl.style.color = "green";
         messageEl.innerText = "✅ Connexion réussie ! Redirection...";
-        window.location.href = '/index.html'; 
+        setTimeout(() => {
+          window.location.href = '/index.html'; 
+        }, 500);
       } else {
         messageEl.style.color = "red";
         messageEl.innerText = "❌ " + data.error;
