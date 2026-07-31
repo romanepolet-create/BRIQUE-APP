@@ -2,7 +2,7 @@ const matriceGMS = {
   "AUCHAN HM": {
     obligatoire: ["LB33",  "LB75",  "NQ33", "NQ75", "YT33", "YT75", "ML75"],
     facultatif: [],
-    direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "U acid33", "ephemeres"]
+    direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "U acid33", "ephemeres", "DB44"]
   },
   "AUCHAN SM": {
     obligatoire: [],
@@ -12,62 +12,62 @@ const matriceGMS = {
   "CASINO": {
     obligatoire: ["LB44", "NQ44", "YT44", "LB33"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "FRANPRIX": {
     obligatoire: ["LB44", "YT44"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "MONOPRIX": {
     obligatoire: ["LB75", "LB44", "NQ44", "YT44"],
     facultatif: [],
-    direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "CRF HYPER": {
     obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
     facultatif: [],
-    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "CRF MARKET": {
     obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
     facultatif: [],
-    direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "CRF PROXI": {
     obligatoire: [],
     facultatif: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
-    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
   "ITM PROXI": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres", "DB44"]
   },
   "ITM SM": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres", "DB44"]
   },
   "LECLERC": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres", "DB44"]
   },
   "LECLERC PROXI": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres", "DB44"]
   },
 "OTERA": {
     obligatoire: ["LB44", "NQ44", "YT44", "ML44"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "U acid33", "ephemeres"]
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "U acid33", "ephemeres", "DB44"]
   },
 "SUPER U": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "U acid33", "ephemeres", "DB44"]
   },
 };
 
