@@ -243,8 +243,6 @@ async function soumettreFormulaire() {
 
     const resultat = await reponse.json();
     if(resultat.success) {
-      const resultat = await reponse.json();
-    if(resultat.success) {
        const veutRappel = confirm(`✅ Visite enregistrée avec succès !\n\nVoulez-vous planifier une prochaine action (rappel) dans votre agenda ?`);
 
       if (veutRappel) {
