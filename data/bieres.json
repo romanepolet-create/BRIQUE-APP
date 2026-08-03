@@ -689,5 +689,53 @@
   "PoidBout": 250,
   "MatCapsule": "Alu",
   "PoidCapsule": 2
-}
+},
+
+  "id": "La Double Bagarre CAN 44cl",
+    "type": "Quadruple IPA Blonde",
+    "degre": 12.0,
+    "prix": 30.24,
+    "PMC": 3.05,
+    "nombre": 12,
+    "codeArticleFournisseur": "DB44",
+    "degrePlato": 17.5,
+    "Nomenclature": 22030001,
+    "DroitsDAccises": "03 - DROITS REDUITS PETITES BRASSERIES",
+    "typesDroits": "Suspendus (avec DAE)",
+    "PaysOrigine": "FRANCE",
+    "Péremption": 12,
+    "UVC": {
+      "type": "CANETTE",
+      "Gencod": 3760394010784,
+      "long": 70,
+      "larg": 70,
+      "hauteur": 150,
+      "poids": 0.46
+    },
+    "UD": {
+      "type": "Carton",
+      "Gencod": 3760394010814,
+      "long": 270,
+      "larg": 210,
+      "hauteur": 161,
+      "poids": 6,
+      "Volume": 5.28,
+      "nbUVC": 12
+    },
+    "palette": {
+      "type": "PALETTE EUROPE",
+      "Gencod": 3760394010838,
+      "long": 1200,
+      "larg": 800,
+      "hauteur": 1250,
+      "poids": 609,
+      "Volume": 356.4,
+      "nbUVC": 1176,
+      "nbPerCouche": 168,
+      "nbCouche": 7
+    },
+    "delaiAppro": 30,
+    "MatBout": "Aluminum",
+    "PoidBout": 14
+  }
 ]
