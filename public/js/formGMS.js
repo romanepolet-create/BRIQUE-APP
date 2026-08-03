@@ -204,12 +204,17 @@ function traiterFichierPhoto(inputSource) {
 }
 
 async function soumettreFormulaire() {
+  const formulaireElement = document.getElementById('visiteForm');
+
+  if (!formulaireElement.checkValidity()) {
+    formulaireElement.reportValidity();
+    return;
+  }
   const btnSubmit = document.querySelector('.submit-btn');
   const txtInitial = btnSubmit.textContent;
   btnSubmit.textContent = "⏳ Envoi en cours...";
   btnSubmit.disabled = true;
-
-  const formulaireElement = document.getElementById('visiteForm');
+  
   const chargeUtile = new FormData(formulaireElement);
 
   const checkboxes = document.querySelectorAll('#references-container input[type="checkbox"]');
