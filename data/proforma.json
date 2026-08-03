@@ -110,5 +110,13 @@
     "accise" : "",
     "eco": "",
     "PUnetHTVA": ""
+  },
+{
+    "id": "La Double Bagarre CAN 44cl",
+    "designation": "LA DOUBLE BAGARRE (12x0,44L) 12° VP",
+    "PUbrutHT" : 2.29442,
+    "accise" : 0.21754,
+    "eco": 0.0080,
+    "PUnetHTVA": 2.52
   }
 ]
