@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
             <div id="liste-panier-proforma">
                 <p style="color: gray; font-size: 0.9em;">Appuyez sur les '+' bleus pour ajouter des bières.</p>
             </div>
+            <div style="margin-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                <label style="font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" id="check-ecotaxe" checked> EcoTaxe
+                </label>
+            </div>
             <button onclick="validerProforma()" style="width: 100%; margin-top: 15px; background-color: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">
                 ✅ OK (Générer Excel)
             </button>
@@ -96,6 +101,9 @@ window.validerProforma = async function() {
 
     const btn = document.querySelector('#panneau-panier-proforma button');
     btn.innerText = "⏳ Génération...";
+
+    const checkEco = document.getElementById('check-ecotaxe');
+    const isEcoTaxeChecked = checkEco ? checkEco.checked : true;
 
     try {
         const [resBieres, resProforma] = await Promise.all([
@@ -306,9 +314,19 @@ window.validerProforma = async function() {
             if (biere && finance) {
                 const qteUV = qte * biere.nombre;
                 const vol = id.includes("75cl")?0.75 : (id.includes("44cl") ? 0.44 : 0.33);
-                const mntBrut = qteUV * finance.PUbrutHT
+                
+                let puBrutHT = finance.PUbrutHT;
+                let mntEco = qteUV * finance.eco;
+                let mntBrut = qteUV * puBrutHT;
+
+                if (!isEcoTaxeChecked) {
+                    puBrutHT = puBrutHT + mntEco;
+                    mntBrut = qteUV * puBrutHT;
+                    mntEco = 0;
+                }
+
+
                 const mntAccise = qteUV * finance.accise;
-                const mntEco = qteUV * finance.eco;
                 const mntNet = qteUV * finance.PUnetHTVA
                 
 
@@ -324,7 +342,7 @@ window.validerProforma = async function() {
                   qte, 
                   "cartons", 
                   qteUV,
-                  finance.PUbrutHT, 
+                  puBrutHT, 
                   mntBrut.toFixed(2), 
                   "01", 
                   biere.degre + "°",
