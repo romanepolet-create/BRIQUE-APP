@@ -203,6 +203,10 @@ function traiterFichierPhoto(inputSource) {
   }
 }
 
+document.getElementById('mea_volume').addEventListener('input', function(e) {
+    this.value = this.value.replace(',', '.');
+});
+
 async function soumettreFormulaire() {
   const formulaireElement = document.getElementById('visiteForm');
 
