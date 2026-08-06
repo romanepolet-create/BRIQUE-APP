@@ -859,6 +859,50 @@ function NoEasterPopup () {
 }
 
 
+// ===========================================
+// POPUP MAGASIN DEJA DANS LISTE
+// ===========================================
+
+function PopupDejaDansTournee() {
+  const DejaPopup = document.createElement("div");
+	
+  DejaPopup.style.position = "fixed";
+  DejaPopup.style.top = "50%";
+  DejaPopup.style.left = "50%";
+  DejaPopup.style.transform = "translate(-50%, -50%)";
+  DejaPopup.style.backgroundColor = "white";
+  DejaPopup.style.padding = "20px";
+  DejaPopup.style.border = "2px solid black";
+  DejaPopup.style.color = "black";
+  DejaPopup.style.fontWeight = "bold";
+  DejaPopup.style.textAlign = "center";
+  DejaPopup.style.zIndex = "9999";
+  DejaPopup.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
+  DejaPopup.style.width = "250px";
+  DejaPopup.style.height = "100px";
+
+  DejaPopup.innerHTML = `
+    <p>Cet établissement est déjà dans votre tournée.</p>
+	<p>Voulez-vous quand même l'ajouter ?</p>
+    <div style="display: flex; justify-content: space-around; margin-top: 15px;">
+      <button id="DejaPopupOUI" style="padding: 5px 15px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 4px;">OUI</button>
+      <button id="DejaPopupNON" style="padding: 5px 15px; cursor: pointer; background: #dc3545; color: white; border: none; border-radius: 4px;">NON</button>
+    </div>
+  `;
+  document.body.appendChild(DejaPopup);
+
+  document.getElementById('DejaPopupOUI').onclick = function() {
+    DejaPopup.remove();
+    if(typeof onConfirm === "function") onConfirm();
+  };
+
+  document.getElementById('DejaPopupNON').onclick = function() {
+    DejaPopup.remove();
+  };
+}
+
+
+
 // ==========================================
 // GESTION DES ÉTAPES (MASQUER, FINAL, SUPPRIMER)
 // ==========================================
@@ -869,13 +913,21 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
       return;
   }
 
-  etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, masque: false, isFinal: false});
-  actualiserPanneauGPS();
-  filtrerMagasins();
+  const magasinDejaPresent = etapesItineraire.some(etape => etape.hubspot_id === hubspot_id);
 
-  sauvegarderTourneeMemoire();
+  const executerAjout = () => {
+    etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, masque: false, isFinal: false});
+    actualiserPanneauGPS();
+    filtrerMagasins();
+    sauvegarderTourneeMemoire();
+    afficherToast(`✅ ${nom} a bien été ajouté à la tournée`);
+  };
 
-  afficherToast(`✅ ${nom} a bien été ajouté à la tournée`);
+  if (magasinDejaPresent) {
+    PopupDejaDansTournee(executerAjout);
+  } else {
+    executerAjout();
+  }
 };
 
 window.supprimerEtape = function(index) {
