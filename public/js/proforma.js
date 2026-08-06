@@ -1,12 +1,9 @@
 // ==========================================
 // MOTEUR PROFORMA (FRONT-END)
 // ==========================================
-
-// 🚨 CES DEUX LIGNES AVAIENT DISPARU : ELLES SONT INDISPENSABLES 🚨
 let modeProforma = false;
 let panierProforma = {}; 
 
-// 1. On injecte l'interface (Bouton rouge + Panneau)
 document.addEventListener("DOMContentLoaded", () => {
     const uiHTML = `
         <button id="btn-toggle-proforma" onclick="toggleModeProforma()" style="position: fixed; bottom: 20px; left: 20px; background-color: #e74c3c; color: white; border: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;">
@@ -26,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML('beforeend', uiHTML);
 });
 
-// 2. Allumer/éteindre le mode
 window.toggleModeProforma = function() {
     modeProforma = !modeProforma;
     const btn = document.getElementById('btn-toggle-proforma');
