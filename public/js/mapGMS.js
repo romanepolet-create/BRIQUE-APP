@@ -879,7 +879,7 @@ function PopupDejaDansTournee() {
   DejaPopup.style.zIndex = "9999";
   DejaPopup.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
   DejaPopup.style.width = "250px";
-  DejaPopup.style.height = "100px";
+  DejaPopup.style.height = "250px";
 
   DejaPopup.innerHTML = `
     <p>Cet établissement est déjà dans votre tournée.</p>
