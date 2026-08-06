@@ -863,7 +863,7 @@ function NoEasterPopup () {
 // POPUP MAGASIN DEJA DANS LISTE
 // ===========================================
 
-function PopupDejaDansTournee() {
+function PopupDejaDansTournee(onConfirm) {
   const DejaPopup = document.createElement("div");
 	
   DejaPopup.style.position = "fixed";
