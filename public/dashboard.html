@@ -6,11 +6,11 @@
     <title>Tableau de Bord</title>
     <link rel="stylesheet" href="css/styleDashboard.css">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#002AB6">
   </head>
+  
   <body>
     <nav class="navbar">
-      <div class="logo">🍻 Brique App</div>
+      <div class="logo">🧱 Brique App - Dashboard</div>
       <button class="menu-burger" id="menu-burger">
       ☰
       </button>
@@ -25,3 +25,51 @@
         <li><a href="/mapCHR.html" class="active">Map CHR</a></li>
       </ul>
     </nav>
+
+
+
+
+     <div class="container">
+        <h2>Résumé de l'activité (Mois en cours)</h2>
+        
+        <div class="kpi-grid">
+            <!-- KPI 1 : Visites -->
+            <div class="kpi-card">
+                <div class="kpi-title">Visites réalisées</div>
+                <p class="kpi-value" id="kpi-visites">...</p>
+                <span class="kpi-evolution evolution-up" id="evo-visites">+0% vs mois M-1</span>
+            </div>
+
+            <!-- KPI 2 : DN Gagnées -->
+            <div class="kpi-card">
+                <div class="kpi-title">DN Gagnées (Réf)</div>
+                <p class="kpi-value" id="kpi-dn">...</p>
+                <span class="kpi-evolution evolution-up" id="evo-dn">Base Initiale : ...</span>
+            </div>
+
+            <!-- KPI 3 : MEA (HL) -->
+            <div class="kpi-card">
+                <div class="kpi-title">Volume MEA (HL)</div>
+                <p class="kpi-value" id="kpi-mea">...</p>
+                <span class="kpi-evolution evolution-down" id="evo-mea">vs mois M-1</span>
+            </div>
+
+            <!-- KPI 4 : Distributeurs Directs -->
+            <div class="kpi-card">
+                <div class="kpi-title">Distributeurs Directs</div>
+                <p class="kpi-value" id="kpi-directs">...</p>
+                <span class="kpi-evolution evolution-neutral">ITM, LECLERC, SUPER U</span>
+            </div>
+        </div>
+
+        <!-- Espace pour les futurs graphiques -->
+        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <h3 style="margin-top: 0;">Évolution des visites (Bientôt)</h3>
+            <p>Espace pour futur graphique</p>
+            <p style="color: #6c757d;">Ex : C'est ici que nous mettrons un graphique en courbes (Chart.js) pour visualiser l'année 2026 par rapport à 2027.</p>
+        </div>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
