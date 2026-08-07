@@ -3,35 +3,23 @@ async function afficher(idBiere) {
   ecran.innerHTML = "<p style='text-align: center; color: gray;'>Recherche dans le glossaire en cours...</p>";
 
   try {
-   // 1. On va lire le fichier JSON local en entier
     const response = await fetch('/api/lexique/desc');
 
     if (response.ok) {
       const toutesLesBieres = await response.json();
                               
-      // 2. On fouille dans le tableau pour trouver la bière qui correspond au bouton cliqué (ex: 'LB')
       const biere = toutesLesBieres.find(b => b.id === idBiere);
 
       if (biere) {
-        // 3. On construit l'affichage HTML
         let html = `<div class="definition">`;
 
         const titrePropre = biere.b.replace(/_/g, ' ');
         html +=`
         <div style="position: relative ; border-bottom: 3px solid #e67e22">
-        <a class="mot-cle" 
+        <a class="mot-cle-a" 
            href="/images/pdf/${biere.id}.pdf" 
            target="_blank" 
-           download style="background-color: #002ab6; 
-                           color: white; 
-                           padding: 5px 8px; 
-                           margin-right: 5px;
-                           border-radius: 8px; 
-                           text-decoration: none; 
-                           font-weight: bold; 
-                           font-family: 'Lexend Deca', sans-serif; 
-                           font-size: 0.9em; 
-                           box-shadow: 0 4px 6px rgba(0,0,0,0.1);">📥</a>
+           download>📥</a>
 
         <h2 class="mot-cle">${titrePropre}</h2>
         `;
@@ -43,18 +31,7 @@ async function afficher(idBiere) {
 
           html+= `
             <button onclick="jouerVideoA(${biere.seconde_video})" 
-                    style="color: #0000ee; 
-                           font-family: arial, sans-serif;
-                           background-color: light-gray;
-                           border: transparent;
-                           border-radius: 30px;
-                           margin: 8px;
-                           padding: 8px 8px; 
-                           font-weight: bold; 
-                           cursor: pointer; 
-                           font-size: 12px; 
-                           transition: 0.2s;">
-                           Vidéo : ${tempsFormatte}
+                    class="jouer-video">Vidéo : ${tempsFormatte}
             </button>
           `;
         }
