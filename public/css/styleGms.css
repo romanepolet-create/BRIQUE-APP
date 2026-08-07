@@ -64,7 +64,7 @@ body {
 }
 
 .modale-image-container img {
-  width: 150px; /* Taille de l'image de la bière */
+  width: 150px;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
