@@ -1,1 +1,49 @@
+.menu-burger {
+  display: none;
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 28px;
+  cursor: pointer;
+}
 
+.navbar {
+	z-index: 9999;
+  position: relative;
+  background-color: #002ab6; 
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-bottom: 40px; 
+}
+.navbar .logo {
+  color: #ffcc00;
+  font-size: 1.5em;
+  font-weight: 800;
+  font-family: 'Gilroy', 'Lexend Deca', sans-serif;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  font-family: 'Lexend Deca', sans-serif;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover, 
+.nav-links a.active {
+  color: #ffcc00;
+}
