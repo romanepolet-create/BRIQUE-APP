@@ -19,14 +19,14 @@ async function chargerBieres() {
     <h3>${nom}</h3>
     <p>${formats[0].type}</p>
     <p class="degre">${formats[0].degre}%</p>
-    <hr style="border: 0.5px solid #444; margin: 15px 0;">
+    <hr class="hr">
     <div style="text-align: left;">
     ${formats.map(f => `
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <span style="font-size: 0.9em;">${f.id.split(' ').pop()}: <strong>${f.prix}€</strong></span>
-      <div style="display: flex; gap: 5px;">
-        <button class="btn-plus-proforma" onclick="ajouterAuPanier('${f.id}')" style="display: none; cursor: pointer; background:#002ab6; color:white; border: none; padding: 4px 10px; border-radius: 4px; font-weight:bold;">+</button>
-        <button onclick="voirDetails('${f.id}')" style="cursor: pointer; background:#ffcc00; border: none; padding: 4px 8px; border-radius: 4px; font-weight:bold;">i</button>
+  <div class"DFormat">
+      <span>${f.id.split(' ').pop()}: <strong>${f.prix}€</strong></span>
+      <div class="Dbtn">
+        <button class="btn-plus-proforma" onclick="ajouterAuPanier('${f.id}')">+</button>
+        <button class="btn-voirDetail" onclick="voirDetails('${f.id}')">i</button>
       </div>
     </div>
     `).join('')}
@@ -70,7 +70,6 @@ async function voirDetails(id) {
 
 
     } else {
-      // Si la bière n'existe pas, alerte basique
       alert(biere.erreur);
     }
   }
