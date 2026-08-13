@@ -116,16 +116,18 @@ router.get('/recherche/:mot', async (req, res) => {
           const contenu = await fs.readFile(path.join(__dirname, '../data', fichier), 'utf8');
           const json = JSON.parse(contenu); 
 
-          for (let item of json) {
+          let trouveExact = null;
+
+          const chercherDansItem = (item) => {
             const texteAComparer = item.mot || item.b;
-            if (!item || !texteAComparer) continue;
+            if (!texteAComparer) return false;
+            
             const motJsonNettoye = normaliser(texteAComparer);
 
             let DRiche = item.desc || "Définitƣon non disponible.";
             if (item.b) {
               DRiche = "";
-              if (item.detail) DRiche += `<em
-                style="color:gray;">${item.detail}</em><br><br>`;
+              if (item.detail) DRiche += `<em style="color:gray;">${item.detail}</em><br><br>`;
               if (item.desc) DRiche += `<strong>${item.desc}</strong><br><br>`;
               if (item.type) DRiche += `${item.type}<br><br>`;
               if (item.ie) DRiche += `${item.ie}<br>`;
@@ -134,18 +136,31 @@ router.get('/recherche/:mot', async (req, res) => {
               if (item.bouche) DRiche += `${item.bouche}<br>`;
               if (item.houblon) DRiche += `${item.houblon}`;
             }
+
             if (motJsonNettoye === motRechercheNettoye) {
-              console.log(`✅ Trouvé EXACT dans ${fichier} !`); 
-              return res.json({
-                mot: texteAComparer,
-                desc: DRiche || "Voir la fiche détaillée de cette bière."
-              });
+              trouveExact = { mot: texteAComparer, desc: DRiche };
+              return true; 
             }
+
             if (!matchPartiel && motJsonNettoye.includes(motRechercheNettoye)) {
               matchPartiel = {
                 mot: texteAComparer,
                 desc: DRiche || "Voir la fiche détaillée de cette bière."
               };
+            }
+
+            if (item.sousCategories) {
+              for (let sousItem of item.sousCategories) {
+                if (chercherDansItem(sousItem)) return true; 
+              }
+            }
+            return false; 
+          };
+
+          for (let item of json) {
+            if (chercherDansItem(item)) {
+              console.log(`✅ Trouvé EXACT dans ${fichier} !`); 
+              return res.json(trouveExact);
             }
           }
         } catch (errJson) {
