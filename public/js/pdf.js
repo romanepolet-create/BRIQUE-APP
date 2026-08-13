@@ -8,23 +8,18 @@ let panierProforma = {};
 // 1. On injecte l'interface (Bouton rouge + Panneau)
 document.addEventListener("DOMContentLoaded", () => {
     const uiHTML = `
-        <button id="btn-toggle-proforma" onclick="toggleModeProforma()" style="position: fixed; bottom: 20px; left: 20px; background-color: #e74c3c; color: white; border: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;">
-            📄 Créer une Proforma
-        </button>
-
-        <div id="panneau-panier-proforma" style="display: none; position: fixed; bottom: 80px; left: 20px; width: 300px; background: white; border: 2px solid #002ab6; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; max-height: 60vh; overflow-y: auto;">
-            <h3 style="margin-top: 0; color: #002ab6;">🛒 Vos références</h3>
+        <button id="btn-toggle-proforma" onclick="toggleModeProforma()" >📄 Créer une Proforma</button>
+        <div id="panneau-panier-proforma">
+            <h3 id="h3pdf">🛒 Vos références</h3>
             <div id="liste-panier-proforma">
-                <p style="color: gray; font-size: 0.9em;">Appuyez sur les '+' bleus pour ajouter des bières.</p>
+                <p id="ppdf">Appuyez sur les '+' bleus pour ajouter des bières.</p>
             </div>
-            <div style="margin-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-                <label style="font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+            <div id="ecotaxe">
+                <label id="labeleco">
                     <input type="checkbox" id="check-ecotaxe" checked> EcoTaxe
                 </label>
             </div>
-            <button onclick="validerProforma()" style="width: 100%; margin-top: 15px; background-color: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">
-                ✅ OK (Générer PDF)
-            </button>
+            <button id="validProforma" onclick="validerProforma()">✅ OK (Générer PDF)</button>
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', uiHTML);
@@ -79,9 +74,9 @@ window.afficherPanier = function() {
     let html = "";
     for (const [idBiere, qte] of Object.entries(panierProforma)) {
         html += `
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0;">
-                <span style="font-size: 0.9em; flex: 1;">${idBiere}</span>
-                <input type="number" value="${qte}" onchange="changerQtePanier('${idBiere}', this.value)" style="width: 50px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
+            <div id="liajout">
+                <span id="ajoutpdf">${idBiere}</span>
+                <input id="qteajout" type="number" value="${qte}" onchange="changerQtePanier('${idBiere}', this.value)">
             </div>
         `;
     }
@@ -150,7 +145,7 @@ window.validerProforma = async function() {
 
                 lignesProduitsHTML += `
                     <tr>
-                        <td style="padding: 5px; border-right: 1px solid #000; border-left: 1px solid #000;">${indexLigne}</td>
+                        <td style="padding: 5px; border-right: 1px solid #000;">${indexLigne}</td>
                         <td style="padding: 5px; border-right: 1px solid #000; text-align: left;">${finance.designation}</td>
                         <td style="padding: 5px; border-right: 1px solid #000;">${qte}</td>
                         <td style="padding: 5px; border-right: 1px solid #000;">cartons</td>
