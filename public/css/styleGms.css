@@ -194,3 +194,93 @@ body {
 .btn-excel:active {
   transform: scale(0.98);
 }
+
+/* PDF JS PUSH */
+#btn-toggle-proforma { 
+  position: fixed; 
+  bottom: 20px; 
+  left: 20px; 
+  background-color: #e74c3c; 
+  color: white; 
+  border: none; 
+  padding: 12px 20px; 
+  border-radius: 30px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+  z-index: 1000;
+}
+
+#panneau-panier-proforma {
+  display: none; 
+  position: fixed; 
+  bottom: 80px; 
+  left: 20px; 
+  width: 300px; 
+  background: white; 
+  border: 2px solid #002ab6; 
+  border-radius: 10px; 
+  padding: 15px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+  z-index: 1000; 
+  max-height: 60vh; 
+  overflow-y: auto;
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
+}
+
+#h3pdf { 
+  margin-top: 0; 
+  color: #002ab6;
+}
+
+#ppdf {
+  color: gray; 
+  font-size: 0.9em;
+}
+
+#ecotaxe {
+  margin-top: 10px; 
+  padding-bottom: 10px; 
+  border-bottom: 1px solid #eee;
+}
+
+#labeleco {
+  font-size: 0.9em; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 5px;
+}
+
+#validProforma {
+  width: 100%; 
+  margin-top: 15px; 
+  background-color: #27ae60; 
+  color: white; 
+  border: none; 
+  padding: 10px; 
+  border-radius: 5px; 
+  font-weight: bold; 
+  cursor: pointer;
+}
+
+#liajout {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  border-bottom: 1px solid #eee; 
+  padding: 8px 0;
+}
+
+#ajoutpdf {
+  font-size: 0.9em; 
+  flex: 1;
+}
+
+#qteajout {
+  width: 50px; 
+  padding: 4px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  text-align: center;
+}
