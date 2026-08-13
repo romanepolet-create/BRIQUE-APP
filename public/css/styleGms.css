@@ -105,7 +105,6 @@ body {
   font-size: 24px;
 }
 
-
 /* JS PUSH */
 
 .card {
@@ -145,6 +144,7 @@ body {
 .Dbtn {
   display: flex; 
   gap: 5px;
+  align-items: center;
 }
 
 .btn-plus-proforma {
