@@ -19,7 +19,7 @@ const synonymes = {
   "torrefie": "torrefier", "torrefies": "torrefier", "torrefiee": "torrefier", "torrefiees": "torrefier",
   "bacterielactique": "bacterieslactiques", "doux": "douce", "resineuse": "resineux",
   "rondes": "ronde", "clairs": "clair", "cuivres": "cuivre", "limpidite": "limpide", 
-  "doubleipa": "dipa", "doubleipa": "doubleindianpaleale", "doubleipa": "doubleindianpaleale(dipa)"
+  "doubleipa": "dipa", "doubleipa": "doubleindiapaleale", "doubleipa": "doubleindiapaleale(dipa)"
 };
 
 // ==========================================
