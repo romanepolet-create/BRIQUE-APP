@@ -19,7 +19,7 @@ const synonymes = {
   "torrefie": "torrefier", "torrefies": "torrefier", "torrefiee": "torrefier", "torrefiees": "torrefier",
   "bacterielactique": "bacterieslactiques", "doux": "douce", "resineuse": "resineux",
   "rondes": "ronde", "clairs": "clair", "cuivres": "cuivre", "limpidite": "limpide", 
-  "doubleipa": "dipa", "doubleipa": "doubleindiapaleale", "doubleipa": "doubleindiapalealedipa"
+  "doubleipa": "doubleindiapalealedipa", "dipa": "doubleindiapalealedipa"
 };
 
 // ==========================================
@@ -103,7 +103,7 @@ router.get('/recherche/:mot', async (req, res) => {
     let motRechercheNettoye = normaliser(motRechercheBrut);
 
     if (synonymes[motRechercheNettoye]) {
-      motRechercheNettoye = synonymes[motRechercheNettoye];
+      motRechercheNettoye = normaliser(synonymes[motRechercheNettoye]);
     }
 
     console.log(`\n🔍 Recherche demandée: "${motRechercheBrut}" (Nettoyé/Traduit: "${motRechercheNettoye}")`);
@@ -141,7 +141,7 @@ router.get('/recherche/:mot', async (req, res) => {
                 desc: DRiche || "Voir la fiche détaillée de cette bière."
               });
             }
-            if (!matchPartiel && (motJsonNettoye.includes(motRechercheNettoye) || motRechercheNettoye.includes(motJsonNettoye))) {
+            if (!matchPartiel && motJsonNettoye.includes(motRechercheNettoye)) {
               matchPartiel = {
                 mot: texteAComparer,
                 desc: DRiche || "Voir la fiche détaillée de cette bière."
