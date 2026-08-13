@@ -142,7 +142,11 @@ router.get('/recherche/:mot', async (req, res) => {
               return true; 
             }
 
-            if (!matchPartiel && motJsonNettoye.includes(motRechercheNettoye)) {
+            const matchClassique = motJsonNettoye.includes(motRechercheNettoye);
+            const ecartDeLettres = motRechercheNettoye.length - motJsonNettoye.length;
+            const matchPluriel = motRechercheNettoye.includes(motJsonNettoye) && ecartDeLettres > 0 && ecartDeLettres <= 2;
+
+            if (!matchPartiel && (matchClassique || matchPluriel)) {
               matchPartiel = {
                 mot: texteAComparer,
                 desc: DRiche || "Voir la fiche détaillée de cette bière."
