@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/styleNavBar.css">
 </head>
   
-<body style="background: #f3b0cf">
+<body>
   
   <div class="form-container">
     <div class="form-header">
@@ -22,20 +22,12 @@
       <input type="hidden" id="enseigne" name="enseigne">
 
     <div> 
-        <p style="
-          font-size: 12px ; 
-          color: red ; 
-          margin: 5px ; 
-          padding: 5px">
-          Contacts à consulter / mettre à jour sur <a id='huspot_link' style="text-decoration: underline ; color: #0000EE ;" href="">
-            Hubspot
-          </a>
-        </p>
-      </div>
+        <p id="HS-C">Contacts à consulter / mettre à jour sur <a id='huspot_link'href="">Hubspot</a></p>
+    </div>
       
       <div class="form-group">
         <label>Nom du Magasin</label>
-        <input type="text" id="nom_magasin" name="nom_magasin" readonly style="background-color: #eee;">
+        <input type="text" id="nom_magasin" name="nom_magasin" readonly>
       </div>
 
       <div class="form-group">
@@ -49,13 +41,13 @@
       </div>
 
 
-      <hr style="border: 1px solid #eee; margin: 20px 0;">
+      <hr class="hr">
       
       <h3 style="color: #002ab6;">Références Disponibles</h3>
       <div id="references-container">
       </div>
 
-      <hr style="border: 1px solid #eee; margin: 20px 0;">
+      <hr class="hr">
 
       <div class="form-group">
         <label>Mise en Avant (MEA) ?</label>
@@ -65,158 +57,59 @@
         </select>
       </div>
 
-      <div id="mea_details" style="display: none; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px dashed #ccc;">
+      <div id="mea_details">
         <div class="form-group">
           <label>Volume Associé (hL)</label>
           <input type="number" id="mea_volume" name="mea_volume" step="any" placeholder="8CAR 75cl = 8*12*0,75/100 = 0,72HL">
         </div>
         <div class="form-group">
           <label>Photo de la MEA*</label>
-          <div 
-            style="
-              display: flex; 
-              gap: 10px; 
-              margin-top: 5px; 
-              margin-bottom: 10px;">
-            <button 
-              type="button" 
-              onclick="declencherDeclicPhoto('camera')" 
-              style="
-                flex: 1; 
-                background-color: #002ab6; 
-                color: white; 
-                padding: 10px; 
-                border: none; 
-                border-radius: 6px; 
-                font-weight: bold; 
-                cursor: pointer; 
-                font-size: 13px;">
+          <div id="photos-mea">
+            <button type="button" class="btn-pic" onclick="declencherDeclicPhoto('camera')" >
               📸 Ouvrir l'appareil
             </button>
             <button 
-              type="button" 
-              onclick="declencherDeclicPhoto('galerie')" 
-              style="
-                flex: 1; 
-                background-color: #e075aa; 
-                color: white; 
-                padding: 10px; 
-                border: none; 
-                border-radius: 6px; 
-                font-weight: bold; 
-                cursor: pointer; 
-                font-size: 13px;">
+              type="button" class="btn-pic" onclick="declencherDeclicPhoto('galerie')">
               🖼️ Depuis la galerie
             </button>         
           </div>
           <input type="file" id="media-camera" accept="image/*" capture="environment" style="display: none;" onchange="traiterFichierPhoto(this)">
           <input type="file" id="media-galerie" accept="image/*" multiple style="display: none;" onchange="traiterFichierPhoto(this)">
           
-          <div id="bloc-apercu-photo" style="display: none; text-align: center; margin-top: 15px;">
-            <img 
-              id="image-rendu-apercu" 
-              src="" 
-              style="max-width: 100%; max-height: 220px; border-radius: 8px; border: 3px solid #002ab6; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-            <p 
-              id="details-taille-photo" 
-              style="font-size: 11px; 
-              color: #666; 
-              font-style: 
-                italic; margin-top: 5px;"></p>
+          <div id="bloc-apercu-photo">
+            <img id="image-rendu-apercu" src="">
+            <p id="details-taille-photo"></p>
           </div>
         </div>
       </div>
 
-      <hr style="
-        border: 1px solid #eee; 
-        margin: 20px 0;">
-      <h3 style="
-        color: #002ab6;">
+      <hr class="hr">
+      <h3 style="color: #002ab6;">
         Commentaires
       </h3>
       <div class="form-group">
         <label for="new_note">
           Ajouter une note 
         </label>
-        <textarea 
-          id="new_note" 
-          rows="3" 
-          placeholder="Saisissez votre note ici..." 
-          style="
-            width: 100%; 
-            box-sizing: border-box;"></textarea>
-        <button 
-          type="button" 
-          id="btn-save-note" 
-          style="
-            margin-top: 5px; 
-            background-color: #eee;  
-            border: 1px solid #ccc; 
-            padding: 5px 10px; 
-            border-radius: 4px; 
-            cursor: pointer;">
-          Sauvegarder
-        </button>
+        <textarea id="new_note" rows="3" placeholder="Saisissez votre note ici..." ></textarea>
+        <button type="button" id="btn-save-note">Sauvegarder</button>
       </div>
 
       <button 
         type="button" 
         id="btn-view-notes" 
-        style="
-          background: none; 
-          border: none; 
-          color: #002ab6; 
-          cursor: pointer; 
-          text-decoration: underline; 
-          font-size: 13px; 
-          margin-top: 10px;"
-        >>> Voir les commentaires
+      >>> Voir les commentaires
       </button>
 
-  <div id="notes-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-    <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 8px;">
-      <span id="close-notes-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+  <div id="notes-modal">
+    <div id="note-modal-2">
+      <span id="close-notes-modal">&times;</span>
       <h3>Historique des Notes</h3>
-      <ul id="notes-list" style="list-style-type: none; padding: 0;">
-        </ul>
+      <ul id="notes-list"></ul>
     </div>
   </div>
       <button type="button" class="submit-btn" onclick="soumettreFormulaire()">Envoyer le rapport</button>
     </form>
-  </div>
-
-    <div 
-      id="notes-modal" 
-      style="
-        display: none; 
-        position: fixed; 
-        z-index: 1000; 
-        left: 0; top: 0; 
-        width: 100%; height: 100%; 
-        overflow: auto; 
-        background-color: rgba(0,0,0,0.4);">
-    <div 
-      style="
-        background-color: #fefefe; 
-        margin: 15% auto; 
-        padding: 20px; 
-        border: 1px solid #888; 
-        width: 80%; 
-        border-radius: 8px;">
-      <span 
-        id="close-notes-modal" 
-        style="
-          color: #aaa; 
-          float: right; 
-          font-size: 28px; 
-          font-weight: bold;
-          cursor: pointer;">
-        &times;
-      </span>
-      <h3>Historique des Notes</h3>
-      <ul id="notes-list" style="list-style-type: none; padding: 0;">
-        </ul>
-    </div>
   </div>
 
   <script src="/js/formGMS.js"></script>
