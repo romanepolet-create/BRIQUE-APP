@@ -22,7 +22,7 @@ async function chargerBieres() {
     <hr class="hr">
     <div style="text-align: left;">
     ${formats.map(f => `
-  <div class"DFormat">
+  <div class="DFormat">
       <span>${f.id.split(' ').pop()}: <strong>${f.prix}€</strong></span>
       <div class="Dbtn">
         <button class="btn-plus-proforma" onclick="ajouterAuPanier('${f.id}')">+</button>
