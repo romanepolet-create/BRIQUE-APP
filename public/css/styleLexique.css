@@ -1,1 +1,236 @@
+*{
+  box-sizing: border-box;
+}
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3b0cf;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #002ab6;
+  margin-bottom: 30px;
+}
+
+/*BOUTON DE BIERES*/
+.menu-boutons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  background: linear-gradient(110deg, #e41b19 50%, #002ab6 50%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  margin: 2px 2px 2px 2px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-position 0.5s ease-in-out, color 0.5s ease-in-out;
+
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: bold;
+  text-transform: none;
+} 
+
+.btn:hover {
+  background-position: 0 0;
+  color: white;
+  border: solid;
+}
+/*L'ECRAN*/
+
+#ecran-affichage {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px rgba(0,0,0,0.08);
+  border: 2px solid #002ab6;
+  text-align: left;
+  min-height: 200px;
+}
+
+#pAffichage {
+  text-align: center; 
+  color: gray;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  text-align: left;
+  background: white;
+  border-radius: 12px !important;
+  border: none !important;
+  padding: 30px !important;
+}
+
+#modal-titre {
+  color: #002ab6; 
+  margin-top: 0;
+}
+
+#modal-desc {
+  font-size: 1.1em;
+}
+
+#modal button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+/*JS PUSH*/
+#pappelserv {
+  text-align: center; 
+  color: gray;
+}
+
+.souscat {
+  padding-left: 15px;
+  border-left: 3px solid #ffcc00;
+  margin-top: 10px;
+}
+
+.souscat2 {
+  padding-left: 10px; 
+  border-left: 3px solid #002ab6; 
+  margin-top: 10px;
+}
+
+#detsousSous {
+  margin-bottom: 10px; 
+  background: #eef2f7; 
+  padding: 10px; 
+  border-radius: 8px;
+}
+
+#sumsousSous {
+  cursor: pointer; 
+  color: #002ab6; 
+  font-weight: bold; 
+  list-style: none;
+}
+
+#psousSous {
+  font-size: 0.9em; 
+  margin-top: 8px;
+}
+
+#detsous {
+  margin-bottom: 15px; 
+  background: #f4f6f9; 
+  padding: 10px; 
+  border-radius: 8px; 
+  border-left: 3px solid #ffcc00;
+}
+
+#sumsous {
+  cursor: pointer; 
+  color: #002ab6; 
+  font-weight: bold; 
+  list-style: none; 
+  font-size: 1.1em;
+}
+
+#descfille {
+  margin-top: 10px;
+  padding-left: 10px
+}
+
+#pdescfille {
+  font-size: 0.95em;
+}
+
+.mot-cle {
+  color: #002ab6;
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.definition {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.definition p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.decale-droite {
+  margin-left: 40px !important;
+  border-left: 4px solid #002ab6 !important;
+  padding-left: 15px !important;
+  background-color: #f4f6f9 !important;
+}
+
+/*LIEN*/
+
+.wiki-link {
+  color: blue;
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #2980b9;
+  transition: color 0.2s;
+}
+
+.wiki-link:hover {
+  color: #e075aa;
+  text-decoration-style: solid;
+}
+
+/*font noir transparent*/
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+#modal button:hover {
+  background-color: #555;
+}
