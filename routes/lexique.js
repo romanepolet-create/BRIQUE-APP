@@ -18,8 +18,8 @@ const synonymes = {
   "fermentationbasse": "bassefermentation", "fermentationhaute": "hautefermentation",
   "torrefie": "torrefier", "torrefies": "torrefier", "torrefiee": "torrefier", "torrefiees": "torrefier",
   "bacterielactique": "bacterieslactiques", "doux": "douce", "resineuse": "resineux",
-  "rondes": "ronde", "clairs": "clair", "cuivres": "cuivre", "limpidite": "limpide", "Double IPA": "DIPA", "Double IPA": "Double Indian Pale Ale", 
-  "Double IPA": "Double Indian Pale Ale (DIPA)"
+  "rondes": "ronde", "clairs": "clair", "cuivres": "cuivre", "limpidite": "limpide", 
+  "doubleipa": "dipa", "doubleipa": "doubleindianpaleale", "doubleipa": "doubleindianpaleale(dipa)"
 };
 
 // ==========================================
