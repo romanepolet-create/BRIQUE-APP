@@ -32,7 +32,8 @@
   gap: 30px;
   margin: 0;
   padding: 0;
-  z-index: 99999999999;
+  position: relative;
+  z-index: 9999;
 }
 
 .nav-links a {
