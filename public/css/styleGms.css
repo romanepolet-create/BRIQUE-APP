@@ -109,7 +109,7 @@ body {
 
 .card {
   border: 1px solid #444; 
-  padding: 15px; 
+  padding: 8px; 
   border-radius: 12px; 
   background: #fff;
   transition: transform 0.2s;
