@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/styleLexique.css">
   <link rel="stylesheet" href="css/styleNavBar.css">
   <meta charset="UTF_8">
   <title>Le Glossaire du Brasseur</title>
@@ -38,16 +38,16 @@
   </div>
 
   <div id="ecran-affichage">
-    <p style="text-align: center; color: gray;">Clique sur un bouton pour ouvrir la section du Glossaire...</p>
+    <p id="pAffichage">Clique sur un bouton pour ouvrir la section du Glossaire...</p>
   </div>
  <div id="overlay" onclick="fermerWiki()"></div>
  <div id="modal">
-   <h2 id="modal-titre" style="color: #002ab6; margin-top: 0;"></h2>
-   <p id="modal-desc" style="font-size: 1.1em;"></p>
+   <h2 id="modal-titre"></h2>
+   <p id="modal-desc"></p>
    <button onclick="fermerWiki()" class="btn" style="width:100%;">Fermer</button>
  </div>
   
-<script src="/js/outils.js"></script>
+ <script src="/js/outils.js"></script>
  <script src="/js/lexique.js"></script>
  <script src="/js/navbar.js"></script>
   <script>
