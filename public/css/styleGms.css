@@ -113,6 +113,7 @@ body {
   border-radius: 12px; 
   background: #fff;
   transition: transform 0.2s;
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .degre {
