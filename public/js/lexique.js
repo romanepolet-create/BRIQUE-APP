@@ -2,7 +2,7 @@ async function afficherSection(categorie) {
   const ecran = document.getElementById('ecran-affichage');
   //message d'attente
   ecran.innerHTML =
-  "<p style='text-align: center; color: gray;'> Recherche dans les archive en cours...</p>";
+  "<p id='pappelserv'> Recherche dans les archive en cours...</p>";
   //appel au serveur
   const response = await fetch(`/api/lexique/${categorie}`);
 
@@ -27,33 +27,20 @@ async function afficherSection(categorie) {
       let accordeon = "";
         if(item.sousCategories) {
           accordeon = `
-          <div style="padding-left: 15px;
-               border-left: 3px solid #ffcc00;
-               margin-top: 10px;">
+          <div class="souscat">
             ${item.sousCategories.map(sous => {
             const descFille = formaterTexte(sous.desc);
 
             let sousAccordeon = "";
             if (sous.sousCategories) {
               sousAccordeon = `
-              <div style="padding-left: 10px; 
-                          border-left: 3px solid #002ab6; 
-                          margin-top: 10px;">
+              <div class="souscat2">
                  ${sous.sousCategories.map(sousSous => {
                   const descSousFille = formaterTexte(sousSous.desc);
                   return `
-                   <details style="margin-bottom: 10px; 
-                                   background: #eef2f7; 
-                                   padding: 10px; 
-                                   border-radius: 8px;">
-                    <summary style="cursor: pointer; 
-                           color: #002ab6; 
-                           font-weight: bold; 
-                           list-style: none;">
-                            ▶ ${sousSous.mot.replace(/_/g, ' ')}
-                           </summary>
-                    <p style="font-size: 0.9em; 
-                            margin-top: 8px;">${descSousFille}</p>
+                   <details id="detsousSous">
+                    <summary id="sumsousSous">▶ ${sousSous.mot.replace(/_/g, ' ')}</summary>
+                    <p id="psousSous">${descSousFille}</p>
                   </details>
                    `;
                   }).join('')}
@@ -61,33 +48,19 @@ async function afficherSection(categorie) {
                }
 
              return `
-             <details style="margin-bottom: 15px; 
-                             background: #f4f6f9; 
-                             padding: 10px; 
-                             border-radius: 8px; 
-                             border-left: 3px solid #ffcc00;">
-             <summary style="cursor: pointer; 
-                             color: #002ab6; 
-                             font-weight: bold; 
-                             list-style: none; 
-                             font-size: 1.1em;">
-                             ▶ ${sous.mot.replace(/_/g, ' ')}
-                             </summary>
-      
-
-                  <div style="margin-top: 10px;padding-left: 10px">
-                    <p style="font-size: 0.95em;">${descFille}</p>
-                ${sousAccordeon}
-                </div>
-              </details>`;
+             <details id="detsous">
+               <summary id="sumsous">▶ ${sous.mot.replace(/_/g, ' ')}</summary>
+               <div id="descfille">
+                 <p id="pdescfille">${descFille}</p>
+                 ${sousAccordeon}
+               </div>
+             </details>`;
             }).join('')}
           </div>`;
           }
           return `
            <div class="definition">
-             <h3 class="mot-cle" 
-                 style="color:#002ab6; 
-                 margin-bottom: 10px;">${titrePropre}</h3>
+             <h3 class="mot-cle">${titrePropre}</h3>
              <p>${descPrincipale}</p>
              ${accordeon}
            </div>
@@ -98,6 +71,5 @@ async function afficherSection(categorie) {
     ecran.innerHTML = "<p style='color:red:'> Erreur: Impossible d'ouvrir ce chapitre.</p>";
   }
 }
-// --- FONCTIONS DU POPUP WIKI ---
 
 
