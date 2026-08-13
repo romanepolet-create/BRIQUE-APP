@@ -1,1 +1,59 @@
+*{
+  box-sizing: border-box;
+}
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3b0cf;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+}
+
+#box {
+  background: white; 
+  padding: 40px; 
+  border-radius: 10px; 
+  text-align: center; 
+  border: 3px solid #002ab6;
+}
+
+h2 { color: #002ab6; }
+
+#email {
+  width: 100%; 
+  padding: 10px; 
+  margin-bottom: 10px;
+}
+
+#password {
+  width: 100%; 
+  padding: 10px; 
+  margin-bottom: 20px;
+}
+
+#btn-login {
+  background: #002ab6; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  margin: 10px;
+  width: 100%; 
+  cursor: pointer;
+}
+
+#message { 
+  font-size: 12px; 
+  margin-top: 10px; 
+  font-weight: bold;
+}
+  
