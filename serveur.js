@@ -42,6 +42,13 @@ const limiter = rateLimit({
 app.use(limiter);
 
 function verifierBriqueHouse(req, res, next) {
+  const exceptions = [
+    '/css/styleLogin.css', 
+    '/js/Login.js',
+  ];
+  if (exceptions.includes(req.path)) {
+    return next();
+  }
   if (req.session && req.session.email) {
     return next();
   }
