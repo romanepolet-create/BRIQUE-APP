@@ -159,6 +159,7 @@ body {
 }
 
 .btn-voirDetail {
+  display: inline-block;
   cursor: pointer; 
   background: #ffcc00; 
   border: none; 
