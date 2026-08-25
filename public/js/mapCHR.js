@@ -20,31 +20,27 @@ window.activerGeolocalisation = function() {
     return;
   }
 
-  // Déclenche le suivi en temps réel du commercial
   navigator.geolocation.watchPosition(function(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     userPosition = L.latLng(lat, lng);
 
-    // Si le point bleu existe déjà, on le déplace, sinon on le crée
     if (userMarker) {
       userMarker.setLatLng(userPosition);
     } else {
-      // Création d'un marqueur bleu spécial pour le commercial
       const iconeBleue = L.divIcon({
         className: 'user-gps-marker',
-        html: '<div style="background-color: #002ab6; width: 14px; height: 14px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>',
+        html: '<div></div>',
         iconSize: [20, 20]
       });
       userMarker = L.marker(userPosition, { icon: iconeBleue }).addTo(map);
-      // Au premier repérage, on zoome automatiquement sur lui
       map.setView(userPosition, 12);
     }   
   }, function(error) {
     console.warn("Erreur GPS : ", error.message);
     alert("Impossible de récupérer ta position GPS.");
   }, {
-    enableHighAccuracy: true // Force l'utilisation du vrai GPS du téléphone
+    enableHighAccuracy: true
   });
 };
 
@@ -89,7 +85,7 @@ async function lancerRecherche() {
       	const ville = props.city || props.state || "";
       	const nomPropre = `${nom}, ${ville}`;
 
-				ajouterElementListe(listeResultats, lat, lng, nomPropre, "📍");
+		ajouterElementListe(listeResultats, lat, lng, nomPropre, "📍");
       })
     };
 
@@ -118,13 +114,13 @@ async function lancerRecherche() {
 function ajouterTitreListe(liste, texte) {
   const titre = document.createElement('li');
   titre.innerHTML = `<b>${texte}</b>`;
-  titre.style = 'background-color: #f0f0f0; padding: 4px 8px; font-size: 10px; color: #555; text-transform: uppercase; margin-top: 5px;';
+  titre.class = `liTitre`;
   liste.appendChild(titre);
 }
 
 function ajouterElementListe(liste, lat, lng, nom, icone) {
   const li = document.createElement('li');
-  li.style = 'padding: 8px; border-bottom: 1px solid #eee; cursor: pointer;';
+  li.class = `liNom`;
   li.innerHTML = `${icone} ${nom}`;
   
   li.onclick = () => {
@@ -147,10 +143,11 @@ function showPopup() {
   const mainPopup = document.getElementById("popup");
   const secPopup = document.getElementById("secPopup")
   const lastPopup = document.getElementById("lastPopup")
-	console.log(spamLevel);
+  const ExtraPopup = document.getElementById("ExtraPopup");
+  console.log(spamLevel);
 
   if (spamLevel === 1) {
-    NoEasterPopup()
+    if(PopupNoEaster) PopupNoEaster.style.display = "block";
   }
 
   if(spamLevel === 3) {
@@ -173,69 +170,19 @@ function showPopup() {
     }
   }
   else if (spamLevel >= 8) {
-    spawnExtraPopup();
+	if(ExtraPopup) {
+    	const random = 40 + Math.random() * 20;  
+  		ExtraPopup.style.top = random + "%";
+  		ExtraPopup.style.left = random + "%";
+  		ExtraPopup.style.bottom = random + "%";
+  		ExtraPopup.style.right = random + "%";
+		ExtraPopup.style.display = "block";
+	}
   }
 }
-
   
 function hidePopup() {
   document.getElementById("popup").style.display = "none";
-}
-
-
-// The chaotic infinite spam generator
-function spawnExtraPopup() {
-  const extraPopup = document.createElement("div");
-        
-  const random = 40 + Math.random() * 20;  
-  
-  extraPopup.style.position = "fixed";
-  extraPopup.style.top = random + "%";
-  extraPopup.style.left = random + "%";
-  extraPopup.style.bottom = random + "%";
-  extraPopup.style.right = random + "%";
-  extraPopup.style.transform = "translate(-50%, -50%)";
-  extraPopup.style.backgroundColor = "white";
-  extraPopup.style.padding = "20px";
-  extraPopup.style.border = "2px solid black";
-  extraPopup.style.color = "black";
-  extraPopup.style.fontWeight = "bold";
-  extraPopup.style.textAlign = "center";
-  extraPopup.style.zIndex = "9999";
-  extraPopup.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
-  extraPopup.style.width = "250px";
-  extraPopup.style.height = "100px";
-
-  extraPopup.innerHTML = `
-    <p>STOP CLICKING</p>
-    <button onclick="this.parentElement.remove()">OK</button>
-  `;
-  document.body.appendChild(extraPopup);
-}
-
-// The chaotic infinite spam generator
-function NoEasterPopup() {
-  const PopupNoEaster = document.createElement("div");
-         
-  PopupNoEaster.style.position = "fixed";
-  PopupNoEaster.style.top = 50 + "%";
-  PopupNoEaster.style.left = 50 + "%" ;
-  PopupNoEaster.style.transform = "translate(-50%, -50%)";
-  PopupNoEaster.style.backgroundColor = "white";
-  PopupNoEaster.style.padding = "20px";
-  PopupNoEaster.style.border = "2px solid black";
-  PopupNoEaster.style.color = "black";
-  PopupNoEaster.style.textAlign = "center";
-  PopupNoEaster.style.zIndex = "500";
-  PopupNoEaster.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
-
-
-  PopupNoEaster.innerHTML = `
-    <p>Limite de 10* distinations atteinte</p>
-    <p>* 9 établissements + Position de départ</p>
-    <button onclick="this.parentElement.remove()">OK</button>
-  `;
-  document.body.appendChild(PopupNoEaster);
 }
 
 function ajouterPointCHR(lat, lng, nom) {
@@ -261,7 +208,7 @@ function actualiserPanneauGPS() {
 
   if (etapesItineraire.length === 0) {
     panneau.style.display = 'block';
-	liste.innerHTML= "<li style='color: #888; font-style: italic; font-size: 12px;'>Aucune étape sélectionnée</li>";
+	liste.innerHTML= "<li id='liPanneau'>Aucune étape sélectionnée</li>";
     return;
   }
 
@@ -270,34 +217,11 @@ function actualiserPanneauGPS() {
 
   etapesItineraire.forEach((etape, index) => {
     liste.innerHTML += `
-      <li style="
-        margin-bottom: 8px; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        text-align: left; 
-        font-size: 13px;"
-      >
-        <span style="
-          max-width: 85%; 
-          overflow: hidden; 
-          text-overflow: ellipsis; 
-          white-space: nowrap;"
-        >
+      <li class='liPanneauNom'>
+        <span class="spanPanneauNom">
           <strong>${index + 1}.</strong> ${etape.nom}
         </span>
-        <button 
-          onclick="supprimerEtape(${index})" 
-          style="
-            background: none; 
-            border: none; 
-            color: #dc3545; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 14px; 
-            padding: 0 5px;">
-            ×
-        </button>
+        <button class="btnPanneauSuppr" onclick="supprimerEtape(${index})">×</button>
       </li>
     `;
   });
@@ -395,9 +319,6 @@ window.ouvrirGoogleMaps = function() {
 };
 
 window.supprimerEtape = function(index) {
-  // Supprime 1 élément à la position 'index'
   etapesItineraire.splice(index, 1); 
-  
-  // Rafraîchit le panneau d'affichage
   actualiserPanneauGPS();
 };
