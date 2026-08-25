@@ -238,6 +238,19 @@ h1 {
   font-size: 11px;
 }
 
+#map {
+  flex-grow: 1;
+  height: 60vh;
+  min-height: 330px !important;
+  width: auto;
+  border: 5px solid white;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  margin: 0;
+  position: relative;
+  z-index: 1000;
+}
+
 /*=======================
   JS PUSH
   =======================*/
