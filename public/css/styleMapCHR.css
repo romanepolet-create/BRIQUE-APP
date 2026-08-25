@@ -208,4 +208,31 @@ h1 {
   font-size: 11px;
 }
 
+/*=======================
+  JS PUSH
+  =======================*/
+
+.user-gps-marker {
+	background-color: #002ab6; 
+	width: 14px; 
+	height: 14px; 
+	border-radius: 50%; 
+	border: 3px solid white; 
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.liTitre {
+	background-color: #f0f0f0; 
+	padding: 4px 8px; 
+	font-size: 10px; 
+	color: #555; 
+	text-transform: uppercase; 
+	margin-top: 5px;
+}
+
+.liNom {
+	padding: 8px; 
+	border-bottom: 1px solid #eee; 
+	cursor: pointer;
+}
 
