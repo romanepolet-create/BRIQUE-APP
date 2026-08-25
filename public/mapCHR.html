@@ -4,7 +4,7 @@
   <meta charset='UTF-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brique App - Cartographie CHR</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/styleMapCHR.css">
 	<link rel="stylesheet" href="css/styleNavBar.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="manifest" href="/manifest.json">
@@ -41,9 +41,7 @@
 </div>
 
 <div id="secPopup">
-   <p>
-    Please stop ?
-   </p>
+   <p>Please stop ?</p>
    <button onclick='this.parentElement.remove()'>OK</button>
 </div>
 
@@ -54,50 +52,19 @@
    <button onclick='this.parentElement.remove()'>OK</button>
 </div>
 
-  <div class="map-container" style="position: relative;">
-
+  <div class="map-container">
    <div id="panneau-tournee">
-
     <button class="btn-gps" onclick="activerGeolocalisation()">📍 Me géolocaliser</button>
-
-    <div 
-      id="search-container"
-      style="margin: 30px auto;"
-      >
-      
-      <h3 style="
-      margin-top: 0;
-      font-size: 14px;
-      color: #002ab6;">
-      🔎 Chercher un établissement
-    </h3>
-    <div style= "display: flex; gap: 5px;">
-      <input 
-        type="text" 
-        id="input-chr" 
-        placeholder="Nom du resto, Ville, ...";
-        style="flex: 1; padding: 5px;"
+    <div id="search-container">
+      <h3 id="h3Look">🔎 Chercher un établissement</h3>
+    <div id="divLook">
+      <input type="text" id="input-chr" placeholder="Nom d'établissement, ville, ...";
         onkeydown= "if(event.key === 'Enter') lancerRecherche()">
-      <button onclick="lancerRecherche()" 
-        style="
-          background: #4285F4; 
-          color: white; 
-          border: none;
-          border-radius: 3px;
-          cursor: pointer;">Go</button>
+      <button id="btnLook" onclick="lancerRecherche()">Go</button>
     </div>
-      <ul 
-        id="resultats-recherche" 
-        style="
-          list-style: none;
-          padding: 0; 
-          margin: 10px 0 0 0;
-          max-height: 150px;
-          overflow-y: auto;
-          font-size: 12px;">
-      </ul>
+      <ul id="resultats-recherche"></ul>
     </div>
-   <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
+   <h3 id="ma_tournee">📍 Ma Tournée (<span>0</span>)</h3>
      <ul id="liste-tournee"></ul>
      
      <button id="btn-opti" onclick="optimiserTournee()">✨ Optimiser l'itinéraire</button>
