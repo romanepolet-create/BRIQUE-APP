@@ -762,40 +762,45 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
     });
   }
 
-  if (containerProprio && containerProprio.innerHTML.trim() === "") {
-    let proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean).sort();
+  if (containerProprio) {
+    containerProprio.innerHTML = "";
+    let proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean);
+    const isManager = proprietaireActuel && normaliserTexte(proprietaireActuel) === normaliserTexte("Leo Blanchet");
 
-	if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Leo Blanchet")) {
+    if (proprietaireActuel && !isManager) {
       const existeDeja = proprios.some(p => normaliserTexte(p) === normaliserTexte(proprietaireActuel));
       if (!existeDeja) {
         proprios.push(proprietaireActuel);
       }
     }
 
-	proprios.sort();
+	console.log(proprietaireActuel)
+
+    proprios.sort();
 
     proprios.forEach(prop => {
       const label = document.createElement('label');
-	  let estCoche = "";
+      
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.value = prop;
+      input.onchange = filtrerMagasins;
 
-	  if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Léo Blanchet")) {
-        if (normaliserTexte(prop) === normaliserTexte(proprietaireActuel)) {
-          estCoche = "checked";
-        }
+      if (proprietaireActuel && !isManager && normaliserTexte(prop) === normaliserTexte(proprietaireActuel)) {
+        input.checked = true; 
       }
 
-      label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()" ${estCoche}> ${prop}`;
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(" " + prop));
       containerProprio.appendChild(label);
     });
   }
 }
 
-// Ouvre ou ferme la liste déroulante cliquée
 window.toggleDropdown = function(id) {
   document.getElementById(id).classList.toggle('show');
 };
 
-// Ferme les listes si on clique ailleurs sur la page
 window.onclick = function(event) {
   if (!event.target.closest('.custom-select') && !event.target.closest('.select-right')) {
     document.querySelectorAll('.dropdown-list').forEach(el => el.classList.remove('show'));
