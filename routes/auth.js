@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 module.exports = router;
 
 
-router.get('/api/me', (req, res) => {
+router.get('/me', (req, res) => {
   if (req.session && req.session.email) {
     return res.json({ email: req.session.email });
   } else {
