@@ -70,6 +70,8 @@ const routesProforma = require('./routes/proforma');
 const routesGms = require('./routes/gms');
 const routesTournee = require('./routes/tournee');
 const routesVisite = require('./routes/visite');
+const routesDashboard = require('./routes/dashboard');
+
 
 app.get('/api/config', (req, res) => {
   res.json({
@@ -88,7 +90,7 @@ app.use('/api/proforma', verifierBriqueHouse, routesProforma);
 app.use('/api/gms', verifierBriqueHouse, routesGms);
 app.use('/api/tournee', verifierBriqueHouse, routesTournee);
 app.use('/api/visite', verifierBriqueHouse, routesVisite);
-
+app.use('/api/dashboard', verifierBriqueHouse, routesDashboard);
 
 app.get('/login.html', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
