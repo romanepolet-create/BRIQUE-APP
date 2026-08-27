@@ -349,6 +349,10 @@ window.ouvrirPopupDynamique = function(layer) {
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
 	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
 
+	const titreEvent = encodeURIComponent(`Tâche : ${m.nom}`);
+    const adresseEvent = encodeURIComponent(`${m.adresse || ''}, ${m.code_postal || ''} ${m.ville || ''}`);
+    const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
+
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
         <h4 style="color: #002ab6; margin: 0 0 5px 0;">${m.nom}</h4>
@@ -357,18 +361,44 @@ window.ouvrirPopupDynamique = function(layer) {
           <strong>${m.code_postal} ${m.ville}</strong><br>
           <em>Priorité : ${m.Priorité}</em>
         </p>
-        <a href="${lienHubspot}" target="_blank" 
-           style="display: block; 
-                  background-color: #f3b0cf; 
-                  color: #002ab6; 
-                  padding: 8px 10px; 
-                  border-radius: 5px; 
-                  font-weight: bold; 
-                  text-decoration: none; 
-                  font-size: 12px;
-                  margin-bottom: 5px;">
-            🌐 Ouvrir dans HubSpot
-        </a>
+
+		<div style="display: flex; gap: 5px; width: 100%; margin-bottom: 5px;">
+          <a href="${lienHubspot}" target="_blank" 
+             style="
+               flex: 1; 
+               background-color: #f3b0cf; 
+               color: #002ab6; 
+               padding: 8px 5px; 
+               border-radius: 5px; 
+               font-weight: bold; 
+               text-decoration: none; 
+               font-size: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               gap: 5px;">
+            <img src="https://www.hubspot.com/hubfs/assets/hubspot.com/style-guide/brand-guidelines/guidelines_the-sprocket.svg" style="width: 14px; height: 14px;" alt="Logo HS">
+            HS
+          </a>
+
+          <a href="${lienGCal}" target="_blank" 
+             style="
+               flex: 1; 
+               background-color: #4285F4; 
+               color: white; 
+               padding: 8px 5px; 
+               border-radius: 5px; 
+               font-weight: bold; 
+               text-decoration: none; 
+               font-size: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               gap: 5px;">
+            📅 Tâche
+          </a>
+        </div>
+
         <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')"
           style="
             display: block;
