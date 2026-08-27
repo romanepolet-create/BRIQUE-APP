@@ -112,13 +112,18 @@ let proprietaireActuel = "";
 
 async function chargerUtilisateurConnecte() {
   try {
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-    if (session && session.user) {
-      const emailUser = session.user.email;
+	const reponse = await fetch('/api/config');
+    const data = await reponse.json();
 
-      proprietaireActuel = formatEmailToName(emailUser); 
-      console.log("Connecté en tant que :", proprietaireActuel); 
-
+	if (data.emailActuel) {
+      proprietaireActuel = formatEmailToName(data.emailActuel); 
+      console.log("Connecté en tant que :", proprietaireActuel);
+	
+    } else {
+      console.warn("Aucune session utilisateur trouvée via le serveur.");
+    }
+  } catch (err) {
+    console.error("Erreur de récupération de l'utilisateur :", err);
       // NOTE POUR PLUS TARD = Possibilité d'afficher le nom d'utilisateur sur le HTML
 	  // coz maybe we're stupid and we don't know our own names
 	  // who knows
@@ -127,9 +132,6 @@ async function chargerUtilisateurConnecte() {
 	  // maybe
 	  // or at least someday (soon)
       // document.getElementById('nom-user-ui').textContent = proprietaireActuel;
-    }
-  } catch (err) {
-    console.error("Erreur d'authentification :", err);
   }
 }
 // ===========================================================
