@@ -296,11 +296,9 @@ async function chargerDonneesMagasins() {
 
     remplirFiltresDepuisDonnees(listeMagasins, donneesGeo);
     console.log("Nombre de magasins reçus :", listeMagasins.length);
-    console.log("Voici le premier magasin :", listeMagasins[0]);
+	console.log("avant affichage");
 
-	  console.log("avant affichage");
-
-    afficherMagasinsSurCarte(listeMagasins);
+	filtrerMagasins()
 
 	  console.log("apres affichage");
   } catch (err) {
@@ -768,7 +766,16 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
     const proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean).sort();
     proprios.forEach(prop => {
       const label = document.createElement('label');
-      label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()"> ${prop}`;
+	  let estCoche = "";
+
+	  if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Léo Blanchet")) {
+        if (normaliserTexte(prop) === normaliserTexte(proprietaireActuel)) {
+          estCoche = "checked";
+        }
+      }
+
+
+      label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()" ${estCoche}> ${prop}`;
       containerProprio.appendChild(label);
     });
   }
