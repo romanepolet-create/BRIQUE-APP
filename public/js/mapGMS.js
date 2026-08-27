@@ -763,7 +763,17 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
   }
 
   if (containerProprio && containerProprio.innerHTML.trim() === "") {
-    const proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean).sort();
+    let proprios = [...new Set(magasins.map(m => m.Propriétaire))].filter(Boolean).sort();
+
+	if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Leo Blanchet")) {
+      const existeDeja = proprios.some(p => normaliserTexte(p) === normaliserTexte(proprietaireActuel));
+      if (!existeDeja) {
+        proprios.push(proprietaireActuel);
+      }
+    }
+
+	proprios.sort();
+
     proprios.forEach(prop => {
       const label = document.createElement('label');
 	  let estCoche = "";
@@ -773,7 +783,6 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
           estCoche = "checked";
         }
       }
-
 
       label.innerHTML = `<input type="checkbox" value="${prop}" onchange="filtrerMagasins()" ${estCoche}> ${prop}`;
       containerProprio.appendChild(label);
