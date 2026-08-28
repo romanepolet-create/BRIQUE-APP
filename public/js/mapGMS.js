@@ -349,7 +349,7 @@ async function chargerDonneesMagasins() {
     		dicoHistorique[h.hubspot_id] = {
       			derniere_visite: h.derniere_visite,
       			aFormulaire: true,
-      			possedeBH: aDesBieres
+      			possedeBH: aDesBieres,
 				references: h.references || {}
     		};
       	});
