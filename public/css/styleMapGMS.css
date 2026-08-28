@@ -191,10 +191,10 @@ h1 {
   height: fit-content;
 }
 
-#ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px; }
+#ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px; display: inline-block}
 
 .toggle-container {
-  display: flex;
+  display: inline-block;
   align-items: center;
   margin-bottom: 15px;
   font-size: 14px;
