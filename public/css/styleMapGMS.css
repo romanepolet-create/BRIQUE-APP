@@ -1,1 +1,555 @@
+/* ==========================================
+   1. RESET ET STRUCTURE DE BASE
+   ========================================== */
+* {
+  box-sizing: border-box;
+}
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  font-family: 'Lexend Deca', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3b0cf;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #002ab6;
+  margin-bottom: 30px;
+}
+
+/* ==========================================
+   2. NAVBAR ET MENU
+   ========================================== */
+.menu-burger {
+  display: none;
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.navbar {
+  z-index: 9999;
+  position: relative;
+  background-color: #002ab6; 
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-bottom: 40px; 
+}
+
+.navbar .logo {
+  color: #ffcc00;
+  font-size: 1.5em;
+  font-weight: 800;
+  font-family: 'Gilroy', 'Lexend Deca', sans-serif;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover, 
+.nav-links a.active {
+  color: #ffcc00;
+}
+
+@media (max-width: 950px) {
+  .menu-burger {
+    display: block;
+    margin-left: auto;
+    padding-right: 20px;
+  }
+
+  .nav-links {
+    display: none !important;
+    flex-direction: column;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    width: 220px;
+    background-color: #002ab6;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+
+  .nav-links li {
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-links li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links.active {
+    display: flex !important;
+  }
+}
+
+/* ==========================================
+   3. MAPPING GMS - DISPOSITION PRINCIPALE
+   ========================================== */
+.map-container {
+  display: flex;
+  flex-wrap: nowrap;
+  height: calc(100vh - 80px); 
+  overflow: hidden;
+  flex-direction: row;
+  width: 100%;
+}
+
+#map {
+  flex-grow: 1;
+  height: 60vh;
+  min-height: 330px !important;
+  width: auto;
+  border: 5px solid white;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  margin: 0;
+  position: relative;
+  z-index: 1000;
+}
+
+#left {
+  width: 330px !important;
+  min-width: 330px !important;
+  height: 100%;
+  overflow-y: auto; 
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: transparent; 
+  text-align: left; 
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-filters {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  border-right: 2px solid #002ab6;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+/* ==========================================
+   4. FILTRES ET BOUTONS
+   ========================================== */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.toggle-label { margin-left: 10px; }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+input:checked + .slider { background-color: #28a745; }
+input:checked + .slider:before { transform: translateX(20px); }
+.slider.round { border-radius: 24px; }
+.slider.round:before { border-radius: 50%; }
+
+.custom-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.select-box {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.dropdown-list {
+  display: none; 
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto; 
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1001; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.dropdown-list.show { display: block; }
+.dropdown-list label { display: block; padding: 8px 10px; cursor: pointer; font-size: 13px; margin: 0; }
+.dropdown-list label:hover { background-color: #f0f0f0; }
+.dropdown-list input[type="checkbox"] { margin-right: 8px; }
+
+/* ==========================================
+   5. PANNEAUX ITINÉRAIRE & LISTES
+   ========================================== */
+#panneau-tournee {
+  position: relative; 
+  z-index: 1; 
+  background: white;
+  margin: 20px auto;
+  padding: 15px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+  text-align: center; 
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: fit-content;
+}
+
+#ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px; }
+
+#liste-tournee {
+  list-style: none; 
+  padding: 0; 
+  margin: 0 0 15px 0; 
+  max-height: 100px; 
+  overflow-y: auto; 
+  font-size: 12px; 
+  text-align: left; 
+  color: #333;
+}
+
+.btn-delete-etape {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+}
+
+#btn-opti {
+  width: 100%;
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
+#btn-opti:hover { background-color: #e0a800; }
+
+#DGMAPS { display: flex; gap: 10px; justify-content: center; }
+#BGMAPS { flex: 1; background-color: #4285F4; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
+#btn-waze { flex: 1; background-color: #33ccff; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
+
+#vider {
+  margin-top: 10px; 
+  width: 100%; 
+  background: none; 
+  border: 1px solid #dc3545; 
+  color: #dc3545; 
+  padding: 5px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 11px;
+}
+
+/* LISTE MAGASINS VISIBLES */
+#panneau-visibles {
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  bottom: 0;
+  width: 250px;
+  height: calc(100vh - 60px);
+  max-height: 85vh;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: visible;
+}
+
+#panneau-a-l-ecran {
+  background: #002ab6; 
+  color: white; 
+  padding: 10px; 
+  font-weight: bold; 
+  text-align: center;
+}
+
+#liste-visibles-content {
+  padding: 10px; 
+  overflow-y: auto; 
+  flex-grow: 1;
+}
+
+/* ==========================================
+   6. RESPONSIVE DESIGN (MOBILES)
+   ========================================== */
+@media (max-width: 768px) {
+  .map-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  #map {
+    order: 1;
+    flex: 1;
+    width: 100% !important;
+    height: 50vh !important;
+    min-height: 330px !important;
+    max-height: 330px !important;
+    z-index: 1;
+  }
+
+  #left {
+    order: 3;
+    width: 330px !important; 
+    min-width: 330px !important;
+    max-width: 330px !important;
+    height: auto;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  #btn-opti, #BGMPS, #btn-waze, #vider {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  #panneau-visibles {
+    order: 2;
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+    position: relative;
+    top: 0;
+    right: 0;
+    height: auto; 
+  }
+    
+  #panneau-tournee {
+    width: 100%;
+    margin: 10px 0;
+    box-sizing: border-box;
+    height: auto; 
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  #liste-visibles-content,
+  #liste-tournee {
+    max-height: 250px !important;
+    overflow-y: auto;
+    padding: 10px;
+  }
+}
+
+/* ==========================================
+   7. POPUPS ET NOTIFICATIONS
+   ========================================== */
+#toast-notification {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #28a745;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 15px 20px;
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+}
+
+#toast-notification.toast-show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from { bottom: 0; opacity: 0; }
+  to { bottom: 30px; opacity: 1; }
+}
+@keyframes fadeout {
+  from { bottom: 30px; opacity: 1; }
+  to { bottom: 0; opacity: 0; }
+}
+
+#popup, #secPopup, #lastPopup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid black;
+  text-align: center;
+  z-index: 1000;
+}
+#secPopup, #lastPopup { box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2); }
+
+/* ==========================================
+   8. FORMULAIRE DE VISITE GMS (Si utilisé dans la map)
+   ========================================== */
+.form-container { 
+  max-width: 600px; 
+  margin: 40px auto; 
+  background: white; 
+  padding: 25px; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+  border: 2px solid #002ab6; 
+}
+.form-header { text-align: center; margin-bottom: 25px; }
+.info-badge { 
+  display: inline-block; 
+  background: #f3b0cf; 
+  color: #002ab6; 
+  padding: 5px 10px; 
+  border-radius: 15px; 
+  font-size: 12px; 
+  font-weight: bold; 
+  margin: 5px; 
+}
+.form-group { margin-bottom: 15px; text-align: left; }
+.form-group label { display: block; font-weight: bold; color: #002ab6; margin-bottom: 5px; }
+.form-group input, .form-group select { 
+  width: 100%; 
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  border-radius: 6px; 
+  box-sizing: border-box; 
+}
+.submit-btn { 
+  width: 100%; 
+  background: #28a745; 
+  color: white; 
+  padding: 12px; 
+  border: none; 
+  border-radius: 8px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  margin-top: 20px; 
+}
+.tristate-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f0f2f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.tristate-label { font-size: 12px; font-weight: bold; color: #333; }
+.tristate-switch input[type="range"] {
+  -webkit-appearance: none;
+  width: 60px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+.tristate-switch input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #002ab6;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
