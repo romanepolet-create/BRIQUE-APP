@@ -350,6 +350,7 @@ async function chargerDonneesMagasins() {
       			derniere_visite: h.derniere_visite,
       			aFormulaire: true,
       			possedeBH: aDesBieres
+				references: h.references || {}
     		};
       	});
 
@@ -359,10 +360,12 @@ async function chargerDonneesMagasins() {
       			magasin.derniere_visite = hist.derniere_visite;
       			magasin.aFormulaire = true;
       			magasin.possedeBH = hist.possedeBH;
+				magasin.references = hist.references;
     		} else {
       			magasin.derniere_visite = null;
       			magasin.aFormulaire = false;
       			magasin.possedeBH = false;
+				magasin.references = {};
     		}
   		});
     } else {
@@ -647,6 +650,8 @@ map.on('zoomend', majListeMagasinsVisibles);
 window.filtrerMagasins = function() {
   const rechercheTexte = document.getElementById('search-bar') ? document.getElementById('search-bar').value.toLowerCase() : "";
   const afficherSeulementTournee = document.getElementById('toggle-selected') ? document.getElementById('toggle-selected').checked : false;
+  const tdnValue = parseInt(document.getElementById('filter-tdn') ? document.getElementById('filter-tdn').value : -1);
+  const tdn75Value = parseInt(document.getElementById('filter-tdn75') ? document.getElementById('filter-tdn75').value : -1);
 
   //const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
 
@@ -747,6 +752,41 @@ window.filtrerMagasins = function() {
 	  );
 	  
       if (!matchProprio) return false;
+    }
+
+    if (tdnValue !== -1 || tdn75Value !== -1) {
+      const enseigneMagasin = magasin.enseigne ? magasin.enseigne.toUpperCase() : "";
+      const regles = matriceGMS[enseigneMagasin];
+      
+      if (regles && regles.obligatoire) {
+        let manquantTotal = 0;
+        let manquant75 = 0;
+        
+        regles.obligatoire.forEach(biere => {
+          const cleBdd = `ref_${biere.replace(/\s+/g, '')}`; 
+          const estPresente = magasin.references && magasin.references[cleBdd] === "OUI";
+          
+          if (!estPresente) {
+            manquantTotal++;
+            if (biere.includes("75")) {
+              manquant75++;
+            }
+          }
+        });
+
+        if (tdnValue !== -1) {
+          if (tdnValue === 5 && manquantTotal < 5) return false;
+          if (tdnValue !== 5 && manquantTotal !== tdnValue) return false;
+        }
+
+        if (tdn75Value !== -1) {
+          if (tdn75Value === 5 && manquant75 < 5) return false;
+          if (tdn75Value !== 5 && manquant75 !== tdn75Value) return false;
+        }
+
+      } else {
+        if (tdnValue > 0 || tdn75Value > 0) return false;
+      }
     }
 
     return true; // Le magasin passe tous les filtres !
