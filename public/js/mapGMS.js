@@ -1356,3 +1356,43 @@ window.afficherToast = function(message) {
 };
 
 initialiserCarte();
+
+
+window.reinitialiserFiltres = function() {
+  // 1. Vider la barre de recherche
+  const searchBar = document.getElementById('search-bar');
+  if (searchBar) searchBar.value = "";
+
+  // 2. Remettre à zéro l'interrupteur Ma Tournée
+  const toggleSelected = document.getElementById('toggle-selected');
+  if (toggleSelected) toggleSelected.checked = false;
+
+  // 3. Remettre à zéro le filtre Sans/Avec BH (si c'est un range ou select)
+  const toggleBh = document.getElementById('toggle-bh');
+  if (toggleBh) toggleBh.value = "0";
+
+  // 4. Remettre à zéro les curseurs TDN
+  const filterTdn = document.getElementById('filter-tdn');
+  if (filterTdn) {
+    filterTdn.value = "-1";
+    document.getElementById('tdn-val').innerText = "Tous";
+  }
+  
+  const filterTdn75 = document.getElementById('filter-tdn75');
+  if (filterTdn75) {
+    filterTdn75.value = "-1";
+    document.getElementById('tdn75-val').innerText = "Tous";
+  }
+
+  // 5. Décocher toutes les cases des menus déroulants (Enseignes, Proprio, etc.)
+  document.querySelectorAll('.dropdown-list input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+  });
+
+  // 6. Réinitialiser les boutons radio (ex: filtres de visite)
+  const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
+  if (radioAll) radioAll.checked = true;
+
+  // 7. Relancer l'affichage global
+  filtrerMagasins();
+};
