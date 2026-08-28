@@ -120,7 +120,10 @@
   				</div>
 			</div>
 
-		  <input type="text" id="search-bar" placeholder="🔍 Rechercher" onkeyup="filtrerMagasins()" class="search-input">
+		  <div class="search-container">
+  			<input type="text" id="search-bar" class="search-input-short" placeholder="Rechercher (nom, ville...)" oninput="filtrerMagasins()">
+ 			<button id="btn-clear-filters" class="btn-clear" onclick="reinitialiserFiltres()" title="Effacer tous les filtres">✖</button>
+		  </div>
 		  
           </div>
 	  </div>
