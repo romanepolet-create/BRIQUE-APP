@@ -28,6 +28,79 @@ let donneesGeo;
 let donneesRegion;
 const PORTAL_ID = "146794478"; //ID HS
 let lastUpdatePosition = null; 
+const matriceGMS = {
+  "AUCHAN HM": {
+    obligatoire: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33",  "YT33"],
+    facultatif: [],
+    direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "UA33", "DB44"]
+  },
+  "AUCHAN SM": {
+    obligatoire: [],
+    facultatif: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33", "YT33"],
+    direct: ["SH75", "TC75", "LB44", "NQ44", "YT44", "ML44", "UA33"]
+  }, 
+  "CASINO": {
+    obligatoire: ["LB44", "NQ44", "YT44", "LB33"],
+    facultatif: [],
+    direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "FRANPRIX": {
+    obligatoire: ["LB44", "YT44"],
+    facultatif: [],
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "MONOPRIX": {
+    obligatoire: ["LB75", "LB44", "NQ44", "YT44"],
+    facultatif: [],
+    direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "CRF HYPER": {
+    obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
+    facultatif: [],
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "CRF MARKET": {
+    obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
+    facultatif: [],
+    direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "CRF PROXI": {
+    obligatoire: [],
+    facultatif: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+  "ITM PROXI": {
+    obligatoire: [],
+    facultatif: [],
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+  "ITM SM": {
+    obligatoire: [],
+    facultatif: [],
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+  "LECLERC": {
+    obligatoire: [],
+    facultatif: [],
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+  "LECLERC PROXI": {
+    obligatoire: [],
+    facultatif: [],
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"OTERA": {
+    obligatoire: ["LB44", "NQ44", "YT44", "ML44"],
+    facultatif: [],
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+  },
+"SUPER U": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+};
+
 
 
 
