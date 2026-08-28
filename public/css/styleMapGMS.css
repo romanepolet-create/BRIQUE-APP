@@ -260,9 +260,35 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 #btn-opti:hover { background-color: #e0a800; }
 
-#DGMAPS { display: flex; gap: 10px; justify-content: center; }
-#BGMAPS { flex: 1; background-color: #4285F4; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
-#btn-waze { flex: 1; background-color: #33ccff; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; }
+#DGMAPS { 
+   display: flex; 
+   gap: 10px; 
+   justify-content: center; 
+}
+
+#BGMAPS { 
+   flex: 1; 
+   background-color: #4285F4; 
+   color: white; 
+   border: none; 
+   padding: 8px; 
+   border-radius: 5px; 
+   cursor: pointer; 
+   font-weight: bold; 
+   font-size: 12px; 
+}
+
+#btn-waze { 
+   flex: 1; 
+   background-color: #33ccff; 
+   color: white; 
+   border: none; 
+   padding: 8px; 
+   border-radius: 5px; 
+   cursor: pointer; 
+   font-weight: bold; 
+   font-size: 12px; 
+}
 
 #vider {
   margin-top: 10px; 
@@ -450,17 +476,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 
 
-
-/*HIDDEN FOR NOW*/
-.custom-select {
-  position: relative;
-  width: 100%;
-  margin-bottom: 10px;
-  text-align: left;
-}
-
-
-
 /*JS PUSH*/
 .btn-delete-etape {
   background: #dc3545;
@@ -476,3 +491,125 @@ input:checked + .slider:before { transform: translateX(20px); }
   font-weight: bold;
   padding: 0;
 }
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+   
+.filter-group label {
+  font-weight: bold;
+  color: #002ab6;
+  font-size: 14px;
+}
+
+.filter-group select, .filter-group input {
+  padding: 8px;
+  border: 2px solid #f3b0cf;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.btn-gps {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.btn-gps:hover {
+  transform: scale(1.2);
+  rgba(255, 255, 255, 0.3)
+}
+
+.select-right {
+  position: relative;
+  flex-grow: 0;
+  margin: 0;
+}
+
+.select-right {
+  position: relative;
+  width: auto;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.select-right .select-box {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 22px; /* Taille de l'émoji */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white; /* Pour la petite flèche */
+  transition: transform 0.2s;
+}
+
+
+.select-right .select-box:hover {
+  transform: scale(1.2);
+}
+
+.select-right .select-box span {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.select-right .dropdown-list {
+  position: absolute;
+  top: 120%;
+  right: -50px; /* Évite que la liste ne sorte de l'écran à droite */
+  min-width: 180px; /* Largeur fixe pour bien lire les enseignes */
+  background: white;
+  color: #333;
+  z-index: 10001;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  text-align: left;
+}
+
+.toolbar-visibles {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0 5px 0;
+  background-color: #002AB6;
+  overflow: visible !important;
+}
+
+
+
+
+/*HIDDEN FOR NOW*/
+.custom-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.geo-details {
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+.geo-details summary {
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+.details-content { margin-top: 10px; }
