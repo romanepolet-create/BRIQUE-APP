@@ -117,6 +117,9 @@
    				 	<label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()"> > 2 M (+ Jamais)</label>
   				</div>
 			</div>
+
+		  <input type="text" id="search-bar" placeholder="🔍 Rechercher" onkeyup="filtrerMagasins()" class="search-input">
+		  
           </div>
 	  </div>
 
@@ -125,22 +128,7 @@
 	
  <div id="left">  
   <div class="sidebar-filters">
-    <h2>Filtres GMS 🗺️</h2>
-
-    <input 
-      type="text" 
-      id="search-bar" 
-      placeholder="🔍 Rechercher (nom, ville...)"
-      onkeyup="filtrerMagasins()" class="search-input"
-    >
-    <div class="toggle-container">
-      <label class="switch">
-        <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
-        <span class="slider round"></span>
-      </label>
-      <span class="toggle-label">Ma tournée</span>
-    </div>
-	  
+    <h3>Opportunités DN</h3>
 	<div class="tristate-container">
   <span class="tristate-label">Sans BH</span>
   <div class="tristate-switch">
@@ -195,6 +183,13 @@
 
       <div id="panneau-tournee">
         <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
+		<div class="toggle-container">
+      	  <label class="switch">
+        	<input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+        	<span class="slider round"></span>
+      	  </label>
+      <span class="toggle-label">Ma tournée</span>
+    </div>
         <ul id="liste-tournee"></ul>
 
         <button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
