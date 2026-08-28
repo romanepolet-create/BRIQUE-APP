@@ -205,14 +205,17 @@
       </details>
 	 -->
 
-      <div id="panneau-tournee">
+        <div id="panneau-tournee">
         <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
-		    <label class="switch">
-        	  <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
-        	  <span class="slider round"></span>
-      	    </label>
-      </div>
+		<div class="toggle-container">
+      	  <label class="switch">
+        	<input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+        	<span class="slider round"></span>
+      	  </label>
+      <span class="toggle-label"></span>
+    </div>
         <ul id="liste-tournee"></ul>
+
 
         <button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
                     
