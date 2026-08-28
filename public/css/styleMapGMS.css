@@ -115,7 +115,7 @@ h1 {
   padding: 15px;
   box-sizing: border-box;
   background-color: transparent; 
-  text-align: left; 
+  text-align: center; 
   z-index: 2;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
