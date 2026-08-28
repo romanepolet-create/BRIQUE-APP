@@ -132,14 +132,36 @@
   <div class="sidebar-filters">
     <h3 id="Opportunités_DN">Opportunités DN</h3>
 	<div class="tristate-container">
-  <span class="tristate-label">Sans BH</span>
-  <div class="tristate-switch">
-    <input type="range" id="toggle-bh" min="-1" max="1" value="0" step="1" onchange="filtrerMagasins()">
-  </div>
-  <span class="tristate-label">Avec BH</span>
-</div>
+      <span class="tristate-label">Sans BH</span>
+      <div class="tristate-switch">
+        <input type="range" id="toggle-bh" min="-1" max="1" value="0" step="1" onchange="filtrerMagasins()">
+     </div>
+    <span class="tristate-label">Avec BH</span>
 
-    </div>
+	<div class="filter-group" style="margin-top: 20px;">
+  		<label style="display: flex; justify-content: space-between;">
+    		TDN Global 
+    		<span id="tdn-val" style="color: #002ab6;">Tous</span>
+  		</label>
+  		<input type="range" id="filter-tdn" min="-1" max="5" value="-1" onchange="filtrerMagasins()" 
+		 oninput="document.getElementById('tdn-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)"
+         style="width: 100%; cursor: pointer;">
+  		<div style="font-size: 10px; color: #666; margin-top: 2px;">Nombre de réf. obligatoires manquantes</div>
+	</div>
+
+	<div class="filter-group" style="margin-top: 15px;">
+  		<label style="display: flex; justify-content: space-between;">
+    		TDN 75
+    		<span id="tdn75-val" style="color: #002ab6;">Tous</span>
+  		</label>
+  		<input type="range" id="filter-tdn75" min="-1" max="5" value="-1" 
+         onchange="filtrerMagasins()" 
+         oninput="document.getElementById('tdn75-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)"
+         style="width: 100%; cursor: pointer;">
+  		<div style="font-size: 10px; color: #666; margin-top: 2px;">Nombre de réf. 75cl manquantes</div>
+	</div>
+  </div>
+ </div>
 
 <!--
     <details class="geo-details">
