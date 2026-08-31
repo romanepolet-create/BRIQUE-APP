@@ -1,20 +1,22 @@
 async function chargerKPIs() {
   try {
-  // On fera un appel à ton API Node.js plus tard, par exemple :
   const reponse = await fetch('/api/dashboard/kpis');
   const data = await reponse.json();
     
   if (!resultat.success) {
       console.error("Erreur renvoyée par le serveur :", resultat.error);
-      return; // On arrête là si erreur
+      return;
     }
     
     const data = resultat;
 
-  // Mise à jour de l'HTML
+    const titre = document.getElementById('titre-commercial');
+    if (titre) titre.textContent = `Résumé de l'activité de ${data.emailCommercial}`;
+
     document.getElementById('kpi-visites').textContent = data.visites;
                 
     const dnGagnee = data.dnFinale - data.dnInitiale;
+    const dnSigne = dnGagnee >= 0 ? `+${dnGagnee}` : dnGagnee;
     document.getElementById('kpi-dn').textContent = `+${dnGagnee}`;
     document.getElementById('evo-dn').textContent = `Base : ${data.dnInitiale} ➔ ${data.dnFinale}`;
 
