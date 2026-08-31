@@ -1,7 +1,7 @@
 async function chargerKPIs() {
   try {
   const reponse = await fetch('/api/dashboard/kpis');
-  const data = await reponse.json();
+  const resultat = await reponse.json();
     
   if (!resultat.success) {
       console.error("Erreur renvoyée par le serveur :", resultat.error);
