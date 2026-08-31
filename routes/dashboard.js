@@ -12,7 +12,7 @@ router.get('/kpis', async (req, res) => {
         const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
         const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
 
-        const { data: toutesVisites, error } = await supabase
+        const { data, error } = await supabase
             .from('dashboard_visites')
             .select('*')
             .eq('commercial_email', email)
