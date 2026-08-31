@@ -1,3 +1,9 @@
+fetch('nav.html')
+  .then(response => response.text())
+  .then(data => {
+      document.getElementById('nav-placeholder').innerHTML = data;
+  });
+
 document.addEventListener('DOMContentLoaded', () => {
   const menuBurger = document.getElementById('menu-burger');
   const navLinks = document.getElementById('nav-links');
