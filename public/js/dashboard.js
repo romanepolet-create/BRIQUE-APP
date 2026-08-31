@@ -24,7 +24,7 @@ async function chargerKPIs(filtreRequis = 'general') {
     if (!listeInitialeChargee) {
       selectFiltre.innerHTML = '';
         
-      selectFiltre.add(new Option('🌍 Général (Tous)', 'general'));
+      selectFiltre.add(new Option('Général', 'general'));
 
       if (data.isAdmin) {
         data.listeCommerciaux.forEach(email => {
