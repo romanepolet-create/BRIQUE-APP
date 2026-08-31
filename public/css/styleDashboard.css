@@ -10,6 +10,29 @@ body {
   margin: 20px auto; 
   padding: 0 15px; 
 }
+
+#titre {
+  display: flex; 
+  flex-wrap: wrap; 
+  align-items: center; 
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#titre-commercial {
+  margin: 0; 
+  color: #002ab6;
+}
+
+#filtre-commercial {
+  padding: 10px;
+  border-radius: 8px; 
+  border: 2px solid #002ab6; 
+  font-weight: bold; 
+  cursor: pointer; 
+  background: white; 
+  color: #333;
+}
         
 /* Grille des KPIs */  
 .kpi-grid { 
