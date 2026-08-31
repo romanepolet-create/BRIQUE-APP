@@ -1,3 +1,8 @@
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'css/styleNavBar.css';
+document.head.appendChild(link);
+
 fetch('nav.html')
   .then(response => response.text())
   .then(data => {
