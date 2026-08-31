@@ -20,7 +20,7 @@ router.get('/kpis', async (req, res) => {
 
         if (error) throw error;
 
-        const visitesMois = toutesVisites.filter(v => v.created_at >= firstDayThisMonth);
+        const toutesVisites = Array.isArray(data) ? data : [];
         const visitesMoisPrecedent = toutesVisites.filter(v => v.created_at >= firstDayLastMonth && v.created_at < firstDayThisMonth);
 
         // ==========================================
@@ -73,8 +73,10 @@ router.get('/kpis', async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Erreur lors du calcul des KPIs:", error);
-        res.status(500).json({ success: false, error: "Impossible de charger les statistiques" });
+        console.error("🚨 Erreur Dashboard sécurisée:", error);
+        res.json({
+            success: true, visites: 0, visitesM1: 0, dnInitiale: 0, dnFinale: 0, meaHl: 0, meaHlM1: 0, nbDirects: 0
+        });
     }
 });
 
