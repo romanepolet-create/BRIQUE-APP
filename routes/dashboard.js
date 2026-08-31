@@ -21,6 +21,7 @@ router.get('/kpis', async (req, res) => {
         if (error) throw error;
 
         const toutesVisites = Array.isArray(data) ? data : [];
+        const visitesMois = toutesVisites.filter(v => v.created_at >= firstDayThisMonth);
         const visitesMoisPrecedent = toutesVisites.filter(v => v.created_at >= firstDayLastMonth && v.created_at < firstDayThisMonth);
 
         // ==========================================
@@ -76,7 +77,9 @@ router.get('/kpis', async (req, res) => {
     } catch (error) {
         console.error("🚨 Erreur Dashboard sécurisée:", error);
         res.json({
-            success: true, visites: 0, visitesM1: 0, dnInitiale: 0, dnFinale: 0, meaHl: 0, meaHlM1: 0, nbDirects: 0
+            success: true, 
+            emailCommercial: email,
+            visites: 0, visitesM1: 0, dnInitiale: 0, dnFinale: 0, meaHl: 0, meaHlM1: 0, nbDirects: 0
         });
     }
 });
