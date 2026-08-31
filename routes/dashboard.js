@@ -63,11 +63,12 @@ router.get('/kpis', async (req, res) => {
         // 5. On renvoie tout ça à l'écran !
         res.json({
             success: true,
+            emailCommercial: email,
             visites: nbVisites,
             visitesM1: nbVisitesM1,
             dnInitiale: dnInitiale,
             dnFinale: dnFinale,
-            meaHl: parseFloat(meaHl.toFixed(2)), // Arrondi propre
+            meaHl: parseFloat(meaHl.toFixed(2)),
             meaHlM1: parseFloat(meaHlM1.toFixed(2)),
             nbDirects: nbDirects
         });
