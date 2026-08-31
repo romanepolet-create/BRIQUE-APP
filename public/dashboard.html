@@ -33,17 +33,20 @@
 
 
      <div class="container">
-        <h2 id="titre-commercial">Résumé de l'activité (Mois en cours)</h2>
+       <div id="titre">
+         <h2 id="titre-commercial">Résumé de l'activité</h2>
+         <select id="filtre-commercial">
+           <option value="general">Général</option>
+         </select>
+       </div>
         
-        <div class="kpi-grid">
-            <!-- KPI 1 : Visites -->
+         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-title">Visites réalisées</div>
                 <p class="kpi-value" id="kpi-visites">...</p>
                 <span class="kpi-evolution evolution-up" id="evo-visites">+0% vs mois M-1</span>
             </div>
 
-            <!-- KPI 2 : DN Gagnées -->
             <div class="kpi-card">
                 <div class="kpi-title">DN Gagnées (Réf)</div>
                 <p class="kpi-value" id="kpi-dn">...</p>
