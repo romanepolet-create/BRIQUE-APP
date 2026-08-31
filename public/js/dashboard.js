@@ -11,7 +11,7 @@ async function chargerKPIs() {
     const data = resultat;
 
     const titre = document.getElementById('titre-commercial');
-    if (titre) titre.textContent = `Résumé de l'activité de ${data.email}`;
+    if (titre) titre.textContent = `Résumé de l'activité de ${data.emailCommercial}`;
 
     document.getElementById('kpi-visites').textContent = data.visites;
                 
