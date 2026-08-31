@@ -2,25 +2,22 @@ fetch('nav.html')
   .then(response => response.text())
   .then(data => {
       document.getElementById('nav-placeholder').innerHTML = data;
-  });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const menuBurger = document.getElementById('menu-burger');
-  const navLinks = document.getElementById('nav-links');
+      const menuBurger = document.getElementById('menu-burger');
+      const navLinks = document.getElementById('nav-links');
 
-  if(menuBurger && navLinks) {
-    menuBurger.addEventListener('click', () => {
-      // Ajoute ou enlève la classe "active" à chaque clic
-      navLinks.classList.toggle('active');
-    
-      // Changement d'icône
-      if(navLinks.classList.contains('active')) {
-        menuBurger.innerHTML = '✖'; // Une croix pour fermer
+      if(menuBurger && navLinks) {
+        menuBurger.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+          
+          if(navLinks.classList.contains('active')) {
+            menuBurger.innerHTML = '✖';
+          } else {
+            menuBurger.innerHTML = '☰';
+          }
+        });
       } else {
-        menuBurger.innerHTML = '☰'; // Le burger normal
+        console.error("BUG MENU : Il manque 'menu-burger' ou 'nav-links' dans le html");
       }
-    });
-  } else {
-    console.error("BUG MENU : Il manque 'menu-burger' ou 'nav-links' dans le html")
-  }
-});
+  })
+  .catch(error => console.error("Erreur de chargement du menu :", error));
