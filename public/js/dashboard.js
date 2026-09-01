@@ -195,7 +195,7 @@ function genererFocusDN(visites) {
     });
 
     let opportunites = Object.values(etatParc).map(magasin => {
-        const maxPossible = MAX_DN_ENSEIGNE[magasin.enseigne] || 15; // 15 par défaut
+        const maxPossible = MAX_DN_ENSEIGNE[magasin.enseigne] ?? 15;
         const dnActuelle = parseInt(magasin.score_dn) || 0;
         const dnManquante = maxPossible - dnActuelle;
         
