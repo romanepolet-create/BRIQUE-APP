@@ -215,7 +215,7 @@ function genererFocusDN(visites) {
     if (selectEnseigne.value !== 'toutes') {
         opportunites = opportunites.filter(o => o.enseigne === selectEnseigne.value);
     }
-
+    opportunites = opportunites.filter(o => o.dnManquante > 0);
     opportunites.sort((a, b) => b.dnManquante - a.dnManquante);
 
     const tbody = document.getElementById('tbody-ranking-dn');
