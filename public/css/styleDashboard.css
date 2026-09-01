@@ -90,7 +90,7 @@ body {
   color: #383d41; 
 }
 
-#graphs {
+.graphs {
   background: white; 
   padding: 20px; 
   border-radius: 10px; 
@@ -137,3 +137,57 @@ body {
   font-style: italic; 
   color: #666;
 }
+
+#dnFocusGraph {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  flex-wrap: wrap; 
+  margin-bottom: 15px;
+}
+
+#filtre-enseigne {
+  padding: 8px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+  font-weight: bold;
+}
+
+#DFlop {
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 20px;
+}
+
+#D1Flop {
+  height: 350px;
+}
+
+#D2Flop {
+  max-height: 350px; 
+  overflow-y: auto; 
+  border: 1px solid #eee; 
+  border-radius: 8px;
+}
+
+#tableFlop {
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: left; 
+  font-size: 14px;
+}
+
+#theadFlop {
+  position: sticky; 
+  top: 0; 
+  background: #f4f7f6;
+}
+
+#trFlop {
+  border-bottom: 2px solid #ddd;
+}
+
+#column-title.2.flop {
+  padding: 10px; text-align: center; color: #dc3545;
+}
+
