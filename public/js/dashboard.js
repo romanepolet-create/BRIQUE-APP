@@ -57,8 +57,17 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
         let visitesFiltrees = visitesBrutes;
+        let magasinsFiltres = donneesGlobales.listeMagasins;
+
         if (filtreEmail !== 'general') {
             visitesFiltrees = visitesBrutes.filter(v => v.commercial_email === filtreEmail);
+            
+            const nomCommercialFormate = formatEmailToName(filtreEmail).toLowerCase();
+            
+            magasinsFiltres = magasinsFiltres.filter(m => {
+                const proprietaire = (m.Propriétaire || "").toLowerCase();
+                return proprietaire === nomCommercialFormate;
+            });
         }
 
         const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth);
