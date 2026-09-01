@@ -1,6 +1,23 @@
 let listeInitialeChargee = false;
 let graphVisites = null;
 let donneesGlobales = null;
+let graphFlopDN = null;
+const MAX_DN_ENSEIGNE = {
+    "AUCHAN HM": 7,
+    "AUCHAN SM": 0,
+    "CASINO": 4,
+    "FRANPRIX": 2,
+    "MONOPRIX": 4,
+    "CRF HYPER": 7,
+    "CRF MARKET": 7,
+    "CRF PROXI": 0,
+    "OTERA": 4,
+    "ITM PROXI": 0,
+    "ITM SM": 0,
+    "LECLERC": 0,
+    "LECLERC PROXI": 0,
+    "SUPER U": 0
+};
 
 // ==========================================
 // MATHS
@@ -160,6 +177,95 @@ function initialiserMenuDeroulant(data, defaultFiltre) {
     selectFiltre.value = defaultFiltre;
     selectFiltre.addEventListener('change', (e) => chargerDonneesEtAfficher(e.target.value));
     listeInitialeChargee = true;
+}
+
+
+
+
+// ==========================================
+// FOCUS DN
+// ==========================================
+function genererFocusDN(visites) {
+    const etatParc = {};
+    visites.forEach(v => {
+        if (!etatParc[v.hubspot_id] || v.created_at > etatParc[v.hubspot_id].created_at) {
+            etatParc[v.hubspot_id] = v;
+        }
+    });
+
+    let opportunites = Object.values(etatParc).map(magasin => {
+        const maxPossible = MAX_DN_ENSEIGNE[magasin.enseigne] || 15; // 15 par défaut
+        const dnActuelle = parseInt(magasin.score_dn) || 0;
+        const dnManquante = maxPossible - dnActuelle;
+        
+        return { ...magasin, dnManquante, maxPossible };
+    });
+
+    const selectEnseigne = document.getElementById('filtre-enseigne');
+    const enseignesUniques = [...new Set(opportunites.map(o => o.enseigne))].sort();
+    
+    const valeurActuelle = selectEnseigne.value;
+    selectEnseigne.innerHTML = '<option value="toutes">🏪 Toutes les enseignes</option>';
+    enseignesUniques.forEach(ens => {
+        selectEnseigne.add(new Option(ens, ens));
+    });
+    if (enseignesUniques.includes(valeurActuelle)) selectEnseigne.value = valeurActuelle;
+
+    if (selectEnseigne.value !== 'toutes') {
+        opportunites = opportunites.filter(o => o.enseigne === selectEnseigne.value);
+    }
+
+    opportunites.sort((a, b) => b.dnManquante - a.dnManquante);
+
+    const tbody = document.getElementById('tbody-ranking-dn');
+    tbody.innerHTML = '';
+    
+    if (opportunites.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 15px;">Aucune donnée</td></tr>';
+    } else {
+        opportunites.forEach(opp => {
+            if (opp.dnManquante > 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${opp.nom_magasin || opp.hubspot_id}</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">${opp.enseigne}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;"><b style="color: #dc3545;">${opp.dnManquante}</b> <span style="font-size:10px; color:#999;">/ ${opp.maxPossible}</span></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        });
+    }
+
+    const top10 = opportunites.slice(0, 10);
+    const labels = top10.map(o => (o.nom_magasin || o.hubspot_id).substring(0, 15) + '...');
+    const dataFlops = top10.map(o => o.dnManquante);
+
+    const ctx = document.getElementById('chartFlopDN').getContext('2d');
+    
+    if (graphFlopDN) graphFlopDN.destroy();
+    
+    graphFlopDN = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'DN à gagner (Flop)',
+                data: dataFlops,
+                backgroundColor: '#dc3545',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true, suggestedMax: 15 }
+            }
+        }
+    });
+
+    selectEnseigne.onchange = () => genererFocusDN(visites);
 }
 
 document.addEventListener("DOMContentLoaded", () => chargerDonneesEtAfficher('general'));
