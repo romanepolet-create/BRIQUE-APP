@@ -1,4 +1,5 @@
 let listeInitialeChargee = false;
+let graphVisites = null;
 
 function formatEmailToName(email) {
     if (!email || email === 'general') return "Général";
@@ -51,6 +52,40 @@ async function chargerKPIs(filtreRequis = 'general') {
 
     document.getElementById('kpi-mea').textContent = data.meaHl + ' HL';
     document.getElementById('kpi-directs').textContent = data.nbDirects;
+
+
+    const ctx = document.getElementById('chartVisites').getContext('2d');
+    const anneeEnCours = new Date().getFullYear();
+
+    if (graphVisites) {
+        graphVisites.data.datasets[0].data = data.visitesMensuelles;
+        graphVisites.update();
+    } else {
+        graphVisites = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+                datasets: [{
+                    label: `Visites réalisées en ${anneeEnCours}`,
+                    data: data.visitesMensuelles,
+                    borderColor: '#002ab6',
+                    backgroundColor: 'rgba(0, 42, 182, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4, // Rend la courbe lisse et moderne
+                    fill: true,
+                    pointBackgroundColor: '#002ab6',
+                    pointRadius: 4
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
 
   } catch(err) {
     console.error("Erreur chargement KPIs", err);
