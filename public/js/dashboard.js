@@ -329,3 +329,119 @@ function genererFocusMEA(visites) {
         tbody.appendChild(tr);
     });
 }
+
+
+
+
+// ==========================================
+// PHASE 4A : FOCUS DIRECT
+// ==========================================
+function genererFocusDirect(magasins, visites) {
+    const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
+    
+    // 1. On ne garde que le parc concerné par le Direct
+    let parcDirect = magasins.filter(m => enseignesDirectes.includes(m.enseigne));
+
+    // 2. On trouve la dernière visite pour statuer si le magasin vend ou non
+    const dernieresVisites = {};
+    visites.forEach(v => {
+        if (!dernieresVisites[v.hubspot_id] || v.created_at > dernieresVisites[v.hubspot_id].created_at) {
+            dernieresVisites[v.hubspot_id] = v;
+        }
+    });
+
+    let listeDirect = parcDirect.map(mag => {
+        const visite = dernieresVisites[mag.hubspot_id];
+        const dnActuelle = visite ? (parseInt(visite.score_dn) || 0) : 0;
+        return {
+            ...mag,
+            vendeur: dnActuelle > 0,
+            priorite: mag.Priorité || "Non def."
+        };
+    });
+
+    // 3. Gestion des listes déroulantes
+    const selectEnseigne = document.getElementById('filtre-enseigne-direct');
+    const selectPrio = document.getElementById('filtre-prio-direct');
+    
+    const enseignesUniques = [...new Set(listeDirect.map(m => m.enseigne))].filter(Boolean).sort();
+    const priosUniques = [...new Set(listeDirect.map(m => m.priorite))].filter(Boolean).sort();
+
+    // Remplissage Enseigne si vide
+    if (selectEnseigne.options.length === 1) {
+        enseignesUniques.forEach(ens => selectEnseigne.add(new Option(ens, ens)));
+    }
+    // Remplissage Priorité si vide
+    if (selectPrio.options.length === 1) {
+        priosUniques.forEach(prio => selectPrio.add(new Option(`Prio: ${prio}`, prio)));
+    }
+
+    // 4. Filtrage dynamique
+    if (selectEnseigne.value !== 'toutes') listeDirect = listeDirect.filter(m => m.enseigne === selectEnseigne.value);
+    if (selectPrio.value !== 'toutes') listeDirect = listeDirect.filter(m => m.priorite === selectPrio.value);
+
+    // 5. Tri : On met les "Non Vendeurs" en haut (les opportunités)
+    listeDirect.sort((a, b) => a.vendeur - b.vendeur);
+
+    // 6. Affichage
+    const tbody = document.getElementById('tbody-focus-direct');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (listeDirect.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 15px;">Aucun magasin direct trouvé.</td></tr>';
+        return;
+    }
+
+    listeDirect.forEach(mag => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${mag.nom || mag.hubspot_id}</b></td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px;">${mag.enseigne}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px;">${mag.priorite}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
+                ${mag.vendeur 
+                    ? '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px;">✅ Vendeur</span>' 
+                    : '<span style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px;">❌ Non Vendeur</span>'}
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    selectEnseigne.onchange = () => genererFocusDirect(magasins, visites);
+    selectPrio.onchange = () => genererFocusDirect(magasins, visites);
+}
+
+// ==========================================
+// PRODUCTIVITÉ
+// ==========================================
+function genererProductivite(toutesVisites) {
+    const tbody = document.getElementById('tbody-productivite');
+    if (!tbody) return;
+    
+    const now = new Date();
+    const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    const visitesMois = toutesVisites.filter(v => v.created_at >= firstDayThisMonth);
+
+    const compteurs = {};
+    visitesMois.forEach(v => {
+        const email = v.commercial_email || "Inconnu";
+        compteurs[email] = (compteurs[email] || 0) + 1;
+    });
+
+    tbody.innerHTML = '';
+    const joursTravailles = 22;
+
+    Object.entries(compteurs).forEach(([email, total]) => {
+        const moyenne = (total / joursTravailles).toFixed(1);
+        
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = "1px solid #eee";
+        tr.innerHTML = `
+            <td style="padding: 12px; text-align: left;"><b>${formatEmailToName(email)}</b></td>
+            <td style="padding: 12px;">${total}</td>
+            <td style="padding: 12px;"><b style="color: #002ab6;">${moyenne}</b> vis. / jour</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
