@@ -30,7 +30,7 @@ router.get('/data', async (req, res) => {
             
             if (!gmsError && gmsData) {
                 gmsData.forEach(mag => {
-                    dicoMagasins[mag.id] = mag.nom_magasin; 
+                    dicoMagasins[mag.id] = mag.nom; 
                 });
             }
         } catch (e) {
