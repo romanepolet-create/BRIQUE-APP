@@ -24,7 +24,20 @@ router.get('/data', async (req, res) => {
             listeCommerciaux = [...new Set(visitesBrutes.map(v => v.commercial_email))].filter(Boolean);
         }
 
-        res.json({ success: true, emailConnecte, isAdmin, listeCommerciaux, visitesBrutes, objectifs });
+        let dicoMagasins = {};
+        try {
+            const { data: gmsData, error: gmsError } = await supabase.from('GMS').select('id, nom');
+            
+            if (!gmsError && gmsData) {
+                gmsData.forEach(mag => {
+                    dicoMagasins[mag.id] = mag.nom_magasin; 
+                });
+            }
+        } catch (e) {
+            console.error("Erreur dictionnaire GMS :", e);
+        }
+
+        res.json({ success: true, emailConnecte, isAdmin, listeCommerciaux, visitesBrutes, objectifs, dicoMagasins });
 
     } catch (error) {
         console.error("🚨 Erreur Route Dashboard:", error);
