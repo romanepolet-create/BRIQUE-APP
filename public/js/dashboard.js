@@ -97,7 +97,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // GENERATION
         // ==========================================
         genererTableauPerformance(donneesGlobales.visitesBrutes, objectifs, firstDayThisMonth);
-        genererFocusDN(visitesFiltrees);
+        genererFocusDN(magasinsFiltres, visitesFiltrees);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
@@ -195,68 +195,67 @@ function initialiserMenuDeroulant(data, defaultFiltre) {
 // ==========================================
 // FOCUS DN
 // ==========================================
-function genererFocusDN(visites) {
-    const etatParc = {};
+function genererFocusDN(magasins, visites) {
+    const dernieresVisites = {};
     visites.forEach(v => {
-        if (!etatParc[v.hubspot_id] || v.created_at > etatParc[v.hubspot_id].created_at) {
-            etatParc[v.hubspot_id] = v;
+        if (!dernieresVisites[v.hubspot_id] || v.created_at > dernieresVisites[v.hubspot_id].created_at) {
+            dernieresVisites[v.hubspot_id] = v;
         }
     });
 
-    let opportunites = Object.values(etatParc).map(magasin => {
-        const maxPossible = MAX_DN_ENSEIGNE[magasin.enseigne] ?? 15;
-        const dnActuelle = parseInt(magasin.score_dn) || 0;
-        const dnManquante = maxPossible - dnActuelle;
+    let opportunites = magasins.map(mag => {
+        const maxPossible = MAX_DN_ENSEIGNE[mag.enseigne] ?? 15;
         
-        return { ...magasin, dnManquante, maxPossible };
+        const visiteMag = dernieresVisites[mag.hubspot_id];
+        const dnActuelle = visiteMag ? (parseInt(visiteMag.score_dn) || 0) : 0;
+        
+        return {
+            hubspot_id: mag.hubspot_id,
+            nom_magasin: mag.nom,
+            enseigne: mag.enseigne,
+            dnManquante: maxPossible - dnActuelle,
+            maxPossible: maxPossible
+        };
     });
 
     const selectEnseigne = document.getElementById('filtre-enseigne');
-    const enseignesUniques = [...new Set(opportunites.map(o => o.enseigne))].sort();
+    const enseignesUniques = [...new Set(opportunites.map(o => o.enseigne))].filter(Boolean).sort();
     
     const valeurActuelle = selectEnseigne.value;
     selectEnseigne.innerHTML = '<option value="toutes">🏪 Toutes les enseignes</option>';
-    enseignesUniques.forEach(ens => {
-        selectEnseigne.add(new Option(ens, ens));
-    });
+    enseignesUniques.forEach(ens => selectEnseigne.add(new Option(ens, ens)));
     if (enseignesUniques.includes(valeurActuelle)) selectEnseigne.value = valeurActuelle;
 
     if (selectEnseigne.value !== 'toutes') {
         opportunites = opportunites.filter(o => o.enseigne === selectEnseigne.value);
     }
+
     opportunites = opportunites.filter(o => o.dnManquante > 0);
+
     opportunites.sort((a, b) => b.dnManquante - a.dnManquante);
 
     const tbody = document.getElementById('tbody-ranking-dn');
     tbody.innerHTML = '';
-    
     if (opportunites.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 15px;">Aucune donnée</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 15px;">Aucun flop détecté 🎉</td></tr>';
     } else {
         opportunites.forEach(opp => {
-            if (opp.dnManquante > 0) {
-                const nomMagasin = donneesGlobales.dicoMagasins[opp.hubspot_id] || opp.hubspot_id;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${nomMagasin}</b></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">${opp.enseigne}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;"><b style="color: #dc3545;">${opp.dnManquante}</b> <span style="font-size:10px; color:#999;">/ ${opp.maxPossible}</span></td>
-                `;
-                tbody.appendChild(tr);
-            }
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${opp.nom_magasin || opp.hubspot_id}</b></td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">${opp.enseigne}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;"><b style="color: #dc3545;">${opp.dnManquante}</b> <span style="font-size:10px; color:#999;">/ ${opp.maxPossible}</span></td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 
-   const top10 = opportunites.slice(0, 10);
-    const labels = top10.map(o => {
-        const nom = donneesGlobales.dicoMagasins[o.hubspot_id] || o.hubspot_id;
-        return nom.substring(0, 20) + '...'; // On coupe à 20 caractères pour que le graph reste joli
-    });
+    const top10 = opportunites.slice(0, 10);
+    const labels = top10.map(o => (o.nom_magasin || o.hubspot_id).substring(0, 20) + '...');
     const dataFlops = top10.map(o => o.dnManquante);
 
     const ctx = document.getElementById('chartFlopDN').getContext('2d');
-    
-    if (graphFlopDN) graphFlopDN.destroy();
+    if (graphFlopDN) graphFlopDN.destroy(); 
     
     graphFlopDN = new Chart(ctx, {
         type: 'bar',
@@ -273,13 +272,11 @@ function genererFocusDN(visites) {
             responsive: true,
             maintainAspectRatio: false,
             indexAxis: 'y',
-            scales: {
-                x: { beginAtZero: true, suggestedMax: 15 }
-            }
+            scales: { x: { beginAtZero: true, suggestedMax: 15 } }
         }
     });
 
-    selectEnseigne.onchange = () => genererFocusDN(visites);
+    selectEnseigne.onchange = () => genererFocusDN(magasins, visites);
 }
 
 document.addEventListener("DOMContentLoaded", () => chargerDonneesEtAfficher('general'));
