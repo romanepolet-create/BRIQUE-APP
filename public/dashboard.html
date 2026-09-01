@@ -31,14 +31,12 @@
                 <span class="kpi-evolution evolution-up" id="evo-dn">Base Initiale : ...</span>
             </div>
 
-            <!-- KPI 3 : MEA (HL) -->
             <div class="kpi-card">
                 <div class="kpi-title">Volume MEA (HL)</div>
                 <p class="kpi-value" id="kpi-mea">...</p>
                 <span class="kpi-evolution evolution-down" id="evo-mea">vs mois M-1</span>
             </div>
 
-            <!-- KPI 4 : Distributeurs Directs -->
             <div class="kpi-card">
                 <div class="kpi-title">Distributeurs Directs</div>
                 <p class="kpi-value" id="kpi-directs">...</p>
@@ -104,11 +102,6 @@
         </div>
 
 
-       
-
-       <!-- ==========================================
-            FOCUS MEA
-            ========================================== -->
         <div class="graphs">
             <h3 class="titre-graph">🍺 Focus MEA : Détail des réalisations du mois</h3>
             
@@ -126,6 +119,54 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+
+        <div class="graphs">
+            <div id="DDirect1">
+                <h3 class="titre-graph">🏪 Focus Direct (ITM, Leclerc, U)</h3>
+                
+                <div id="DDirect2">
+                    <select id="filtre-enseigne-direct" class="filtreDirect">
+                        <option value="toutes">Toutes les enseignes</option>
+                    </select>
+                    <select id="filtre-prio-direct" class="filtreDirect">
+                        <option value="toutes">Toutes les priorités</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="DDirect3">
+                <table id="tableDirect">
+                    <thead class="thead">
+                        <tr class="tr">
+                            <th class="column-title">Magasin</th>
+                            <th class="column-title">Enseigne</th>
+                            <th class="column-title">Priorité</th>
+                            <th class="column-title">Statut Brique House</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-focus-direct">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="graphs">
+            <h3 class="titre-graph">⏱️ Productivité (Mois en cours)</h3>
+            <table id="table-prod">
+                <thead id="thead-prod">
+                    <tr>
+                        <th class="column-title">Commercial</th>
+                        <th class="column-title">Total Visites</th>
+                        <th class="column-title">Moyenne (Visites / Jour)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-productivite">
+                </tbody>
+            </table>
+            <p class="chargement">*Basé sur 22 jours travaillés / mois</p>
         </div>
 
 
