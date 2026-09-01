@@ -57,7 +57,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
         let visitesFiltrees = visitesBrutes;
-        let magasinsFiltres = donneesGlobales.listeMagasins;
+        let magasinsFiltres = donneesGlobales.listeMagasins || [];
 
         if (filtreEmail !== 'general') {
             visitesFiltrees = visitesBrutes.filter(v => v.commercial_email === filtreEmail);
