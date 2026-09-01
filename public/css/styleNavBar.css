@@ -18,31 +18,35 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   margin-bottom: 40px; 
 }
+
 .navbar .logo {
   color: #ffcc00;
   font-size: 1.5em;
   font-weight: 800;
   font-family: 'Gilroy', 'Lexend Deca', sans-serif;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: clamp(10px, 1.5vw, 30px);
   margin: 0;
   padding: 0;
   position: relative;
   z-index: 99999;
+  flex-wrap: nowrap;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: clamp(12px, 1.1vw, 1.1em);
   font-family: 'Lexend Deca', sans-serif;
   transition: color 0.3s ease-in-out;
+  white-space: nowrap;
 }
 
 .nav-links a:hover, 
@@ -50,7 +54,7 @@
   color: #ffcc00;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1150px) {
 	.menu-burger {
 		display: block;
 		margin-left: auto;
