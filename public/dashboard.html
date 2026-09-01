@@ -47,7 +47,7 @@
         </div>
 
 
-       <div id="graphs">
+       <div class="graphs">
             <h3 class="titre-graph">
                 Performance Générale de l'équipe
                 <button id="btn-bascule-perf">
@@ -70,6 +70,37 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+
+       <div class="graphs">
+            <div id="dnFocusGraph">
+                <h3 class="titre-graph">🎯 Focus DN : Top Opportunités</h3>
+                
+                <select id="filtre-enseigne">
+                    <option value="toutes">🏪 Toutes les enseignes</option>
+                </select>
+            </div>
+            
+            <div id="DFlop">
+                <div id="D1Flop">
+                    <canvas id="chartFlopDN"></canvas>
+                </div>
+                
+                <div id="D2Flop">
+                    <table id="tableFlop">
+                        <thead id="theadFlop">
+                            <tr id="trFlop">
+                                <th class="column-title">Magasin</th>
+                                <th class="column-title">Enseigne</th>
+                                <th id="column-title.2.flop">DN à gagner</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-ranking-dn">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
 
