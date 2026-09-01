@@ -71,6 +71,15 @@ router.get('/kpis', async (req, res) => {
         const dnFinale = getLastVisitScore(visitesMois);
         const dnInitiale = getLastVisitScore(visitesMoisPrecedent);
 
+        const visitesMensuelles = new Array(12).fill(0); // Crée un tableau [0,0,0,0...] pour les 12 mois
+        
+        toutesVisites.forEach(v => {
+            const dateVisite = new Date(v.created_at);
+            if (dateVisite.getFullYear() === now.getFullYear()) {
+                visitesMensuelles[dateVisite.getMonth()]++; // Ajoute +1 au bon mois
+            }
+        });
+
         res.json({
             success: true,
             emailConnecte: emailConnecte,
