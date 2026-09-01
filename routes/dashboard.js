@@ -18,12 +18,7 @@ router.get('/data', async (req, res) => {
 
         const { data: objData } = await supabase.from('objectifs_commerciaux').select('*');
         const objectifs = Array.isArray(objData) ? objData : [];
-
-        let listeCommerciaux = [];
-        if (isAdmin) {
-            listeCommerciaux = [...new Set(visitesBrutes.map(v => v.commercial_email))].filter(Boolean);
-        }
-
+        
         let listeMagasins = [];
         try {
             const { data: gmsData } = await supabase.from('GMS').select('hubspot_id, nom, enseigne, "Propriétaire", "Priorité"');
@@ -31,6 +26,22 @@ router.get('/data', async (req, res) => {
         } catch (e) {
             console.error("Erreur GMS :", e);
         }
+
+        let listeCommerciaux = [];
+        if (isAdmin) {
+            let tousLesEmails = [
+                ...visitesBrutes.map(v => v.commercial_email),
+                ...objectifs.map(o => o.commercial_email)
+            ];
+
+            const proprietairesGMS = [...new Set(listeMagasins.map(m => m.Propriétaire))].filter(p => p && p !== "Vacant" && p !== "Vacant Nord");
+            const emailsDepuisGMS = proprietairesGMS.map(nom => {
+                return nom.toLowerCase().trim().replace(/\s+/g, '.') + '@briquehouse.fr';
+            });
+            tousLesEmails = [...tousLesEmails, ...emailsDepuisGMS];
+            
+            listeCommerciaux = [...new Set(tousLesEmails)].filter(Boolean);
+        }      
         
         res.json({ success: true, emailConnecte, isAdmin, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });
         
