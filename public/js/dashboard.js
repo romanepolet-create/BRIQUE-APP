@@ -59,6 +59,8 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         let visitesFiltrees = visitesBrutes;
         let magasinsFiltres = donneesGlobales.listeMagasins || [];
 
+        magasinsFiltres = magasinsFiltres.filter(m => m.Propriétaire !== "Vacant" && m.Propriétaire !== "Vacant Nord");
+
         if (filtreEmail !== 'general') {
             visitesFiltrees = visitesBrutes.filter(v => v.commercial_email === filtreEmail);
             
