@@ -90,6 +90,10 @@ body {
   color: #383d41; 
 }
 
+
+
+
+
 .graphs {
   background: white; 
   padding: 20px; 
@@ -177,12 +181,49 @@ body {
   font-size: 14px;
 }
 
-#theadFlop {
+.thead {
   position: sticky; 
   top: 0; 
   background: #f4f7f6;
 }
 
-#trFlop {
+.tr {
   border-bottom: 2px solid #ddd;
+}
+
+#D1MEA {
+  max-height: 350px; 
+  overflow-y: auto; 
+  border: 1px solid #eee; 
+  border-radius: 8px;
+}
+
+#tableMEA {
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: left; 
+  font-size: 14px;
+}
+
+#MEA-code {
+  padding: 10px; 
+  width: 15%;
+}
+
+#MEA-date {
+  padding: 10px; 
+  width: 15%;
+}
+
+#MEA-store {
+  padding: 10px; 
+  width: 45%;
+}
+
+#MEA-vol {
+  padding: 10px; 
+  padding: 10px; 
+  width: 25%; 
+  text-align: center; 
+  color: #002ab6;
 }
