@@ -46,10 +46,36 @@
             </div>
         </div>
 
-        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 20px; height: 350px;">
-            <h3 style="margin-top: 0; color: #002ab6;">Évolution des visites</h3>
-            <canvas id="chartVisites"></canvas>
+
+       <div id="graphs">
+            <h3 class="titre-graph">
+                Performance Générale de l'équipe
+                <button id="btn-bascule-perf">
+                    🔄 Voir le Reste à faire
+                </button>
+            </h3>
+            
+            <table id="table-perf">
+                <thead>
+                    <tr class="column">
+                        <th class="column-title">Commercial</th>
+                        <th class="column-title">Objectifs DN</th>
+                        <th class="column-title"">Objectifs MEA (HL)</th>
+                        <th class="column-title">Objectifs Directs (#)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-performance">
+                    <tr>
+                        <td class="chargement" colspan="4">Chargement des performances...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+
+
+
+       
     </div>
 
     <script src="/js/dashboard.js"></script>
