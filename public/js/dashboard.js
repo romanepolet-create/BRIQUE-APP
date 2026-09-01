@@ -334,15 +334,13 @@ function genererFocusMEA(visites) {
 
 
 // ==========================================
-// PHASE 4A : FOCUS DIRECT
+// FOCUS DIRECT
 // ==========================================
 function genererFocusDirect(magasins, visites) {
     const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
     
-    // 1. On ne garde que le parc concerné par le Direct
     let parcDirect = magasins.filter(m => enseignesDirectes.includes(m.enseigne));
 
-    // 2. On trouve la dernière visite pour statuer si le magasin vend ou non
     const dernieresVisites = {};
     visites.forEach(v => {
         if (!dernieresVisites[v.hubspot_id] || v.created_at > dernieresVisites[v.hubspot_id].created_at) {
@@ -360,30 +358,24 @@ function genererFocusDirect(magasins, visites) {
         };
     });
 
-    // 3. Gestion des listes déroulantes
     const selectEnseigne = document.getElementById('filtre-enseigne-direct');
     const selectPrio = document.getElementById('filtre-prio-direct');
     
     const enseignesUniques = [...new Set(listeDirect.map(m => m.enseigne))].filter(Boolean).sort();
     const priosUniques = [...new Set(listeDirect.map(m => m.priorite))].filter(Boolean).sort();
 
-    // Remplissage Enseigne si vide
     if (selectEnseigne.options.length === 1) {
         enseignesUniques.forEach(ens => selectEnseigne.add(new Option(ens, ens)));
     }
-    // Remplissage Priorité si vide
     if (selectPrio.options.length === 1) {
         priosUniques.forEach(prio => selectPrio.add(new Option(`Prio: ${prio}`, prio)));
     }
 
-    // 4. Filtrage dynamique
     if (selectEnseigne.value !== 'toutes') listeDirect = listeDirect.filter(m => m.enseigne === selectEnseigne.value);
     if (selectPrio.value !== 'toutes') listeDirect = listeDirect.filter(m => m.priorite === selectPrio.value);
 
-    // 5. Tri : On met les "Non Vendeurs" en haut (les opportunités)
     listeDirect.sort((a, b) => a.vendeur - b.vendeur);
 
-    // 6. Affichage
     const tbody = document.getElementById('tbody-focus-direct');
     if (!tbody) return;
     tbody.innerHTML = '';
