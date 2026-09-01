@@ -226,9 +226,10 @@ function genererFocusDN(visites) {
     } else {
         opportunites.forEach(opp => {
             if (opp.dnManquante > 0) {
+                const nomMagasin = donneesGlobales.dicoMagasins[opp.hubspot_id] || opp.hubspot_id;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${opp.nom_magasin || opp.hubspot_id}</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${nomMagasin}</b></td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">${opp.enseigne}</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;"><b style="color: #dc3545;">${opp.dnManquante}</b> <span style="font-size:10px; color:#999;">/ ${opp.maxPossible}</span></td>
                 `;
