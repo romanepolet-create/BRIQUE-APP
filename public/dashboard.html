@@ -46,11 +46,9 @@
             </div>
         </div>
 
-        <!-- Espace pour les futurs graphiques -->
-        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <h3 style="margin-top: 0;">Évolution des visites (Bientôt)</h3>
-            <p>Espace pour futur graphique</p>
-            <p style="color: #6c757d;">Ex : C'est ici que nous mettrons un graphique en courbes (Chart.js) pour visualiser l'année 2026 par rapport à 2027.</p>
+        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 20px; height: 350px;">
+            <h3 style="margin-top: 0; color: #002ab6;">Évolution des visites</h3>
+            <canvas id="chartVisites"></canvas>
         </div>
     </div>
 
@@ -64,6 +62,8 @@
         .catch((err) => console.log('Erreur Service Worker', err));
     });
   }
-</script>
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>
