@@ -26,7 +26,7 @@ router.get('/data', async (req, res) => {
 
         let listeMagasins = [];
         try {
-            const { data: gmsData } = await supabase.from('GMS').select('hubspot_id, nom, enseigne, "Propriétaire"');
+            const { data: gmsData } = await supabase.from('GMS').select('hubspot_id, nom, enseigne, "Propriétaire", "Priorité"');
             if (gmsData) listeMagasins = gmsData;
         } catch (e) {
             console.error("Erreur GMS :", e);
