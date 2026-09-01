@@ -85,9 +85,10 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('kpi-directs').textContent = nbDirects;
 
         // ==========================================
-        // TABLEAU PERF GLOBAL
+        // GENERATION
         // ==========================================
         genererTableauPerformance(donneesGlobales.visitesBrutes, objectifs, firstDayThisMonth);
+        genererFocusDN(visitesFiltrees);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
