@@ -417,14 +417,26 @@ function genererProductivite(toutesVisites) {
     const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
     const visitesMois = toutesVisites.filter(v => v.created_at >= firstDayThisMonth);
 
-    const compteurs = {};
+    const statsCommerciaux = {};
+    
     visitesMois.forEach(v => {
         const email = v.commercial_email || "Inconnu";
-        compteurs[email] = (compteurs[email] || 0) + 1;
+        
+        if (!statsCommerciaux[email]) {
+            statsCommerciaux[email] = { totalVisites: 0, joursUniques: new Set() };
+        }
+        
+        statsCommerciaux[email].totalVisites++;
+        
+        const dateJour = v.created_at.split('T')[0];
+        statsCommerciaux[email].joursUniques.add(dateJour);
     });
 
     tbody.innerHTML = '';
-    const joursTravailles = 22;
+    if (Object.keys(statsCommerciaux).length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 15px; color:#666;">Aucune visite enregistrée ce mois-ci.</td></tr>';
+        return;
+    }
 
     Object.entries(compteurs).forEach(([email, total]) => {
         const moyenne = (total / joursTravailles).toFixed(1);
