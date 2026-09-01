@@ -238,8 +238,11 @@ function genererFocusDN(visites) {
         });
     }
 
-    const top10 = opportunites.slice(0, 10);
-    const labels = top10.map(o => (o.nom_magasin || o.hubspot_id).substring(0, 15) + '...');
+   const top10 = opportunites.slice(0, 10);
+    const labels = top10.map(o => {
+        const nom = donneesGlobales.dicoMagasins[o.hubspot_id] || o.hubspot_id;
+        return nom.substring(0, 20) + '...'; // On coupe à 20 caractères pour que le graph reste joli
+    });
     const dataFlops = top10.map(o => o.dnManquante);
 
     const ctx = document.getElementById('chartFlopDN').getContext('2d');
