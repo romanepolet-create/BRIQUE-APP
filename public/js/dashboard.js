@@ -282,3 +282,49 @@ function genererFocusDN(magasins, visites) {
 }
 
 document.addEventListener("DOMContentLoaded", () => chargerDonneesEtAfficher('general'));
+
+
+
+
+// ==========================================
+// FOCUS MEA
+// ==========================================
+function genererFocusMEA(visites) {
+    const tbody = document.getElementById('tbody-focus-mea');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+
+    const now = new Date();
+    const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    
+    let visitesMEA = visites.filter(v => v.created_at >= firstDayThisMonth && (parseFloat(v.volume_mea) > 0));
+
+    visitesMEA.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    if (visitesMEA.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color: #666;">Aucune MEA réalisée ce mois-ci.</td></tr>';
+        return;
+    }
+
+    visitesMEA.forEach(v => {
+        const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
+        
+        const magInfo = donneesGlobales.listeMagasins.find(m => m.hubspot_id === v.hubspot_id);
+        const nomMagasin = magInfo ? magInfo.nom : v.hubspot_id;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #888;">#${v.id || 'N/A'}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${dateFormatee}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                <b>${nomMagasin}</b><br>
+                <span style="font-size: 11px; color: #999;">${v.enseigne}</span>
+            </td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
+                <b style="color: #002ab6; font-size: 16px;">${v.volume_mea}</b> <span style="color: #666; font-size: 12px;">HL</span>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
