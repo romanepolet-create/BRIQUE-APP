@@ -227,3 +227,48 @@ body {
   text-align: center; 
   color: #002ab6;
 }
+
+#table-prod {
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: center; 
+  font-size: 14px;
+}
+
+#thead-prod {
+  background: #002ab6; 
+  color: white;
+}
+
+#DDirect1 {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  flex-wrap: wrap; 
+  margin-bottom: 15px;
+}
+
+#DDirect2 {
+  display: flex; 
+  gap: 10px;
+}
+
+.filtreDirect {
+  padding: 8px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc;
+}
+
+#DDirect3 {
+  max-height: 350px; 
+  overflow-y: auto; 
+  border: 1px solid #eee; 
+  border-radius: 8px;
+}
+
+#tableDirect {
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: left; 
+  font-size: 14px;
+}
