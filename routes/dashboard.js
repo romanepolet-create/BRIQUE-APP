@@ -26,11 +26,11 @@ router.get('/data', async (req, res) => {
 
         let dicoMagasins = {};
         try {
-            const { data: gmsData, error: gmsError } = await supabase.from('GMS').select('id, nom');
+            const { data: gmsData, error: gmsError } = await supabase.from('GMS').select('hubspot_id, nom');
             
             if (!gmsError && gmsData) {
                 gmsData.forEach(mag => {
-                    dicoMagasins[mag.id] = mag.nom; 
+                    dicoMagasins[mag.hubspot_id] = mag.nom; 
                 });
             }
         } catch (e) {
