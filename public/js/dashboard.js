@@ -100,6 +100,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // ==========================================
         genererTableauPerformance(donneesGlobales.visitesBrutes, objectifs, firstDayThisMonth);
         genererFocusDN(magasinsFiltres, visitesFiltrees);
+        genererFocusMEA(visitesFiltrees);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
