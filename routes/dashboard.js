@@ -19,8 +19,9 @@ router.get('/kpis', async (req, res) => {
         const now = new Date();
         const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
         const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
-
-        let query = supabase.from('dashboard_visites').select('*').gte('created_at', firstDayLastMonth);
+        
+        const startOfData = new Date(now.getFullYear() - 1, 0, 1).toISOString();
+        let query = supabase.from('dashboard_visites').select('*').gte('created_at', startOfData);
 
         if (filtreRequis !== 'general') {
             query = query.eq('commercial_email', filtreRequis);
