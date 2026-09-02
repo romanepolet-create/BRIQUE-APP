@@ -177,7 +177,8 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         });
 
         const obj = objectifs.find(o => o.commercial_email === email) || {};
-
+        obj.obj_dn = calculerObjectifDNDynamique(email, donneesGlobales.listeMagasins || []);
+        
         const rendreCell = (actuel, objectif, unit = "") => {
             if (!objectif) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuel}</b>`;
             if (vuePourcentage) {
