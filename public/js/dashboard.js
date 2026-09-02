@@ -438,15 +438,19 @@ function genererProductivite(toutesVisites) {
         return;
     }
 
-    Object.entries(compteurs).forEach(([email, total]) => {
-        const moyenne = (total / joursTravailles).toFixed(1);
+    Object.entries(statsCommerciaux).forEach(([email, data]) => {
+        const nbJours = data.joursUniques.size;
+        const moyenne = nbJours > 0 ? (data.totalVisites / nbJours).toFixed(1) : 0;
         
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid #eee";
         tr.innerHTML = `
             <td style="padding: 12px; text-align: left;"><b>${formatEmailToName(email)}</b></td>
-            <td style="padding: 12px;">${total}</td>
-            <td style="padding: 12px;"><b style="color: #002ab6;">${moyenne}</b> vis. / jour</td>
+            <td style="padding: 12px;">${data.totalVisites}</td>
+            <td style="padding: 12px;">
+                <b style="color: #002ab6; font-size: 15px;">${moyenne}</b> vis. / jour<br>
+                <span style="font-size: 11px; color: #888;">(calculé sur ${nbJours} jours travaillés)</span>
+            </td>
         `;
         tbody.appendChild(tr);
     });
