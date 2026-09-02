@@ -23,6 +23,18 @@ const MAX_DN_ENSEIGNE = {
     "LECLERC DRIVE": 0
 };
 
+const OBJECTIFS_PRIO = {
+    "A": 0.95,
+    "B": 0.90,
+    "C": 0.85,
+    "D": 0.65,
+    "E": 0.42,
+    "F": 0.30,
+    "URB": 0.20,
+    "X": 0.10,
+    "DRIVE": 0.00
+};
+
 // ==========================================
 // MATHS
 // ==========================================
@@ -111,6 +123,29 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
     } catch (err) {
         console.error("Erreur Dashboard:", err);
     }
+}
+
+// ==========================================
+//OBJECTIFS SELON PRIO
+// ==========================================
+
+function calculerObjectifDNDynamique(emailCommercial, listeMagasins) {
+    const nomCommercial = formatEmailToName(emailCommercial).toLowerCase();
+    
+    const parcCommercial = listeMagasins.filter(m => 
+        (m.Propriétaire || "").toLowerCase() === nomCommercial
+    );
+
+    let objectifTotal = 0;
+    
+    parcCommercial.forEach(mag => {
+        const maxObligatoire = MAX_DN_ENSEIGNE[mag.enseigne] || 0;
+        const pourcentageObjectif = OBJECTIFS_PRIO[mag.Priorité] || 0; 
+        
+        objectifTotal += (maxObligatoire * pourcentageObjectif);
+    });
+
+    return Math.round(objectifTotal);
 }
 
 // ==========================================
