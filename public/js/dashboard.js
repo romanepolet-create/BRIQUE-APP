@@ -16,7 +16,11 @@ const MAX_DN_ENSEIGNE = {
     "ITM SM": 0,
     "LECLERC": 0,
     "LECLERC PROXI": 0,
-    "SUPER U": 0
+    "SUPER U": 0,
+    "U EXPRESS": 0,
+    "MATCH": 0,
+    "G 20": 0,
+    "LECLERC DRIVE": 0
 };
 
 // ==========================================
