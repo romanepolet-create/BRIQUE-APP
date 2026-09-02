@@ -99,6 +99,26 @@ const matriceGMS = {
   facultatif: [],
   direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
   },
+"G 20": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"U EXPRESS": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"LECLERC DRIVE": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"MATCH": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  }
 };
 
 
@@ -319,7 +339,10 @@ function getCouleurEnseigne(enseigne) {
 		"CASINO": "#baab2c",
 		"AUCHAN HM": "#fe7e71",
 		"OTERA": "#ff871f",
-
+		 "MATCH": "#d1001f",
+  		 "U EXPRESS": "#a000ff",
+ 		 "LECLERC DRIVE": "#ff66cc",
+ 		 "G 20": "#00b050"
     } 
     // Retourne la couleur, ou un gris par défaut si l'enseigne est inconnue
     return couleurs[enseignePropre] || "#555555";
