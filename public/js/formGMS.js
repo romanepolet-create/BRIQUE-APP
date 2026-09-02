@@ -69,6 +69,26 @@ const matriceGMS = {
   facultatif: [],
   direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
   },
+"G 20": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"U EXPRESS": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"LECLERC DRIVE": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  },
+"MATCH": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  }
 };
 
 // Fonction à appeler dans ton DOMContentLoaded (remplace la ligne commentée précédente)
