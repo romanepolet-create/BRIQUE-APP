@@ -92,6 +92,13 @@ h1 {
 .dropdown-list label:hover { background-color: #f0f0f0; }
 .dropdown-list input[type="checkbox"] { margin-right: 8px; }
 
+#liste-tournee li {
+    cursor: grab;
+}
+#liste-tournee li:active {
+    cursor: grabbing;
+}
+
 /* ==========================================
    BARRE DE RECHERCHE ET BOUTON RESET
    ========================================== */
