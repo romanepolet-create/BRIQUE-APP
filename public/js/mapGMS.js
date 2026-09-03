@@ -1131,6 +1131,19 @@ window.supprimerEtape = function(index) {
   sauvegarderTourneeMemoire();
 };
 
+// Déplace un magasin vers le haut ou le bas
+window.deplacerEtape = function(index, direction) {
+    const nouvelIndex = index + direction;
+    if (nouvelIndex < 0 || nouvelIndex >= etapesItineraire.length) return;
+    const etapeTemp = etapesItineraire[index];
+    etapesItineraire[index] = etapesItineraire[nouvelIndex];
+    etapesItineraire[nouvelIndex] = etapeTemp;
+    actualiserPanneauGPS();
+    if (typeof sauvegarderTourneeMemoire === "function") {
+        sauvegarderTourneeMemoire();
+    }
+};
+
 // Fonction pour Masquer / Démasquer un établissement
 window.toggleMasqueEtape = function(index) {
   // Si on veut démasquer, on vérifie d'abord qu'on ne dépasse pas la limite de 9
