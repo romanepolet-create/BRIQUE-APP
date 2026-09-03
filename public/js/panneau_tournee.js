@@ -4,37 +4,37 @@
 
 // 1. Charger la tournée au démarrage de la page
 window.chargerTourneeMemoire = async function() {
+    genererJoursOuvres();
+    afficherSliderJours();
     try {
         const response = await fetch('/api/tournee/charger');
         const data = await response.json();
 
         if (data.success && data.tournee) {
-            console.log("✅ Tournée retrouvée en mémoire !");
-            
-            etapesItineraire = data.tournee.magasins; 
-            
+            if (Array.isArray(data.tournee.magasins)) {
+                memoireGlobaleTournees[jourSelectionneId] = data.tournee.magasins;
+            } else {
+                memoireGlobaleTournees = data.tournee.magasins || {};
+            }
+            etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
             actualiserPanneauGPS();
-            filtrerMagasins(); 
-        } else {
-            console.log("ℹ️ Aucune tournée en mémoire, on commence à zéro.");
-        }
+            filtrerMagasins();
+            }
     } catch (erreur) {
-        console.error("Erreur lors du chargement de la tournée", erreur);
+        console.error("Erreur de chargement :", erreur);
     }
 };
 
-// 2. Sauvegarder la tournée (La "Photo")
 window.sauvegarderTourneeMemoire = async function() {
+    memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
     try {
         const response = await fetch('/api/tournee/sauvegarder', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ magasins: etapesItineraire }) 
+            body: JSON.stringify({ magasins: memoireGlobaleTournees }) 
         });
         
         if (!response.ok) throw new Error("Erreur " + response.status);
-        
-        console.log("💾 Tournée sauvegardée en arrière-plan !");
     } catch (erreur) {
         console.error("Erreur de sauvegarde", erreur);
     }
