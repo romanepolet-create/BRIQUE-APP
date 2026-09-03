@@ -257,6 +257,16 @@ h1 {
   height: fit-content;
 }
 
+#slider-jours {
+   display: flex; 
+   gap: 8px; 
+   overflow-x: auto; 
+   padding: 5px 0 15px 0; 
+   margin-bottom: 10px; 
+   border-bottom: 1px solid #eee; 
+   scrollbar-width: none;
+}
+
 #ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px; display: inline-block}
 
 .toggle-container {
