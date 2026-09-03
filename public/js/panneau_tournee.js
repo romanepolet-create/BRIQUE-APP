@@ -39,3 +39,25 @@ window.sauvegarderTourneeMemoire = async function() {
         console.error("Erreur de sauvegarde", erreur);
     }
 };
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const liste = document.getElementById('liste-tournee');
+    
+    if (liste) {
+        new Sortable(liste, {
+            animation: 150,
+            delay: 100,
+            delayOnTouchOnly: true,
+            onEnd: function (evt) {
+                const elementDeplace = etapesItineraire.splice(evt.oldIndex, 1)[0];
+                etapesItineraire.splice(evt.newIndex, 0, elementDeplace);
+                
+                actualiserPanneauGPS();
+                if (typeof sauvegarderTourneeMemoire === "function") {
+                    sauvegarderTourneeMemoire();
+                }
+            }
+        });
+    }
+});
