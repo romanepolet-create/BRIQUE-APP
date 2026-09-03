@@ -723,7 +723,11 @@ window.filtrerMagasins = function() {
 	}
 
     // 1. ENSEIGNES
-    if (enseignesSel.length > 0 && !enseignesSel.includes(magasin.enseigne)) return false;
+    if (enseignesSel.length === 0) {
+$        if (magasin.enseigne === "G 20" || magasin.enseigne === "LECLERC DRIVE") return false;
+    } else {
+        if (!enseignesSel.includes(magasin.enseigne)) return false;
+    }
 /*
     // 2. REGION
     if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
