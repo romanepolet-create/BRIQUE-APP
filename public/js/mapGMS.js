@@ -1131,19 +1131,6 @@ window.supprimerEtape = function(index) {
   sauvegarderTourneeMemoire();
 };
 
-// Déplace un magasin vers le haut ou le bas
-window.deplacerEtape = function(index, direction) {
-    const nouvelIndex = index + direction;
-    if (nouvelIndex < 0 || nouvelIndex >= etapesItineraire.length) return;
-    const etapeTemp = etapesItineraire[index];
-    etapesItineraire[index] = etapesItineraire[nouvelIndex];
-    etapesItineraire[nouvelIndex] = etapeTemp;
-    actualiserPanneauGPS();
-    if (typeof sauvegarderTourneeMemoire === "function") {
-        sauvegarderTourneeMemoire();
-    }
-};
-
 // Fonction pour Masquer / Démasquer un établissement
 window.toggleMasqueEtape = function(index) {
   // Si on veut démasquer, on vérifie d'abord qu'on ne dépasse pas la limite de 9
@@ -1226,14 +1213,6 @@ function actualiserPanneauGPS() {
       ? `<button onclick="toggleFinalEtape(${index})" title="Retirer de la fin" style="background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; font-size:12px; padding:2px 5px;">🏁</button>`
       : `<button onclick="toggleFinalEtape(${index})" title="Verrouiller à la fin" style="background:none; border:1px solid #ccc; border-radius:4px; cursor:pointer; font-size:12px; filter:grayscale(100%); opacity:0.5; padding:2px 5px;">🏁</button>`;
 
-	  const btnHaut = index > 0 
-      ? `<button onclick="deplacerEtape(${index}, -1)" title="Monter" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px;">🔼</button>` 
-      : `<span style="width:22px; display:inline-block;"></span>`; // Espace vide pour garder l'alignement
-
-
-	      const btnBas = index < etapesItineraire.length - 1 
-      ? `<button onclick="deplacerEtape(${index}, 1)" title="Descendre" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px;">🔽</button>` 
-      : `<span style="width:22px; display:inline-block;"></span>`;
 	  
     liste.innerHTML += `
       <li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; ${styleLigne}">
