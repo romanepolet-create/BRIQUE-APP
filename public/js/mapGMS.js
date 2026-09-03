@@ -724,7 +724,7 @@ window.filtrerMagasins = function() {
 
     // 1. ENSEIGNES
     if (enseignesSel.length === 0) {
-$        if (magasin.enseigne === "G 20" || magasin.enseigne === "LECLERC DRIVE") return false;
+        if (magasin.enseigne === "G 20" || magasin.enseigne === "LECLERC DRIVE") return false;
     } else {
         if (!enseignesSel.includes(magasin.enseigne)) return false;
     }
