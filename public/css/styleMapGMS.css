@@ -553,6 +553,26 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 
 /*JS PUSH*/
+.btn-jour {
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    background: #f1f3f5;
+    color: #555;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-jour.actif {
+    background: #002ab6;
+    color: white;
+    border-color: #002ab6;
+    box-shadow: 0 2px 5px rgba(0,42,182,0.3);
+}
+
+
 .btn-delete-etape {
   background: #dc3545;
   color: white;
