@@ -572,6 +572,14 @@ input:checked + .slider:before { transform: translateX(20px); }
     box-shadow: 0 2px 5px rgba(0,42,182,0.3);
 }
 
+#voirAutre {
+   background: none; 
+   border: none; 
+   cursor: pointer; 
+   font-size: 16px; 
+   margin-left: 10px;
+}
+
 
 .btn-delete-etape {
   background: #dc3545;
