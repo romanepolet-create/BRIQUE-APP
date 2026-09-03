@@ -121,6 +121,48 @@ const matriceGMS = {
   }
 };
 
+let joursOuvres = [];
+let jourSelectionneId = null;
+let memoireGlobaleTournees = {};
+
+function genererJoursOuvres() {
+    joursOuvres = [];
+    let date = new Date();
+    const nomsJours = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+    
+    while (joursOuvres.length < 5) {
+        if (date.getDay() !== 0 && date.getDay() !== 6) {
+            joursOuvres.push({
+                id: date.toISOString().split('T')[0],
+                label: joursOuvres.length === 0 ? "Auj." : `${nomsJours[date.getDay()]} ${date.getDate()}`
+            });
+        }
+        date.setDate(date.getDate() + 1);
+    }
+    jourSelectionneId = joursOuvres[0].id;
+}
+
+function afficherSliderJours() {
+    const container = document.getElementById('slider-jours');
+    if (!container) return;
+    
+    container.innerHTML = joursOuvres.map(jour => `
+        <button class="btn-jour ${jour.id === jourSelectionneId ? 'actif' : ''}" 
+                onclick="changerJour('${jour.id}')">
+            ${jour.label}
+        </button>
+    `).join('');
+}
+
+window.changerJour = function(nouvelId) {
+    memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
+    jourSelectionneId = nouvelId;
+    etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+    
+    afficherSliderJours();
+    actualiserPanneauGPS();
+    filtrerMagasins();
+};
 
 
 
