@@ -20,7 +20,8 @@ const MAX_DN_ENSEIGNE = {
     "U EXPRESS": 0,
     "MATCH": 0,
     "G 20": 0,
-    "LECLERC DRIVE": 0
+    "LECLERC DRIVE": 0,
+    "AUTRES": 0
 };
 
 const OBJECTIFS_PRIO = {
