@@ -152,7 +152,7 @@ function afficherSliderJours() {
     if (!container) return;
     
     container.innerHTML = joursOuvres.map(jour => `
-        <button class="btn-jour ${jour.id === jourSelectionneId ? 'actif' : ''}" 
+        <button type="button" class="btn-jour ${jour.id === jourSelectionneId ? 'actif' : ''}" 
                 onclick="changerJour('${jour.id}')">
             ${jour.label}
         </button>
