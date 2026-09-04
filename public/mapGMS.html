@@ -7,217 +7,171 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-	
+    
   <link rel="stylesheet" href="/css/styleMapGMS.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-	    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#002AB6">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#002AB6">
 </head>
 
 <body>
-	 <div id="nav-placeholder"></div>
-	
-<div id="popup">
-   <p>
-     Limit of 10 stores for itinerary optimization, Bitches
-   </p>
-   <p>Reason : <b><i>Maths</i></b>
-   </p>
-   <button onclick='hidePopup()'>OK</button>
-</div>
-
-<div id="secPopup">
-   <p>
-    Please stop ?
-   </p>
-   <button onclick='this.parentElement.remove()'>OK</button>
-</div>
-
-<div id="lastPopup">
-   <p> Seriously, this is getting annoying</p>
-   <p> Just click on the OK button and get done with it</p>
-   <p> This will be better for litteraly everyone</p>
-   <button onclick='this.parentElement.remove()'>OK</button>
-</div>
-
-<div class="map-container">
-	
- <div id="left">  
-  <div class="sidebar-filters">
-    <h3 id="Opportunités_DN">Opportunités DN</h3>
-	<div class="tristate-container">
-      <span class="tristate-label">Sans BH</span>
-      <div class="tristate-switch">
-        <input type="range" id="toggle-bh" min="-1" max="1" value="0" step="1" onchange="filtrerMagasins()">
-     </div>
-    <span class="tristate-label">Avec BH</span>
-	</div>
-
-	<div class="tdn-container">
-	<div class="filter-group">
-  		<label class="tdn-label">TDN Global 
-    	  <span id="tdn-val" class="tdn-value">Tous</span>
-  		</label>
-  		<input type="range" id="filter-tdn" class="tdn-slider" min="-1" max="5" value="-1" 
-			onchange="filtrerMagasins()" 
-		 	oninput="document.getElementById('tdn-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)">
-	</div>
-
-	<div class="filter-group">
-  		<label class="tdn-label">TDN 75
-    		<span id="tdn75-val" class="tdn-value">Tous</span>
-  		</label>
-  		<input type="range" id="filter-tdn75" class="tdn-slider" min="-1" max="5" value="-1" 
-         onchange="filtrerMagasins()" 
-         oninput="document.getElementById('tdn75-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)">
-	</div>
+  <div id="nav-placeholder"></div>
+    
+  <div id="popup">
+    <p>Limit of 10 stores for itinerary optimization, Bitches</p>
+    <p>Reason : <b><i>Maths</i></b></p>
+    <button onclick='hidePopup()'>OK</button>
   </div>
- </div>
 
-<!--
-    <details class="geo-details">
-      <summary>Filtres Géographiques</summary>
-      <div class="details-content">
+  <div id="secPopup">
+    <p>Please stop ?</p>
+    <button onclick='this.parentElement.remove()'>OK</button>
+  </div>
 
-    <div class="filter-group">
-      <label>Région(s)</label>
-      <div class="custom-select">
-        <div class="select-box" onclick="toggleDropdown('dropdown-region')">
-          <span>Sélectionner...</span> <span>▼</span>
+  <div id="lastPopup">
+    <p>Seriously, this is getting annoying</p>
+    <p>Just click on the OK button and get done with it</p>
+    <p>This will be better for litteraly everyone</p>
+    <button onclick='this.parentElement.remove()'>OK</button>
+  </div>
+
+  <div class="map-container">
+        
+    <div id="left">  
+      <div class="sidebar-filters">
+        <h3 id="Opportunités_DN">Opportunités DN</h3>
+        <div class="tristate-container">
+          <span class="tristate-label">Sans BH</span>
+          <div class="tristate-switch">
+            <input type="range" id="toggle-bh" min="-1" max="1" value="0" step="1" onchange="filtrerMagasins()">
+          </div>
+          <span class="tristate-label">Avec BH</span>
         </div>
-        <div class="dropdown-list" id="dropdown-region">
+
+        <div class="tdn-container">
+          <div class="filter-group">
+            <label class="tdn-label">TDN Global 
+              <span id="tdn-val" class="tdn-value">Tous</span>
+            </label>
+            <input type="range" id="filter-tdn" class="tdn-slider" min="-1" max="5" value="-1" 
+                onchange="filtrerMagasins()" 
+                oninput="document.getElementById('tdn-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)">
+          </div>
+
+          <div class="filter-group">
+            <label class="tdn-label">TDN 75
+              <span id="tdn75-val" class="tdn-value">Tous</span>
+            </label>
+            <input type="range" id="filter-tdn75" class="tdn-slider" min="-1" max="5" value="-1" 
+                onchange="filtrerMagasins()" 
+                oninput="document.getElementById('tdn75-val').innerText = this.value == -1 ? 'Tous' : (this.value == 5 ? '5+' : this.value)">
+          </div>
         </div>
-      </div>
-    </div>
-      
-      <div class="filter-group">
-        <label>Département(s)</label>
-        <div class="custom-select">
-          <div class="select-box" onclick="toggleDropdown('dropdown-dpt')">
-            <span>Sélectionner...</span> <span>▼</span>
-         </div>
-         <div class="dropdown-list" id="dropdown-dpt">
-         </div>
-       </div>
-     </div>
-	
-      <div class="filter-group">
-        <label for="filter-rayon">Rayon autour de moi</label>
-        <select id="filter-rayon" onchange="filtrerMagasins()">
-          <option value="99999">Illimité</option>
-          <option value="10">10 km</option>
-          <option value="30">30 km</option>
-          <option value="50">50 km</option>
-          <option value="100">100 km</option>
-        </select>
-      </div>
+      </div> <!-- Fin sidebar-filters -->
 
-      </div>
-      </details>
-	 -->
-
-        <div id="panneau-tournee">
-			<button id="voirAutre" onclick="ouvrirMenuEquipe()" title="Voir les tournées de l'équipe">👥</button>
-			<div id="slider-jours">
-			</div>
+      <div id="panneau-tournee">
+        <button id="voirAutre" onclick="ouvrirMenuEquipe()" title="Voir les tournées de l'équipe">👥</button>
+        <div id="slider-jours"></div>
         <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
-		<div class="toggle-container">
-      	  <label class="switch">
-        	<input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
-        	<span class="slider round"></span>
-      	  </label>
-      	  <span class="toggle-label"></span>
-    	</div>
+        
+        <div class="toggle-container">
+          <label class="switch">
+            <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label"></span>
+        </div>
+        
         <ul id="liste-tournee"></ul>
 
-
         <button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
-                    
+                        
         <div id="DGMAPS">
           <button onclick="ouvrirGoogleMaps()" id="BGMAPS">🗺️ G. Maps</button>
           <button id="btn-waze" onclick="ouvrirWaze()">🚗 Waze</button>
         </div>
         <button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
-       </div>
-     </div>
-	</div>
-	</div>
+      </div> <!-- Fin panneau-tournee -->
+    </div> <!-- FIN #left -->
 
-	<div id="map"></div>
+	  
 
-	<div id="panneau-visibles">
+    <div id="map"></div>
 
-		<div id="panneau-a-l-ecran">
-      <div class="toolbar-visibles">
-        <button class="btn-gps" onclick="activerGeolocalisation()">📍</button>
 
-        <div class="select-right">
-          <div class="select-box" onclick="toggleDropdown('dropdown-enseigne')" title="Filtre Enseignes">🛒<span>▼</span></div>
-          <div class="dropdown-list" id="dropdown-enseigne">
-            <label><input type="checkbox" value="AUCHAN HM" onchange="filtrerMagasins()"> AUCHAN HM</label>
-    	  	  <label><input type="checkbox" value="AUCHAN SM" onchange="filtrerMagasins()">AUCHAN SM</label>
-    			  <label><input type="checkbox" value="CASINO" onchange="filtrerMagasins()">CASINO</label>
-    			  <label><input type="checkbox" value="FRANPRIX" onchange="filtrerMagasins()">FRANPRIX</label>
-    			  <label><input type="checkbox" value="MONOPRIX" onchange="filtrerMagasins()">MONOPRIX</label>
-    			  <label><input type="checkbox" value="CRF HYPER" onchange="filtrerMagasins()">CRF HYPER</label>
-    			  <label><input type="checkbox" value="CRF MARKET" onchange="filtrerMagasins()">CRF MARKET</label>
-    			  <label><input type="checkbox" value="CRF PROXI" onchange="filtrerMagasins()">CRF PROXI</label>
-    			  <label><input type="checkbox" value="ITM PROXI" onchange="filtrerMagasins()">ITM PROXI</label>
-			      <label><input type="checkbox" value="ITM SM" onchange="filtrerMagasins()">ITM SM</label>
-			      <label><input type="checkbox" value="LECLERC" onchange="filtrerMagasins()">LECLERC</label>
-			      <label><input type="checkbox" value="LECLERC PROXI" onchange="filtrerMagasins()">LECLERC PROXI</label>
-			  	  <label><input type="checkbox" value="LECLERC DRIVE" onchange="filtrerMagasins()">LECLERC DRIVE</label>
-			      <label><input type="checkbox" value="OTERA" onchange="filtrerMagasins()">OTERA</label>
-			      <label><input type="checkbox" value="SUPER U" onchange="filtrerMagasins()">SUPER U</label>
-			  	  <label><input type="checkbox" value="U EXPRESS" onchange="filtrerMagasins()">U EXPRESS</label>
-			  	  <label><input type="checkbox" value="MATCH" onchange="filtrerMagasins()">MATCH</label>
-			  	  <label><input type="checkbox" value="G 20" onchange="filtrerMagasins()">G 20</label>
-			  	  <label><input type="checkbox" value="AUTRES" onchange="filtrerMagasins()">AUTRES</label>
-  		    </div>
-        </div>
+	  
 
-	      <div class="select-right">
-          <div class="select-box" onclick="toggleDropdown('dropdown-prio')" title="Filtre Priorités">🎯<span>▼</span></div>
-		      <div class="dropdown-list" id="dropdown-prio">
-		        <label><input type="checkbox" value="A" onchange="filtrerMagasins()">A</label>
-    	  	  <label><input type="checkbox" value="B" onchange="filtrerMagasins()">B</label>
-    			  <label><input type="checkbox" value="C" onchange="filtrerMagasins()">C</label>
-    			  <label><input type="checkbox" value="D" onchange="filtrerMagasins()">D</label>
-    			  <label><input type="checkbox" value="DRIVE" onchange="filtrerMagasins()">DRIVE</label>
-    			  <label><input type="checkbox" value="E" onchange="filtrerMagasins()">E</label>
-    			  <label><input type="checkbox" value="F" onchange="filtrerMagasins()">F</label>
-    			  <label><input type="checkbox" value="URB" onchange="filtrerMagasins()">URB</label>
-    			  <label><input type="checkbox" value="X" onchange="filtrerMagasins()">X</label>
-		      </div>
-		    </div>
+    <div id="panneau-visibles">
+      <div id="panneau-a-l-ecran">
+        <div class="toolbar-visibles">
+          <button class="btn-gps" onclick="activerGeolocalisation()">📍</button>
 
-		  	<div class="select-right">
-        	  <div class="select-box" onclick="toggleDropdown('dropdown-proprio')" title="Filtre Propriétaire">🚗<span>▼</span></div>
-		      <div class="dropdown-list" id="dropdown-proprio">
-			  </div>
-		    </div>
-
-		    <div class="select-right">
-  				<div class="select-box" onclick="toggleDropdown('dropdown-visite')" title="Filtre Dernière Visite">⏱️<span>▼</span></div>
-  				<div class="dropdown-list" id="dropdown-visite">
-    				<label><input type="radio" name="filtre_visite" value="all" onchange="filtrerMagasins()" checked>Tous</label>
-    				<label><input type="radio" name="filtre_visite" value="2weeks" onchange="filtrerMagasins()">≤ 14 j</label>
-    				<label><input type="radio" name="filtre_visite" value="1month" onchange="filtrerMagasins()">≤ 30 j</label>
-   				 	<label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()">> 30 j (+ Jamais)</label>
-  				</div>
-			</div>
-
-		  <div class="search-container">
-  			<input type="text" id="search-bar" class="search-input-short" placeholder="Rechercher (nom, ville...)" oninput="filtrerMagasins()">
- 			<button id="btn-clear-filters" class="btn-clear" onclick="reinitialiserFiltres()" title="Effacer tous les filtres">✖</button>
-		  </div>
-		  
+          <div class="select-right">
+            <div class="select-box" onclick="toggleDropdown('dropdown-enseigne')" title="Filtre Enseignes">🛒<span>▼</span></div>
+            <div class="dropdown-list" id="dropdown-enseigne">
+              <label><input type="checkbox" value="AUCHAN HM" onchange="filtrerMagasins()"> AUCHAN HM</label>
+              <label><input type="checkbox" value="AUCHAN SM" onchange="filtrerMagasins()">AUCHAN SM</label>
+              <label><input type="checkbox" value="CASINO" onchange="filtrerMagasins()">CASINO</label>
+              <label><input type="checkbox" value="FRANPRIX" onchange="filtrerMagasins()">FRANPRIX</label>
+              <label><input type="checkbox" value="MONOPRIX" onchange="filtrerMagasins()">MONOPRIX</label>
+              <label><input type="checkbox" value="CRF HYPER" onchange="filtrerMagasins()">CRF HYPER</label>
+              <label><input type="checkbox" value="CRF MARKET" onchange="filtrerMagasins()">CRF MARKET</label>
+              <label><input type="checkbox" value="CRF PROXI" onchange="filtrerMagasins()">CRF PROXI</label>
+              <label><input type="checkbox" value="ITM PROXI" onchange="filtrerMagasins()">ITM PROXI</label>
+              <label><input type="checkbox" value="ITM SM" onchange="filtrerMagasins()">ITM SM</label>
+              <label><input type="checkbox" value="LECLERC" onchange="filtrerMagasins()">LECLERC</label>
+              <label><input type="checkbox" value="LECLERC PROXI" onchange="filtrerMagasins()">LECLERC PROXI</label>
+              <label><input type="checkbox" value="LECLERC DRIVE" onchange="filtrerMagasins()">LECLERC DRIVE</label>
+              <label><input type="checkbox" value="OTERA" onchange="filtrerMagasins()">OTERA</label>
+              <label><input type="checkbox" value="SUPER U" onchange="filtrerMagasins()">SUPER U</label>
+              <label><input type="checkbox" value="U EXPRESS" onchange="filtrerMagasins()">U EXPRESS</label>
+              <label><input type="checkbox" value="MATCH" onchange="filtrerMagasins()">MATCH</label>
+              <label><input type="checkbox" value="G 20" onchange="filtrerMagasins()">G 20</label>
+              <label><input type="checkbox" value="AUTRES" onchange="filtrerMagasins()">AUTRES</label>
+            </div>
           </div>
-	  </div>
 
-	 <div id="liste-visibles-content"></div>
- </div>
+          <div class="select-right">
+            <div class="select-box" onclick="toggleDropdown('dropdown-prio')" title="Filtre Priorités">🎯<span>▼</span></div>
+            <div class="dropdown-list" id="dropdown-prio">
+              <label><input type="checkbox" value="A" onchange="filtrerMagasins()">A</label>
+              <label><input type="checkbox" value="B" onchange="filtrerMagasins()">B</label>
+              <label><input type="checkbox" value="C" onchange="filtrerMagasins()">C</label>
+              <label><input type="checkbox" value="D" onchange="filtrerMagasins()">D</label>
+              <label><input type="checkbox" value="DRIVE" onchange="filtrerMagasins()">DRIVE</label>
+              <label><input type="checkbox" value="E" onchange="filtrerMagasins()">E</label>
+              <label><input type="checkbox" value="F" onchange="filtrerMagasins()">F</label>
+              <label><input type="checkbox" value="URB" onchange="filtrerMagasins()">URB</label>
+              <label><input type="checkbox" value="X" onchange="filtrerMagasins()">X</label>
+            </div>
+          </div>
 
+          <div class="select-right">
+            <div class="select-box" onclick="toggleDropdown('dropdown-proprio')" title="Filtre Propriétaire">🚗<span>▼</span></div>
+            <div class="dropdown-list" id="dropdown-proprio"></div>
+          </div>
+
+          <div class="select-right">
+            <div class="select-box" onclick="toggleDropdown('dropdown-visite')" title="Filtre Dernière Visite">⏱️<span>▼</span></div>
+            <div class="dropdown-list" id="dropdown-visite">
+              <label><input type="radio" name="filtre_visite" value="all" onchange="filtrerMagasins()" checked>Tous</label>
+              <label><input type="radio" name="filtre_visite" value="2weeks" onchange="filtrerMagasins()">≤ 14 j</label>
+              <label><input type="radio" name="filtre_visite" value="1month" onchange="filtrerMagasins()">≤ 30 j</label>
+              <label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()">> 30 j (+ Jamais)</label>
+            </div>
+          </div>
+        </div> <!-- Fin toolbar -->
+
+        <div class="search-container">
+          <input type="text" id="search-bar" class="search-input-short" placeholder="Rechercher (nom, ville...)" oninput="filtrerMagasins()">
+          <button id="btn-clear-filters" class="btn-clear" onclick="reinitialiserFiltres()" title="Effacer tous les filtres">✖</button>
+        </div>
+      </div> <!-- Fin panneau-a-l-ecran -->
+
+      <div id="liste-visibles-content"></div>
+    </div> <!-- FIN #panneau-visibles -->
+
+  </div> <!--fin container-->
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
@@ -225,16 +179,16 @@
   <script src="/js/panneau_tournee.js"></script>
   <script src="/js/mapGMS.js"></script>
   <script src="/js/navbar.js"></script>
-	<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((reg) => console.log('Service worker enregistré !', reg))
-        .catch((err) => console.log('Erreur Service Worker', err));
-    });
-  }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => console.log('Service worker enregistré !', reg))
+          .catch((err) => console.log('Erreur Service Worker', err));
+      });
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
 </body>
 </html>
