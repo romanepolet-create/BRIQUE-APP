@@ -118,7 +118,7 @@ const matriceGMS = {
   obligatoire: [],
   facultatif: [],
   direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
-  }
+  },
 "AUTRES": {
   obligatoire: [],
   facultatif: [],
