@@ -78,7 +78,7 @@ window.ouvrirMenuEquipe = async function() {
         
         let boutonsHTML = data.tournees.map(t => {
             const nom = t.email ? t.email.split('@')[0].replace('.', ' ').toUpperCase() : 'Inconnu';
-            return `<button class="btn-team" data-magasins='${JSON.stringify(t.magasins)}' style="display:block; width:100%; margin-bottom:8px; padding:8px; background:#002ab6; color:white; border:none; cursor:pointer;">${nom}</button>`;
+            return `<button class="btn-team" data-magasins='${encodeURIComponent(JSON.stringify(t.magasins))}' style="display:block; width:100%; margin-bottom:8px; padding:8px; background:#002ab6; color:white; border:none; cursor:pointer;">${nom}</button>`;
         }).join('');
 
         boutonsHTML += `<button onclick="this.parentElement.remove()" style="margin-top:10px; background:#dc3545; color:white; padding:5px 15px; border:none; cursor:pointer;">Fermer</button>`;
@@ -87,7 +87,7 @@ window.ouvrirMenuEquipe = async function() {
 
         EquipePopup.querySelectorAll('.btn-team').forEach(btn => {
             btn.onclick = function() {
-                const donnees = JSON.parse(this.getAttribute('data-magasins'));
+                const donnees = JSON.parse(decodeURIComponent(this.getAttribute('data-magasins')));
                 memoireGlobaleTournees = donnees || {};
                 etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
                 
