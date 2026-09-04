@@ -119,6 +119,11 @@ const matriceGMS = {
   facultatif: [],
   direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
   }
+"AUTRES": {
+  obligatoire: [],
+  facultatif: [],
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  }
 };
 
 let joursOuvres = [];
@@ -384,7 +389,8 @@ function getCouleurEnseigne(enseigne) {
 		 "MATCH": "#d1001f",
   		 "U EXPRESS": "#a000ff",
  		 "LECLERC DRIVE": "#ff66cc",
- 		 "G 20": "#00b050"
+ 		 "G 20": "#00b050",
+		 "AUTRES": "#808080",
     } 
     // Retourne la couleur, ou un gris par défaut si l'enseigne est inconnue
     return couleurs[enseignePropre] || "#555555";
