@@ -72,15 +72,17 @@ window.ouvrirMenuEquipe = async function() {
             return;
         }
         const data = await response.json();
-        const tourneesValides = data.tournees.filter(t => t.email);
-        window.tempTourneesEquipe = [];
         
+        const tourneesValides = data.tournees.filter(t => t.email);
+        
+        window.tempTourneesEquipe = [];
+
         const EquipePopup = document.createElement("div");
         EquipePopup.id = "equipe-popup-container";
         EquipePopup.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:2px solid black; z-index:9999; box-shadow:4px 4px 15px rgba(0,0,0,0.4); width:300px; text-align:center;";
         
-        let boutonsHTML = data.tournees.map(t => {
-            const nom = t.email ? t.email.split('@')[0].replace('.', ' ').toUpperCase() : 'Inconnu';
+        let boutonsHTML = tourneesValides.map((t, index) => {
+            const nom = t.email.split('@')[0].replace('.', ' ').toUpperCase();
             window.tempTourneesEquipe[index] = t.magasins;
             
             return `<button type="button" onclick="chargerTourneeEquipe(${index}, '${nom}')" style="display:block; width:100%; margin-bottom:8px; padding:8px; background:#002ab6; color:white; border:none; cursor:pointer;">${nom}</button>`;
@@ -88,6 +90,7 @@ window.ouvrirMenuEquipe = async function() {
 
         boutonsHTML += `<button onclick="this.parentElement.remove()" style="margin-top:10px; background:#dc3545; color:white; padding:5px 15px; border:none; cursor:pointer;">Fermer</button>`;
         EquipePopup.innerHTML = `<h3>👥 Tournées de l'équipe</h3>${boutonsHTML}`;
+        document.body.appendChild(EquipePopup);
         document.body.appendChild(EquipePopup);
         } catch (err) {
         console.error("Erreur équipe :", err);
