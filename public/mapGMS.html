@@ -40,6 +40,7 @@
     <div id="left">  
       <div class="sidebar-filters">
         <h3 id="Opportunités_DN">Opportunités DN</h3>
+		  
         <div class="tristate-container">
           <span class="tristate-label">Sans BH</span>
           <div class="tristate-switch">
@@ -69,36 +70,35 @@
         </div>
       </div> <!-- Fin sidebar-filters -->
 
-      <div id="panneau-tournee">
-        <button id="voirAutre" onclick="ouvrirMenuEquipe()" title="Voir les tournées de l'équipe">👥</button>
-        <div id="slider-jours"></div>
-        <h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
+	  	<div class="tournee-wrapper">
+	  		<button id="voirAutre" onclick="ouvrirMenuEquipe()" title="Voir les tournées de l'équipe">👥</button>
+      		<div id="panneau-tournee">
+        		<div id="slider-jours"></div>
+        		<h3 id="ma_tournee">📍 Ma Tournée (<span id="compteur-tournee">0</span>)</h3>
         
-        <div class="toggle-container">
-          <label class="switch">
-            <input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
-            <span class="slider round"></span>
-          </label>
-          <span class="toggle-label"></span>
-        </div>
+        		<div class="toggle-container">
+          		<label class="switch">
+            		<input type="checkbox" id="toggle-selected" onchange="filtrerMagasins()">
+            		<span class="slider round"></span>
+          		</label>
+          		<span class="toggle-label"></span>
+        		</div>
         
-        <ul id="liste-tournee"></ul>
+        		<ul id="liste-tournee"></ul>
 
-        <button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
+        		<button id="btn-opti" onclick="optimiserTournee()">⏳ Optimiser L'intineraire </button>
                         
-        <div id="DGMAPS">
-          <button onclick="ouvrirGoogleMaps()" id="BGMAPS">🗺️ G. Maps</button>
-          <button id="btn-waze" onclick="ouvrirWaze()">🚗 Waze</button>
-        </div>
-        <button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
-      </div> <!-- Fin panneau-tournee -->
-    </div> <!-- FIN #left -->
+        		<div id="DGMAPS">
+          		<button onclick="ouvrirGoogleMaps()" id="BGMAPS">🗺️ G. Maps</button>
+          		<button id="btn-waze" onclick="ouvrirWaze()">🚗 Waze</button>
+        		</div>
+        		<button id="vider" onclick="viderTournee()">🗑️ Vider la sélection</button>
+      		</div> <!-- Fin panneau-tournee -->
+    		</div> <!-- FIN tourne-wrapper -->
+		</div> <!-- FIN left -->
 
 	  
-
     <div id="map"></div>
-
-
 	  
 
     <div id="panneau-visibles">
