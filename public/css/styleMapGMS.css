@@ -43,7 +43,7 @@ h1 {
   height: 100%;
   overflow-y: auto; 
   overflow-x: hidden;
-  padding: 10px 10px 10px 5px;
+  padding: 10px 10px 10px 45px;
   box-sizing: border-box;
   background-color: transparent; 
   text-align: center; 
@@ -154,7 +154,6 @@ h1 {
   flex-direction: column;
   height: fit-content;
   width: 100%; 
-  box-sizing: border-box;
 }
 
 #slider-jours {
