@@ -229,7 +229,9 @@ function traiterFichierPhoto(inputSource) {
 }
 
 document.getElementById('mea_volume').addEventListener('input', function(e) {
-    this.value = this.value.replace(',', '.');
+  let val = this.value.replace(',', '.');
+  val = val.replace(/[^0-9.]/g, '');
+  this.value = val;
 });
 
 async function soumettreFormulaire() {
