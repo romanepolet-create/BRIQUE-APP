@@ -43,7 +43,7 @@ h1 {
   height: 100%;
   overflow-y: auto; 
   overflow-x: hidden;
-  padding: 10px 10px 10px 45px;
+  padding: 10px 10px 10px 5px;
   box-sizing: border-box;
   background-color: transparent; 
   text-align: center; 
