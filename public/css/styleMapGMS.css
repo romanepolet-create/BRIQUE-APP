@@ -38,12 +38,12 @@ h1 {
 }
 
 #left {
-  width: 350px !important;
-  min-width: 350px !important;
+  width: 370px !important;
+  min-width: 370px !important;
   height: 100%;
   overflow-y: auto; 
   overflow-x: hidden;
-  padding: 10px;
+  padding: 10px 10px 10px 45px;
   box-sizing: border-box;
   background-color: transparent; 
   text-align: center; 
@@ -136,9 +136,10 @@ h1 {
 
 .tournee-wrapper {
   position: relative;
-  margin-left: 45px;
+  margin-left: 0px;
   margin-top: 20px;
   margin-bottom: 20px;
+  width: 100px;
 }
 
 #panneau-tournee {
@@ -152,6 +153,8 @@ h1 {
   display: flex;
   flex-direction: column;
   height: fit-content;
+  width: 100%; 
+  box-sizing: border-box;
 }
 
 #slider-jours {
