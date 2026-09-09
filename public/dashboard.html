@@ -186,9 +186,31 @@
         .then((reg) => console.log('Service worker enregistré !', reg))
         .catch((err) => console.log('Erreur Service Worker', err));
     });
-  }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   }
+   </script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+   <!-- HIDDEN - FOR NOW - POPUP DETAILS-->
+
+    <!-- MODAL DÉTAIL DN -->
+    <div id="modal-detail-dn">
+        <div id="modal-detail-DN-titre">
+            <span id="close-modal-dn">&times;</span>
+            <h3 id="detail-DN-titre">📊 Détail des DN (Mois en cours)</h3>
+            
+            <table id="table-detail-DN">
+                <thead id="thead-detail-DN">
+                    <tr id="tr-detail-dn">
+                        <th id="th1-detail-DN">Magasin</th>
+                        <th id="th2-detail-DN">Évolution</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-detail-dn">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </body>
 </html>
