@@ -105,6 +105,11 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('kpi-dn').textContent = dnGagnee >= 0 ? `+${dnGagnee}` : dnGagnee;
         document.getElementById('evo-dn').textContent = `Base : ${dnInitiale} ➔ ${dnFinale}`;
 
+        const kpiDnElement = document.getElementById('kpi-dn');
+        kpiDnElement.style.cursor = 'pointer';
+        kpiDnElement.title = "Cliquez pour voir le détail par magasin";
+        kpiDnElement.onclick = () => ouvrirModalDN(visitesMois, visitesPrec, donneesGlobales.listeMagasins);
+
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
 
@@ -325,8 +330,21 @@ function genererFocusDN(magasins, visites) {
     selectEnseigne.onchange = () => genererFocusDN(magasins, visites);
 }
 
-document.addEventListener("DOMContentLoaded", () => chargerDonneesEtAfficher('general'));
+document.addEventListener("DOMContentLoaded", () => {
+    chargerDonneesEtAfficher('general');
 
+    const btnClose = document.getElementById('close-modal-dn');
+    if (btnClose) {
+        btnClose.onclick = () => document.getElementById('modal-detail-dn').style.display = 'none';
+    }
+
+    window.onclick = (event) => {
+        const modal = document.getElementById('modal-detail-dn');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+});
 
 
 
