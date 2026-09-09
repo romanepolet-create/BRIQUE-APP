@@ -272,3 +272,55 @@ body {
   text-align: left; 
   font-size: 14px;
 }
+
+
+
+
+/*HIDDEN - FOR NOW - POPUP DETAILS*/
+#modal-detail-dn {
+  display: none; 
+  position: fixed; 
+  top: 0; left: 0; 
+  width: 100%; height: 100%; 
+  background: rgba(0,0,0,0.5); 
+  z-index: 1000; 
+  align-items: center; 
+  justify-content: center;
+}
+
+#modal-detail-DN-titre {
+  background: white; 
+  padding: 20px; 
+  border-radius: 10px; 
+  width: 90%; 
+  max-width: 500px; 
+  max-height: 80vh; 
+  overflow-y: auto; 
+  position: relative; 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#close-modal-dn {
+  position: absolute; 
+  top: 15px; right: 20px; 
+  font-size: 24px; 
+  cursor: pointer; 
+  color: #666;
+}
+
+#detail-DN-titre {
+  margin-top: 0; 
+  color: #002ab6; 
+  margin-bottom: 20px;
+}
+
+#table-detail-DN {
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 14px;
+}
+
+#thead-detail-DN { background: #f4f7f6; }
+#tr-detail-dn { border-bottom: 2px solid #ddd; text-align: left; }
+#th1-detail-DN, #th2-detail-DN { padding: 10px; }
+#th2-detail-DN { text-align: center; }
