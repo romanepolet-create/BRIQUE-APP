@@ -106,9 +106,25 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('evo-dn').textContent = `Base : ${dnInitiale} ➔ ${dnFinale}`;
 
         const kpiDnElement = document.getElementById('kpi-dn');
-        kpiDnElement.style.cursor = 'pointer';
-        kpiDnElement.title = "Cliquez pour voir le détail par magasin";
-        kpiDnElement.onclick = () => ouvrirModalDN(visitesMois, visitesPrec, donneesGlobales.listeMagasins);
+        const carteDn = kpiDnElement.parentNode;
+
+        carteDn.style.cursor = 'pointer';
+        carteDn.style.transition = '0.2s';
+        carteDn.onmouseover = () => carteDn.style.transform = 'translateY(-2px)';
+        carteDn.onmouseout = () => carteDn.style.transform = 'translateY(0)';
+
+        if (!document.getElementById('dn-click-hint')) {
+            const hint = document.createElement('div');
+            hint.id = 'dn-click-hint';
+            hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
+            hint.style.fontSize = '12px';
+            hint.style.color = '#999';
+            hint.style.marginTop = '8px';
+            kpiDnElement.parentNode.insertBefore(hint, kpiDnElement.nextSibling);
+        }
+        
+        
+        carteDn.onclick = () => ouvrirModalDN(visitesMois, visitesPrec, donneesGlobales.listeMagasins);
 
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
@@ -530,7 +546,7 @@ function ouvrirModalDN(visitesMois, visitesPrec, listeMagasins) {
         const diff = dnFin - dnInit;
 
         if (diff !== 0) {
-            const magInfo = listeMagasins?.find(m => m.hubspot_id === id);
+            const magInfo = listeMagasins?.find(m => String(m.hubspot_id) === String(id));
             details.push({
                 nom: magInfo ? magInfo.nom : id,
                 enseigne: magInfo ? magInfo.enseigne : "",
