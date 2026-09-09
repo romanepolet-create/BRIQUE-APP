@@ -541,6 +541,9 @@ function ouvrirModalDN(visitesMois, visitesPrec, listeMagasins) {
     const details = [];
 
     storeIds.forEach(id => {
+        const visitesCeMois = visitesMois.filter(v => v.hubspot_id === id);
+         if (visitesCeMois.length === 0) return; 
+        
         const dnFin = calculerScoreDNUnique(visitesMois.filter(v => v.hubspot_id === id));
         const dnInit = calculerScoreDNUnique(visitesPrec.filter(v => v.hubspot_id === id));
         const diff = dnFin - dnInit;
