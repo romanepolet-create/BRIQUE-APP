@@ -13,7 +13,7 @@ router.get('/data', async (req, res) => {
         const now = new Date();
         const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
 
-        const { data: visitesData } = await supabase.from('dashboard_visites').select('*').gte('created_at', firstDayLastMonth);
+        const { data: visitesData } = await supabase.from('dashboard_visites').select('*');
         const visitesBrutes = Array.isArray(visitesData) ? visitesData : [];
 
         const { data: objData } = await supabase.from('objectifs_commerciaux').select('*');
