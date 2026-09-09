@@ -100,7 +100,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('kpi-visites').textContent = visitesMois.length;
         
         const dnInitiale = calculerScoreDNUnique(visitesPrec);
-        const dnFinale = calculerScoreDNUnique(visitesMois);
+        const dnFinale = calculerScoreDNUnique(visitesFiltrees);
         const dnGagnee = dnFinale - dnInitiale;
         document.getElementById('kpi-dn').textContent = dnGagnee >= 0 ? `+${dnGagnee}` : dnGagnee;
         document.getElementById('evo-dn').textContent = `Base : ${dnInitiale} ➔ ${dnFinale}`;
