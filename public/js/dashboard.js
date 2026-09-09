@@ -496,3 +496,55 @@ function genererProductivite(toutesVisites) {
         tbody.appendChild(tr);
     });
 }
+
+
+
+// ===========================
+// DÉTAIL DN
+// ===========================
+function ouvrirModalDN(visitesMois, visitesPrec, listeMagasins) {
+    const storeIds = [...new Set([...visitesMois.map(v => v.hubspot_id), ...visitesPrec.map(v => v.hubspot_id)])];
+    const details = [];
+
+    storeIds.forEach(id => {
+        const dnFin = calculerScoreDNUnique(visitesMois.filter(v => v.hubspot_id === id));
+        const dnInit = calculerScoreDNUnique(visitesPrec.filter(v => v.hubspot_id === id));
+        const diff = dnFin - dnInit;
+
+        if (diff !== 0) {
+            const magInfo = listeMagasins?.find(m => m.hubspot_id === id);
+            details.push({
+                nom: magInfo ? magInfo.nom : id,
+                enseigne: magInfo ? magInfo.enseigne : "",
+                diff: diff
+            });
+        }
+    });
+
+    details.sort((a, b) => b.diff - a.diff);
+
+    const tbody = document.getElementById('tbody-detail-dn');
+    tbody.innerHTML = '';
+
+    if (details.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; padding: 20px; color: #666;">Aucune évolution de DN ce mois-ci.</td></tr>';
+    } else {
+        details.forEach(d => {
+            const couleur = d.diff > 0 ? '#28a745' : '#dc3545';
+            const signe = d.diff > 0 ? '+' : '';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                    <b>${d.nom}</b><br>
+                    <span style="font-size: 11px; color: #888;">${d.enseigne}</span>
+                </td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
+                    <b style="color: ${couleur}; font-size: 16px; background: ${couleur}15; padding: 4px 10px; border-radius: 12px;">${signe}${d.diff}</b>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    document.getElementById('modal-detail-dn').style.display = 'flex';
+}
