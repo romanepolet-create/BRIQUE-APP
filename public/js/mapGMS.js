@@ -499,7 +499,8 @@ window.ouvrirPopupDynamique = function(layer) {
 	const titreEvent = encodeURIComponent(`${m.nom}`);
     const adresseEvent = encodeURIComponent(`${m.adresse || ''}, ${m.code_postal || ''} ${m.ville || ''}`);
     //const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
-
+	const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
+	
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
         <h4 style="color: #002ab6; margin: 0 0 5px 0;">${m.nom}</h4>
@@ -528,7 +529,7 @@ window.ouvrirPopupDynamique = function(layer) {
             HS
           </a>
 
-          <button onclick="creerTacheAgenda('${nomEchappe}', '${(m.adresse || '')} ${(m.ville || '')}'.replace(/'/g, `\\'`))" 
+          <button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" 
              style="
                flex: 1; 
                background-color: #4285F4; 
