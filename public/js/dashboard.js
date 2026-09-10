@@ -187,7 +187,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
         const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < startOfMonth);
         
-        const actuelDN = calculerScoreDNUnique(visMois) - calculerScoreDNUnique(visPrec);
+        const actuelDN = calculerScoreDNUnique([...visMois, ...visPrec]);
         const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         
         let actuelDirect = 0;
