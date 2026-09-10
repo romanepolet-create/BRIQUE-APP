@@ -1269,7 +1269,7 @@ function actualiserPanneauGPS() {
       <li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; ${styleLigne}">
         <span style="flex:1; text-align:left; padding-right: 5px;"><strong>${index+1}.</strong> ${contenuTexte}</span>
         <div style="display:flex; gap: 5px; align-items:center;">
-		  ${btnForm}
+		  ${btnTache}
           ${btnFinal}
           ${btnMasque}
           <button class="btn-delete-etape" onclick="supprimerEtape(${index})" title="Retirer" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;">✖</button>
