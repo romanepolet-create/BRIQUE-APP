@@ -496,7 +496,7 @@ window.ouvrirPopupDynamique = function(layer) {
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
 	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
 
-	const titreEvent = encodeURIComponent(`Tâche : ${m.nom}`);
+	const titreEvent = encodeURIComponent(`${m.nom}`);
     const adresseEvent = encodeURIComponent(`${m.adresse || ''}, ${m.code_postal || ''} ${m.ville || ''}`);
     const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
 
