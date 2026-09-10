@@ -307,7 +307,7 @@ async function soumettreFormulaire() {
         const nomMagasin = document.getElementById('nom_magasin').value;
         const notes = document.querySelector('textarea').value || "Aucun commentaire spécifique lors de la visite.";
         
-        const titreEvent = encodeURIComponent(`Relance / Suivi : ${nomMagasin}`);
+        const titreEvent = encodeURIComponent(`${nomMagasin}`);
         const descriptionEvent = encodeURIComponent(`Rappel suite à notre dernière visite.\n\nNotes de la dernière visite :\n${notes}`);
         
         const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&details=${descriptionEvent}`;
