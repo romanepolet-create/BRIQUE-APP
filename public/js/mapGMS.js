@@ -498,7 +498,7 @@ window.ouvrirPopupDynamique = function(layer) {
 
 	const titreEvent = encodeURIComponent(`${m.nom}`);
     const adresseEvent = encodeURIComponent(`${m.adresse || ''}, ${m.code_postal || ''} ${m.ville || ''}`);
-    const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
+    //const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
 
     const contenuBulle = `
         <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
@@ -528,7 +528,7 @@ window.ouvrirPopupDynamique = function(layer) {
             HS
           </a>
 
-          <a href="${lienGCal}" target="_blank" 
+          <button onclick="creerTacheAgenda('${nomEchappe}', '${(m.adresse || '')} ${(m.ville || '')}'.replace(/'/g, `\\'`))" 
              style="
                flex: 1; 
                background-color: #4285F4; 
@@ -536,14 +536,14 @@ window.ouvrirPopupDynamique = function(layer) {
                padding: 8px 5px; 
                border-radius: 5px; 
                font-weight: bold; 
-               text-decoration: none; 
+               cursor: pointer; 
                font-size: 12px;
                display: flex;
                align-items: center;
                justify-content: center;
                gap: 5px;">
             📅 Tâche
-          </a>
+          </button>
         </div>
 
         <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')"
