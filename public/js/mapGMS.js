@@ -1439,7 +1439,7 @@ window.reinitialiserFiltres = function() {
   const searchBar = document.getElementById('search-bar');
   if (searchBar) searchBar.value = "";
 
-/*  const toggleSelected = document.getElementById('toggle-selected');
+/*const toggleSelected = document.getElementById('toggle-selected');
   if (toggleSelected) toggleSelected.checked = false;*/
 
   const toggleBh = document.getElementById('toggle-bh');
@@ -1458,9 +1458,9 @@ window.reinitialiserFiltres = function() {
   }
 
   document.querySelectorAll('.dropdown-list input[type="checkbox"]').forEach(cb => {
-	  if(cb !== "dropdown-proprio") {
-			cb.checked = false;
-		}
+      if (!cb.closest('#dropdown-proprio')) {
+          cb.checked = false;
+      }
   });
 
   const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
