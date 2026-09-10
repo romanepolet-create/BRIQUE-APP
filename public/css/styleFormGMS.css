@@ -38,6 +38,17 @@ h1 {
 	text-align: center; 
 	margin-bottom: 25px; 
 }
+
+#retour {
+	background: none; 
+	border: none; 
+	color: #002ab6; 
+	font-size: 20px; 
+	text-decoration: underline; 
+	cursor: pointer; 
+	margin-bottom: 10px;
+}
+
 .info-badge { 
 	display: inline-block; 
 	background: #f3b0cf; 
