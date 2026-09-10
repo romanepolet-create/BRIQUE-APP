@@ -307,14 +307,29 @@ async function soumettreFormulaire() {
         const nomMagasin = document.getElementById('nom_magasin').value;
         const notes = document.querySelector('textarea').value || "Aucun commentaire spécifique lors de la visite.";
         
-        const titreEvent = encodeURIComponent(`${nomMagasin}`);
-        const descriptionEvent = encodeURIComponent(`Rappel suite à notre dernière visite.\n\nNotes de la dernière visite :\n${notes}`);
-        
-        const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&details=${descriptionEvent}`;
-        
-        window.open(googleCalUrl, '_blank');
+        const date = new Date();
+        const formatICS = (d) => d.toISOString().replace(/-|:|\.\d+/g, '').substring(0,15) + 'Z';
+        const debut = formatICS(date);
+        date.setHours(date.getHours() + 1);
+        const fin = formatICS(date);
+
+        // Nettoyage des retours à la ligne pour ne pas casser le fichier
+        const notePropre = notes.replace(/\n/g, ' '); 
+        const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Relance / Suivi : ${nomMagasin}\nDESCRIPTION:Rappel suite à la visite.\\nNotes : ${notePropre}\nDTSTART:${debut}\nDTEND:${fin}\nEND:VEVENT\nEND:VCALENDAR`;
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = 'rappel.ics';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // On laisse 1,5 seconde à l'iPhone pour ouvrir l'agenda avant de fermer l'onglet
+        setTimeout(() => window.close(), 1500);
+      } else {
+        window.close();
       }
-      window.close();
     } else {
       alert(`Erreur de sauvegarde : ${resultat.error}`);
       btnSubmit.textContent = txtInitial;
