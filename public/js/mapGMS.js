@@ -1435,19 +1435,15 @@ initialiserCarte();
 
 
 window.reinitialiserFiltres = function() {
-  // 1. Vider la barre de recherche
   const searchBar = document.getElementById('search-bar');
   if (searchBar) searchBar.value = "";
 
-  // 2. Remettre à zéro l'interrupteur Ma Tournée
-  const toggleSelected = document.getElementById('toggle-selected');
-  if (toggleSelected) toggleSelected.checked = false;
+/*  const toggleSelected = document.getElementById('toggle-selected');
+  if (toggleSelected) toggleSelected.checked = false;*/
 
-  // 3. Remettre à zéro le filtre Sans/Avec BH (si c'est un range ou select)
   const toggleBh = document.getElementById('toggle-bh');
   if (toggleBh) toggleBh.value = "0";
 
-  // 4. Remettre à zéro les curseurs TDN
   const filterTdn = document.getElementById('filter-tdn');
   if (filterTdn) {
     filterTdn.value = "-1";
@@ -1460,15 +1456,33 @@ window.reinitialiserFiltres = function() {
     document.getElementById('tdn75-val').innerText = "Tous";
   }
 
-  // 5. Décocher toutes les cases des menus déroulants (Enseignes, Proprio, etc.)
   document.querySelectorAll('.dropdown-list input[type="checkbox"]').forEach(cb => {
-    cb.checked = false;
+	  if(cb !== "dropdown-proprio") {
+			cb.checked = false;
+		}
   });
 
-  // 6. Réinitialiser les boutons radio (ex: filtres de visite)
   const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
   if (radioAll) radioAll.checked = true;
 
-  // 7. Relancer l'affichage global
   filtrerMagasins();
+};
+
+
+window.creerTacheAgenda = function(titre, adresse) {
+    const date = new Date();
+    const formatICS = (d) => d.toISOString().replace(/-|:|\.\d+/g, '').substring(0,15) + 'Z';
+    const debut = formatICS(date);
+    date.setHours(date.getHours() + 1);
+    const fin = formatICS(date);
+
+    const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${titre}\nLOCATION:${adresse}\nDTSTART:${debut}\nDTEND:${fin}\nEND:VEVENT\nEND:VCALENDAR`;
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'tache.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 };
