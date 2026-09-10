@@ -1232,25 +1232,27 @@ function actualiserPanneauGPS() {
 
   etapesItineraire.forEach((etape, index) => {
     let contenuTexte = etape.nom;
-    if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
-      const lien = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${etape.hubspot_id}`;
-      // Si masqué, on grise le lien
-      contenuTexte = `<a href="${lien}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
+		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
+		if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
+      contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
     }
-
+		
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
-    const btnForm = `
-		<button data-url="${urlForm}" 
-		onclick="window.open(this.dataset.url, '_blank')" 
-		title="Ouvrir le formulaire" 
-		style="
-			background:none; 
-			border:none; 
-			cursor:pointer; 
-			font-size:14px; 
-			padding:0;">📝</button>`;
+		const magasinComplet = listeMagasins.find(m => m.hubspot_id === etape.hubspot_id) || {};
+    const nomEchappe = etape.nom ? etape.nom.replace(/'/g, "\\'") : "Magasin";
+    const adresseEchappe = `${magasinComplet.adresse || ''} ${magasinComplet.ville || ''}`.replace(/'/g, "\\'");
+		
+		const btnTache = `
+        <button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" 
+        title="Ajouter une tâche / rappel" 
+        style="
+            background:none; 
+            border:none; 
+            cursor:pointer; 
+            font-size:14px; 
+            padding:0;">📅
+				</button>`;
 
     // Le bouton Oeil (barré par CSS natif si masqué)
     const btnMasque = etape.masque
