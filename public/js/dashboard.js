@@ -388,8 +388,8 @@ function genererFocusMEA(visites) {
     visitesMEA.forEach(v => {
         const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
         
-        const magInfo = donneesGlobales.listeMagasins.find(m => m.hubspot_id === v.hubspot_id);
-        const nomMagasin = donneesGlobales.listeMagasins ? donneesGlobales.listeMagasins.find.nom : v.hubspot_id;
+        const magInfo = donneesGlobales.listeMagasins.find(m => String(m.hubspot_id) === String(v.hubspot_id));
+        const nomMagasin = magInfo ? magInfo.nom : v.hubspot_id;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
