@@ -1159,7 +1159,7 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   const magasinDejaPresent = etapesItineraire.some(etape => etape.hubspot_id === hubspot_id);
 
   const executerAjout = () => {
-    etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, Priorité: priorite, masque: false, isFinal: false});
+    etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, masque: false, isFinal: false});
     actualiserPanneauGPS();
     filtrerMagasins();
     sauvegarderTourneeMemoire();
