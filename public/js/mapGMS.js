@@ -1242,7 +1242,6 @@ function actualiserPanneauGPS() {
 		
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
-		const magasinComplet = listeMagasins.find(m => m.hubspot_id === etape.hubspot_id) || {};
     const nomEchappe = etape.nom ? etape.nom.replace(/'/g, "\\'") : "Magasin";
     const adresseEchappe = `${magasinComplet.adresse || ''} ${magasinComplet.ville || ''}`.replace(/'/g, "\\'");
 		
