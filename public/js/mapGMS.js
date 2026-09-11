@@ -1234,10 +1234,10 @@ function actualiserPanneauGPS() {
   etapesItineraire.forEach((etape, index) => {
 		const magasinComplet = listeMagasins.find(m => m.hubspot_id === etape.hubspot_id) || {};
 		const textePrio = magasinComplet.Priorité ? ` ${magasinComplet.Priorité}` : "";
-    let contenuTexte = etape.nom + " - " + etape.priorite;
+    let contenuTexte = etape.nom + " - " + textePrio;
 		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;
 		if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
-      contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom}</a>`;
+      contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom}- ${textePrio}</a>`;
     }
 		
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
