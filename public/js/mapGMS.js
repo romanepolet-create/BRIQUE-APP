@@ -1492,7 +1492,7 @@ window.creerTacheAgenda = function(titre, adresse) {
         a.click();
         document.body.removeChild(a);
     } else {
-        const titreEvent = encodeURIComponent(`Tâche : ${titre}`);
+        const titreEvent = encodeURIComponent(`${titre}`);
         const adresseEvent = encodeURIComponent(adresse);
         const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
         window.open(lienGCal, '_blank');
