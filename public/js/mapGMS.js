@@ -188,8 +188,8 @@ function normaliserTexte(texte) {
 //CARTE LEAFLET
 const map = L.map('map', {preferCanvas: true}).setView([46.603354, 1.888334], 5);
   // 2. Charge le fond de carte (OpenStreetMap gratuit & propre)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors, © CARTO',
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri',
     maxZoom: 19
   }).addTo(map);
 
