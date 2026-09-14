@@ -1233,10 +1233,10 @@ function actualiserPanneauGPS() {
 
   etapesItineraire.forEach((etape, index) => {
 		const magasinComplet = listeMagasins.find(m => String(m.hubspot_id) === String(etape.hubspot_id)) || {};
-    let contenuTexte = `${etape.nom} - ${magasinComplet.Priorité}`;
+    let contenuTexte = `<span style="font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</span>`;
 		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;		
 	  if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
-			contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold;">${etape.nom} - ${magasinComplet.Priorité}</a>`;    
+			contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold; font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</a>`;    
 		}
 		
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
