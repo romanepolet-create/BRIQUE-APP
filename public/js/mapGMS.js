@@ -496,20 +496,36 @@ window.ouvrirPopupDynamique = function(layer) {
     const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
 	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
-
-	const titreEvent = encodeURIComponent(`${m.nom}`);
-    const adresseEvent = encodeURIComponent(`${m.adresse || ''}, ${m.code_postal || ''} ${m.ville || ''}`);
-    //const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
+    
 	const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
+	let prio = m.Priorité || "?";
+    let dateTexte = " - Aucune visite";
+
+	if (m.derniere_visite) {
+        const dateVisite = new Date(m.derniere_visite);
+        const jj = String(dateVisite.getDate()).padStart(2, '0');
+        const mm = String(dateVisite.getMonth() + 1).padStart(2, '0');
+
+		const diffTemps = new Date() - dateVisite;
+        const diffJours = Math.floor(diffTemps / (1000 * 60 * 60 * 24));
+        
+        dateTexte = ` - ${jj}/${mm} (il y a ${diffJours} j)`;
+    }
+    //const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
 	
     const contenuBulle = `
-        <div style="text-align: center; font-family: Arial, sans-serif; min-width: 160px;">
-        <h4 style="color: #002ab6; margin: 0 0 5px 0;">${m.nom}</h4>
-        <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
-          ${m.adresse || "Adresse non renseignée"}<br>
-          <strong>${m.code_postal} ${m.ville}</strong><br>
-          <em>Priorité : ${m.Priorité}</em>
+        <div style="text-align: center; font-family: Arial, sans-serif; min-width: 170px;">
+
+        <h4 style="color: #002ab6; margin: 0 0 3px 0;">${m.nom}</h4>
+		
+        <p style="margin: 0 0 5px 0; color: #666; font-size: 11px; line-height: 1.2;">
+          ${m.adresse ? m.adresse + ', ' : ''}${m.code_postal || ''} ${m.ville || ''}
         </p>
+
+		<p style="margin: 0 0 12px 0; color: #333; font-size: 12px; font-weight: bold;">
+          ${prio}${dateTexte}
+        </p>
+
 
 		<div style="display: flex; gap: 5px; width: 100%; margin-bottom: 5px;">
           <a href="${lienHubspot}" target="_blank" 
