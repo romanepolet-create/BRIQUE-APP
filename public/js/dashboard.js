@@ -36,6 +36,13 @@ const OBJECTIFS_PRIO = {
     "DRIVE": 0.00
 };
 
+const OBJECTIFS_MOIS_EN_COURS = {
+    "arnaud.ladougne@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
+    "etienne.firmin@briquehouse.fr": { obj_dn: 33.5, obj_mea: 11.5, obj_direct: 1.4 },
+    "romane.polet@briquehouse.fr": { obj_dn: 38.88, obj_mea: 13.5, obj_direct: 1.62 },
+    "lorelei.duplat@briquehouse.fr": { obj_dn: 10, obj_mea: 2, obj_direct: 0 }
+};
+
 // ==========================================
 // MATHS
 // ==========================================
@@ -187,20 +194,24 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
         const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < startOfMonth);
         
-        const actuelDN = calculerScoreDNUnique([...visMois, ...visPrec]);
+        const toutesVisitesEmail = toutesVisites.filter(v => v.commercial_email === email);
+        const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
+        const dnInitiale = calculerScoreDNUnique(visPrec);
+        const actuelDN = dnFinale - dnInitiale;
+
         const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
-        
+
         let actuelDirect = 0;
         const magsDirects = [...new Set(visMois.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id))];
         magsDirects.forEach(idMag => {
-            const dnFin = calculerScoreDNUnique(visMois.filter(v => v.hubspot_id === idMag));
-            const dnInit = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
-            if (dnFin - dnInit > 0) actuelDirect++;
+            const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
+            const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
+            if (dnF - dnI > 0) actuelDirect++;
         });
 
-        const obj = objectifs.find(o => o.commercial_email === email) || {};
-        obj.obj_dn = calculerObjectifDNDynamique(email, donneesGlobales.listeMagasins || []);
-        
+        const obj = OBJECTIFS_MOIS_EN_COURS[email.toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
+
+   
         const rendreCell = (actuel, objectif, unit = "") => {
             if (!objectif) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuel}</b>`;
             if (vuePourcentage) {
