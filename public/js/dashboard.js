@@ -31,7 +31,6 @@ const OBJECTIFS_PRIO = {
     "D": 0.65,
     "E": 0.42,
     "F": 0.30,
-    "URB": 0.20,
     "X": 0.10,
     "DRIVE": 0.00
 };
