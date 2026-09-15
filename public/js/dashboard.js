@@ -187,7 +187,8 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
     if (!tbody) return;
 
     tbody.innerHTML = '';
-    const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))];
+    const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))]
+        .filter(email => email && Object.keys(OBJECTIFS_MOIS_EN_COURS).includes(email.toLowerCase()));
     const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
 
     commerciauxMails.forEach(email => {
