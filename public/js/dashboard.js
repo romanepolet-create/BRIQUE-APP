@@ -104,6 +104,29 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
         
         document.getElementById('kpi-visites').textContent = visitesMois.length;
+
+        // ============================
+        // ANIMATION CARTE VISITES
+        // ============================
+        const kpiVisitesElement = document.getElementById('kpi-visites');
+        const carteVisites = kpiVisitesElement.parentNode;
+
+        carteVisites.style.cursor = 'pointer';
+        carteVisites.style.transition = '0.2s';
+        carteVisites.onmouseover = () => carteVisites.style.transform = 'translateY(-2px)';
+        carteVisites.onmouseout = () => carteVisites.style.transform = 'translateY(0)';
+
+        if (!document.getElementById('visites-click-hint')) {
+            const hint = document.createElement('div');
+            hint.id = 'visites-click-hint';
+            hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
+            hint.style.fontSize = '12px';
+            hint.style.color = '#999';
+            hint.style.marginTop = '8px';
+            kpiVisitesElement.parentNode.insertBefore(hint, kpiVisitesElement.nextSibling);
+        }
+        
+        carteVisites.onclick = () => ouvrirModalVisites(visitesMois, donneesGlobales.listeMagasins);
         
         const dnInitiale = calculerScoreDNUnique(visitesPrec);
         const dnFinale = calculerScoreDNUnique(visitesFiltrees);
