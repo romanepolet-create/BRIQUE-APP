@@ -213,14 +213,18 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
 
    
         const rendreCell = (actuel, objectif, unit = "") => {
-            if (!objectif) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuel}</b>`;
+            const actuelClean = parseFloat(Number(actuel).toFixed(2));
+            
+            if (objectif === null || objectif === undefined) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
+            if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
+            
             if (vuePourcentage) {
-                const pct = Math.round((actuel / objectif) * 100);
+                const pct = Math.round((actuelClean / objectif) * 100);
                 const col = pct >= 100 ? 'green' : (pct > 50 ? 'orange' : 'red');
                 return `<b style="color:${col};">${pct}%</b><br><span style="font-size:12px; color:#666;">(Obj: ${objectif})</span>`;
             } else {
-                const reste = objectif - actuel;
-                return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuel})</span>`;
+                const reste = parseFloat((objectif - actuelClean).toFixed(2));
+                return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuelClean})</span>`;
             }
         };
 
