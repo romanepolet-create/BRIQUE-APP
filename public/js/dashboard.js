@@ -136,8 +136,11 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
 
-        const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
-        const nbDirects = new Set(visitesMois.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id)).size;
+        const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G20", "AUTRES"];
+        const nbDirects = new Set(visitesMois
+            .filter(v => enseignesDirectes.includes(v.enseigne) && (parseInt(v.score_dn) || 0) > 0)
+            .map(v => v.hubspot_id)
+        ).size;
         document.getElementById('kpi-directs').textContent = nbDirects;
 
         // ==========================================
