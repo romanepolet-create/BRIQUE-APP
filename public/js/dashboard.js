@@ -401,6 +401,18 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.style.display = 'none';
         }
     };
+
+    const btnCloseVisites = document.getElementById('close-modal-visites');
+    if (btnCloseVisites) {
+        btnCloseVisites.onclick = () => document.getElementById('modal-detail-visites').style.display = 'none';
+    }
+
+    window.onclick = (event) => {
+        const modalDN = document.getElementById('modal-detail-dn');
+        const modalVisites = document.getElementById('modal-detail-visites');
+        if (event.target === modalDN) modalDN.style.display = 'none';
+        if (event.target === modalVisites) modalVisites.style.display = 'none';
+    };
 });
 
 
@@ -625,4 +637,42 @@ function ouvrirModalDN(visitesMois, visitesPrec, listeMagasins) {
     }
 
     document.getElementById('modal-detail-dn').style.display = 'flex';
+}
+
+
+// ===========================
+// DÉTAIL VISITES
+// ===========================
+function ouvrirModalVisites(visitesMois, listeMagasins) {
+    const tbody = document.getElementById('tbody-detail-visites');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const visitesTriees = [...visitesMois].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    if (visitesTriees.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; padding: 20px; color: #666;">Aucune visite ce mois-ci.</td></tr>';
+    } else {
+        visitesTriees.forEach(v => {
+            const magInfo = listeMagasins?.find(m => String(m.hubspot_id) === String(v.hubspot_id));
+            const nom = magInfo ? magInfo.nom : v.hubspot_id;
+            const enseigne = magInfo ? magInfo.enseigne : (v.enseigne || "");
+            
+            const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                    <b>${nom}</b><br>
+                    <span style="font-size: 11px; color: #888;">${enseigne}</span>
+                </td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 13px; color: #333;">
+                    ${dateFormatee}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    document.getElementById('modal-detail-visites').style.display = 'flex';
 }
