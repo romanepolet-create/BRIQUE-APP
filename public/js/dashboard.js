@@ -209,7 +209,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
             if (dnF - dnI > 0) actuelDirect++;
         });
 
-        const obj = OBJECTIFS_MOIS_EN_COURS[email.toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
+        const obj = OBJECTIFS_MOIS_EN_COURS[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
 
    
         const rendreCell = (actuel, objectif, unit = "") => {
