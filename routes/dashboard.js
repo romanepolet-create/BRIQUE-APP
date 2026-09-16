@@ -37,7 +37,7 @@ router.get('/data', async (req, res) => {
             
             listeCommerciaux = [...new Set(tousLesEmails)].filter(Boolean);
         
-        res.json({ success: true, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });
+        res.json({ success: true, listeCommerciaux, visitesBrutes, objectifs, listeMagasins, isAdmin: true, emailConnecte: "general" });
         
     } catch (error) {
         console.error("🚨 Erreur Route Dashboard:", error);
