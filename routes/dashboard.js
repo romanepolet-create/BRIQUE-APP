@@ -5,10 +5,6 @@ const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 router.get('/data', async (req, res) => {
-    const emailConnecte = req.session.email || "inconnu@briquehouse.fr";
-    const admins = ["leo.blanchet@briquehouse.fr", "romane.polet@briquehouse.fr"];
-    const isAdmin = admins.includes(emailConnecte.toLowerCase());
-
     try {
         const now = new Date();
         const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
@@ -28,7 +24,6 @@ router.get('/data', async (req, res) => {
         }
 
         let listeCommerciaux = [];
-        if (isAdmin) {
             let tousLesEmails = [
                 ...visitesBrutes.map(v => v.commercial_email),
                 ...objectifs.map(o => o.commercial_email)
@@ -41,9 +36,8 @@ router.get('/data', async (req, res) => {
             tousLesEmails = [...tousLesEmails, ...emailsDepuisGMS];
             
             listeCommerciaux = [...new Set(tousLesEmails)].filter(Boolean);
-        }      
         
-        res.json({ success: true, emailConnecte, isAdmin, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });
+        res.json({ success: true, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });
         
     } catch (error) {
         console.error("🚨 Erreur Route Dashboard:", error);
