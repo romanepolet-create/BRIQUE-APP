@@ -283,15 +283,9 @@ function initialiserMenuDeroulant(data, defaultFiltre) {
     if (!selectFiltre) return;
 
     selectFiltre.innerHTML = '<option value="general">🌍 Général (Tous)</option>';
-    if (data.isAdmin) {
         data.listeCommerciaux.forEach(email => {
             selectFiltre.add(new Option(`👤 ${formatEmailToName(email)}`, email));
-        });
-    } else {
-        selectFiltre.add(new Option(`👤 Mon activité`, data.emailConnecte));
-        defaultFiltre = data.emailConnecte; // Force sur le commercial
     }
-    
     selectFiltre.value = defaultFiltre;
     selectFiltre.addEventListener('change', (e) => chargerDonneesEtAfficher(e.target.value));
     listeInitialeChargee = true;
