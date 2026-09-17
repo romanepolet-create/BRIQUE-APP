@@ -297,13 +297,33 @@ async function soumettreFormulaire() {
   btnSubmit.disabled = true;
   
   const chargeUtile = new FormData(formulaireElement);
+  let erreurChoix = false;
+
 
   const checkboxes = document.querySelectorAll('#references-container input[type="checkbox"]');
   checkboxes.forEach(cb => {
     if (!cb.checked) {
       chargeUtile.append(cb.name, 'NON');
+    } else {
+      const divChoix = document.getElementById(`choix_${cb.name}`);
+      if (divChoix) {
+        const radioCoche = document.querySelector(`input[name="statut_${cb.name}"]:checked`);
+        if (!radioCoche) {
+          erreurChoix = true;
+        } else {
+          chargeUtile.set(cb.name, radioCoche.value);
+        }
+      }
     }
   });
+
+  if (erreurChoix) {
+    alert("⚠️ Vous devez choisir 'Gagné' ou 'Constaté' pour chaque référence obligatoire cochée !");
+    btnSubmit.textContent = txtInitial;
+    btnSubmit.disabled = false;
+    return;
+  }
+
 
   if (document.getElementById('mea_status').value === 'OUI' && photosActivesAEnvoyer.length === 0) {
     alert("⚠️ Vous avez coché OUI pour la MEA, au moins une photo est obligatoire.");
