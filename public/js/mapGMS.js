@@ -416,7 +416,7 @@ async function chargerDonneesMagasins() {
 		historique.forEach(h => {
         	let aDesBieres = false;
 			if (h.references && typeof h.references === 'object') {
-      			aDesBieres = Object.values(h.references).some(val => val === "OUI");
+      			aDesBieres = Object.values(h.references).some(val => val === "OUI" || val === "Gagné" || val === "Constaté");
     		}
     		dicoHistorique[h.hubspot_id] = {
       			derniere_visite: h.derniere_visite,
@@ -857,7 +857,8 @@ window.filtrerMagasins = function() {
         
         regles.obligatoire.forEach(biere => {
           const cleBdd = `ref_${biere.replace(/\s+/g, '')}`; 
-          const estPresente = magasin.references && magasin.references[cleBdd] === "OUI";
+          const valBDD = magasin.references && magasin.references[cleBdd];
+		  const estPresente = valBDD === "OUI" || valBDD === "Gagné" || valBDD === "Constaté";
           
           if (!estPresente) {
             manquantTotal++;
