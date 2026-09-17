@@ -155,9 +155,9 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   };
 
   conteneur.innerHTML = 
-    creerSection('Gamme Obligatoire (En Stock)', regles.obligatoire, '#dc3545', '🚨') +
-    creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒') +
-    creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦');
+    creerSection('Gamme Obligatoire (En Stock)', regles.obligatoire, '#dc3545', '🚨', true) +
+    creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒', false) +
+    creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦', false);
 }
 
 // Fonction pour extraire les paramètres de l'URL
