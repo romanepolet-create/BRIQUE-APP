@@ -138,7 +138,7 @@
           for (const [key, value] of Object.entries(data.references)) {
             const checkbox = document.querySelector(`input[name="${key}"]`);
             if (checkbox) {
-              checkbox.checked = (value === "OUI");
+              checkbox.checked = (value === "OUI" || value === "Gagné" || value === "Constaté");
             }
           }
         }
