@@ -100,6 +100,7 @@ const matriceGMS = {
 function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   const conteneur = document.getElementById('references-container');
   const regles = matriceGMS[enseigne.toUpperCase()];
+  const infos = getURLParams();
 
   if (!regles) {
     conteneur.innerHTML = `<p style="color:red; font-style:italic;">Enseigne "${enseigne}" inconnue dans la matrice. Impossible de charger les produits.</p>`;
@@ -107,8 +108,8 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   }
 
   // Fonction interne pour générer l'accordéon HTML
-  const creerSection = (titre, listeBieres, couleurBordure, icone) => {
-    if (listeBieres.length === 0) return ''; // Si vide, on n'affiche pas la section
+  const creerSection = (titre, listeBieres, couleurBordure, icone, estObligatoire) => {
+    if (listeBieres.length === 0) return '';
     
     let html = `<details style="margin-bottom: 15px; border: 2px solid ${couleurBordure}; border-radius: 8px; padding: 10px; background: white;" open>
                   <summary style="font-weight: bold; color: ${couleurBordure}; cursor: pointer; outline: none;">
@@ -119,19 +120,40 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
     listeBieres.forEach(biere => {
       const nomInput = `ref_${biere.replace(/\s+/g, '')}`;
       const estCoche = bieresCocheesAvant.includes(biere) ? "checked" : "";
+
+      let blocChoix = "";
+      let evtChange = "";
+
+      if (estObligatoire && infos.premiere_visite) {
+         blocChoix = `
+            <div id="choix_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 15px; margin-top: 5px; margin-left: 28px; padding: 6px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #002ab6;">
+              <label style="font-size: 12px; cursor: pointer; color: #28a745; font-weight: bold;">
+                <input type="radio" name="statut_${nomInput}" value="Gagné"> 🏆 Gagné
+              </label>
+              <label style="font-size: 12px; cursor: pointer; color: #17a2b8; font-weight: bold;">
+                <input type="radio" name="statut_${nomInput}" value="Constaté"> 👀 Constaté
+              </label>
+            </div>
+         `;
+         evtChange = `onchange="document.getElementById('choix_${nomInput}').style.display = this.checked ? 'flex' : 'none';"`;
+      }
+
       
       html += `
-        <div style="display: flex; align-items: center; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
-          <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
-          <label for="${nomInput}" style="font-size: 14px; font-weight: bold; color: #333; cursor: pointer; user-select: none; flex-grow: 1;">${biere}</label>
+        <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center;">
+            <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} ${evtChange} style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+            <label for="${nomInput}" style="font-size: 14px; font-weight: bold; color: #333; cursor: pointer; user-select: none; flex-grow: 1;">${biere}</label>
+          </div>
+          ${blocChoix}
         </div>`;
     });
+
     
     html += `</div></details>`;
     return html;
   };
 
-  // Injection des 3 blocs
   conteneur.innerHTML = 
     creerSection('Gamme Obligatoire (En Stock)', regles.obligatoire, '#dc3545', '🚨') +
     creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒') +
@@ -144,7 +166,8 @@ function getURLParams() {
   return {
     id_hubspot: params.get('id_hubspot') || '',
     nom: params.get('nom') || 'Magasin Inconnu',
-    enseigne: params.get('enseigne') || 'Inconnue'
+    enseigne: params.get('enseigne') || 'Inconnue',
+    premiere_visite: params.get('premiere_visite') === 'true'
   };
 }
 
