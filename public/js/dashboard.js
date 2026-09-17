@@ -317,6 +317,7 @@ function genererFocusDN(magasins, visites) {
             hubspot_id: mag.hubspot_id,
             nom_magasin: mag.nom,
             enseigne: mag.enseigne,
+            Priorité: mag.Priorité || "N/A",
             dnManquante: maxPossible - dnActuelle,
             maxPossible: maxPossible
         };
@@ -346,7 +347,7 @@ function genererFocusDN(magasins, visites) {
         opportunites.forEach(opp => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${opp.nom_magasin || opp.hubspot_id}</b></td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee;"><b>${opp.nom_magasin || opp.hubspot_id} - ${opp.Priorité}</b></td>
                 <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">${opp.enseigne}</td>
                 <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;"><b style="color: #dc3545;">${opp.dnManquante}</b> <span style="font-size:10px; color:#999;">/ ${opp.maxPossible}</span></td>
             `;
