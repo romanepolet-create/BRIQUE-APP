@@ -23,7 +23,6 @@ function calculerScoreDNUnique(visites) {
     return Object.values(mapMagasins).reduce((total, v) => total + (parseInt(v.score_dn) || 0), 0);
 }
 
-// Quand quelqu'un visite l'URL, ce code s'exécute en direct !
 router.get('/', async (req, res) => {
     try {
         const now = new Date();
@@ -87,13 +86,11 @@ router.get('/', async (req, res) => {
         const pctMois = Math.round((joursEcoules / joursDansMois) * 100);
         const dateFr = now.toLocaleDateString('fr-FR');
 
-        // Génération du HTML (Format spécial E-mail avec structure <table>)
         const html = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 30px 0; font-family: 'Segoe UI', Arial, sans-serif;">
           <tr>
             <td align="center">
               
-              <!-- Conteneur principal bloqué à 600px -->
               <table width="600" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e5e5e5; color: #3a2233; text-align: left; border-collapse: collapse;">
                 <tr>
                   <td>
@@ -111,34 +108,36 @@ router.get('/', async (req, res) => {
                       <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Les Perfs Générales</p>
                       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                         <thead>
+                          <!-- LIGNE 1 : Les grands titres -->
                           <tr>
-                            <th style="text-align: left; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Commercial</th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Gagnées</th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Constatées</th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Scorées</th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">MEA<br><span style="font-size: 8px; text-transform: none;">(HL)</span></th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Directs<br><span style="font-size: 8px; text-transform: none;">(Vend.)</span></th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Dév.<br>Outils</th>
+                            <th rowspan="2" style="text-align: left; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Commercial</th>
+                            <th colspan="3" style="text-align: center; color: #c2137a; font-weight: 700; font-size: 10px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">SUIVI DN</th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">MEA<br><span style="font-size: 8px; text-transform: none;">(HL)</span></th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Directs<br><span style="font-size: 8px; text-transform: none;">(Vend.)</span></th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Dév.<br>Outils</th>
+                          </tr>
+                          <!-- LIGNE 2 : Les sous-titres de la DN -->
+                          <tr>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Gagnées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Constatées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Scorées</th>
                           </tr>
                         </thead>
                         <tbody>
                           ${statsCommerciaux.map((s, index) => {
-                              const bg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : '';
-                              // La case se coche automatiquement si c'est Romane
+                              const bg = index % 2 !== 0 ? 'background-color: #fafafa;' : '';
+                              // Ombre très légère sous tout le bloc DN pour l'isoler visuellement
+                              const dnBg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : 'background-color: #fff9fc;'; 
                               const checkboxOutil = s.nom === "Romane Polet" ? '☑️' : '◻️';
                               
                               return `
                               <tr style="${bg}">
                                 <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600; font-size: 11px;">${s.nom}</td>
                                 
-                                <!-- DN Gagnées (À remplir à la main) -->
-                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px;">...</td>
-                                
-                                <!-- DN Constatées (À remplir à la main) -->
-                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px;">...</td>
-                                
-                                <!-- DN Scorées (Calcul Automatique) -->
-                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                <!-- Bloc DN (Groupé visuellement) -->
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px; ${dnBg}">...</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px; ${dnBg}">...</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; ${dnBg}">
                                   <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
                                   <div style="font-size: 9px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
                                 </td>
@@ -153,7 +152,6 @@ router.get('/', async (req, res) => {
                                   <div style="font-size: 9px; color: ${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.direct.pct}%)</div>
                                 </td>
                                 
-                                <!-- Développement Outils -->
                                 <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; font-size: 16px;">
                                   ${checkboxOutil}
                                 </td>
