@@ -109,32 +109,53 @@ router.get('/', async (req, res) => {
                     <!-- TABLE 1 : PERFS GENERALES -->
                     <div style="padding: 18px 24px 6px;">
                       <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Les Perfs Générales</p>
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                         <thead>
                           <tr>
-                            <th style="text-align: left; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Commercial</th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">DN Gagnées<br><span style="font-size: 9px; text-transform: none;">(Net)</span></th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Volumes MEA<br><span style="font-size: 9px; text-transform: none;">(HL)</span></th>
-                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Directs<br><span style="font-size: 9px; text-transform: none;">(Vendeurs)</span></th>
+                            <th style="text-align: left; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Commercial</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Gagnées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Constatées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">DN<br>Scorées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">MEA<br><span style="font-size: 8px; text-transform: none;">(HL)</span></th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Directs<br><span style="font-size: 8px; text-transform: none;">(Vend.)</span></th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9;">Dév.<br>Outils</th>
                           </tr>
                         </thead>
                         <tbody>
                           ${statsCommerciaux.map((s, index) => {
                               const bg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : '';
+                              // La case se coche automatiquement si c'est Romane
+                              const checkboxOutil = s.nom === "Romane Polet" ? '☑️' : '◻️';
+                              
                               return `
                               <tr style="${bg}">
-                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600;">${s.nom}</td>
-                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
-                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
-                                  <div style="font-size: 10px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600; font-size: 11px;">${s.nom}</td>
+                                
+                                <!-- DN Gagnées (À remplir à la main) -->
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px;">...</td>
+                                
+                                <!-- DN Constatées (À remplir à la main) -->
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px;">...</td>
+                                
+                                <!-- DN Scorées (Calcul Automatique) -->
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
                                 </td>
-                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
-                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.mea.actuel}</div>
-                                  <div style="font-size: 10px; color: ${s.mea.pct >= 100 ? '#1f9d5c' : (s.mea.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.mea.pct}%)</div>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.mea.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.mea.pct >= 100 ? '#1f9d5c' : (s.mea.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.mea.pct}%)</div>
                                 </td>
-                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
-                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.direct.actuel}</div>
-                                  <div style="font-size: 10px; color: ${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.direct.pct}%)</div>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.direct.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.direct.pct}%)</div>
+                                </td>
+                                
+                                <!-- Développement Outils -->
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; font-size: 16px;">
+                                  ${checkboxOutil}
                                 </td>
                               </tr>`;
                           }).join('')}
