@@ -90,7 +90,7 @@ router.get('/', async (req, res) => {
         // Génération du HTML
         const html = `
         <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:22px; overflow:hidden; box-shadow:0 20px 45px -15px rgba(194,19,122,0.35); font-family:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif; color:#3a2233; text-align:left;">
-          <div style="background:linear-gradient(120deg, #c2137a, #e6339c); color:#ffffff; padding:22px 24px 26px; position:relative;">
+          <div style="background:linear-gradient(120deg, #f3b0cf, #e41b19); color:#ffffff; padding:22px 24px 26px; position:relative;">
             <div style="font-size:11px; letter-spacing:.12em; opacity:.85; text-transform:uppercase; margin-bottom:10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
             <h1 style="margin:0 0 4px; font-size:19px; letter-spacing:.03em; font-weight:700; color:#ffffff;">Newsletter GMS</h1>
             <p style="font-size:12.5px; opacity:.9; margin:0; color:#ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
