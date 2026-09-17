@@ -125,7 +125,7 @@
         .from('historique_visites')
         .select('*')
         .eq('hubspot_id', hubspot_id)
-        .single();
+        .maybeSingle();
 
       if (data) {
         const inputCanettes = document.getElementById('nb_canettes');
