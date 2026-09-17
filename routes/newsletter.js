@@ -88,87 +88,106 @@ router.get('/', async (req, res) => {
         const dateFr = now.toLocaleDateString('fr-FR');
 
         // Génération du HTML
+        // Génération du HTML (Format spécial E-mail avec structure <table>)
         const html = `
-        <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:22px; overflow:hidden; box-shadow:0 20px 45px -15px rgba(194,19,122,0.35); font-family:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif; color:#3a2233; text-align:left;">
-          <div style="background:linear-gradient(120deg, #f3b0cf, #e41b19); color:#ffffff; padding:22px 24px 26px; position:relative;">
-            <div style="font-size:11px; letter-spacing:.12em; opacity:.85; text-transform:uppercase; margin-bottom:10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
-            <h1 style="margin:0 0 4px; font-size:19px; letter-spacing:.03em; font-weight:700; color:#ffffff;">Newsletter GMS</h1>
-            <p style="font-size:12.5px; opacity:.9; margin:0; color:#ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
-            <p style="font-size:11.5px; opacity:.8; margin:6px 0 0; font-style:italic; color:#ffffff;">${dateFr} — Soit ${pctMois}% du mois écoulé</p>
-          </div>
-
-          <div style="padding:18px 24px 6px;">
-            <p style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#c2137a; margin:0 0 10px;">● Les Perfs Générales</p>
-            <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
-              <thead>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 30px 0; font-family: 'Segoe UI', Arial, sans-serif;">
+          <tr>
+            <td align="center">
+              
+              <!-- Conteneur principal bloqué à 600px -->
+              <table width="600" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e5e5e5; color: #3a2233; text-align: left; border-collapse: collapse;">
                 <tr>
-                  <th style="text-align:left; color:#8c7385; font-weight:600; font-size:10.5px; text-transform:uppercase; padding:6px; border-bottom:1px solid #f1dde9;">Commercial</th>
-                  <th style="text-align:center; color:#8c7385; font-weight:600; font-size:10.5px; text-transform:uppercase; padding:6px; border-bottom:1px solid #f1dde9;">DN Gagnées<br><span style="font-size:9px; text-transform:none;">(Net)</span></th>
-                  <th style="text-align:center; color:#8c7385; font-weight:600; font-size:10.5px; text-transform:uppercase; padding:6px; border-bottom:1px solid #f1dde9;">Volumes MEA<br><span style="font-size:9px; text-transform:none;">(HL)</span></th>
-                  <th style="text-align:center; color:#8c7385; font-weight:600; font-size:10.5px; text-transform:uppercase; padding:6px; border-bottom:1px solid #f1dde9;">Directs<br><span style="font-size:9px; text-transform:none;">(Vendeurs)</span></th>
+                  <td>
+                    
+                    <!-- HEADER -->
+                    <div style="background: linear-gradient(120deg, #c2137a, #e6339c); color: #ffffff; padding: 22px 24px 26px;">
+                      <div style="font-size: 11px; letter-spacing: .12em; opacity: .85; text-transform: uppercase; margin-bottom: 10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
+                      <h1 style="margin: 0 0 4px; font-size: 19px; letter-spacing: .03em; font-weight: 700; color: #ffffff;">Newsletter Mensuelle GMS</h1>
+                      <p style="font-size: 12.5px; opacity: .9; margin: 0; color: #ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
+                      <p style="font-size: 11.5px; opacity: .8; margin: 6px 0 0; font-style: italic; color: #ffffff;">${dateFr} — Soit ${pctMois}% du mois écoulé</p>
+                    </div>
+
+                    <!-- TABLE 1 : PERFS GENERALES -->
+                    <div style="padding: 18px 24px 6px;">
+                      <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Les Perfs Générales</p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                        <thead>
+                          <tr>
+                            <th style="text-align: left; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Commercial</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">DN Gagnées<br><span style="font-size: 9px; text-transform: none;">(Net)</span></th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Volumes MEA<br><span style="font-size: 9px; text-transform: none;">(HL)</span></th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 10.5px; text-transform: uppercase; padding: 6px; border-bottom: 1px solid #f1dde9;">Directs<br><span style="font-size: 9px; text-transform: none;">(Vendeurs)</span></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${statsCommerciaux.map((s, index) => {
+                              const bg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : '';
+                              return `
+                              <tr style="${bg}">
+                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600;">${s.nom}</td>
+                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
+                                  <div style="font-size: 10px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
+                                </td>
+                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.mea.actuel}</div>
+                                  <div style="font-size: 10px; color: ${s.mea.pct >= 100 ? '#1f9d5c' : (s.mea.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.mea.pct}%)</div>
+                                </td>
+                                <td style="padding: 12px 6px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 15px; font-weight: 700; color: #3a2233;">${s.direct.actuel}</div>
+                                  <div style="font-size: 10px; color: ${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.direct.pct}%)</div>
+                                </td>
+                              </tr>`;
+                          }).join('')}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div style="height: 1px; background-color: #f1dde9; margin: 12px 24px 0;"></div>
+
+                    <!-- TABLE 2 : MEA -->
+                    <div style="padding: 18px 24px 6px;">
+                      <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Mise en avant (HL)</p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                        ${topMEA.map(m => `
+                        <tr>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; color: #8c7385; font-size: 11.5px;">${m.commercial}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600;">${m.magasin}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: right;"><span style="color: #c2137a; font-weight: 800; font-size: 14px;">${m.volume}</span></td>
+                        </tr>`).join('')}
+                        ${topMEA.length === 0 ? '<tr><td colspan="3" style="color: #888; text-align: center; padding: 10px;">Aucune MEA ce mois-ci.</td></tr>' : ''}
+                      </table>
+                    </div>
+
+                    <div style="height: 1px; background-color: #f1dde9; margin: 12px 24px 0;"></div>
+
+                    <!-- TABLE 3 : DIRECTS -->
+                    <div style="padding: 18px 24px 22px;">
+                      <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Magasins Vendeurs en Direct</p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                        ${topDirects.map(d => `
+                        <tr>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; color: #8c7385; font-size: 11.5px;">${d.commercial}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left;"><span style="background-color: #fdf3f9; color: #c2137a; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${d.enseigne}</span></td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: right; font-weight: 600;">${d.magasin}</td>
+                        </tr>`).join('')}
+                        ${topDirects.length === 0 ? '<tr><td colspan="3" style="color: #888; text-align: center; padding: 10px;">Aucun magasin direct ce mois-ci.</td></tr>' : ''}
+                      </table>
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div style="text-align: center; font-size: 10.5px; color: #8c7385; padding: 0 24px 20px;">
+                      Généré automatiquement par Brique App
+                    </div>
+                    
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${statsCommerciaux.map((s, index) => {
-                    const bg = index % 2 !== 0 ? 'background:#fdf3f9;' : '';
-                    return `
-                    <tr style="${bg}">
-                      <td style="padding:12px 6px; border-bottom:1px solid #f6ecf2; text-align:left; font-weight:600;">${s.nom}</td>
-                      <td style="padding:12px 6px; border-bottom:1px solid #f6ecf2; text-align:center;">
-                        <div style="font-size:15px; font-weight:700; color:#3a2233;">${s.dn.actuel}</div>
-                        <div style="font-size:10px; color:${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight:600;">(${s.dn.pct}%)</div>
-                      </td>
-                      <td style="padding:12px 6px; border-bottom:1px solid #f6ecf2; text-align:center;">
-                        <div style="font-size:15px; font-weight:700; color:#3a2233;">${s.mea.actuel}</div>
-                        <div style="font-size:10px; color:${s.mea.pct >= 100 ? '#1f9d5c' : (s.mea.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight:600;">(${s.mea.pct}%)</div>
-                      </td>
-                      <td style="padding:12px 6px; border-bottom:1px solid #f6ecf2; text-align:center;">
-                        <div style="font-size:15px; font-weight:700; color:#3a2233;">${s.direct.actuel}</div>
-                        <div style="font-size:10px; color:${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight:600;">(${s.direct.pct}%)</div>
-                      </td>
-                    </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-
-          <div style="height:1px; background:#f1dde9; margin:12px 24px 0;"></div>
-
-          <div style="padding:18px 24px 6px;">
-            <p style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#c2137a; margin:0 0 10px;">● Mise en avant (HL)</p>
-            <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
-              ${topMEA.map(m => `
-              <tr>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:left; color:#8c7385; font-size:11.5px;">${m.commercial}</td>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:left; font-weight:600;">${m.magasin}</td>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:right;"><span style="color:#c2137a; font-weight:800; font-size:14px;">${m.volume}</span></td>
-              </tr>`).join('')}
-              ${topMEA.length === 0 ? '<tr><td colspan="3" style="color:#888; text-align:center; padding:10px;">Aucune MEA ce mois-ci.</td></tr>' : ''}
-            </table>
-          </div>
-
-          <div style="height:1px; background:#f1dde9; margin:12px 24px 0;"></div>
-
-          <div style="padding:18px 24px 22px;">
-            <p style="font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#c2137a; margin:0 0 10px;">● Magasins Vendeurs en Direct</p>
-            <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
-              ${topDirects.map(d => `
-              <tr>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:left; color:#8c7385; font-size:11.5px;">${d.commercial}</td>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:left;"><span style="display:inline-block; padding:3px 8px; border-radius:4px; font-weight:600; font-size:10px; background:#fdf3f9; color:#c2137a; text-transform:uppercase;">${d.enseigne}</span></td>
-                <td style="padding:8px 6px; border-bottom:1px solid #f6ecf2; text-align:right; font-weight:600;">${d.magasin}</td>
-              </tr>`).join('')}
-              ${topDirects.length === 0 ? '<tr><td colspan="3" style="color:#888; text-align:center; padding:10px;">Aucun magasin direct ce mois-ci.</td></tr>' : ''}
-            </table>
-          </div>
-
-          <div style="text-align:center; font-size:10.5px; color:#8c7385; padding:0 24px 20px;">
-            Généré automatiquement par Brique App
-          </div>
-        </div>
+              </table>
+              
+            </td>
+          </tr>
+        </table>
         `;
-
-        // On envoie le HTML directement au navigateur !
         res.send(html);
 
     } catch (err) {
