@@ -99,7 +99,7 @@ router.get('/', async (req, res) => {
                   <td>
                     
                     <!-- HEADER -->
-                    <div style="background: linear-gradient(120deg, #f3b0cf, #e41b19); color: #ffffff; padding: 22px 24px 26px;">
+                    <div style="background: linear-gradient(120deg, #e41b19, #f3b0cf); color: #ffffff; padding: 22px 24px 26px;">
                       <div style="font-size: 11px; letter-spacing: .12em; opacity: .85; text-transform: uppercase; margin-bottom: 10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
                       <h1 style="margin: 0 0 4px; font-size: 19px; letter-spacing: .03em; font-weight: 700; color: #ffffff;">Newsletter GMS</h1>
                       <p style="font-size: 12.5px; opacity: .9; margin: 0; color: #ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
