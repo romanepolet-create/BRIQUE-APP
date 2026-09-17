@@ -91,6 +91,7 @@ app.use('/api/gms', verifierBriqueHouse, routesGms);
 app.use('/api/tournee', verifierBriqueHouse, routesTournee);
 app.use('/api/visite', verifierBriqueHouse, routesVisite);
 app.use('/api/dashboard', verifierBriqueHouse, routesDashboard);
+app.use('/newsletter', require('./routes/newsletter'));
 
 app.get('/login.html', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
