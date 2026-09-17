@@ -495,7 +495,7 @@ window.ouvrirPopupDynamique = function(layer) {
 
     const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
-	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
+	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
     
 	const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
 	let prio = m.Priorité || "?";
@@ -695,7 +695,7 @@ window.majListeMagasinsVisibles = function() {
         }
 	  }
 
-	  const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}`;
+	  const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
 			
       html += `
         <div onclick="clicSurListe(${item.layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
@@ -1250,7 +1250,7 @@ function actualiserPanneauGPS() {
   etapesItineraire.forEach((etape, index) => {
 		const magasinComplet = listeMagasins.find(m => String(m.hubspot_id) === String(etape.hubspot_id)) || {};
     let contenuTexte = `<span style="font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</span>`;
-		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}`;		
+		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}&premiere_visite=${!magasinComplet.derniere_visite}`;		
 	  if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
 			contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold; font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</a>`;    
 		}
