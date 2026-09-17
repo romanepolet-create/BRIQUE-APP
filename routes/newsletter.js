@@ -87,7 +87,6 @@ router.get('/', async (req, res) => {
         const pctMois = Math.round((joursEcoules / joursDansMois) * 100);
         const dateFr = now.toLocaleDateString('fr-FR');
 
-        // Génération du HTML
         // Génération du HTML (Format spécial E-mail avec structure <table>)
         const html = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 30px 0; font-family: 'Segoe UI', Arial, sans-serif;">
@@ -100,9 +99,9 @@ router.get('/', async (req, res) => {
                   <td>
                     
                     <!-- HEADER -->
-                    <div style="background: linear-gradient(120deg, #c2137a, #e6339c); color: #ffffff; padding: 22px 24px 26px;">
+                    <div style="background: linear-gradient(120deg, #f3b0cf, #e41b19); color: #ffffff; padding: 22px 24px 26px;">
                       <div style="font-size: 11px; letter-spacing: .12em; opacity: .85; text-transform: uppercase; margin-bottom: 10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
-                      <h1 style="margin: 0 0 4px; font-size: 19px; letter-spacing: .03em; font-weight: 700; color: #ffffff;">Newsletter Mensuelle GMS</h1>
+                      <h1 style="margin: 0 0 4px; font-size: 19px; letter-spacing: .03em; font-weight: 700; color: #ffffff;">Newsletter GMS</h1>
                       <p style="font-size: 12.5px; opacity: .9; margin: 0; color: #ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
                       <p style="font-size: 11.5px; opacity: .8; margin: 6px 0 0; font-style: italic; color: #ffffff;">${dateFr} — Soit ${pctMois}% du mois écoulé</p>
                     </div>
