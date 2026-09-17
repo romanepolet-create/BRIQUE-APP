@@ -176,7 +176,7 @@ async function genererHTML() {
         </div>
         `;
 
-        fs.writeFileSync('newsletter.html', html, 'utf8');
+        fs.writeFileSync('public/newsletter.html', html, 'utf8');
         console.log("✅ Fichier généré avec succès : newsletter.html");
         console.log("👉 Ouvre ce fichier dans ton navigateur web et fais un copier/coller dans ton e-mail !");
 
