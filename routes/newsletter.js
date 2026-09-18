@@ -56,21 +56,24 @@ router.get('/', async (req, res) => {
             });
 
             let actuelDirect = 0;
-            const magsDirects = [...new Set(visMois.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
-            magsDirects.forEach(idMag => {
-                const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
-                const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
-                if (dnF - dnI > 0) {
+            const tousMagsDirects = [...new Set(toutesVisitesEmail.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
+            
+            tousMagsDirects.forEach(idMag => {
+                const visitesDuMag = toutesVisitesEmail.filter(v => v.hubspot_id === idMag);
+                visitesDuMag.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                const derniereVisite = visitesDuMag[0];
+                
+                if (derniereVisite && (parseInt(derniereVisite.score_dn) || 0) > 0) {
                     actuelDirect++;
                     const mag = listeMagasins.find(m => String(m.hubspot_id) === String(idMag));
                     topDirects.push({
                         commercial: obj.nom,
-                        enseigne: mag ? mag.enseigne : 'Direct',
+                        enseigne: mag ? mag.enseigne : derniereVisite.enseigne,
                         magasin: mag ? mag.nom : idMag
                     });
                 }
             });
-
+            
             statsCommerciaux.push({
                 nom: obj.nom,
                 dn: { actuel: actuelDN, pct: obj.dn > 0 ? Math.round((actuelDN / obj.dn) * 100) : 'N/A' },
