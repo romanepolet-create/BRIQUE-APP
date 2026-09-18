@@ -806,20 +806,28 @@ window.filtrerMagasins = function() {
 	// DERNIÈRE VISITE (Chronomètre)
     if (visiteSel !== "all") {
       if (!magasin.derniere_visite) {
-      	if (visiteSel === "2weeks" || visiteSel === "1month") return false;
+      	if (visiteSel === "2weeks" || visiteSel === "1month" || visiteSel === "1week" || visiteSel === "2months") return false;
       	} else {
         	const dateVisite = new Date(magasin.derniere_visite);
         	const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
-        
-        	if (visiteSel === "2weeks") {
-          	if (joursEcoules <= 14 || joursEcoules > 30) return false;
-        	}
-        	if (visiteSel === "1month") {
-          	if (joursEcoules <= 30 || joursEcoules > 60) return false;
-        	}
-        	if (visiteSel === "2months") {
-          	if (joursEcoules <= 60) return false;
+
+		    if (visiteSel === "1week") {
+				  if (joursEcoules <= 0 && joursEcoules >= 7) return false;
+				}
+				
+        if (visiteSel === "2weeks") {
+        	if (joursEcoules <= 7 && joursEcoules > 14) return false;
+      	}
+      	if (visiteSel === "1month") {
+        	if (joursEcoules <= 14 && joursEcoules > 30) return false;
+				}
+      	if (visiteSel === "2months") {
+         	if (joursEcoules <= 30) return false;
         }
+				if (visiteSel === "never") {
+					if (!magasin.dernière_visite) {return true;}
+					else {return false}
+				}
       }
 	}
 /*
