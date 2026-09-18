@@ -802,28 +802,20 @@ window.filtrerMagasins = function() {
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
 */
 	//Prio
-	if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
-	// DERNIÈRE VISITE (Chronomètre)
-    if (visiteSel !== "all") {
-      if (!magasin.derniere_visite) {
-      	if (visiteSel === "2weeks" || visiteSel === "1month" || visiteSel === "1week" || visiteSel === "2months") return false;
-      	} else {
-        	const dateVisite = new Date(magasin.derniere_visite);
-        	const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
+	if (visiteSel !== "all") {
+		if (visiteSel === "never") {
+			if (magasin.derniere_visite) return false; 
+		} else {
+			if (!magasin.derniere_visite) return false;
 
-		if (visiteSel === "1week") {
-			if (joursEcoules < 0 || joursEcoules > 7) return false;
+			const dateVisite = new Date(magasin.derniere_visite);
+			const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
+
+			if (visiteSel === "1week" && joursEcoules > 7) return false;
+			if (visiteSel === "2weeks" && (joursEcoules <= 7 || joursEcoules > 14)) return false;
+			if (visiteSel === "1month" && (joursEcoules <= 14 || joursEcoules > 30)) return false;
+			if (visiteSel === "2months" && joursEcoules <= 30) return false;
 		}
-				
-        if (visiteSel === "2weeks") {
-        	if (joursEcoules < 7 || joursEcoules > 14) return false;
-      	}
-      	if (visiteSel === "1month") {
-        	if (joursEcoules < 14 || joursEcoules > 30) return false;
-		}
-      	if (visiteSel === "2months") {
-         	if (joursEcoules < 30) return false;
-        }
 	}
 /*
     // 4. RAYON KM (GEOLOC)
