@@ -824,9 +824,6 @@ window.filtrerMagasins = function() {
       	if (visiteSel === "2months") {
          	if (joursEcoules < 30) return false;
         }
-		if (visiteSel === "never") {
-			if (magasin.derniere_visite) return false
-      }
 	}
 /*
     // 4. RAYON KM (GEOLOC)
