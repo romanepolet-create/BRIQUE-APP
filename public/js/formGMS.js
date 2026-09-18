@@ -124,7 +124,7 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
       let blocChoix = "";
       let evtChange = "";
 
-      if (estObligatoire && infos.premiere_visite) {
+      if (infos.premiere_visite) {
          blocChoix = `
             <div id="choix_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 15px; margin-top: 5px; margin-left: 28px; padding: 6px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #002ab6;">
               <label style="font-size: 12px; cursor: pointer; color: #28a745; font-weight: bold;">
@@ -318,7 +318,7 @@ async function soumettreFormulaire() {
   });
 
   if (erreurChoix) {
-    alert("⚠️ Vous devez choisir 'Gagné' ou 'Constaté' pour chaque référence obligatoire cochée !");
+    alert("⚠️ Vous devez choisir 'Gagné' ou 'Constaté' pour chaque référence cochée !");
     btnSubmit.textContent = txtInitial;
     btnSubmit.disabled = false;
     return;
