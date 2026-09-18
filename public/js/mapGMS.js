@@ -825,9 +825,7 @@ window.filtrerMagasins = function() {
          	if (joursEcoules < 30) return false;
         }
 		if (visiteSel === "never") {
-			if (!magasin.dernière_visite) {return true;}
-			else {return false}
-		}
+			if (magasin.derniere_visite) return false
       }
 	}
 /*
