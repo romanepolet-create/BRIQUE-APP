@@ -159,9 +159,11 @@
             <div class="select-box" onclick="toggleDropdown('dropdown-visite')" title="Filtre Dernière Visite">⏱️<span>▼</span></div>
             <div class="dropdown-list" id="dropdown-visite">
               <label><input type="radio" name="filtre_visite" value="all" onchange="filtrerMagasins()" checked>Tous</label>
+			  <label><input type="radio" name="filtre_visite" value="1week" onchange="filtrerMagasins()">≤ 7 j</label>
               <label><input type="radio" name="filtre_visite" value="2weeks" onchange="filtrerMagasins()">≤ 14 j</label>
               <label><input type="radio" name="filtre_visite" value="1month" onchange="filtrerMagasins()">≤ 30 j</label>
-              <label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()">> 30 j (+ Jamais)</label>
+              <label><input type="radio" name="filtre_visite" value="2months" onchange="filtrerMagasins()">> 30 j</label>
+			  <label><input type="radio" name="filtre_visite" value="never" onchange="filtrerMagasins()">Jamais</label>
             </div>
           </div>
         </div> <!-- Fin toolbar -->
