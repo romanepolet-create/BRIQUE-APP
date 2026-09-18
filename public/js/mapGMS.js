@@ -812,7 +812,7 @@ window.filtrerMagasins = function() {
         	const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
 
 		    if (visiteSel === "1week") {
-				  if (joursEcoules <= 0 && joursEcoules >= 7) return false;
+				  if (joursEcoules < 0 && joursEcoules > 7) return false;
 				}
 				
         if (visiteSel === "2weeks") {
