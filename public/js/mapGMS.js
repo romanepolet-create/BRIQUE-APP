@@ -802,6 +802,11 @@ window.filtrerMagasins = function() {
     if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
 */
 	//Prio
+	// Filtre Priorité
+    if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
+
+
+	//date derniere visite
 	if (visiteSel !== "all") {
 		if (visiteSel === "never") {
 			if (magasin.derniere_visite) return false; 
