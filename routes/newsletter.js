@@ -40,9 +40,23 @@ router.get('/', async (req, res) => {
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
-            const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
-            const dnInitiale = calculerScoreDNUnique(visPrec);
-            const actuelDN = dnFinale - dnInitiale;
+            const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
+            const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
+
+            let dnGagne = 0;
+            let dnConstate = 0;
+
+            visMois.forEach(v => {
+                Object.values(v).forEach(val => {
+                    if (typeof val === 'string') {
+                        const cleanVal = val.trim().toLowerCase();
+                        if (cleanVal === 'gagné' || cleanVal === 'gagne' || cleanVal === 'oui') dnGagne++;
+                        else if (cleanVal === 'constaté' || cleanVal === 'constate') dnConstate++;
+                    }
+                });
+            });
+
+            const actuelDN = dnGagne + dnConstate;
 
             const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
             
@@ -76,6 +90,8 @@ router.get('/', async (req, res) => {
             
             statsCommerciaux.push({
                 nom: obj.nom,
+                dnGagne: dnGagne,
+                dnConstate: dnConstate,
                 dn: { actuel: actuelDN, pct: obj.dn > 0 ? Math.round((actuelDN / obj.dn) * 100) : 'N/A' },
                 mea: { actuel: actuelMEA.toFixed(1), pct: obj.mea > 0 ? Math.round((actuelMEA / obj.mea) * 100) : 'N/A' },
                 direct: { actuel: actuelDirect, pct: obj.direct > 0 ? Math.round((actuelDirect / obj.direct) * 100) : 'N/A' }
@@ -138,8 +154,8 @@ router.get('/', async (req, res) => {
                                 <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600; font-size: 11px;">${s.nom}</td>
                                 
                                 <!-- Bloc DN (Groupé visuellement) -->
-                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px; ${dnBg}">...</td>
-                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #ccc; font-size: 14px; ${dnBg}">...</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #1f9d5c; font-size: 14px; font-weight: 700; ${dnBg}">${s.dnGagne}</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #b8862c; font-size: 14px; font-weight: 700; ${dnBg}">${s.dnConstate}</td>
                                 <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; ${dnBg}">
                                   <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
                                   <div style="font-size: 9px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
