@@ -438,15 +438,19 @@ function genererFocusMEA(visites) {
     visitesMEA.forEach(v => {
         const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
         
+        // On récupère les infos du magasin
         const magInfo = donneesGlobales.listeMagasins.find(m => String(m.hubspot_id) === String(v.hubspot_id));
         const nomMagasin = magInfo ? magInfo.nom : v.hubspot_id;
+        
+        // 👇 On extrait la priorité ici !
+        const priorite = magInfo && magInfo.Priorité ? magInfo.Priorité : "N/A";
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #888;">#${v.id || 'N/A'}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">${dateFormatee}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">
-                <b>${nomMagasin} - ${Priorité}</b><br>
+                <b>${nomMagasin} - ${priorite}</b><br>
                 <span style="font-size: 11px; color: #999;">${v.enseigne}</span>
             </td>
             <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
