@@ -40,9 +40,6 @@ router.get('/', async (req, res) => {
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
-            const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
-            const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
-
             let dnGagne = 0;
             let dnConstate = 0;
 
