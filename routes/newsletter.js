@@ -71,8 +71,6 @@ router.get('/', async (req, res) => {
                 });
             });
 
-            const actuelDN = dnGagne + dnConstate;
-
             const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
             
             visMois.filter(v => parseFloat(v.volume_mea) > 0).forEach(v => {
