@@ -446,7 +446,7 @@ function genererFocusMEA(visites) {
             <td style="padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; color: #888;">#${v.id || 'N/A'}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">${dateFormatee}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">
-                <b>${nomMagasin} - ${opp.Priorité}</b><br>
+                <b>${nomMagasin} - ${Priorité}</b><br>
                 <span style="font-size: 11px; color: #999;">${v.enseigne}</span>
             </td>
             <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
