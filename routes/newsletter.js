@@ -30,6 +30,7 @@ router.get('/', async (req, res) => {
 
         const { data: visitesBrutes } = await supabase.from('dashboard_visites').select('*').limit(10000);
         const { data: listeMagasins } = await supabase.from('GMS').select('hubspot_id, nom, enseigne');
+        const { data: historiqueVisites } = await supabase.from('historique_visites').select('*').gte('created_at', startOfMonth).limit(10000);
 
         const statsCommerciaux = [];
         let topMEA = [];
@@ -40,15 +41,32 @@ router.get('/', async (req, res) => {
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
+            // 1. SÉCURITÉ : On restaure le calcul fiable du Delta pour la case "Scorées"
+            const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
+            const dnInitiale = calculerScoreDNUnique(visPrec);
+            const actuelDN = dnFinale - dnInitiale;
+
+            // 2. COMPTAGE GAGNÉES / CONSTATÉES (Depuis historique_visites)
             let dnGagne = 0;
             let dnConstate = 0;
 
-            visMois.forEach(v => {
-                Object.values(v).forEach(val => {
+            const histoMois = (historiqueVisites || []).filter(h => h.commercial_email === email);
+
+            // On isole la dernière visite de chaque magasin ce mois-ci
+            const mapHistoMois = {};
+            histoMois.forEach(h => {
+                if (!mapHistoMois[h.hubspot_id] || h.created_at > mapHistoMois[h.hubspot_id].created_at) {
+                    mapHistoMois[h.hubspot_id] = h;
+                }
+            });
+
+            // On balaie les valeurs à l'intérieur du JSON
+            Object.values(mapHistoMois).forEach(h => {
+                Object.values(h).forEach(val => {
                     if (typeof val === 'string') {
-                        const cleanVal = val.trim().toLowerCase();
-                        if (cleanVal === 'gagné' || cleanVal === 'gagne' || cleanVal === 'oui') dnGagne++;
-                        else if (cleanVal === 'constaté' || cleanVal === 'constate') dnConstate++;
+                        const clean = val.trim().toLowerCase();
+                        if (['gagné', 'gagne', 'oui', 'gagnée', 'gagnées'].includes(clean)) dnGagne++;
+                        else if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) dnConstate++;
                     }
                 });
             });
