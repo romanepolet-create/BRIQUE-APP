@@ -60,10 +60,21 @@ router.get('/', async (req, res) => {
                 }
             });
 
-            // On balaie les valeurs à l'intérieur du JSON
+            // On balaie les valeurs (y compris à l'intérieur du JSON 'jsonb' de Supabase)
             Object.values(mapHistoMois).forEach(h => {
                 Object.values(h).forEach(val => {
-                    if (typeof val === 'string') {
+                    // 1. Si la colonne est un objet JSON (comme montré sur ton image)
+                    if (val && typeof val === 'object') {
+                        Object.values(val).forEach(nestedVal => {
+                            if (typeof nestedVal === 'string') {
+                                const clean = nestedVal.trim().toLowerCase();
+                                if (['gagné', 'gagne', 'oui', 'gagnée', 'gagnées'].includes(clean)) dnGagne++;
+                                else if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) dnConstate++;
+                            }
+                        });
+                    } 
+                    // 2. Si c'est directement une chaîne de texte
+                    else if (typeof val === 'string') {
                         const clean = val.trim().toLowerCase();
                         if (['gagné', 'gagne', 'oui', 'gagnée', 'gagnées'].includes(clean)) dnGagne++;
                         else if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) dnConstate++;
