@@ -351,39 +351,18 @@ async function soumettreFormulaire() {
     if(resultat.success) {
        const veutRappel = confirm(`✅ Visite enregistrée avec succès !\n\nVoulez-vous planifier une prochaine action (rappel) dans votre agenda ?`);
 
-      if (veutRappel) {
+     if (veutRappel) {
         const nomMagasin = document.getElementById('nom_magasin').value;
         const notes = document.querySelector('textarea').value || "Aucun commentaire spécifique lors de la visite.";
 
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const titreEvent = encodeURIComponent(`Relance / Suivi : ${nomMagasin}`);
+        const descriptionEvent = encodeURIComponent(`Rappel suite à notre dernière visite.\n\nNotes de la dernière visite :\n${notes}`);
+        const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&details=${descriptionEvent}`;
         
-        if (isIOS) {
-            const date = new Date();
-            const formatICS = (d) => d.toISOString().replace(/-|:|\.\d+/g, '').substring(0,15) + 'Z';
-            const debut = formatICS(date);
-            date.setHours(date.getHours() + 1);
-            const fin = formatICS(date);
-
-            const notePropre = notes.replace(/\n/g, ' '); 
-            const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Relance / Suivi : ${nomMagasin}\nDESCRIPTION:Rappel suite à la visite.\\nNotes : ${notePropre}\nDTSTART:${debut}\nDTEND:${fin}\nEND:VEVENT\nEND:VCALENDAR`;
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'rappel.ics';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            setTimeout(() => window.close(), 1500);
-        } else {
-            const titreEvent = encodeURIComponent(`Relance / Suivi : ${nomMagasin}`);
-            const descriptionEvent = encodeURIComponent(`Rappel suite à notre dernière visite.\n\nNotes de la dernière visite :\n${notes}`);
-            const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&details=${descriptionEvent}`;
-            
-            window.open(lienGCal, '_blank');
-            window.close();
-        }
+        window.open(lienGCal, '_blank');
+        
+        // On ferme le formulaire après un court délai pour laisser à Google Agenda le temps de s'ouvrir
+        setTimeout(() => window.close(), 1000);
       } else {
         window.close();
       }
