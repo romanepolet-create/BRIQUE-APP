@@ -146,11 +146,11 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
               <input type="number" id="niv_${nomInput}" name="niv_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
             </div>
             <div style="display:flex; align-items:center; gap:5px;">
-              <label style="font-size:11px; color:#555; font-weight:bold;">Fac</label>
+              <label style="font-size:11px; color:#555; font-weight:bold;">Facing</label>
               <input type="number" id="fac_${nomInput}" name="fac_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
             </div>
             <label style="font-size: 11px; cursor: pointer; color: #dc3545; font-weight: bold; display: flex; align-items: center; gap: 4px; border: 1px solid #dc3545; padding: 2px 6px; border-radius: 4px; background:#fff5f5;">
-              <input type="checkbox" id="rpt_${nomInput}" name="rpt_${nomInput}" value="OUI"> RPT
+              <input type="checkbox" id="rpt_${nomInput}" name="rpt_${nomInput}" value="OUI"> RUPTURE
             </label>
           </div>
       `;
