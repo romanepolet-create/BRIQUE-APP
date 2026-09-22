@@ -73,6 +73,40 @@ h1 {
   color: #0000EE;
 }
 
+#modal_presence_chef {
+	margin-bottom: 15px; 
+	border: 2px solid #002ab6; 
+	border-radius: 8px; 
+	padding: 10px; 
+	background: white; 
+	overflow-x: auto;
+}
+
+#titre_presence_chef {
+	margin: 0 0 10px 0; 
+	color: #002ab6; 
+	text-align: center; 
+	font-size: 14px;
+}
+
+#table_presence_chef {
+	width: 100%; 
+	border-collapse: collapse; 
+	text-align: center; 
+	font-size: 12px;
+}
+
+#tr_days_presence {
+	background-color: #f0f0f0; 
+	border-bottom: 1px solid #ccc;
+}
+
+#th_days_presence { padding: 5px; }
+
+.td_checkbox_presence {
+	font-weight: bold; background-color: #f0f0f0; padding: 5px; border-right: 1px solid #ccc;
+}
+
 .form-group { 
 	margin-bottom: 15px; 
 	text-align: left; 
