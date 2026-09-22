@@ -135,15 +135,25 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
     // 4. COPIE ANALYTIQUE POUR LE DASHBOARD (Table: dashboard_visites)
     // ---------------------------------------------------------------------
     
-    // A. Calcul du Score DN (On compte combien de fois il y a "OUI" dans le JSON)
+    // A. Calcul du Score DN et Répartition Gagné/Constaté
     let scoreDnTotal = 0;
+    let nbGagne = 0;
+    let nbConstate = 0;
+
     for (const key in references_json) {
-      if (references_json[key] === "OUI") {
+      const valeur = references_json[key];
+      if (valeur === "OUI") {
         scoreDnTotal++;
+      } else if (valeur === "Gagné") {
+        scoreDnTotal++;
+        nbGagne++;
+      } else if (valeur === "Constaté") {
+        scoreDnTotal++;
+        nbConstate++;
       }
     }
 
-    // B. Nettoyage du volume MEA (Transformation de la virgule en point et conversion en nombre)
+    // B. Nettoyage du volume MEA
     let volumeMeaHl = 0;
     if (data.mea_status === "OUI" && data.mea_volume) {
       volumeMeaHl = parseFloat(data.mea_volume.replace(',', '.')) || 0;
@@ -152,7 +162,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
     // C. Récupération de l'email du commercial depuis la session
     const emailCommercial = req.session.email || "inconnu@briquehouse.fr";
 
-    // D. Envoi des données pré-calculées dans la nouvelle base
+    // D. Envoi des données pré-calculées dans la base
     const { error: errorDashboard } = await supabase
       .from('dashboard_visites')
       .insert({
@@ -160,11 +170,11 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
         hubspot_id: data.hubspot_id,
         enseigne: data.enseigne,
         score_dn: scoreDnTotal,
+        dn_gagne: nbGagne,       // <--- NOUVEAU
+        dn_constate: nbConstate, // <--- NOUVEAU
         volume_mea: volumeMeaHl
       });
 
-    // Note : On utilise console.error mais on ne fait pas de "throw" 
-    // pour ne pas bloquer le message de succès du commercial si le dashboard a un hoquet !
     if (errorDashboard) {
       console.error("Erreur lors de la sauvegarde Dashboard :", errorDashboard);
     }
