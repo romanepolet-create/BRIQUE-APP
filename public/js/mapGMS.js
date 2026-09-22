@@ -174,14 +174,12 @@ window.changerJour = function(nouvelId) {
     filtrerMagasins();
 };
 
-
-
 function formatEmailToName(email) {
   if (!email) return "Utilisateur inconnu";
     const namePart = email.split('@')[0]; 
     const parts = namePart.split('.'); 
     const formattedName = parts.map(part => {
-    	return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
   }).join(' ');
   return formattedName;
 }
@@ -258,28 +256,21 @@ let proprietaireActuel = "";
 
 async function chargerUtilisateurConnecte() {
   try {
-	const reponse = await fetch('/api/config');
+  const reponse = await fetch('/api/config');
     const data = await reponse.json();
 
-	if (data.emailActuel) {
+  if (data.emailActuel) {
       proprietaireActuel = formatEmailToName(data.emailActuel); 
       console.log("Connecté en tant que :", proprietaireActuel);
-	
+  
     } else {
       console.warn("Aucune session utilisateur trouvée via le serveur.");
     }
   } catch (err) {
     console.error("Erreur de récupération de l'utilisateur :", err);
-      // NOTE POUR PLUS TARD = Possibilité d'afficher le nom d'utilisateur sur le HTML
-	  // coz maybe we're stupid and we don't know our own names
-	  // who knows
-	  // I know I'm stupid enough to forget it
-	  // or crazy / mad enough
-	  // maybe
-	  // or at least someday (soon)
-      // document.getElementById('nom-user-ui').textContent = proprietaireActuel;
   }
 }
+
 // ===========================================================
 // CHARGEMENT DES FICHIERS GEOJSON
 // ===========================================================
@@ -302,8 +293,6 @@ async function chargerGeoJSON() {
         fillOpacity: 0.3
       },
     }).addTo(map);
-
-    //map.fitBounds(geojsonLayer.getBounds());
 
     L.geoJSON(donneesRegion, {
       style: {
@@ -340,27 +329,27 @@ window.activerGeolocalisation = function() {
     const lng = position.coords.longitude;
     const newPosition = L.latLng(lat, lng);
 
-	userPosition = newPosition;	  
+  userPosition = newPosition;   
 
     if (userMarker) {
       userMarker.setLatLng(userPosition);
     } else {
       const iconeBleue = L.divIcon({
         className: 'user-gps-marker',
-        html: '<div style="background-color: #002ab6; width: 14px; height: 14px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>',
+        html: '<div class="user-gps-dot"></div>',
         iconSize: [20, 20]
       });
       userMarker = L.marker(userPosition, { icon: iconeBleue }).addTo(map);
       map.setView(userPosition, 12);
     }
 
-	if (!lastUpdatePosition || map.distance(lastUpdatePosition, userPosition) > 20) {
+  if (!lastUpdatePosition || map.distance(lastUpdatePosition, userPosition) > 20) {
         lastUpdatePosition = userPosition;
         filtrerMagasins();
     } else {
         majListeMagasinsVisibles();
     }
-	  
+    
   }, function(error) {
     console.warn("Erreur GPS : ", error.message);
     alert("Impossible de récupérer ta position GPS.");
@@ -372,125 +361,121 @@ window.activerGeolocalisation = function() {
 // =================================================
 // GESTION DES MAGASINS ET DE LA BULLE HUBSPOT
 // =================================================
-// 🎨 Dictionnaire des couleurs par enseigne
 function getCouleurEnseigne(enseigne) {
   if(!enseigne) return "#555555";
   const enseignePropre = enseigne.trim().toUpperCase();
 
     const couleurs = {
       "SUPER U": "#7304E7",
-	  "MONOPRIX": "#f8de0d",
-		"AUCHAN SM": "#f8190d",
-		"CRF MARKET": "#3002d4",
-		"LECLERC PROXI": "#fa1ee5",
-		"LECLERC": "#ff99f5",
-		"ITM SM": "#01981e",
-		"ITM PROXI": "#14fa23",
-		"FRANPRIX": "#fe3943",
-		"CRF PROXI": "#4dbeff",
-		"CRF HYPER": "#4d7fff",
-		"CASINO": "#baab2c",
-		"AUCHAN HM": "#fe7e71",
-		"OTERA": "#ff871f",
-		 "MATCH": "#d1001f",
-  		 "U EXPRESS": "#a000ff",
- 		 "LECLERC DRIVE": "#ff66cc",
- 		 "G 20": "#00b050",
-		 "NICOLAS": "#cc540e",
-		 "AUTRES": "#808080",
+    "MONOPRIX": "#f8de0d",
+    "AUCHAN SM": "#f8190d",
+    "CRF MARKET": "#3002d4",
+    "LECLERC PROXI": "#fa1ee5",
+    "LECLERC": "#ff99f5",
+    "ITM SM": "#01981e",
+    "ITM PROXI": "#14fa23",
+    "FRANPRIX": "#fe3943",
+    "CRF PROXI": "#4dbeff",
+    "CRF HYPER": "#4d7fff",
+    "CASINO": "#baab2c",
+    "AUCHAN HM": "#fe7e71",
+    "OTERA": "#ff871f",
+     "MATCH": "#d1001f",
+       "U EXPRESS": "#a000ff",
+     "LECLERC DRIVE": "#ff66cc",
+     "G 20": "#00b050",
+     "NICOLAS": "#cc540e",
+     "AUTRES": "#808080",
     } 
-    // Retourne la couleur, ou un gris par défaut si l'enseigne est inconnue
     return couleurs[enseignePropre] || "#555555";
  }
 
 
 async function chargerDonneesMagasins() {
-	console.time("affichage");
+  console.time("affichage");
   try {
     const response = await fetch('/api/gms');
     if (!response.ok) throw new Error("Erreur réseau GMS");
     
     listeMagasins = await response.json();
 
-	const { data: historique, error } = await supabaseClient
+  const { data: historique, error } = await supabaseClient
       .from('historique_visites')
       .select('hubspot_id, derniere_visite, references');
 
-	if (!error && historique) {
-		const dicoHistorique = {};      
-		
-		historique.forEach(h => {
-        	let aDesBieres = false;
-			if (h.references && typeof h.references === 'object') {
-      			aDesBieres = Object.values(h.references).some(val => val === "OUI" || val === "Gagné" || val === "Constaté");
-    		}
-    		dicoHistorique[h.hubspot_id] = {
-      			derniere_visite: h.derniere_visite,
-      			aFormulaire: true,
-      			possedeBH: aDesBieres,
-				references: h.references || {}
-    		};
-      	});
+  if (!error && historique) {
+    const dicoHistorique = {};     
+    
+    historique.forEach(h => {
+          let aDesBieres = false;
+      if (h.references && typeof h.references === 'object') {
+            aDesBieres = Object.values(h.references).some(val => val === "OUI" || val === "Gagné" || val === "Constaté");
+        }
+        dicoHistorique[h.hubspot_id] = {
+            derniere_visite: h.derniere_visite,
+            aFormulaire: true,
+            possedeBH: aDesBieres,
+        references: h.references || {}
+        };
+        });
 
-		listeMagasins.forEach(magasin => {
-    		const hist = dicoHistorique[magasin.hubspot_id];
-    		if (hist) {
-      			magasin.derniere_visite = hist.derniere_visite;
-      			magasin.aFormulaire = true;
-      			magasin.possedeBH = hist.possedeBH;
-				magasin.references = hist.references;
-    		} else {
-      			magasin.derniere_visite = null;
-      			magasin.aFormulaire = false;
-      			magasin.possedeBH = false;
-				magasin.references = {};
-    		}
-  		});
+    listeMagasins.forEach(magasin => {
+        const hist = dicoHistorique[magasin.hubspot_id];
+        if (hist) {
+            magasin.derniere_visite = hist.derniere_visite;
+            magasin.aFormulaire = true;
+            magasin.possedeBH = hist.possedeBH;
+        magasin.references = hist.references;
+        } else {
+            magasin.derniere_visite = null;
+            magasin.aFormulaire = false;
+            magasin.possedeBH = false;
+        magasin.references = {};
+        }
+      });
     } else {
       console.warn("Impossible de récupérer l'historique pour le filtrage :", error);
     }
 
     remplirFiltresDepuisDonnees(listeMagasins, donneesGeo);
     console.log("Nombre de magasins reçus :", listeMagasins.length);
-	console.log("avant affichage");
+  console.log("avant affichage");
 
-	filtrerMagasins()
+  filtrerMagasins()
 
-	  console.log("apres affichage");
+    console.log("apres affichage");
   } catch (err) {
     console.error("Impossible de charger les magasins :", err);
   }
-	console.timeEnd("affichage");
+  console.timeEnd("affichage");
 
 }
 
 let nomEchappe
 
 function afficherMagasinsSurCarte(magasins) {
-  // On vide la carte avant de remettre les nouveaux pins filtrés
   markerConteneur.clearLayers();
   const nouveauxMarkers = [];
 
   magasins.forEach(magasin => {
     const positionMagasin = L.latLng(magasin.lat, magasin.lng);
-	const couleurPin = getCouleurEnseigne(magasin.enseigne);
+  const couleurPin = getCouleurEnseigne(magasin.enseigne);
 
-    // 🚀 LA SOLUTION BLINDÉE : On dessine directement un cercle vectoriel !
     const marker = L.circleMarker(positionMagasin, {
-      radius: 4, //taille cercle
-      fillColor: couleurPin, //couleur
-      fillOpacity: 0.85, // Remplissage
-      color: 'transparent',//couleur bordure
-      weight: 15              //épaisseur bordure
+      radius: 4,
+      fillColor: couleurPin,
+      fillOpacity: 0.85,
+      color: 'transparent',
+      weight: 15
     })
 
-	marker.magasinData = magasin;
+  marker.magasinData = magasin;
     marker.on('click', function(e) {
      ouvrirPopupDynamique(e.target);
-	});
-		nouveauxMarkers.push(marker);
+  });
+    nouveauxMarkers.push(marker);
     });
-	
+  
   markerConteneur.addLayers(nouveauxMarkers);
   majListeMagasinsVisibles()
 }
@@ -501,122 +486,45 @@ window.ouvrirPopupDynamique = function(layer) {
 
     const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
-	const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
+  const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
     
-	const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
-	let prio = m.Priorité || "?";
+  const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
+  let prio = m.Priorité || "?";
     let dateTexte = " - Aucune visite";
 
-	if (m.derniere_visite) {
+  if (m.derniere_visite) {
         const dateVisite = new Date(m.derniere_visite);
         const jj = String(dateVisite.getDate()).padStart(2, '0');
         const mm = String(dateVisite.getMonth() + 1).padStart(2, '0');
 
-		const diffTemps = new Date() - dateVisite;
+    const diffTemps = new Date() - dateVisite;
         const diffJours = Math.floor(diffTemps / (1000 * 60 * 60 * 24));
         
         dateTexte = ` - ${jj}/${mm} (il y a ${diffJours} j)`;
     }
-    //const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
-	
+  
     const contenuBulle = `
-        <div style="text-align: center; font-family: Arial, sans-serif; min-width: 170px;">
+        <div class="popup-container">
+          <h4 class="popup-title">${m.nom}</h4>
+          <p class="popup-address">${m.adresse ? m.adresse + ', ' : ''}${m.code_postal || ''} ${m.ville || ''}</p>
+          <p class="popup-prio">${prio}${dateTexte}</p>
 
-        <h4 style="color: #002ab6; margin: 0 0 3px 0;">${m.nom}</h4>
-		
-        <p style="margin: 0 0 5px 0; color: #666; font-size: 11px; line-height: 1.2;">
-          ${m.adresse ? m.adresse + ', ' : ''}${m.code_postal || ''} ${m.ville || ''}
-        </p>
+          <div class="popup-row">
+            <a href="${lienHubspot}" target="_blank" class="popup-btn btn-hs">
+              <img src="https://www.hubspot.com/hubfs/assets/hubspot.com/style-guide/brand-guidelines/guidelines_the-sprocket.svg" style="width: 14px; height: 14px;" alt="Logo HS"> HS
+            </a>
+            <button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" class="popup-btn btn-task">📅 Tâche</button>
+          </div>
 
-		<p style="margin: 0 0 12px 0; color: #333; font-size: 12px; font-weight: bold;">
-          ${prio}${dateTexte}
-        </p>
-
-
-		<div style="display: flex; gap: 5px; width: 100%; margin-bottom: 5px;">
-          <a href="${lienHubspot}" target="_blank" 
-             style="
-               flex: 1; 
-               background-color: #f3b0cf; 
-               color: #002ab6; 
-               padding: 8px 5px; 
-               border-radius: 5px; 
-               font-weight: bold; 
-               text-decoration: none; 
-               font-size: 12px;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-               gap: 5px;">
-            <img src="https://www.hubspot.com/hubfs/assets/hubspot.com/style-guide/brand-guidelines/guidelines_the-sprocket.svg" style="width: 14px; height: 14px;" alt="Logo HS">
-            HS
-          </a>
-
-          <button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" 
-             style="
-               flex: 1; 
-               background-color: #4285F4; 
-               color: white; 
-               padding: 8px 5px; 
-               border-radius: 5px; 
-               font-weight: bold; 
-               cursor: pointer; 
-               font-size: 12px;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-               gap: 5px;">
-            📅 Tâche
-          </button>
+          <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')" class="popup-btn btn-add">📍 Ajouter à l'itinéraire</button>
+          
+          <div class="popup-row">
+            <button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')" class="popup-btn btn-visit">📝 Visite</button>
+            <button data-url="${urlFormPopup}&open_notes=true" onclick="window.open(this.dataset.url, '_blank')" class="popup-btn btn-notes">💬 Notes</button>
+          </div>
         </div>
-
-        <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')"
-          style="
-            display: block;
-            width: 100%;
-            background-color: #28a745;
-            color: white;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;">
-          📍 Ajouter à l'itinéraire
-        </button>
-		
-		<div style="display: flex; gap: 5px; width: 100%;">
-        <button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')"
-          style="
-            flex: 1; 
-            background-color: #ffc107; 
-            color: #333; padding: 8px 5px;
-            border: none; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 12px;">
-          📝 Visite
-        </button>
-
-        <button data-url="${urlFormPopup}&open_notes=true" onclick="window.open(this.dataset.url, '_blank')"
-          style="
-            flex: 1; 
-            background-color: #17a2b8; 
-            color: white; padding: 8px 5px;
-            border: none; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 12px;">
-          💬 Notes
-        </button>
-      </div>
-
-      </div>
     `;
 
-    // 2. Open a single, standalone popup on the map directly
     L.popup({ autoPanPadding: [50, 50] })
         .setLatLng(layer.getLatLng())
         .setContent(contenuBulle)
@@ -640,40 +548,37 @@ window.majListeMagasinsVisibles = function() {
   if (!conteneurListe) return;
 
   const limitesEcran = map.getBounds();
-	let html = '';
+  let html = '';
   let count = 0;
-	
+  
   let magasinsVisiblesTemp = [];
-
   const idsDejaVus = new Set();
 
  markerConteneur.eachLayer(function(layer) {
     if (limitesEcran.contains(layer.getLatLng())) {
       const m = layer.magasinData;
       const cleUnique = (m.hubspot_id && m.hubspot_id !== 'undefined') ? m.hubspot_id : m.nom;
-			
+      
       if (m && !idsDejaVus.has(cleUnique)) {
         idsDejaVus.add(cleUnique);
-		let distance = Infinity;
-		if (userPosition) {
+    let distance = Infinity;
+    if (userPosition) {
           distance = map.distance(userPosition, layer.getLatLng());
         }
-				
-				magasinsVisiblesTemp.push({
+        
+        magasinsVisiblesTemp.push({
           magasin: m,
           layer: layer,
           distance: distance
         });
-			}
-		}
-	});
+      }
+    }
+  });
 
-	magasinsVisiblesTemp.sort((a, b) => {
+  magasinsVisiblesTemp.sort((a, b) => {
     if (userPosition && a.distance !== Infinity && b.distance !== Infinity) {
-      // Tri par distance GPS (du plus proche au plus loin)
       return a.distance - b.distance;
     } else {
-      // Tri alphabétique intelligent : Enseigne d'abord, puis Nom
       const enseigneA = (a.magasin.enseigne || "").toLowerCase();
       const enseigneB = (b.magasin.enseigne || "").toLowerCase();
       if (enseigneA !== enseigneB) {
@@ -685,45 +590,36 @@ window.majListeMagasinsVisibles = function() {
     }
   });
 
-	magasinsVisiblesTemp.forEach(item => {
+  magasinsVisiblesTemp.forEach(item => {
     const m = item.magasin;
     count++;
     
-		if (count <= 100) {
+    if (count <= 100) {
       const couleur = getCouleurEnseigne(m.enseigne);
-			let distanceTexte = '';
+      let distanceTexte = '';
 
-			if (userPosition && item.distance !== Infinity) {
+      if (userPosition && item.distance !== Infinity) {
         if (item.distance < 1000) {
-          distanceTexte = `<span style="color: #002ab6; font-weight: bold; font-size: 10px; margin-left: auto;">${Math.round(item.distance)} m</span>`;
+          distanceTexte = `<span class="list-dist">${Math.round(item.distance)} m</span>`;
         } else {
-          distanceTexte = `<span style="color: #002ab6; font-weight: bold; font-size: 10px; margin-left: auto;">${(item.distance / 1000).toFixed(1)} km</span>`;
+          distanceTexte = `<span class="list-dist">${(item.distance / 1000).toFixed(1)} km</span>`;
         }
-	  }
+    }
 
-	  const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
-			
+    const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
+      
       html += `
-        <div onclick="clicSurListe(${item.layer._leaflet_id})" style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 12px; display: flex; align-items: center; cursor: pointer;">
-          <span style="display:inline-block; width:10px; height:10px; background:${couleur}; border-radius:50%; margin-right:8px; flex-shrink: 0;"></span>
-          <div style="flex-grow: 1;">
-            <strong style="color: #333;">${m.nom}</strong>
-            <span style="color: #777;">${m.Priorité}</span>
+        <div onclick="clicSurListe(${item.layer._leaflet_id})" class="list-item">
+          <span class="list-dot" style="background:${couleur};"></span>
+          <div class="list-text">
+            <span class="list-title">${m.nom}</span>
+            <span class="list-prio">${m.Priorité}</span>
           </div>
-		  ${distanceTexte}
-          <button 
-            data-url="${urlFormList}" 
-            onclick="event.stopPropagation(); window.open(this.dataset.url, '_blank')" 
-            title="Ouvrir le formulaire de visite" 
-            style="background:none; 
-              border:none; 
-              cursor:pointer; 
-              font-size:16px;">
-            📝
-          </button>
+          ${distanceTexte}
+          <button data-url="${urlFormList}" onclick="event.stopPropagation(); window.open(this.dataset.url, '_blank')" title="Ouvrir le formulaire de visite" class="list-btn-edit">📝</button>
         </div>
       `;
-		}
+    }
   });
 
   if (count > 100) {
@@ -732,7 +628,7 @@ window.majListeMagasinsVisibles = function() {
     html = `<div style="padding: 10px; text-align: center; color: #888; font-style: italic; font-size: 12px;">Zoomer sur la carte pour lister les magasins</div>`;
   }
 
-	conteneurListe.innerHTML = html;
+  conteneurListe.innerHTML = html;
 };
 
 map.on('moveend', majListeMagasinsVisibles);
@@ -748,8 +644,6 @@ window.filtrerMagasins = function() {
   const tdnValue = parseInt(document.getElementById('filter-tdn') ? document.getElementById('filter-tdn').value : -1);
   const tdn75Value = parseInt(document.getElementById('filter-tdn75') ? document.getElementById('filter-tdn75').value : -1);
 
-  //const rayonMaximum = parseFloat(document.getElementById('filter-rayon').value);
-
   const getValeursSelectionnees = (id) => {
     const container = document.getElementById(id);
     if (!container) return [];
@@ -757,13 +651,10 @@ window.filtrerMagasins = function() {
     return Array.from(checkboxes).map(cb => cb.value);
   };
 
-
-	//const regionsSel = getValeursSelectionnees('dropdown-region');
-    //const dptsSel = getValeursSelectionnees('dropdown-dpt');
     const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
-	const prioSel = getValeursSelectionnees('dropdown-prio');
-	const propriosSel = getValeursSelectionnees('dropdown-proprio');
-	const visiteSel = document.querySelector('input[name="filtre_visite"]:checked')?.value || "all";
+  const prioSel = getValeursSelectionnees('dropdown-prio');
+  const propriosSel = getValeursSelectionnees('dropdown-proprio');
+  const visiteSel = document.querySelector('input[name="filtre_visite"]:checked')?.value || "all";
 
     const magasinsFiltres = listeMagasins.filter(magasin => {
 
@@ -782,17 +673,13 @@ window.filtrerMagasins = function() {
       }
     }
 
-	// --- FILTRE TRI-STATE BH ---
-	// -1 : Sans BH (Pas de formulaire OU Formulaire sans aucune réf)
-	//  0 : Tous les magasins (Par défaut)
-	//  1 : Avec BH (Au moins 1 visite ET au moins 1 réf à "OUI")
-	const filtreBH = document.getElementById('toggle-bh') ? parseInt(document.getElementById('toggle-bh').value) : 0;
+  const filtreBH = document.getElementById('toggle-bh') ? parseInt(document.getElementById('toggle-bh').value) : 0;
 
-	if (filtreBH === 1) {
-  		if (!magasin.aFormulaire || !magasin.possedeBH) return false;
-	} else if (filtreBH === -1) {
-  		if (magasin.aFormulaire && magasin.possedeBH) return false;
-	}
+  if (filtreBH === 1) {
+      if (!magasin.aFormulaire || !magasin.possedeBH) return false;
+  } else if (filtreBH === -1) {
+      if (magasin.aFormulaire && magasin.possedeBH) return false;
+  }
 
     // 1. ENSEIGNES
     if (enseignesSel.length === 0) {
@@ -800,56 +687,34 @@ window.filtrerMagasins = function() {
     } else {
         if (!enseignesSel.includes(magasin.enseigne)) return false;
     }
-/*
-    // 2. REGION
-    if (regionsSel.length > 0 && !regionsSel.includes(magasin.region)) return false;
 
-    // 3. DPT
-    if (dptsSel.length > 0 && !dptsSel.includes(String(magasin.dpt))) return false;
-*/
-	//Prio
-	// Filtre Priorité
+  // Filtre Priorité
     if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
 
+  //date derniere visite
+  if (visiteSel !== "all") {
+    if (visiteSel === "never") {
+      if (magasin.derniere_visite) return false; 
+    } else {
+      if (!magasin.derniere_visite) return false;
 
-	//date derniere visite
-	if (visiteSel !== "all") {
-		if (visiteSel === "never") {
-			if (magasin.derniere_visite) return false; 
-		} else {
-			if (!magasin.derniere_visite) return false;
+      const dateVisite = new Date(magasin.derniere_visite);
+      const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
 
-			const dateVisite = new Date(magasin.derniere_visite);
-			const joursEcoules = (new Date() - dateVisite) / (1000 * 60 * 60 * 24);
-
-			if (visiteSel === "1week" && joursEcoules > 7) return false;
-			if (visiteSel === "2weeks" && (joursEcoules <= 7 || joursEcoules > 14)) return false;
-			if (visiteSel === "1month" && (joursEcoules <= 14 || joursEcoules > 30)) return false;
-			if (visiteSel === "2months" && joursEcoules <= 30) return false;
-		}
-	}
-/*
-    // 4. RAYON KM (GEOLOC)
-    if (rayonMaximum && rayonMaximum < 99999) {
-      if (!userPosition) {
-        // Si le commercial demande un rayon mais n'a pas activé son GPS
-        return true; 
-      }
-      const positionMagasin = L.latLng(magasin.lat, magasin.lng);
-      // map.distance donne le résultat en mètres, on divise par 1000 pour avoir des km
-      const distanceKM = map.distance(userPosition, positionMagasin) / 1000;
-            
-      if (distanceKM > rayonMaximum) return false;
+      if (visiteSel === "1week" && joursEcoules > 7) return false;
+      if (visiteSel === "2weeks" && (joursEcoules <= 7 || joursEcoules > 14)) return false;
+      if (visiteSel === "1month" && (joursEcoules <= 14 || joursEcoules > 30)) return false;
+      if (visiteSel === "2months" && joursEcoules <= 30) return false;
     }
-*/
+  }
 
-	if (propriosSel.length > 0) {
+  if (propriosSel.length > 0) {
       const propMagasin = magasin.Propriétaire || "";
-	
-	  const matchProprio = propriosSel.some(propSelectionne =>
-	    normaliserTexte(propSelectionne) === normaliserTexte(propMagasin)
-	  );
-	  
+  
+    const matchProprio = propriosSel.some(propSelectionne =>
+      normaliserTexte(propSelectionne) === normaliserTexte(propMagasin)
+    );
+    
       if (!matchProprio) return false;
     }
 
@@ -864,7 +729,7 @@ window.filtrerMagasins = function() {
         regles.obligatoire.forEach(biere => {
           const cleBdd = `ref_${biere.replace(/\s+/g, '')}`; 
           const valBDD = magasin.references && magasin.references[cleBdd];
-		  const estPresente = valBDD === "OUI" || valBDD === "Gagné" || valBDD === "Constaté";
+          const estPresente = valBDD === "OUI" || valBDD === "Gagné" || valBDD === "Constaté";
           
           if (!estPresente) {
             manquantTotal++;
@@ -892,24 +757,17 @@ window.filtrerMagasins = function() {
     return true; // Le magasin passe tous les filtres !
   });
 
-  // On met à jour l'affichage sur la carte
   afficherMagasinsSurCarte(magasinsFiltres);
 };
-
-
 
 // Fonction pour remplir automatiquement les menus déroulants HTML
 function remplirSelectFiltre(idSelect, donneesGeoJSON, clePropriete) {
   const selectElement = document.getElementById(idSelect);
   if (!selectElement) return;
 
-  // 1. On extrait le nom de chaque zone géographique
   const listeZones = donneesGeoJSON.features.map(f => f.properties[clePropriete]);
-          
-  // 2. On trie par ordre alphabétique et on supprime les doublons
   const zonesUniques = [...new Set(listeZones)].sort();
 
-  // 3. On crée une option HTML pour chaque zone
   zonesUniques.forEach(zone => {
     if (zone) {
       const option = document.createElement('option');
@@ -920,7 +778,6 @@ function remplirSelectFiltre(idSelect, donneesGeoJSON, clePropriete) {
   });
 }
 
-// Génération automatique des options des filtres à partir de Supabase
 function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
   const containerRegion = document.getElementById('dropdown-region');
   const containerDpt = document.getElementById('dropdown-dpt');
@@ -928,7 +785,6 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
 
   if (!magasins || magasins.length === 0) return;
 
-  // 1. Remplissage des Régions uniques (Trié par ordre alphabétique)
   if (containerRegion && containerRegion.innerHTML.trim() === "") {
     const regions = [...new Set(magasins.map(m => m.region))].filter(Boolean).sort();
     regions.forEach(region => {
@@ -938,13 +794,10 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
     });
   }
 
-  // 2. Remplissage des Départements rangés par Région avec leur Vrai Nom
   if (containerDpt && donneesGeoJSON && donneesGeoJSON.features && containerDpt.innerHTML.trim() === "") {
- 
     const dptsSupabase = [...new Set(magasins.map(m => m.dpt))].filter(Boolean);
-
-    // On crée un dictionnaire pour retrouver le Nom et la Région d'un code dpt
     const dicoNomsDpt = {};
+    
     donneesGeoJSON.features.forEach(f => {
       const code = f.properties.code; 
       const nom = f.properties.nom;                                
@@ -961,15 +814,13 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
       const vraiNom = dicoNomsDpt[codeString]||`Département ${codeString}`;
       
       listeOptionsFinales.push({
-        code: codeDpt, // Valeur brute pour Supabase
-        texteAffichage: `${codeString} - ${vraiNom}` // Texte propre pour l'utilisateur
+        code: codeDpt,
+        texteAffichage: `${codeString} - ${vraiNom}`
       });
     });
 
-    // On trie toute la liste par le numéro du département (01, 02, 03...)
     listeOptionsFinales.sort((a, b) => a.texteAffichage.localeCompare(b.texteAffichage));
 
-    // On injecte les options triées dans le HTML (plus besoin de sous-groupes "Autre")
     listeOptionsFinales.forEach(item => {
       const label = document.createElement('label');
       label.innerHTML = `<input type="checkbox" value="${item.code}" onchange="filtrerMagasins()"> ${item.texteAffichage}`;
@@ -989,9 +840,7 @@ function remplirFiltresDepuisDonnees(magasins, donneesGeoJSON) {
       }
     }
 
-	console.log(proprietaireActuel)
-
-    proprios.sort();
+  proprios.sort();
 
     proprios.forEach(prop => {
       const label = document.createElement('label');
@@ -1022,8 +871,6 @@ window.onclick = function(event) {
   }
 };
 
-
-
 // ==========================================
 // 🚗 MOTEUR GPS ET ITINÉRAIRES
 // ==========================================
@@ -1037,141 +884,71 @@ function showPopup() {
   const lastPopup = document.getElementById("lastPopup")
   const PopupNoEaster = document.getElementById("PopupNoEaster")
 
-  if(spamLevel === 1) {
-    NoEasterPopup()
-  }
+  if(spamLevel === 1) { NoEasterPopup() }
 
   if(spamLevel === 3) {
     if(mainPopup) mainPopup.style.display = "block";
-  }
-
-  else if (spamLevel === 5) {
+  } else if (spamLevel === 5) {
     if(secPopup) {
       secPopup.style.top = (48 + Math.random() * 4) + "%";
       secPopup.style.left = (48 + Math.random() * 4) + "%";
       secPopup.style.display = "block";
     }
-  }
-
-  else if (spamLevel=== 7) {
+  } else if (spamLevel=== 7) {
     if(lastPopup) {
       lastPopup.style.top = (52 + Math.random() * 4) + "%";
       lastPopup.style.left = (52 + Math.random() * 4) + "%";
       lastPopup.style.display = "block";
     }
-  }
-  else if (spamLevel >= 8) {
+  } else if (spamLevel >= 8) {
     spawnExtraPopup();
   }
 }
 
-  
 function hidePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
-
-// The chaotic infinite spam generator
 function spawnExtraPopup() {
   const extraPopup = document.createElement("div");
-        
   const random = 40 + Math.random() * 20;  
   
-  extraPopup.style.position = "fixed";
+  extraPopup.className = "custom-modal";
   extraPopup.style.top = random + "%";
   extraPopup.style.left = random + "%";
-  extraPopup.style.bottom = random + "%";
-  extraPopup.style.right = random + "%";
-  extraPopup.style.transform = "translate(-50%, -50%)";
-  extraPopup.style.backgroundColor = "white";
-  extraPopup.style.padding = "20px";
-  extraPopup.style.border = "2px solid black";
-  extraPopup.style.color = "black";
-  extraPopup.style.fontWeight = "bold";
-  extraPopup.style.textAlign = "center";
-  extraPopup.style.zIndex = "9999";
-  extraPopup.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
   extraPopup.style.width = "250px";
-  extraPopup.style.height = "100px";
-
-  extraPopup.innerHTML = `
-    <p>STOP CLICKING</p>
-    <button onclick="this.parentElement.remove()">OK</button>
-  `;
+  extraPopup.innerHTML = `<p>STOP CLICKING</p><button onclick="this.parentElement.remove()">OK</button>`;
   document.body.appendChild(extraPopup);
 }
 
 function NoEasterPopup () {
   const PopupNoEaster = document.createElement("div");
-        
-  PopupNoEaster.style.position = "fixed";
-  PopupNoEaster.style.top = 50 + "%";
-  PopupNoEaster.style.left = 50 + "%";
-  PopupNoEaster.style.transform = "translate(-50%, -50%)";
-  PopupNoEaster.style.backgroundColor = "white";
-  PopupNoEaster.style.padding = "20px";
-  PopupNoEaster.style.border = "2px solid black";
-  PopupNoEaster.style.color = "black";
-  PopupNoEaster.style.textAlign = "center";
-  PopupNoEaster.style.zIndex = "500";
-  PopupNoEaster.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
-
-  PopupNoEaster.innerHTML = `
-    <p>Limite de 10* distinations atteinte.</p>
-    <p>* 9 établissements + Position de départ</p>
-    <button onclick="this.parentElement.remove()">OK</button>
-  `;
+  PopupNoEaster.className = "custom-modal";
+  PopupNoEaster.style.top = "50%";
+  PopupNoEaster.style.left = "50%";
+  PopupNoEaster.innerHTML = `<p>Limite de 10* distinations atteinte.</p><p>* 9 établissements + Position de départ</p><button onclick="this.parentElement.remove()">OK</button>`;
   document.body.appendChild(PopupNoEaster);
 }
 
-
-// ===========================================
-// POPUP MAGASIN DEJA DANS LISTE
-// ===========================================
-
 function PopupDejaDansTournee(onConfirm) {
   const DejaPopup = document.createElement("div");
-	
-  DejaPopup.style.position = "fixed";
+  DejaPopup.className = "custom-modal";
   DejaPopup.style.top = "50%";
   DejaPopup.style.left = "50%";
-  DejaPopup.style.transform = "translate(-50%, -50%)";
-  DejaPopup.style.backgroundColor = "white";
-  DejaPopup.style.padding = "20px";
-  DejaPopup.style.border = "2px solid black";
-  DejaPopup.style.color = "black";
-  DejaPopup.style.fontWeight = "bold";
-  DejaPopup.style.textAlign = "center";
-  DejaPopup.style.zIndex = "9999";
-  DejaPopup.style.boxShadow = "4px 4px 15px rgba(0,0,0,0.4)";
   DejaPopup.style.width = "250px";
-  DejaPopup.style.height = "auto";
-
   DejaPopup.innerHTML = `
     <p>Cet établissement est déjà dans votre tournée.</p>
-	<p>Voulez-vous quand même l'ajouter ?</p>
-    <div style="display: flex; justify-content: space-around; margin-top: 15px;">
-      <button id="DejaPopupOUI" style="padding: 5px 15px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 4px;">OUI</button>
-      <button id="DejaPopupNON" style="padding: 5px 15px; cursor: pointer; background: #dc3545; color: white; border: none; border-radius: 4px;">NON</button>
+    <p>Voulez-vous quand même l'ajouter ?</p>
+    <div class="modal-actions">
+      <button id="DejaPopupOUI" class="btn-modal-yes">OUI</button>
+      <button id="DejaPopupNON" class="btn-modal-no">NON</button>
     </div>
   `;
   document.body.appendChild(DejaPopup);
-
-  document.getElementById('DejaPopupOUI').onclick = function() {
-    DejaPopup.remove();
-    if(typeof onConfirm === "function") onConfirm();
-  };
-
-  document.getElementById('DejaPopupNON').onclick = function() {
-    DejaPopup.remove();
-  };
+  document.getElementById('DejaPopupOUI').onclick = function() { DejaPopup.remove(); if(typeof onConfirm === "function") onConfirm(); };
+  document.getElementById('DejaPopupNON').onclick = function() { DejaPopup.remove(); };
 }
 
-
-
-// ==========================================
-// GESTION DES ÉTAPES (MASQUER, FINAL, SUPPRIMER)
-// ==========================================
 window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   const activeCount = etapesItineraire.filter(e => !e.masque).length;
   if(activeCount >= 9) {
@@ -1204,9 +981,7 @@ window.supprimerEtape = function(index) {
   sauvegarderTourneeMemoire();
 };
 
-// Fonction pour Masquer / Démasquer un établissement
 window.toggleMasqueEtape = function(index) {
-  // Si on veut démasquer, on vérifie d'abord qu'on ne dépasse pas la limite de 9
   if (etapesItineraire[index].masque) {
     const activeCount = etapesItineraire.filter(e => !e.masque).length;
     if (activeCount >= 9) {
@@ -1217,16 +992,12 @@ window.toggleMasqueEtape = function(index) {
   etapesItineraire[index].masque = !etapesItineraire[index].masque;
   actualiserPanneauGPS();
   filtrerMagasins();
-
   sauvegarderTourneeMemoire();
 };
 
-// Fonction pour définir la destination finale (Drapeau)
 window.toggleFinalEtape = function(index) {
   const currentStatus = etapesItineraire[index].isFinal;
-  // On remet tout à zéro (une seule destination finale possible)
   etapesItineraire.forEach(e => e.isFinal = false);
-  // Si ce n'était pas déjà la destination finale, on l'active
   if (!currentStatus) {
     etapesItineraire[index].isFinal = true;
   }
@@ -1241,13 +1012,12 @@ function actualiserPanneauGPS() {
 
   if (!panneau || !liste) return;
 
-  // Le compteur n'affiche que le nombre d'étapes ACTIVES
   const activeCount = etapesItineraire.filter(e => !e.masque).length;
   if (compteur) compteur.textContent = activeCount;
 
   if (etapesItineraire.length === 0) {
     panneau.style.display = "block";
-    liste.innerHTML= "<li style='color: #888; font-style: italic; font-size: 12px;'>Aucune étape sélectionnée</li>";
+    liste.innerHTML = "<li class='tournee-empty'>Aucune étape sélectionnée</li>";
     return;
   }
 
@@ -1255,48 +1025,38 @@ function actualiserPanneauGPS() {
   liste.innerHTML = "";
 
   etapesItineraire.forEach((etape, index) => {
-		const magasinComplet = listeMagasins.find(m => String(m.hubspot_id) === String(etape.hubspot_id)) || {};
-    let contenuTexte = `<span style="font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</span>`;
-		const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}&premiere_visite=${!magasinComplet.derniere_visite}`;		
-	  if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
-			contenuTexte = `<a href="${urlForm}" target="_blank" style="color: ${etape.masque ? '#999' : '#005baa'}; text-decoration: none; font-weight: bold; font-size: 11.5px;">${etape.nom} - ${magasinComplet.Priorité}</a>`;    
-		}
-		
+    const magasinComplet = listeMagasins.find(m => String(m.hubspot_id) === String(etape.hubspot_id)) || {};
+    let contenuTexte = `<span class="tournee-no-link">${etape.nom} - ${magasinComplet.Priorité}</span>`;
+    const urlForm = `/formGMS.html?id_hubspot=${etape.hubspot_id}&nom=${encodeURIComponent(etape.nom)}&enseigne=${encodeURIComponent(etape.enseigne)}&premiere_visite=${!magasinComplet.derniere_visite}`;    
+    const colorLink = etape.masque ? '#999' : '#005baa';
+
+    if (etape.hubspot_id && etape.hubspot_id !== 'undefined') {
+      contenuTexte = `<a href="${urlForm}" target="_blank" class="tournee-link" style="color: ${colorLink};">${etape.nom} - ${magasinComplet.Priorité}</a>`;    
+    }
+    
     const styleLigne = etape.masque ? "opacity: 0.5; text-decoration: line-through;" : "";
 
     const nomEchappe = etape.nom ? etape.nom.replace(/'/g, "\\'") : "Magasin";
     const adresseEchappe = `${magasinComplet.adresse || ''} ${magasinComplet.ville || ''}`.replace(/'/g, "\\'");
-		
-		const btnTache = `
-        <button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" 
-        title="Ajouter une tâche / rappel" 
-        style="
-            background:none; 
-            border:none; 
-            cursor:pointer; 
-            font-size:14px; 
-            padding:0;">📅
-				</button>`;
+    
+    const btnTache = `<button onclick="creerTacheAgenda('${nomEchappe}', '${adresseEchappe}')" title="Ajouter une tâche / rappel" class="btn-icon">📅</button>`;
 
-    // Le bouton Oeil (barré par CSS natif si masqué)
     const btnMasque = etape.masque
-      ? `<button onclick="toggleMasqueEtape(${index})" title="Réafficher" style="background:none; border:none; cursor:pointer; position:relative; font-size:16px;">👁️<span style="position:absolute; top:50%; left:5%; width:90%; height:2px; background:red; transform:rotate(45deg);"></span></button>`
-      : `<button onclick="toggleMasqueEtape(${index})" title="Masquer temporairement" style="background:none; border:none; cursor:pointer; font-size:16px;">👁️</button>`;
+      ? `<button onclick="toggleMasqueEtape(${index})" title="Réafficher" class="btn-icon btn-eye">👁️<span class="eye-slash"></span></button>`
+      : `<button onclick="toggleMasqueEtape(${index})" title="Masquer temporairement" class="btn-icon btn-eye">👁️</button>`;
 
-    // Le bouton Drapeau (Finale)
     const btnFinal = etape.isFinal
-      ? `<button onclick="toggleFinalEtape(${index})" title="Retirer de la fin" style="background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer; font-size:12px; padding:2px 5px;">🏁</button>`
-      : `<button onclick="toggleFinalEtape(${index})" title="Verrouiller à la fin" style="background:none; border:1px solid #ccc; border-radius:4px; cursor:pointer; font-size:12px; filter:grayscale(100%); opacity:0.5; padding:2px 5px;">🏁</button>`;
+      ? `<button onclick="toggleFinalEtape(${index})" title="Retirer de la fin" class="btn-flag-on">🏁</button>`
+      : `<button onclick="toggleFinalEtape(${index})" title="Verrouiller à la fin" class="btn-flag-off">🏁</button>`;
 
-	  
     liste.innerHTML += `
-      <li style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; ${styleLigne}">
-        <span style="flex:1; text-align:left; padding-right: 5px;"><strong>${index+1}.</strong> ${contenuTexte}</span>
-        <div style="display:flex; gap: 5px; align-items:center;">
-		  ${btnTache}
+      <li class="tournee-item" style="${styleLigne}">
+        <span class="tournee-text"><strong>${index+1}.</strong> ${contenuTexte}</span>
+        <div class="tournee-actions">
+          ${btnTache}
           ${btnFinal}
           ${btnMasque}
-          <button class="btn-delete-etape" onclick="supprimerEtape(${index})" title="Retirer" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;">✖</button>
+          <button class="btn-delete" onclick="supprimerEtape(${index})" title="Retirer">✖</button>
         </div>
       </li>
     `;
@@ -1395,7 +1155,7 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
 
 
 
-	 
+  
     const response = await fetch(url);
     const data = await response.json();
 
@@ -1413,7 +1173,7 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
     // L'itinéraire final = Les actifs triés + les masqués collés à la fin
     etapesItineraire = [...pointsTries, ...hiddenStops];
     actualiserPanneauGPS();
-	sauvegarderTourneeMemoire();
+  sauvegarderTourneeMemoire();
     
     if(btnOpti) {
       btnOpti.textContent = "✅ Trajet Optimisé !";
@@ -1464,9 +1224,6 @@ initialiserCarte();
 window.reinitialiserFiltres = function() {
   const searchBar = document.getElementById('search-bar');
   if (searchBar) searchBar.value = "";
-
-/*const toggleSelected = document.getElementById('toggle-selected');
-  if (toggleSelected) toggleSelected.checked = false;*/
 
   const toggleBh = document.getElementById('toggle-bh');
   if (toggleBh) toggleBh.value = "0";
