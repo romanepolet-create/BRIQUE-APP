@@ -28,53 +28,67 @@ router.get('/', async (req, res) => {
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-        // On récupère les visites du dashboard (qui ont le commercial_email et created_at)
         const { data: visitesBrutes } = await supabase.from('dashboard_visites').select('*').limit(10000);
         const { data: listeMagasins } = await supabase.from('GMS').select('hubspot_id, nom, enseigne');
-        
-        // CORRECTION : On récupère l'historique global (il n'y a pas de created_at ici, on cible juste la colonne references)
-        const { data: historiqueVisites } = await supabase.from('historique_visites').select('hubspot_id, references').limit(10000);
+        const { data: historiqueVisites } = await supabase.from('historique_visites').select('hubspot_id, created_at, references').limit(10000);
 
         const statsCommerciaux = [];
         let topMEA = [];
         let topDirects = [];
 
         for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
-            // On filtre les visites du mois via dashboard_visites
             const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
-            // 1. SÉCURITÉ : Delta des Scorées
+            // ==========================================
+            // 1. DN SCORÉES (Sécurité : Delta des scores)
+            // ==========================================
             const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
             const dnInitiale = calculerScoreDNUnique(visPrec);
             const actuelDN = dnFinale - dnInitiale;
 
-            // 2. COMPTAGE GAGNÉES / CONSTATÉES (Lien par hubspot_id)
-            let dnGagne = 0;
+            // ==========================================
+            // 2. DN CONSTATÉES (Recherche ciblée dans le JSON du mois)
+            // ==========================================
             let dnConstate = 0;
 
-            // On liste les ID des magasins visités par CE commercial CE mois-ci
             const idsVisitesMois = [...new Set(visMois.map(v => String(v.hubspot_id)))];
-
-            // On récupère leurs JSON de références dans l'historique
             const histoMois = (historiqueVisites || []).filter(h => idsVisitesMois.includes(String(h.hubspot_id)));
 
+            const mapHistoMois = {};
             histoMois.forEach(h => {
-                // On vérifie que la colonne 'references' contient bien un objet JSON
-                if (h.references && typeof h.references === 'object') {
-                    Object.values(h.references).forEach(val => {
-                        if (typeof val === 'string') {
-                            const clean = val.trim().toLowerCase();
-                            if (['gagné', 'gagne', 'oui', 'gagnée', 'gagnées'].includes(clean)) {
-                                dnGagne++;
-                            } else if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) {
-                                dnConstate++;
-                            }
-                        }
-                    });
+                if (!mapHistoMois[h.hubspot_id] || new Date(h.created_at) > new Date(mapHistoMois[h.hubspot_id].created_at)) {
+                    mapHistoMois[h.hubspot_id] = h;
                 }
             });
+
+            function chercherConstates(valeur) {
+                if (!valeur) return;
+                if (typeof valeur === 'string') {
+                    const clean = valeur.trim().toLowerCase();
+                    if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) {
+                        dnConstate++;
+                    } else if (clean.startsWith('{') || clean.startsWith('[')) {
+                        try {
+                            const parsed = JSON.parse(valeur);
+                            chercherConstates(parsed);
+                        } catch (e) {}
+                    }
+                } else if (typeof valeur === 'object') {
+                    Object.values(valeur).forEach(chercherConstates);
+                }
+            }
+
+            Object.values(mapHistoMois).forEach(h => {
+                if (h.references) chercherConstates(h.references);
+            });
+
+            // ==========================================
+            // 3. DN GAGNÉES (La règle d'or : Gagnées = Scorées - Constatées)
+            // ==========================================
+            let dnGagne = actuelDN - dnConstate;
+            if (dnGagne < 0) dnGagne = 0; // Sécurité anti-bug d'affichage
 
             const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
             
@@ -164,7 +178,7 @@ router.get('/', async (req, res) => {
                           ${statsCommerciaux.map((s, index) => {
                               const bg = index % 2 !== 0 ? 'background-color: #fafafa;' : '';
                               const dnBg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : 'background-color: #fff9fc;'; 
-                              const checkboxOutil = s.nom === "Romane Polet" ? '☑️' : '◻️';
+                              const checkboxOutil = ["Romane Polet", "Lorelei Duplat"].includes(s.nom) ? '☑️' : '◻️';
                               
                               return `
                               <tr style="${bg}">
