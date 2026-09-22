@@ -126,7 +126,9 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
         nb_canettes: parseInt(data.nb_canettes) || 0,
         nb_cave: parseInt(data.nb_cave) || 0,
         derniere_visite: aujourdhui.toISOString(),
-        references: references_json
+        references: references_json,
+        presence_chef: presence_chef,
+        details_produits: details_produits
       }, { onConflict: 'hubspot_id' });
 
     if (supabaseError) throw supabaseError;
