@@ -173,6 +173,45 @@
           }
         }
         }, 100);
+
+        setTimeout(() => {
+          // Recharger le tableau de présence
+          if (data.presence_chef) {
+              let presence = data.presence_chef;
+              if (typeof presence === 'string') presence = JSON.parse(presence);
+              ['LUN', 'MAR', 'MER', 'JEU', 'VEN'].forEach(jour => {
+                  if (presence[jour]) {
+                      const cbAM = document.querySelector(`input[name="pres_${jour}_AM"]`);
+                      const cbPM = document.querySelector(`input[name="pres_${jour}_PM"]`);
+                      if (cbAM) cbAM.checked = presence[jour].AM;
+                      if (cbPM) cbPM.checked = presence[jour].PM;
+                  }
+              });
+          }
+
+          // Recharger les détails (Niv/Fac/RPT)
+          if (data.details_produits) {
+              let details = data.details_produits;
+              if (typeof details === 'string') details = JSON.parse(details);
+              for (const [key, detail] of Object.entries(details)) {
+                  const niv = document.getElementById(`niv_${key}`);
+                  const fac = document.getElementById(`fac_${key}`);
+                  const rpt = document.getElementById(`rpt_${key}`);
+                  // On vérifie que la case principale est bien cochée
+                  const cbMain = document.querySelector(`input[name="${key}"]`);
+                  
+                  if (cbMain && cbMain.checked) {
+                      const divDetails = document.getElementById(`details_${key}`);
+                      if (divDetails) divDetails.style.display = 'flex';
+                      
+                      if (niv) niv.value = detail.niveau || "";
+                      if (fac) fac.value = detail.facings || "";
+                      if (rpt) rpt.checked = (detail.rupture === "OUI");
+                  }
+              }
+          }
+        }, 150);
+        
         console.log("Historique chargé avec succès !");
       }
     } catch (err) {
