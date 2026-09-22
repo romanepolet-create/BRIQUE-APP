@@ -21,6 +21,7 @@ const MAX_DN_ENSEIGNE = {
     "MATCH": 0,
     "G 20": 0,
     "LECLERC DRIVE": 0,
+    "NICOLAS": 4,
     "AUTRES": 0
 };
 
