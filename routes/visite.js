@@ -107,11 +107,9 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
       resource: { values: [ligneData] }
     });
 
-    // ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
     // 3. SAUVEGARDE DU DERNIER ÉTAT DANS SUPABASE (Pour pré-remplissage historique)
     // ---------------------------------------------------------------------
-    // On utilise un .upsert() basé sur l'id_hubspot : si le magasin a déjà été visité,
-    // on met simplement à jour les compteurs, sinon on crée la ligne.
     const references_json = {};
     for (const key in data) {
       if (key.startsWith('ref_')) {
@@ -119,6 +117,17 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
       }
     }
     
+    // NOUVEAU : On récupère et on parse les données envoyées par le formulaire
+    let presence_chef_json = null;
+    let details_produits_json = null;
+
+    try {
+      if (data.presence_chef) presence_chef_json = JSON.parse(data.presence_chef);
+      if (data.details_produits) details_produits_json = JSON.parse(data.details_produits);
+    } catch (e) {
+      console.warn("Erreur de lecture du JSON pour le chef ou les produits :", e);
+    }
+
     const { error: supabaseError } = await supabase
       .from('historique_visites')
       .upsert({
@@ -127,8 +136,8 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
         nb_cave: parseInt(data.nb_cave) || 0,
         derniere_visite: aujourdhui.toISOString(),
         references: references_json,
-        presence_chef: presence_chef,
-        details_produits: details_produits
+        presence_chef: presence_chef_json,
+        details_produits: details_produits_json 
       }, { onConflict: 'hubspot_id' });
 
     if (supabaseError) throw supabaseError;
