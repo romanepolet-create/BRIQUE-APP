@@ -114,11 +114,11 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   const creerSection = (titre, listeBieres, couleurBordure, icone, estObligatoire) => {
     if (listeBieres.length === 0) return '';
     
-    let html = `<details style="margin-bottom: 15px; border: 2px solid ${couleurBordure}; border-radius: 8px; padding: 10px; background: white;" open>
-                  <summary style="font-weight: bold; color: ${couleurBordure}; cursor: pointer; outline: none;">
+    let html = `<details class="matrice-details" style="border: 2px solid ${couleurBordure};" open>
+                  <summary class="matrice-summary" style="color: ${couleurBordure};">
                     ${icone} ${titre} (${listeBieres.length} réfs)
                   </summary>
-                  <div style="margin-top: 15px; display: grid; gap: 10px;">`;
+                  <div class="matrice-grid">`;
                   
     listeBieres.forEach(biere => {
       const nomInput = `ref_${biere.replace(/\s+/g, '')}`;
@@ -127,35 +127,33 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
       let blocChoix = "";
       if (infos.premiere_visite) {
          blocChoix = `
-            <div id="choix_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 15px; margin-top: 5px; margin-left: 28px; padding: 6px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #002ab6;">
-              <label style="font-size: 12px; cursor: pointer; color: #28a745; font-weight: bold;">
+            <div id="choix_${nomInput}" class="bloc-choix" style="display: ${estCoche ? 'flex' : 'none'};">
+              <label class="label-gagne">
                 <input type="radio" name="statut_${nomInput}" value="Gagné"> 🏆 Gagné
               </label>
-              <label style="font-size: 12px; cursor: pointer; color: #17a2b8; font-weight: bold;">
+              <label class="label-constate">
                 <input type="radio" name="statut_${nomInput}" value="Constaté"> 👀 Constaté
               </label>
             </div>
          `;
       }
 
-      // NOUVEAU BLOC : Niveau, Facings, Rupture
       let blocDetails = `
-          <div id="details_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 10px; margin-top: 5px; margin-left: 28px; align-items: center; flex-wrap: wrap;">
-            <div style="display:flex; align-items:center; gap:5px;">
-              <label style="font-size:11px; color:#555; font-weight:bold;">Niv</label>
-              <input type="number" id="niv_${nomInput}" name="niv_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
+          <div id="details_${nomInput}" class="bloc-details" style="display: ${estCoche ? 'flex' : 'none'};">
+            <div class="details-group">
+              <label class="details-label">Niv</label>
+              <input type="number" id="niv_${nomInput}" name="niv_${nomInput}" class="details-input">
             </div>
-            <div style="display:flex; align-items:center; gap:5px;">
-              <label style="font-size:11px; color:#555; font-weight:bold;">Facing</label>
-              <input type="number" id="fac_${nomInput}" name="fac_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
+            <div class="details-group">
+              <label class="details-label">Facing</label>
+              <input type="number" id="fac_${nomInput}" name="fac_${nomInput}" class="details-input">
             </div>
-            <label style="font-size: 11px; cursor: pointer; color: #dc3545; font-weight: bold; display: flex; align-items: center; gap: 4px; border: 1px solid #dc3545; padding: 2px 6px; border-radius: 4px; background:#fff5f5;">
+            <label class="label-rupture">
               <input type="checkbox" id="rpt_${nomInput}" name="rpt_${nomInput}" value="OUI"> RUPTURE
             </label>
           </div>
       `;
 
-      // Animation pour tout afficher/masquer en cochant
       const evtChange = `onchange="
           const isChecked = this.checked;
           const divChoix = document.getElementById('choix_${nomInput}');
@@ -165,10 +163,10 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
       "`;
       
       html += `
-        <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; display: flex; flex-direction: column;">
-          <div style="display: flex; align-items: center;">
-            <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} ${evtChange} style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
-            <label for="${nomInput}" style="font-size: 14px; font-weight: bold; color: #333; cursor: pointer; user-select: none; flex-grow: 1;">${biere}</label>
+        <div class="biere-item">
+          <div class="biere-main-row">
+            <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} ${evtChange} class="biere-checkbox">
+            <label for="${nomInput}" class="biere-label">${biere}</label>
           </div>
           ${blocChoix}
           ${blocDetails}
@@ -184,6 +182,7 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
     creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒', false) +
     creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦', false);
 }
+
 // Fonction pour extraire les paramètres de l'URL
 function getURLParams() {
   const params = new URLSearchParams(window.location.search);
@@ -407,7 +406,6 @@ async function soumettreFormulaire() {
         
         window.open(lienGCal, '_blank');
         
-        // On ferme le formulaire après un court délai pour laisser à Google Agenda le temps de s'ouvrir
         setTimeout(() => window.close(), 1000);
       } else {
         window.close();
