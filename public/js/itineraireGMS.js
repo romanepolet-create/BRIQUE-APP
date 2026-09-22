@@ -247,27 +247,6 @@ pointsPourAPI = pointsPourAPI.concat(stopsToOptimize);
   }
 };
 
-// Fonction pour afficher le petit message de succès
-window.afficherToast = function(message) {
-  let toast = document.getElementById("toast-notification");
-  
-  // Si le toast n'existe pas encore dans le HTML, on le crée à la volée
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "toast-notification";
-    document.body.appendChild(toast);
-  }
-  
-  toast.textContent = message;
-  toast.className = "toast-show";
-  
-  // On retire la classe après 3 secondes (3000 ms) pour qu'il disparaisse
-  setTimeout(function() { 
-    toast.className = toast.className.replace("toast-show", ""); 
-  }, 3000);
-};
-
-
 let spamLevel = 0;
 
 function showPopup() {
