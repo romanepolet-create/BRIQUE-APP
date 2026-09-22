@@ -561,8 +561,6 @@ input:checked + .slider:before { transform: translateX(20px); }
   margin-top: 20px; 
 }
 
-
-
 /*JS PUSH*/
 .btn-jour {
     flex: 0 0 auto;
@@ -660,12 +658,12 @@ input:checked + .slider:before { transform: translateX(20px); }
   background: transparent;
   border: none;
   padding: 0;
-  font-size: 22px; /* Taille de l'émoji */
+  font-size: 22px; 
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
-  color: white; /* Pour la petite flèche */
+  color: white; 
   transition: transform 0.2s;
 }
 
@@ -682,8 +680,8 @@ input:checked + .slider:before { transform: translateX(20px); }
 .select-right .dropdown-list {
   position: absolute;
   top: 120%;
-  right: -50px; /* Évite que la liste ne sorte de l'écran à droite */
-  min-width: 180px; /* Largeur fixe pour bien lire les enseignes */
+  right: -50px; 
+  min-width: 180px; 
   background: white;
   color: #333;
   z-index: 10001;
@@ -703,9 +701,6 @@ input:checked + .slider:before { transform: translateX(20px); }
   background-color: #002AB6;
   overflow: visible !important;
 }
-
-
-
 
 /*HIDDEN FOR NOW*/
 .custom-select {
@@ -728,3 +723,214 @@ input:checked + .slider:before { transform: translateX(20px); }
   outline: none;
 }
 .details-content { margin-top: 10px; }
+
+/*============================
+   JS PUSH - CARTE ET POPUPS
+============================*/
+
+/* Géolocalisation */
+.user-gps-dot {
+  background-color: #002ab6;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Bulle (Popup) Leaflet */
+.popup-container {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  min-width: 170px;
+}
+.popup-title {
+  color: #002ab6;
+  margin: 0 0 3px 0;
+}
+.popup-address {
+  margin: 0 0 5px 0;
+  color: #666;
+  font-size: 11px;
+  line-height: 1.2;
+}
+.popup-prio {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+}
+.popup-row {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.popup-btn {
+  flex: 1;
+  padding: 8px 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+}
+.btn-hs { background-color: #f3b0cf; color: #002ab6; }
+.btn-task { background-color: #4285F4; color: white; }
+.btn-add { background-color: #28a745; color: white; width: 100%; display: block; margin-bottom: 5px; }
+.btn-visit { background-color: #ffc107; color: #333; }
+.btn-notes { background-color: #17a2b8; color: white; }
+
+/* Liste des magasins visibles */
+.list-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.list-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.list-text { flex-grow: 1; }
+.list-title { color: #333; font-weight: bold; }
+.list-prio { color: #777; }
+.list-dist {
+  color: #002ab6;
+  font-weight: bold;
+  font-size: 10px;
+  margin-left: auto;
+}
+.list-btn-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Panneau Itinéraire */
+.tournee-empty {
+  color: #888;
+  font-style: italic;
+  font-size: 12px;
+}
+.tournee-item {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.tournee-text {
+  flex: 1;
+  text-align: left;
+  padding-right: 5px;
+}
+.tournee-no-link {
+  font-size: 11.5px;
+}
+.tournee-link {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 11.5px;
+}
+.tournee-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+.btn-eye { position: relative; font-size: 16px; }
+.eye-slash {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: red;
+  transform: rotate(45deg);
+}
+.btn-flag-on {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 5px;
+}
+.btn-flag-off {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  filter: grayscale(100%);
+  opacity: 0.5;
+  padding: 2px 5px;
+}
+.btn-delete {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* Popups d'alerte personnalisées (Déjà dans tournée, etc.) */
+.custom-modal {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 2px solid black;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  z-index: 9999;
+  box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+.btn-modal-yes {
+  padding: 5px 15px;
+  cursor: pointer;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.btn-modal-no {
+  padding: 5px 15px;
+  cursor: pointer;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
