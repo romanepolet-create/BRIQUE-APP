@@ -1497,28 +1497,9 @@ window.reinitialiserFiltres = function() {
 
 
 window.creerTacheAgenda = function(titre, adresse) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    if (isIOS) {
-        const date = new Date();
-        const formatICS = (d) => d.toISOString().replace(/-|:|\.\d+/g, '').substring(0,15) + 'Z';
-        const debut = formatICS(date);
-        date.setHours(date.getHours() + 1);
-        const fin = formatICS(date);
-
-        const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${titre}\nLOCATION:${adresse}\nDTSTART:${debut}\nDTEND:${fin}\nEND:VEVENT\nEND:VCALENDAR`;
-
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const a = document.createElement('a');
-        a.href = window.URL.createObjectURL(blob);
-        a.download = 'tache.ics';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } else {
-        const titreEvent = encodeURIComponent(`${titre}`);
-        const adresseEvent = encodeURIComponent(adresse);
-        const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
-        window.open(lienGCal, '_blank');
-    }
+    const titreEvent = encodeURIComponent(`${titre}`);
+    const adresseEvent = encodeURIComponent(adresse);
+    const lienGCal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titreEvent}&location=${adresseEvent}`;
+    
+    window.open(lienGCal, '_blank');
 };
