@@ -30,7 +30,6 @@ router.get('/', async (req, res) => {
 
         const { data: visitesBrutes } = await supabase.from('dashboard_visites').select('*').limit(10000);
         const { data: listeMagasins } = await supabase.from('GMS').select('hubspot_id, nom, enseigne');
-        const { data: historiqueVisites } = await supabase.from('historique_visites').select('hubspot_id, created_at, references').limit(10000);
 
         const statsCommerciaux = [];
         let topMEA = [];
@@ -41,57 +40,14 @@ router.get('/', async (req, res) => {
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
-            // ==========================================
-            // 1. DN SCORÉES (Sécurité : Delta des scores)
-            // ==========================================
             const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
             const dnInitiale = calculerScoreDNUnique(visPrec);
             const actuelDN = dnFinale - dnInitiale;
 
-            // ==========================================
-            // 2. DN CONSTATÉES (Recherche ciblée dans le JSON du mois)
-            // ==========================================
-            let dnConstate = 0;
-
-            const idsVisitesMois = [...new Set(visMois.map(v => String(v.hubspot_id)))];
-            const histoMois = (historiqueVisites || []).filter(h => idsVisitesMois.includes(String(h.hubspot_id)));
-
-            const mapHistoMois = {};
-            histoMois.forEach(h => {
-                if (!mapHistoMois[h.hubspot_id] || new Date(h.created_at) > new Date(mapHistoMois[h.hubspot_id].created_at)) {
-                    mapHistoMois[h.hubspot_id] = h;
-                }
-            });
-
-            function chercherConstates(valeur) {
-                if (!valeur) return;
-                if (typeof valeur === 'string') {
-                    const clean = valeur.trim().toLowerCase();
-                    if (['constaté', 'constate', 'constatée', 'constatées'].includes(clean)) {
-                        dnConstate++;
-                    } else if (clean.startsWith('{') || clean.startsWith('[')) {
-                        try {
-                            const parsed = JSON.parse(valeur);
-                            chercherConstates(parsed);
-                        } catch (e) {}
-                    }
-                } else if (typeof valeur === 'object') {
-                    Object.values(valeur).forEach(chercherConstates);
-                }
-            }
-
-            Object.values(mapHistoMois).forEach(h => {
-                if (h.references) chercherConstates(h.references);
-            });
-
-            // ==========================================
-            // 3. DN GAGNÉES (La règle d'or : Gagnées = Scorées - Constatées)
-            // ==========================================
-            let dnGagne = actuelDN - dnConstate;
-            if (dnGagne < 0) dnGagne = 0; // Sécurité anti-bug d'affichage
+            const dnGagne = visMois.reduce((tot, v) => tot + (parseInt(v.dn_gagne) || 0), 0);
+            const dnConstate = visMois.reduce((tot, v) => tot + (parseInt(v.dn_constate) || 0), 0);
 
             const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
-            
             visMois.filter(v => parseFloat(v.volume_mea) > 0).forEach(v => {
                 const mag = listeMagasins.find(m => String(m.hubspot_id) === String(v.hubspot_id));
                 topMEA.push({
@@ -129,6 +85,7 @@ router.get('/', async (req, res) => {
                 direct: { actuel: actuelDirect, pct: obj.direct > 0 ? Math.round((actuelDirect / obj.direct) * 100) : 'N/A' }
             });
         }
+
 
         topMEA.sort((a, b) => b.volume - a.volume);
 
