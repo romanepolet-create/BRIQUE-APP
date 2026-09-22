@@ -101,18 +101,16 @@ const matriceGMS = {
   }
 };
 
-// Fonction à appeler dans ton DOMContentLoaded (remplace la ligne commentée précédente)
 function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
   const conteneur = document.getElementById('references-container');
   const regles = matriceGMS[enseigne.toUpperCase()];
-  const infos = getURLParams();
+  const infos = getURLParams(); 
 
   if (!regles) {
-    conteneur.innerHTML = `<p style="color:red; font-style:italic;">Enseigne "${enseigne}" inconnue dans la matrice. Impossible de charger les produits.</p>`;
+    conteneur.innerHTML = `<p style="color:red; font-style:italic;">Enseigne "${enseigne}" inconnue dans la matrice.</p>`;
     return;
   }
 
-  // Fonction interne pour générer l'accordéon HTML
   const creerSection = (titre, listeBieres, couleurBordure, icone, estObligatoire) => {
     if (listeBieres.length === 0) return '';
     
@@ -127,8 +125,6 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
       const estCoche = bieresCocheesAvant.includes(biere) ? "checked" : "";
 
       let blocChoix = "";
-      let evtChange = "";
-
       if (infos.premiere_visite) {
          blocChoix = `
             <div id="choix_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 15px; margin-top: 5px; margin-left: 28px; padding: 6px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #002ab6;">
@@ -140,9 +136,33 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
               </label>
             </div>
          `;
-         evtChange = `onchange="document.getElementById('choix_${nomInput}').style.display = this.checked ? 'flex' : 'none';"`;
       }
 
+      // NOUVEAU BLOC : Niveau, Facings, Rupture
+      let blocDetails = `
+          <div id="details_${nomInput}" style="display: ${estCoche ? 'flex' : 'none'}; gap: 10px; margin-top: 5px; margin-left: 28px; align-items: center; flex-wrap: wrap;">
+            <div style="display:flex; align-items:center; gap:5px;">
+              <label style="font-size:11px; color:#555; font-weight:bold;">Niv</label>
+              <input type="number" id="niv_${nomInput}" name="niv_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
+            </div>
+            <div style="display:flex; align-items:center; gap:5px;">
+              <label style="font-size:11px; color:#555; font-weight:bold;">Fac</label>
+              <input type="number" id="fac_${nomInput}" name="fac_${nomInput}" style="width: 40px; padding: 2px; font-size: 12px; border:1px solid #ccc; border-radius:4px; text-align:center;">
+            </div>
+            <label style="font-size: 11px; cursor: pointer; color: #dc3545; font-weight: bold; display: flex; align-items: center; gap: 4px; border: 1px solid #dc3545; padding: 2px 6px; border-radius: 4px; background:#fff5f5;">
+              <input type="checkbox" id="rpt_${nomInput}" name="rpt_${nomInput}" value="OUI"> RPT
+            </label>
+          </div>
+      `;
+
+      // Animation pour tout afficher/masquer en cochant
+      const evtChange = `onchange="
+          const isChecked = this.checked;
+          const divChoix = document.getElementById('choix_${nomInput}');
+          const divDetails = document.getElementById('details_${nomInput}');
+          if (divChoix) divChoix.style.display = isChecked ? 'flex' : 'none';
+          if (divDetails) divDetails.style.display = isChecked ? 'flex' : 'none';
+      "`;
       
       html += `
         <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; display: flex; flex-direction: column;">
@@ -151,9 +171,9 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
             <label for="${nomInput}" style="font-size: 14px; font-weight: bold; color: #333; cursor: pointer; user-select: none; flex-grow: 1;">${biere}</label>
           </div>
           ${blocChoix}
+          ${blocDetails}
         </div>`;
     });
-
     
     html += `</div></details>`;
     return html;
@@ -164,7 +184,6 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
     creerSection('Gamme Facultative (Centrale)', regles.facultatif, '#ffc107', '🛒', false) +
     creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦', false);
 }
-
 // Fonction pour extraire les paramètres de l'URL
 function getURLParams() {
   const params = new URLSearchParams(window.location.search);
@@ -321,6 +340,33 @@ async function soumettreFormulaire() {
       }
     }
   });
+
+  // --- NOUVEAU : Récupération des présences et des détails produits ---
+  const presence = {};
+  ['LUN', 'MAR', 'MER', 'JEU', 'VEN'].forEach(jour => {
+      const cbAM = document.querySelector(`input[name="pres_${jour}_AM"]`);
+      const cbPM = document.querySelector(`input[name="pres_${jour}_PM"]`);
+      presence[jour] = {
+          AM: cbAM ? cbAM.checked : true,
+          PM: cbPM ? cbPM.checked : true
+      };
+  });
+  chargeUtile.append('presence_chef', JSON.stringify(presence));
+
+  const detailsProduits = {};
+  checkboxes.forEach(cb => {
+      if (cb.checked) {
+          const niv = document.getElementById(`niv_${cb.name}`);
+          const fac = document.getElementById(`fac_${cb.name}`);
+          const rpt = document.getElementById(`rpt_${cb.name}`);
+          detailsProduits[cb.name] = {
+              niveau: niv ? niv.value : "",
+              facings: fac ? fac.value : "",
+              rupture: (rpt && rpt.checked) ? "OUI" : "NON"
+          };
+      }
+  });
+  chargeUtile.append('details_produits', JSON.stringify(detailsProduits));
 
   if (erreurChoix) {
     alert("⚠️ Vous devez choisir 'Gagné' ou 'Constaté' pour chaque référence cochée !");
