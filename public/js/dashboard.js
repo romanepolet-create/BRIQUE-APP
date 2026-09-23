@@ -204,7 +204,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            carteDirects.insertBefore(hint, evoDirectsElement.nextSibling);
+            carteDirects.insertBefore(evoDirectsElement.nextSibling);
         }
 
         // Action au clic
