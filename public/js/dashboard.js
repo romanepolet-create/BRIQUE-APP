@@ -197,14 +197,13 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         carteDirects.onmouseout = () => carteDirects.style.transform = 'translateY(0)';
 
         // Ajout du petit texte "Cliquez pour voir" s'il n'existe pas
-        if (!document.getElementById('directs-click-hint')) {
-            const hint = document.createElement('div');
-            hint.id = 'directs-click-hint';
+        if (document.getElementById('directs-click-hint')) {
+            const hint = document.getElementById('directs-click-hint');
             hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            carteDirects.insertBefore(evoDirectsElement.nextSibling);
+            carteDirects.insertBefore(hint, evoDirectsElement.nextSibling);
         }
 
         // Action au clic
