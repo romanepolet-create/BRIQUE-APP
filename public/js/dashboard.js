@@ -68,7 +68,7 @@ function calculerScoreDNUnique(visites) {
 async function chargerDonneesEtAfficher(filtreEmail = 'general') {
     try {
         if (!donneesGlobales) {
-            const reponse = await fetch('/api/dashboard/data'); 
+            const reponse = await fetch(`/api/dashboard/data?nocache=${new Date().getTime()}`); 
             donneesGlobales = await reponse.json();
             if (!donneesGlobales.success) throw new Error("Erreur serveur");
             
