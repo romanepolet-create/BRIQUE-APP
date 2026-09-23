@@ -330,12 +330,16 @@ async function soumettreFormulaire() {
     } else {
       const divChoix = document.getElementById(`choix_${cb.name}`);
       if (divChoix) {
+        // C'est une 1ère visite : on force le choix Gagné/Constaté
         const radioCoche = document.querySelector(`input[name="statut_${cb.name}"]:checked`);
         if (!radioCoche) {
           erreurChoix = true;
         } else {
           chargeUtile.set(cb.name, radioCoche.value);
         }
+      } else {
+        // 👇 CORRECTION : C'est une visite de suivi (pas de boutons radio), on envoie OUI !
+        chargeUtile.set(cb.name, 'OUI');
       }
     }
   });
