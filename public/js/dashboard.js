@@ -196,14 +196,16 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         carteDirects.onmouseover = () => carteDirects.style.transform = 'translateY(-2px)';
         carteDirects.onmouseout = () => carteDirects.style.transform = 'translateY(0)';
 
-        // Ajout du petit texte "Cliquez pour voir" s'il n'existe pas
-        if (document.getElementById('directs-click-hint')) {
-            const hint = document.getElementById('directs-click-hint');
+       // Ajout du petit texte "Cliquez pour voir" s'il n'existe pas
+        if (!document.getElementById('directs-click-hint')) {
+            const hint = document.createElement('div');
+            hint.id = 'directs-click-hint';
             hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            carteDirects.insertBefore(hint, evoDirectsElement.nextSibling);
+            hint.style.marginBottom = '8px'; // Petit espace ajouté pour aérer avec le badge en dessous
+            carteDirects.insertBefore(hint, evoDirectsElement);
         }
 
         // Action au clic
