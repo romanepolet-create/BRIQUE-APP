@@ -159,12 +159,52 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
 
-        const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G20", "AUTRES"];
-        const nbDirects = new Set(visitesMois
-            .filter(v => enseignesDirectes.includes(v.enseigne) && (parseInt(v.score_dn) || 0) > 0)
-            .map(v => v.hubspot_id)
-        ).size;
-        document.getElementById('kpi-directs').textContent = nbDirects;
+        const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G 20", "G20", "AUTRES"];
+        
+        // On isole la dernière visite de chaque magasin direct
+        const mapDirects = {};
+        visitesFiltrees.forEach(v => {
+            if (enseignesDirectes.includes(v.enseigne)) {
+                if (!mapDirects[v.hubspot_id] || v.created_at > mapDirects[v.hubspot_id].created_at) {
+                    mapDirects[v.hubspot_id] = v;
+                }
+            }
+        });
+
+        // On trie entre "Ce mois-ci" et "Historique" (Uniquement si score > 0)
+        const directsMois = [];
+        const directsHisto = [];
+
+        Object.values(mapDirects).forEach(v => {
+            if ((parseInt(v.score_dn) || 0) > 0) {
+                if (v.created_at >= firstDayThisMonth) directsMois.push(v);
+                else directsHisto.push(v);
+            }
+        });
+
+        const kpiDirectsElement = document.getElementById('kpi-directs');
+        const evoDirectsElement = document.getElementById('evo-directs');
+        const carteDirects = kpiDirectsElement.parentNode;
+
+        kpiDirectsElement.textContent = directsMois.length;
+        evoDirectsElement.textContent = `Total Actifs : ${directsMois.length + directsHisto.length} magasins`;
+
+        carteDirects.style.cursor = 'pointer';
+        carteDirects.style.transition = '0.2s';
+        carteDirects.onmouseover = () => carteDirects.style.transform = 'translateY(-2px)';
+        carteDirects.onmouseout = () => carteDirects.style.transform = 'translateY(0)';
+
+        if (!document.getElementById('directs-click-hint')) {
+            const hint = document.createElement('div');
+            hint.id = 'directs-click-hint';
+            hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
+            hint.style.fontSize = '12px';
+            hint.style.color = '#999';
+            hint.style.marginTop = '8px';
+            carteDirects.insertBefore(hint, evoDirectsElement.nextSibling);
+        }
+
+        carteDirects.onclick = () => ouvrirModalDirects(directsMois, directsHisto, donneesGlobales.listeMagasins);
 
         // ==========================================
         // GENERATION
@@ -388,28 +428,22 @@ function genererFocusDN(magasins, visites) {
 document.addEventListener("DOMContentLoaded", () => {
     chargerDonneesEtAfficher('general');
 
-    const btnClose = document.getElementById('close-modal-dn');
-    if (btnClose) {
-        btnClose.onclick = () => document.getElementById('modal-detail-dn').style.display = 'none';
-    }
+    // Fermeture des modals
+    const closeDN = document.getElementById('close-modal-dn');
+    const closeVisites = document.getElementById('close-modal-visites');
+    const closeDirects = document.getElementById('close-modal-directs');
 
-    window.onclick = (event) => {
-        const modal = document.getElementById('modal-detail-dn');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    const btnCloseVisites = document.getElementById('close-modal-visites');
-    if (btnCloseVisites) {
-        btnCloseVisites.onclick = () => document.getElementById('modal-detail-visites').style.display = 'none';
-    }
+    if (closeDN) closeDN.onclick = () => document.getElementById('modal-detail-dn').style.display = 'none';
+    if (closeVisites) closeVisites.onclick = () => document.getElementById('modal-detail-visites').style.display = 'none';
+    if (closeDirects) closeDirects.onclick = () => document.getElementById('modal-detail-directs').style.display = 'none';
 
     window.onclick = (event) => {
         const modalDN = document.getElementById('modal-detail-dn');
         const modalVisites = document.getElementById('modal-detail-visites');
+        const modalDirects = document.getElementById('modal-detail-directs');
         if (event.target === modalDN) modalDN.style.display = 'none';
         if (event.target === modalVisites) modalVisites.style.display = 'none';
+        if (event.target === modalDirects) modalDirects.style.display = 'none';
     };
 });
 
@@ -677,4 +711,63 @@ function ouvrirModalVisites(visitesMois, listeMagasins) {
     }
 
     document.getElementById('modal-detail-visites').style.display = 'flex';
+}
+
+// ===========================
+// DÉTAIL DIRECTS (Vendeurs)
+// ===========================
+function ouvrirModalDirects(directsMois, directsHisto, listeMagasins) {
+    const tbody = document.getElementById('tbody-detail-directs');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const creerLigne = (v, isHisto) => {
+        const magInfo = listeMagasins?.find(m => String(m.hubspot_id) === String(v.hubspot_id));
+        const nom = magInfo ? magInfo.nom : v.hubspot_id;
+        const enseigne = magInfo ? magInfo.enseigne : (v.enseigne || "");
+        const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
+
+        const tr = document.createElement('tr');
+        
+        // Style spécifique pour l'historique (Gris, italique, fond clair)
+        if (isHisto) {
+            tr.style.backgroundColor = '#fdfdfd';
+            tr.style.color = '#999';
+            tr.style.fontStyle = 'italic';
+        }
+
+        tr.innerHTML = `
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                <b style="${isHisto ? 'font-weight: 500;' : 'font-weight: bold;'}">${nom}</b><br>
+                <span style="font-size: 11px; ${isHisto ? 'color: #ccc;' : 'color: #888;'}">${enseigne}</span>
+            </td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 13px;">
+                ${dateFormatee}
+            </td>
+        `;
+        return tr;
+    };
+
+    if (directsMois.length === 0 && directsHisto.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; padding: 20px; color: #666;">Aucun magasin direct actif.</td></tr>';
+    } else {
+        // 1. On affiche d'abord ceux du mois en cours
+        directsMois.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).forEach(v => {
+            tbody.appendChild(creerLigne(v, false));
+        });
+
+        // 2. Séparation avec "||" s'il y a les deux
+        if (directsMois.length > 0 && directsHisto.length > 0) {
+            const trSep = document.createElement('tr');
+            trSep.innerHTML = `<td colspan="2" style="text-align: center; padding: 12px; color: #d63a56; font-weight: bold; font-size: 16px; opacity: 0.3;">||</td>`;
+            tbody.appendChild(trSep);
+        }
+
+        // 3. On affiche l'historique
+        directsHisto.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).forEach(v => {
+            tbody.appendChild(creerLigne(v, true));
+        });
+    }
+
+    document.getElementById('modal-detail-directs').style.display = 'flex';
 }
