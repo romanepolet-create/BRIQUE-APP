@@ -401,45 +401,66 @@ body {
 #th2-detail-DN { text-align: center; }
 
 
-/*--DIRECTS--*/
-.direct-row td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+/*--> DIRECTS*/
+#modal-detail-directs {
+  display: none; 
+  position: fixed; 
+  top: 0; left: 0; 
+  width: 100%; height: 100%; 
+  background: rgba(0,0,0,0.5); 
+  z-index: 1000; 
+  justify-content: center; 
+  align-items: center;
 }
 
-.direct-row-histo {
-  background-color: #fdfdfd;
+#modal-detail-directs-titre {
+  background: white; 
+  width: 90%; max-width: 500px; 
+  border-radius: 8px; 
+  overflow: hidden; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+  max-height: 80vh; 
+  display: flex; 
+  flex-direction: column;
+}
+
+#modal-detail-directs-titre-2 {
+  padding: 15px; 
+  border-bottom: 1px solid #eee; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background: #f8f9fa;
+}
+
+#detail-directs-titre {
+  margin: 0; 
+  font-size: 16px; 
+  color: #002ab6;
+}
+
+#close-modal-directs {
+  cursor: pointer; 
+  font-size: 20px; 
+  font-weight: bold; 
   color: #999;
-  font-style: italic;
 }
 
-.direct-nom {
-  font-weight: bold;
+#modal-table-detail-directs {
+  overflow-y: auto; 
+  padding: 0;
 }
 
-.direct-row-histo .direct-nom {
-  font-weight: 500;
+#table-detail-directs {
+  width: 100%; 
+  border-collapse: collapse;
 }
 
-.direct-enseigne {
-  font-size: 11px;
-  color: #888;
-}
-
-.direct-row-histo .direct-enseigne {
-  color: #ccc;
-}
-
-.direct-date {
-  text-align: center;
-  font-size: 13px;
-}
-
-.direct-separator td {
-  text-align: center;
-  padding: 12px;
-  color: #d63a56;
-  font-weight: bold;
-  font-size: 16px;
-  opacity: 0.3;
-}
+.direct-row td { padding: 10px; border-bottom: 1px solid #eee; }
+.direct-row-histo { background-color: #fdfdfd; color: #999; font-style: italic; }
+.direct-nom { font-weight: bold; }
+.direct-row-histo .direct-nom { font-weight: 500; }
+.direct-enseigne { font-size: 11px; color: #888; }
+.direct-row-histo .direct-enseigne { color: #ccc; }
+.direct-date { text-align: center; font-size: 13px; }
+.direct-separator td { text-align: center; padding: 12px; color: #d63a56; font-weight: bold; font-size: 16px; opacity: 0.3; }
