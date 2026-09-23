@@ -13,6 +13,17 @@ const OBJECTIFS_MOIS = {
 
 const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
 
+// Même fonction stricte que le dashboard
+function calculerScoreDNUnique(visites) {
+    const mapMagasins = {};
+    visites.forEach(v => {
+        if (!mapMagasins[v.hubspot_id] || v.created_at > mapMagasins[v.hubspot_id].created_at) {
+            mapMagasins[v.hubspot_id] = v;
+        }
+    });
+    return Object.values(mapMagasins).reduce((total, v) => total + (parseInt(v.score_dn) || 0), 0);
+}
+
 router.get('/', async (req, res) => {
     try {
         const now = new Date();
@@ -27,63 +38,38 @@ router.get('/', async (req, res) => {
 
         for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
             const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
+            const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
 
             // ==========================================
-            // 1. CALCUL CHRONOLOGIQUE INTELLIGENT (Gagnées / Constatées)
+            // 1. SCORÉES : La vérité absolue du Dashboard (Le Delta)
             // ==========================================
-            let dnGagne = 0;
+            const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
+            const dnInitiale = calculerScoreDNUnique(visPrec);
+            const actuelDN = dnFinale - dnInitiale; // C'est d'ici que sort le 41 exact d'Arnaud
+
+            // ==========================================
+            // 2. CONSTATÉES : On prend le max par magasin ce mois-ci
+            // ==========================================
             let dnConstate = 0;
-
-            // On regroupe toutes les visites du commercial par magasin
-            const visitesParMagasin = {};
-            toutesVisitesEmail.forEach(v => {
-                if (!visitesParMagasin[v.hubspot_id]) visitesParMagasin[v.hubspot_id] = [];
-                visitesParMagasin[v.hubspot_id].push(v);
+            const magsMois = [...new Set(visMois.map(v => v.hubspot_id))];
+            
+            magsMois.forEach(idMag => {
+                const maxConstate = Math.max(...visMois.filter(v => v.hubspot_id === idMag).map(v => parseInt(v.dn_constate) || 0));
+                dnConstate += maxConstate;
             });
 
-            // On analyse l'historique de chaque magasin un par un
-            Object.values(visitesParMagasin).forEach(visitesDuMagasin => {
-                // On trie de la plus ancienne à la plus récente
-                visitesDuMagasin.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-
-                for (let i = 0; i < visitesDuMagasin.length; i++) {
-                    const visiteActuelle = visitesDuMagasin[i];
-                    
-                    // On ne comptabilise les points que si l'action s'est passée CE MOIS-CI
-                    if (visiteActuelle.created_at >= startOfMonth) {
-                        const visitePrecedente = i > 0 ? visitesDuMagasin[i - 1] : null;
-                        
-                        const scorePrecedent = visitePrecedente ? (parseInt(visitePrecedente.score_dn) || 0) : 0;
-                        const scoreActuel = parseInt(visiteActuelle.score_dn) || 0;
-                        
-                        const pointsConstateFormulaire = parseInt(visiteActuelle.dn_constate) || 0;
-                        const pointsGagneFormulaire = parseInt(visiteActuelle.dn_gagne) || 0;
-
-                        // CAS A : C'est une 1ère visite ou on a utilisé les boutons radio (données explicites)
-                        if (pointsConstateFormulaire > 0 || pointsGagneFormulaire > 0) {
-                            dnConstate += pointsConstateFormulaire;
-                            dnGagne += pointsGagneFormulaire;
-                        } 
-                        // CAS B : C'est un suivi classique (que des OUI) -> On calcule le Delta
-                        else {
-                            const delta = scoreActuel - scorePrecedent;
-                            // Si le Delta est positif, on a ajouté de nouvelles bières !
-                            if (delta > 0) {
-                                dnGagne += delta;
-                            }
-                            // Si le delta est négatif ou 0, on ne fait rien (on ne punit pas la newsletter)
-                        }
-                    }
-                }
-            });
-
-            // Pour la newsletter, la Scorée affichée est strictement l'effort du mois
-            const actuelDN = dnGagne + dnConstate;
-
             // ==========================================
-            // 2. MEA
+            // 3. GAGNÉES : Règle d'or (Gagnées = Scorées - Constatées)
             // ==========================================
+            let dnGagne = actuelDN - dnConstate;
+            
+            // Sécurité anti-bug
+            if (dnGagne < 0) {
+                dnGagne = 0;
+                dnConstate = actuelDN > 0 ? actuelDN : 0;
+            }
+
             const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
             
             visMois.filter(v => parseFloat(v.volume_mea) > 0).forEach(v => {
@@ -95,9 +81,6 @@ router.get('/', async (req, res) => {
                 });
             });
 
-            // ==========================================
-            // 3. DIRECTS
-            // ==========================================
             let actuelDirect = 0;
             const tousMagsDirects = [...new Set(toutesVisitesEmail.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
             
@@ -117,9 +100,6 @@ router.get('/', async (req, res) => {
                 }
             });
             
-            // ==========================================
-            // SAUVEGARDE POUR LE HTML
-            // ==========================================
             statsCommerciaux.push({
                 nom: obj.nom,
                 dnGagne: dnGagne,
