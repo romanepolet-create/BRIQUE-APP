@@ -143,9 +143,8 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         carteDn.onmouseover = () => carteDn.style.transform = 'translateY(-2px)';
         carteDn.onmouseout = () => carteDn.style.transform = 'translateY(0)';
 
-        if (!document.getElementById('dn-click-hint')) {
-            const hint = document.createElement('div');
-            hint.id = 'dn-click-hint';
+        if (document.getElementById('dn-click-hint')) {
+            const hint = document.getElementById('dn-click-hint');
             hint.innerHTML = '<i>👆 Cliquez pour voir le détail</i>';
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
