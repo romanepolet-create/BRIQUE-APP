@@ -733,20 +733,14 @@ function ouvrirModalDirects(directsMois, directsHisto, listeMagasins) {
         const dateFormatee = new Date(v.created_at).toLocaleDateString('fr-FR');
 
         const tr = document.createElement('tr');
-        
-        // Style spécifique pour l'historique (Gris, italique, fond clair)
-        if (isHisto) {
-            tr.style.backgroundColor = '#fdfdfd';
-            tr.style.color = '#999';
-            tr.style.fontStyle = 'italic';
-        }
+        tr.className = isHisto ? 'direct-row direct-row-histo' : 'direct-row';
 
         tr.innerHTML = `
-            <td style="padding: 10px; border-bottom: 1px solid #eee;">
-                <b style="${isHisto ? 'font-weight: 500;' : 'font-weight: bold;'}">${nom}</b><br>
-                <span style="font-size: 11px; ${isHisto ? 'color: #ccc;' : 'color: #888;'}">${enseigne}</span>
+            <td>
+                <b class="direct-nom">${nom}</b><br>
+                <span class="direct-enseigne">${enseigne}</span>
             </td>
-            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 13px;">
+            <td class="direct-date">
                 ${dateFormatee}
             </td>
         `;
@@ -754,7 +748,7 @@ function ouvrirModalDirects(directsMois, directsHisto, listeMagasins) {
     };
 
     if (directsMois.length === 0 && directsHisto.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; padding: 20px; color: #666;">Aucun magasin direct actif.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="2" class="chargement">Aucun magasin direct actif.</td></tr>';
     } else {
         // 1. On affiche d'abord ceux du mois en cours
         directsMois.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).forEach(v => {
@@ -764,7 +758,8 @@ function ouvrirModalDirects(directsMois, directsHisto, listeMagasins) {
         // 2. Séparation avec "||" s'il y a les deux
         if (directsMois.length > 0 && directsHisto.length > 0) {
             const trSep = document.createElement('tr');
-            trSep.innerHTML = `<td colspan="2" style="text-align: center; padding: 12px; color: #d63a56; font-weight: bold; font-size: 16px; opacity: 0.3;">||</td>`;
+            trSep.className = 'direct-separator';
+            trSep.innerHTML = `<td colspan="2">||</td>`;
             tbody.appendChild(trSep);
         }
 
