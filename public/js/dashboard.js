@@ -159,9 +159,11 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
 
+        // ============================
+        // ANIMATION CARTE DIRECTS & CALCUL
+        // ============================
         const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G 20", "G20", "AUTRES"];
         
-        // On isole la dernière visite de chaque magasin direct
         const mapDirects = {};
         visitesFiltrees.forEach(v => {
             if (enseignesDirectes.includes(v.enseigne)) {
@@ -171,7 +173,6 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             }
         });
 
-        // On trie entre "Ce mois-ci" et "Historique" (Uniquement si score > 0)
         const directsMois = [];
         const directsHisto = [];
 
@@ -186,14 +187,17 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const evoDirectsElement = document.getElementById('evo-directs');
         const carteDirects = kpiDirectsElement.parentNode;
 
-        kpiDirectsElement.textContent = directsMois.length;
-        evoDirectsElement.textContent = `Total Actifs : ${directsMois.length + directsHisto.length} magasins`;
+        // Affichage des chiffres (Total en grand, Mois en petit)
+        kpiDirectsElement.textContent = directsMois.length + directsHisto.length; 
+        evoDirectsElement.textContent = `Dont ${directsMois.length} vus ce mois-ci`;
 
+        // Animation au survol
         carteDirects.style.cursor = 'pointer';
         carteDirects.style.transition = '0.2s';
         carteDirects.onmouseover = () => carteDirects.style.transform = 'translateY(-2px)';
         carteDirects.onmouseout = () => carteDirects.style.transform = 'translateY(0)';
 
+        // Ajout du petit texte "Cliquez pour voir" s'il n'existe pas
         if (!document.getElementById('directs-click-hint')) {
             const hint = document.createElement('div');
             hint.id = 'directs-click-hint';
@@ -204,6 +208,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             carteDirects.insertBefore(hint, evoDirectsElement.nextSibling);
         }
 
+        // Action au clic
         carteDirects.onclick = () => ouvrirModalDirects(directsMois, directsHisto, donneesGlobales.listeMagasins);
 
         // ==========================================
