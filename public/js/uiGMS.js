@@ -264,7 +264,7 @@ map.on('zoomend', majListeMagasinsVisibles);
 
 window.clicSurListe = function(layerId) {
     const layer = markerConteneur.getLayer(layerId);
-    if (layer) { map.panTo(layer.getLatLng()); ouvrirPopupDynamique(layer); }
+    if (layer) { ouvrirPopupDynamique(layer); }
 };
 
 window.ouvrirPopupDynamique = function(layer) {
