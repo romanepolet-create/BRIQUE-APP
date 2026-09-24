@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const urlParamsLocal = new URLSearchParams(window.location.search);
-  const hubspotIdLocal = urlParamsLocal.get('id_hubspot');
+  const urlParams = new URLSearchParams(window.location.search);
+  const hubspot_id = urlParams.get('id_hubspot');
   
   if (hubspotIdLocal) {
     const btnSaveNote = document.getElementById('btn-save-note');
