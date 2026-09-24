@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const hubspot_id = urlParams.get('id_hubspot');
+  const hubspotIdLocal = urlParams.get('id_hubspot');
   
-  if (hubspot_id) {
+  if (hubspotIdLocal) {
     const btnSaveNote = document.getElementById('btn-save-note');
     const newNoteTextarea = document.getElementById('new_note');
     const btnViewNotes = document.getElementById('btn-view-notes');
