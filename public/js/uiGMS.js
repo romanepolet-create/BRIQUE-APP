@@ -341,12 +341,12 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
 
     modaleContainer.style.display = 'block';
     modaleContainer.innerHTML = `
-        <div id="modal-notes-popup" style="">💬 Notes - ${nomMagasin}>
-            <h3 id="titre-note-popup"></h3>
-            <button id="btn-close-notes-popup" onclick="document.getElementById('map-notes-modal').style.display='none'">✖</button>
+        <div id="modal-notes-header" style="">💬 Notes - ${nomMagasin}>
+            <h3 id="modal-notes-title"></h3>
+            <button id="modal-notes-close" onclick="document.getElementById('map-notes-modal').style.display='none'">✖</button>
         </div>
         
-        <div style="padding: 20px; text-align: center;">
+        <div class="modal-notes-body">
             <p>⏳ Chargement des notes en cours...</p>
         </div>
     `;
