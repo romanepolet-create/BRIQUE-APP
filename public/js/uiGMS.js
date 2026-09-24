@@ -362,27 +362,23 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
 
         const notes = data && data.commentaires ? data.commentaires : [];
 
-        let htmlContenu = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+        let htmlContenu = '<ul class="notes-list">';
         
         if (notes.length === 0) {
-            htmlContenu += '<li style="color: #888; font-style: italic; text-align: center; padding: 20px;">Aucune note pour le moment.</li>';
+            htmlContenu += '<li class="note-empty">Aucune note pour le moment.</li>';
         } else {
             [...notes].reverse().forEach((note, index) => {
                 const safeTextHTML = note.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                
-                const styleBordure = index === notes.length - 1 ? '' : 'border-bottom: 1px solid #ddd;';
-                
+                                
                 htmlContenu += `
-                    <li style="${styleBordure} padding: 15px; text-align: left;">
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
-                            <div style="font-size: 11px; color: #555;">
-                                <strong style="color: #002ab6;">[${note.date}]</strong> par <strong>${note.user}</strong> :
+                    <li class="note-item">
+                        <div class="note-meta-row">
+                            <div class="note-author">
+                                <span class="note-date">[${note.date}]</span> par <strong>${note.user}</strong> :
                             </div>
-                            <button onclick="copierNoteCarte(this, \`${safeTextHTML.replace(/"/g, '&quot;')}\`)" style="background: #eee; border: 1px solid #ccc; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; flex-shrink: 0;">
-                                📋 Copier
-                            </button>
+                            <button class="note-btn-copy" onclick="copierNoteCarte(this, \`${safeTextHTML.replace(/"/g, '&quot;')}\`)">📋 Copier</button>
                         </div>
-                        <div style="font-size: 13px; color: #333; line-height: 1.4; white-space: pre-wrap;">${safeTextHTML}</div>
+                        <div class="note-content">${safeTextHTML}</div>
                     </li>
                 `;
             });
@@ -390,7 +386,7 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
         htmlContenu += '</ul>';
 
         modaleContainer.innerHTML = `
-            <div style="background: #002ab6; color: white; padding: 15px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0;">
+            <div class="note-error">
                 <h3 style="margin: 0; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 85%;">💬 ${nomMagasin}</h3>
                 <button onclick="document.getElementById('map-notes-modal').style.display='none'" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 0;">✖</button>
             </div>
