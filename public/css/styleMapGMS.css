@@ -955,9 +955,9 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 .modal-notes-header {
-   background: #002ab6; 
+   background: light-grey; 
    color: white; 
-   padding: 15px; 
+   padding: 5px; 
    border-radius: 8px 8px 0 0; 
    display: flex; 
    justify-content: space-between; 
@@ -977,7 +977,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 .modal-notes-close {
    background: none; 
    border: none; 
-   color: red; 
+   color: black; 
    font-size: 20px; 
    cursor: pointer; 
    padding: 0; 
