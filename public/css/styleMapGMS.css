@@ -934,3 +934,39 @@ input:checked + .slider:before { transform: translateX(20px); }
   border: none;
   border-radius: 4px;
 }
+
+#map-notes-modal {
+   width: 350px;
+   max-width: 90vw;
+   max-heigth: 80vh;
+   overflow-y: auto;
+   border-radius: 8px;
+   padding: 0;
+}
+
+#modal-notes-popup {
+   background: #002ab6; 
+   color: white; 
+   padding: 15px; 
+   border-radius: 8px 8px 0 0; 
+   display: flex; 
+   justify-content: space-between; 
+   align-items: center; 
+   position: sticky; 
+   top: 0;
+}
+
+#titre-note-popup {
+   margin: 0; 
+   font-size: 16px;
+}
+
+#btn-close-notes-popup {
+   background: none; 
+   border: none; 
+   color: white; 
+   font-size: 20px; 
+   cursor: pointer; 
+   padding: 0;
+}
+            
