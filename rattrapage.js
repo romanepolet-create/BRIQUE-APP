@@ -7,18 +7,24 @@ async function retablirLaVerite() {
     try {
         console.log("🔍 Analyse de la vérité absolue (historique_visites)...");
         
-        // 1. Récupération de la vérité (le JSON des cases cochées)
         const { data: historiques, error: errH } = await supabase.from('historique_visites').select('*');
         if (errH) throw errH;
 
-        // 2. Récupération des visites du dashboard
         const { data: dashboards, error: errD } = await supabase.from('dashboard_visites').select('*');
         if (errD) throw errD;
 
+        // 🛠️ LA CORRECTION EST ICI : On isole UNIQUEMENT la toute dernière visite de chaque magasin
+        const derniersHistoriques = {};
+        for (const h of historiques) {
+            if (!derniersHistoriques[h.hubspot_id] || new Date(h.created_at) > new Date(derniersHistoriques[h.hubspot_id].created_at)) {
+                derniersHistoriques[h.hubspot_id] = h;
+            }
+        }
+
         let corrections = 0;
 
-        for (const histo of historiques) {
-            // Calcul du VRAI score d'après les cases réellement cochées dans le JSON
+        // On boucle uniquement sur la version la plus récente !
+        for (const histo of Object.values(derniersHistoriques)) {
             let vraiScore = 0;
             if (histo.references && typeof histo.references === 'object') {
                 Object.values(histo.references).forEach(val => {
@@ -31,15 +37,12 @@ async function retablirLaVerite() {
                 });
             }
 
-            // On cherche la DERNIÈRE visite de ce magasin dans le dashboard
             const visitesDuMagasin = dashboards.filter(v => String(v.hubspot_id) === String(histo.hubspot_id));
             
             if (visitesDuMagasin.length > 0) {
-                // Tri de la plus récente à la plus ancienne
                 visitesDuMagasin.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 const derniereVisite = visitesDuMagasin[0];
 
-                // Si le score affiché sur le dashboard est différent de la réalité des cases
                 if (parseInt(derniereVisite.score_dn) !== vraiScore) {
                     await supabase
                         .from('dashboard_visites')
