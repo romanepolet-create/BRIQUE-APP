@@ -318,6 +318,12 @@ async function soumettreFormulaire() {
   const txtInitial = btnSubmit.textContent;
   btnSubmit.textContent = "⏳ Envoi en cours...";
   btnSubmit.disabled = true;
+
+  const noteTexte = document.getElementById('new_note').value.trim();
+  if (noteTexte !== "") {
+      const btnSaveNote = document.getElementById('btn-save-note');
+      if (btnSaveNote) btnSaveNote.click();
+  }
   
   const chargeUtile = new FormData(formulaireElement);
   let erreurChoix = false;
