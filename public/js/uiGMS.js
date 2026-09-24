@@ -1,7 +1,6 @@
 let joursOuvres = [];
 let jourSelectionneId = null;
 
-// --- GESTION DES JOURS OUVRES ---
 function genererJoursOuvres() {
     joursOuvres = [];
     let date = new Date();
@@ -300,7 +299,7 @@ window.ouvrirPopupDynamique = function(layer) {
           <button onclick="ajouterEtape(${m.lng}, ${m.lat}, '${nomEchappe}', '${m.hubspot_id}', '${m.enseigne}')" class="popup-btn btn-add">📍 Ajouter à l'itinéraire</button>
           <div class="popup-row">
             <button data-url="${urlFormPopup}" onclick="window.open(this.dataset.url, '_blank')" class="popup-btn btn-visit">📝 Visite</button>
-            <button data-url="${urlFormPopup}&open_notes=true" onclick="window.open(this.dataset.url, '_blank')" class="popup-btn btn-notes">💬 Notes</button>
+            <button onclick="afficherNotesMagasinSurCarte('${m.hubspot_id}', '${nomEchappe}')" class="popup-btn btn-notes">💬 Notes</button>
           </div>
         </div>
     `;
@@ -325,4 +324,95 @@ window.onclick = function(event) {
   if (!event.target.closest('.custom-select') && !event.target.closest('.select-right')) {
     document.querySelectorAll('.dropdown-list').forEach(el => el.classList.remove('show'));
   }
+};
+
+// ==========================================
+// MOTEUR DE NOTES INTÉGRÉ À LA CARTE
+// ==========================================
+
+window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
+    let modaleContainer = document.getElementById('map-notes-modal');
+    if (!modaleContainer) {
+        modaleContainer = document.createElement('div');
+        modaleContainer.id = 'map-notes-modal';
+        modaleContainer.className = 'custom-modal';
+        document.body.appendChild(modaleContainer);
+    }
+
+    modaleContainer.style.display = 'block';
+    modaleContainer.innerHTML = `
+        <div id="modal-notes-popup" style="">💬 Notes - ${nomMagasin}>
+            <h3 id="titre-note-popup"></h3>
+            <button id="btn-close-notes-popup" onclick="document.getElementById('map-notes-modal').style.display='none'">✖</button>
+        </div>
+        
+        <div style="padding: 20px; text-align: center;">
+            <p>⏳ Chargement des notes en cours...</p>
+        </div>
+    `;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('historique_visites')
+            .select('commentaires')
+            .eq('hubspot_id', hubspotId)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        const notes = data && data.commentaires ? data.commentaires : [];
+
+        let htmlContenu = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+        
+        if (notes.length === 0) {
+            htmlContenu += '<li style="color: #888; font-style: italic; text-align: center; padding: 20px;">Aucune note pour le moment.</li>';
+        } else {
+            [...notes].reverse().forEach((note, index) => {
+                const safeTextHTML = note.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                const styleBordure = index === notes.length - 1 ? '' : 'border-bottom: 1px solid #ddd;';
+                
+                htmlContenu += `
+                    <li style="${styleBordure} padding: 15px; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                            <div style="font-size: 11px; color: #555;">
+                                <strong style="color: #002ab6;">[${note.date}]</strong> par <strong>${note.user}</strong> :
+                            </div>
+                            <button onclick="copierNoteCarte(this, \`${safeTextHTML.replace(/"/g, '&quot;')}\`)" style="background: #eee; border: 1px solid #ccc; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; flex-shrink: 0;">
+                                📋 Copier
+                            </button>
+                        </div>
+                        <div style="font-size: 13px; color: #333; line-height: 1.4; white-space: pre-wrap;">${safeTextHTML}</div>
+                    </li>
+                `;
+            });
+        }
+        htmlContenu += '</ul>';
+
+        modaleContainer.innerHTML = `
+            <div style="background: #002ab6; color: white; padding: 15px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0;">
+                <h3 style="margin: 0; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 85%;">💬 ${nomMagasin}</h3>
+                <button onclick="document.getElementById('map-notes-modal').style.display='none'" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 0;">✖</button>
+            </div>
+            <div style="background: white; border-radius: 0 0 8px 8px;">
+                ${htmlContenu}
+            </div>
+        `;
+
+    } catch (err) {
+        console.error("Erreur récupération notes:", err);
+        modaleContainer.innerHTML += `<div style="padding: 20px; color: red;">❌ Erreur lors du chargement des notes.</div>`;
+    }
+};
+
+window.copierNoteCarte = function(bouton, texte) {
+    const texteDechappe = texte.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+    
+    navigator.clipboard.writeText(texteDechappe).then(() => {
+        bouton.textContent = 'Copié !';
+        setTimeout(() => bouton.textContent = '📋 Copier', 2000);
+    }).catch(err => {
+        console.error("Erreur de copie :", err);
+        bouton.textContent = '❌ Erreur';
+    });
 };
