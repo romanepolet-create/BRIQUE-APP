@@ -3,31 +3,59 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-async function reparationFinale() {
-    console.log("🛠️ Démarrage de la réparation chirurgicale de l'historique...");
-    const { data: visites, error } = await supabase.from('dashboard_visites').select('*');
-    if (error) return console.error("Erreur:", error);
-    
-    let count = 0;
-    for (const visite of visites) {
-        // On cible uniquement le passé (avant aujourd'hui)
-        if (new Date(visite.created_at) < new Date('2026-09-24')) {
-            const dnG = parseInt(visite.dn_gagne) || 0;
-            const dnC = parseInt(visite.dn_constate) || 0;
-            const vraiScoreExcel = dnG + dnC;
+async function retablirLaVerite() {
+    try {
+        console.log("🔍 Analyse de la vérité absolue (historique_visites)...");
+        
+        // 1. Récupération de la vérité (le JSON des cases cochées)
+        const { data: historiques, error: errH } = await supabase.from('historique_visites').select('*');
+        if (errH) throw errH;
 
-            // Si le score est absurde (comme le fameux 18) et qu'on a de la donnée Excel
-            if (vraiScoreExcel > 0 && parseInt(visite.score_dn) !== vraiScoreExcel) {
-                await supabase
-                    .from('dashboard_visites')
-                    .update({ score_dn: vraiScoreExcel })
-                    .eq('id', visite.id);
-                count++;
-                console.log(`✅ Corrigé : ${visite.hubspot_id} (${visite.created_at.split('T')[0]}) -> le faux ${visite.score_dn} redevient ${vraiScoreExcel}`);
+        // 2. Récupération des visites du dashboard
+        const { data: dashboards, error: errD } = await supabase.from('dashboard_visites').select('*');
+        if (errD) throw errD;
+
+        let corrections = 0;
+
+        for (const histo of historiques) {
+            // Calcul du VRAI score d'après les cases réellement cochées dans le JSON
+            let vraiScore = 0;
+            if (histo.references && typeof histo.references === 'object') {
+                Object.values(histo.references).forEach(val => {
+                    if (typeof val === 'string') {
+                        const clean = val.trim().toLowerCase();
+                        if (['oui', 'gagné', 'gagne', 'constaté', 'constate'].includes(clean)) {
+                            vraiScore++;
+                        }
+                    }
+                });
+            }
+
+            // On cherche la DERNIÈRE visite de ce magasin dans le dashboard
+            const visitesDuMagasin = dashboards.filter(v => String(v.hubspot_id) === String(histo.hubspot_id));
+            
+            if (visitesDuMagasin.length > 0) {
+                // Tri de la plus récente à la plus ancienne
+                visitesDuMagasin.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                const derniereVisite = visitesDuMagasin[0];
+
+                // Si le score affiché sur le dashboard est différent de la réalité des cases
+                if (parseInt(derniereVisite.score_dn) !== vraiScore) {
+                    await supabase
+                        .from('dashboard_visites')
+                        .update({ score_dn: vraiScore })
+                        .eq('id', derniereVisite.id);
+                    
+                    corrections++;
+                    console.log(`✅ Corrigé : Magasin ${histo.hubspot_id} -> remis à ${vraiScore} (était à ${derniereVisite.score_dn})`);
+                }
             }
         }
+        
+        console.log(`\n🎉 Terminé ! ${corrections} magasins ont retrouvé leur vrai score sur le dashboard.`);
+    } catch (err) {
+        console.error("Erreur :", err);
     }
-    console.log(`\n🎉 Mission accomplie ! ${count} visites historiques ont été purgées du doublon.`);
 }
 
-reparationFinale();
+retablirLaVerite();
