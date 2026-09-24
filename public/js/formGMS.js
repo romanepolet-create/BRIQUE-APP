@@ -183,14 +183,14 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
     creerSection('Gamme Directe (Producteur)', regles.direct, '#002ab6', '📦', false);
 }
 
-// Fonction pour extraire les paramètres de l'URL
 function getURLParams() {
   const params = new URLSearchParams(window.location.search);
   return {
     id_hubspot: params.get('id_hubspot') || '',
     nom: params.get('nom') || 'Magasin Inconnu',
     enseigne: params.get('enseigne') || 'Inconnue',
-    premiere_visite: params.get('premiere_visite') === 'true'
+    premiere_visite: params.get('premiere_visite') === 'true',
+    open_notes: params.get('open_notes') === 'true'
   };
 }
 
