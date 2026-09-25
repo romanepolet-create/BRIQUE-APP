@@ -8,7 +8,8 @@ const OBJECTIFS_MOIS = {
     "arnaud.ladougne@briquehouse.fr": { nom: "Arnaud Ladougne", dn: 72, mea: 25, direct: 3 },
     "etienne.firmin@briquehouse.fr": { nom: "Etienne Firmin", dn: 33.5, mea: 11.5, direct: 1.4 },
     "romane.polet@briquehouse.fr": { nom: "Romane Polet", dn: 38.88, mea: 13.5, direct: 1.62 },
-    "lorelei.duplat@briquehouse.fr": { nom: "Lorelei Duplat", dn: 10, mea: 2, direct: 0 }
+    "lorelei.duplat@briquehouse.fr": { nom: "Lorelei Duplat", dn: 10, mea: 2, direct: 0 },
+    "leo.blanchet@briquehouse.fr": { nom: "Léo Blanchet", dn: 0, mea: 0, direct: 5 }
 };
 
 const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
@@ -36,7 +37,7 @@ router.get('/', async (req, res) => {
         let topMEA = [];
         let topDirects = [];
 
-        for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
+        for (const [email, obj] of Object.entries((OBJECTIFS_MOIS, "leo.blanchet@brqiuehouse.fr"))) {
             const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
@@ -100,6 +101,7 @@ router.get('/', async (req, res) => {
                 }
             });
             
+            if (email !== "leo.blanchet@briquehouse.fr") {
             statsCommerciaux.push({
                 nom: obj.nom,
                 dnGagne: dnGagne,
@@ -108,6 +110,7 @@ router.get('/', async (req, res) => {
                 mea: { actuel: actuelMEA.toFixed(1), pct: obj.mea > 0 ? Math.round((actuelMEA / obj.mea) * 100) : 'N/A' },
                 direct: { actuel: actuelDirect, pct: obj.direct > 0 ? Math.round((actuelDirect / obj.direct) * 100) : 'N/A' }
             });
+            }
         }
 
         topMEA.sort((a, b) => b.volume - a.volume);
