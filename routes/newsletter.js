@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
         let topMEA = [];
         let topDirects = [];
 
-        for (const [email, obj] of Object.entries((OBJECTIFS_MOIS, "leo.blanchet@brqiuehouse.fr"))) {
+        for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
             const visMois = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
             const visPrec = (visitesBrutes || []).filter(v => v.commercial_email === email && v.created_at < startOfMonth);
             const toutesVisitesEmail = (visitesBrutes || []).filter(v => v.commercial_email === email);
