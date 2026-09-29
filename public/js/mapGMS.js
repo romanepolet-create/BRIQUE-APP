@@ -58,6 +58,11 @@ markerConteneur = L.markerClusterGroup({
 // --- FONCTIONS CORE ---
 function formatEmailToName(email) {
   if (!email) return "Utilisateur inconnu";
+
+  if (email.toLowerCase() === 'jeanmichel.dole@briquehouse.fr') {
+      return "J-M Dole";
+  }
+  
     const namePart = email.split('@')[0]; 
     const parts = namePart.split('.'); 
     const formattedName = parts.map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()).join(' ');
