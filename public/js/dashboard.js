@@ -2,6 +2,7 @@ let listeInitialeChargee = false;
 let graphVisites = null;
 let donneesGlobales = null;
 let graphFlopDN = null;
+const ENSEIGNES_DIRECTES_GLOBALES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "G 20", "G20", "AUTRES", "LECLERC DRIVE", "MATCH", "U EXPRESS"];
 const MAX_DN_ENSEIGNE = {
     "AUCHAN HM": 7,
     "AUCHAN SM": 0,
@@ -10,7 +11,7 @@ const MAX_DN_ENSEIGNE = {
     "MONOPRIX": 4,
     "CRF HYPER": 7,
     "CRF MARKET": 7,
-    "CRF PROXI": 0,
+    "CRF PROXI": 7,
     "OTERA": 4,
     "ITM PROXI": 0,
     "ITM SM": 0,
@@ -161,7 +162,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // ============================
         // ANIMATION CARTE DIRECTS & CALCUL
         // ============================
-        const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G 20", "G20", "AUTRES"];
+        const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;;
         
         const mapDirects = {};
         visitesFiltrees.forEach(v => {
@@ -176,11 +177,17 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const directsHisto = [];
 
         Object.values(mapDirects).forEach(v => {
-            if ((parseInt(v.score_dn) || 0) > 0) {
-                if (v.created_at >= firstDayThisMonth) directsMois.push(v);
-                else directsHisto.push(v);
+            // On vérifie s'il y a eu une VRAIE transformation (gain) ce mois-ci
+            const dnF = calculerScoreDNUnique(visitesFiltrees.filter(vis => vis.hubspot_id === v.hubspot_id));
+            const dnI = calculerScoreDNUnique(visitesPrec.filter(vis => vis.hubspot_id === v.hubspot_id));
+            const aGagneCeMois = (dnF - dnI > 0);
+
+            if (aGagneCeMois && v.created_at >= firstDayThisMonth) {
+                directsMois.push(v);
+            } else if ((parseInt(v.score_dn) || 0) > 0) {
+                directsHisto.push(v);
             }
-        });
+        })
 
         const kpiDirectsElement = document.getElementById('kpi-directs');
         const evoDirectsElement = document.getElementById('evo-directs');
@@ -260,7 +267,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
     tbody.innerHTML = '';
     const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))]
         .filter(email => email && Object.keys(OBJECTIFS_MOIS_EN_COURS).includes(email.toLowerCase()));
-    const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
+    const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;;
 
     commerciauxMails.forEach(email => {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
@@ -508,7 +515,7 @@ function genererFocusMEA(visites) {
 // FOCUS DIRECT
 // ==========================================
 function genererFocusDirect(magasins, visites) {
-    const enseignesDirectes = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
+    const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;;
     
     let parcDirect = magasins.filter(m => enseignesDirectes.includes(m.enseigne));
 
