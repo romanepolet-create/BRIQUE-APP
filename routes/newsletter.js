@@ -13,7 +13,7 @@ const OBJECTIFS_MOIS = {
     "jeanmichel.dole@briquehouse.fr": { nom: "J-M Dole", dn: 0, mea: 0, direct: 0 }
 };
 
-const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
+const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G 20", "AUTRES"];
 
 // Même fonction stricte que le dashboard
 function calculerScoreDNUnique(visites) {
