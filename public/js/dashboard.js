@@ -41,7 +41,8 @@ const OBJECTIFS_MOIS_EN_COURS = {
     "arnaud.ladougne@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
     "etienne.firmin@briquehouse.fr": { obj_dn: 33.5, obj_mea: 11.5, obj_direct: 1.4 },
     "romane.polet@briquehouse.fr": { obj_dn: 38.88, obj_mea: 13.5, obj_direct: 1.62 },
-    "lorelei.duplat@briquehouse.fr": { obj_dn: 10, obj_mea: 2, obj_direct: 0 }
+    "lorelei.duplat@briquehouse.fr": { obj_dn: 10, obj_mea: 2, obj_direct: 0 },
+    "jeanmichel.dole@briquehouse.fr": { obj_dn: 0, obj_mea: 0, obj_direct: 0 }
 };
 
 // ==========================================
@@ -49,6 +50,7 @@ const OBJECTIFS_MOIS_EN_COURS = {
 // ==========================================
 function formatEmailToName(email) {
     if (!email || email === 'general') return "Général";
+    if (email.toLowerCase() === 'jeanmichel.dole@briquehouse.fr') return "J-M Dole";
     return email.split('@')[0].split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
 }
 
