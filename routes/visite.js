@@ -90,10 +90,10 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
       data.nb_canettes || 0,
       data.nb_cave || 0,
 
-      val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), val('ref_UAcid33'),
+      val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), 
       val('ref_LB75'), val('ref_NQ75'), val('ref_YT75'), val('ref_SH75'), val('ref_TC75'), val('ref_ML75'),
       val('ref_LB44'), val('ref_NQ44'), val('ref_YT44'), val('ref_ML44'),
-      val('ref_ephemere'),
+      val('ref_UA33'), val('ref_DB44'), val('ref_SG44'), val('ref_SQP33'), val('ref_FT44'),
 
       data.mea_status,
       data.mea_volume || "",
@@ -102,7 +102,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: `${nomOngletSheet}!A:Z`,
+      range: `${nomOngletSheet}!A:AD`,
       valueInputOption: 'USER_ENTERED',
       resource: { values: [ligneData] }
     });
@@ -235,7 +235,6 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
       "LB33", 
       "NQ33", 
       "YT33", 
-      "U acid33",
       "LB75", 
       "NQ75", 
       "YT75", 
@@ -246,11 +245,14 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
       "NQ44", 
       "YT44", 
       "ML44", 
-      "ephemeres",
+      "UA33 (Ltd)", 
+      "DB44 (Ltd)", 
+      "SG44 (Ltd)", 
+      "SQP33 (Ltd)", 
+      "FT44 (Ltd)",
       "MEA", 
       "Volume MEA", 
       "Lien Photo"
-    ];
     
      await sheets.spreadsheets.values.append({
       spreadsheetId: spreadsheetId,
