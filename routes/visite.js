@@ -12,7 +12,7 @@ const GOOGLE_SHEET_ID = process.env.GSHEET_VISITE;
 const DRIVE_PARENT_FOLDER_ID = process.env.GDOSSIER_VISITE;
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: './config/google-credentials.json', // Chemin vers votre clé d'accès Google
+  keyFile: './config/google-credentials.json',
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive.file'
@@ -52,7 +52,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
         const file = req.files[i];
       
         const fileMetadata = {
-          name: `${codeVisite}_${i + 1}.jpg`, // Votre nomenclature validée
+          name: `${codeVisite}_${i + 1}.jpg`,
           parents: [folderId]
         };
       const media = {
@@ -90,10 +90,10 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
       data.nb_canettes || 0,
       data.nb_cave || 0,
 
-      val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), val('ref_Uacid33'),
+      val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), val('ref_UAcid33'),
       val('ref_LB75'), val('ref_NQ75'), val('ref_YT75'), val('ref_SH75'), val('ref_TC75'), val('ref_ML75'),
       val('ref_LB44'), val('ref_NQ44'), val('ref_YT44'), val('ref_ML44'),
-      val('ref_ephemeres'),
+      val('ref_ephemere'),
 
       data.mea_status,
       data.mea_volume || "",
