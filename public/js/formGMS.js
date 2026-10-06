@@ -2,102 +2,102 @@ const matriceGMS = {
   "AUCHAN HM": {
     obligatoire: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33",  "YT33"],
     facultatif: [],
-    direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "UA33", "DB44"]
+    direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "AUCHAN SM": {
     obligatoire: [],
     facultatif: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33", "YT33"],
-    direct: ["SH75", "TC75", "LB44", "NQ44", "YT44", "ML44", "UA33"]
+    direct: ["SH75", "TC75", "LB44", "NQ44", "YT44", "ML44", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   }, 
   "CASINO": {
     obligatoire: ["LB44", "NQ44", "YT44", "LB33"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "FRANPRIX": {
     obligatoire: ["LB44", "YT44"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "MONOPRIX": {
     obligatoire: ["LB75", "LB44", "NQ44", "YT44"],
     facultatif: [],
-    direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "CRF HYPER": {
     obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
     facultatif: [],
-    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "CRF MARKET": {
     obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
     facultatif: [],
-    direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "CRF PROXI": {
     obligatoire: [],
     facultatif: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"],
-    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "ITM PROXI": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "ITM SM": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "LECLERC": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
   "LECLERC PROXI": {
     obligatoire: [],
     facultatif: [],
-    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+    direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "OTERA": {
     obligatoire: ["LB44", "NQ44", "YT44", "ML44"],
     facultatif: [],
-    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "UA33", "DB44"]
+    direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "SUPER U": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "G 20": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "U EXPRESS": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "LECLERC DRIVE": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "MATCH": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB44"]
+  direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "NICOLAS": {
   obligatoire: ["NQ33", "YT33", "ML44", "LB44"],
   facultatif: [],
-  direct: ["LB75", "ML75", "TC75", "NQ75", "SH75", "YT75", "NQ44","YT44", "LB33", "UA33", "DB44"]
+  direct: ["LB75", "ML75", "TC75", "NQ75", "SH75", "YT75", "NQ44","YT44", "LB33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   },
 "AUTRES": {
   obligatoire: [],
   facultatif: [],
-  direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB44", "NQ44", "YT44", "ML44", "LB33", "YT33", "NQ33", "UA33", "DB33"]
+  direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB44", "NQ44", "YT44", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]
   }
 };
 
