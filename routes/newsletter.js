@@ -84,19 +84,18 @@ router.get('/', async (req, res) => {
             });
 
             let actuelDirect = 0;
-            const tousMagsDirects = [...new Set(toutesVisitesEmail.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
+            const MagsDirects = [...new Set(visMois.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
             
-            tousMagsDirects.forEach(idMag => {
-                const visitesDuMag = toutesVisitesEmail.filter(v => v.hubspot_id === idMag);
-                visitesDuMag.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                const derniereVisite = visitesDuMag[0];
+            MagsDirects.forEach(idMag => {
+                const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
+                const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
                 
-                if (derniereVisite && (parseInt(derniereVisite.score_dn) || 0) > 0) {
+                if (dnF - dnI > 0) {
                     actuelDirect++;
                     const mag = listeMagasins.find(m => String(m.hubspot_id) === String(idMag));
                     topDirects.push({
                         commercial: obj.nom,
-                        enseigne: mag ? mag.enseigne : derniereVisite.enseigne,
+                        enseigne: mag ? mag.enseigne : (visMois.find(v => v.hubspot_id === idMag).enseigne || "Direct"),
                         magasin: mag ? mag.nom : idMag
                     });
                 }
