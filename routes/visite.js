@@ -253,6 +253,7 @@ async function verifierOuCreerOngletMensuel(sheets, spreadsheetId, sheetName) {
       "MEA", 
       "Volume MEA", 
       "Lien Photo"
+    ]
     
      await sheets.spreadsheets.values.append({
       spreadsheetId: spreadsheetId,
