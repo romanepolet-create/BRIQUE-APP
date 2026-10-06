@@ -9,7 +9,8 @@ const OBJECTIFS_MOIS = {
     "etienne.firmin@briquehouse.fr": { nom: "Etienne Firmin", dn: 33.5, mea: 11.5, direct: 1.4 },
     "romane.polet@briquehouse.fr": { nom: "Romane Polet", dn: 38.88, mea: 13.5, direct: 1.62 },
     "lorelei.duplat@briquehouse.fr": { nom: "Lorelei Duplat", dn: 10, mea: 2, direct: 0 },
-    "leo.blanchet@briquehouse.fr": { nom: "Léo Blanchet", dn: 0, mea: 0, direct: 5 }
+    "leo.blanchet@briquehouse.fr": { nom: "Léo Blanchet", dn: 0, mea: 0, direct: 5 },
+    "jeanmichel.dole@briquehouse.fr": { nom: "J-M Dole", dn: 0, mea: 0, direct: 0 }
 };
 
 const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U"];
