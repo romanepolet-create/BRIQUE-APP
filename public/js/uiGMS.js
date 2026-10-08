@@ -360,23 +360,36 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
 
         if (error) throw error;
 
-        const notes = data && data.commentaires ? data.commentaires : [];
+        let notes = data && data.commentaires ? data.commentaires : [];
+        notes.forEach(n => { if (!n.id) n.id = Date.now().toString() + Math.random().toString(36).substr(2, 5); });
+        const notesVisibles = notes.filter(n => !n.archived);
 
         let htmlContenu = '<ul class="notes-list">';
         
-        if (notes.length === 0) {
+        if (notesVisibles.length === 0) {
             htmlContenu += '<li class="note-empty">Aucune note pour le moment.</li>';
         } else {
-            [...notes].reverse().forEach((note, index) => {
+            [...notesVisibles].reverse().forEach(note => {
                 const safeTextHTML = note.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                
+                
+                let actionsAuteur = '';
+                if (note.user === proprietaireActuel) {
+                    actionsAuteur = `
+                        <button onclick="actionNoteCarte('edit', '${hubspotId}', '${note.id}')" style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">✏️</button>
+                        <button onclick="actionNoteCarte('archive', '${hubspotId}', '${note.id}')" style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">📦</button>
+                    `;
+                }
+
                 htmlContenu += `
                     <li class="note-item">
                         <div class="note-meta-row">
                             <div class="note-author">
                                 <span class="note-date">[${note.date}]</span> par <strong>${note.user}</strong> :
                             </div>
-                            <button class="note-btn-copy" onclick="copierNoteCarte(this, \`${safeTextHTML.replace(/"/g, '&quot;')}\`)">📋 Copier</button>
+                            <div style="display:flex;">
+                                ${actionsAuteur}
+                                <button class="note-btn-copy" onclick="copierNoteCarte(this, \`${safeTextHTML.replace(/"/g, '&quot;')}\`)">📋 Copier</button>
+                            </div>
                         </div>
                         <div class="note-content">${safeTextHTML}</div>
                     </li>
@@ -411,4 +424,43 @@ window.copierNoteCarte = function(bouton, texte) {
         console.error("Erreur de copie :", err);
         bouton.textContent = '❌ Erreur';
     });
+};
+
+window.actionNoteCarte = async function(action, hubspotId, noteId) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('historique_visites')
+            .select('commentaires')
+            .eq('hubspot_id', hubspotId)
+            .single();
+        
+        if (error || !data) return;
+        
+        let notes = data.commentaires || [];
+        let noteIndex = notes.findIndex(n => n.id === noteId);
+        if (noteIndex === -1) return;
+
+        if (action === 'edit') {
+            const nouveauTexte = prompt("Modifier la note :", notes[noteIndex].text);
+            if (nouveauTexte === null || nouveauTexte.trim() === "") return;
+            notes[noteIndex].text = nouveauTexte.trim();
+            if (!notes[noteIndex].date.includes('(modifié)')) notes[noteIndex].date += " (modifié)";
+        } else if (action === 'archive') {
+            const confirmArchive = confirm("Archiver cette note ? Elle disparaîtra de l'historique.");
+            if (!confirmArchive) return;
+            notes[noteIndex].archived = true;
+        }
+
+        await supabaseClient
+            .from('historique_visites')
+            .update({ commentaires: notes })
+            .eq('hubspot_id', hubspotId);
+
+        const nomMagasin = document.querySelector('.modal-notes-title').textContent.replace('💬 ', '');
+        window.afficherNotesMagasinSurCarte(hubspotId, nomMagasin);
+        
+    } catch (err) {
+        console.error("Erreur action note:", err);
+        alert("Erreur lors de la modification de la note.");
+    }
 };
