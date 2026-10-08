@@ -361,7 +361,21 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
         if (error) throw error;
 
         let notes = data && data.commentaires ? data.commentaires : [];
-        notes.forEach(n => { if (!n.id) n.id = Date.now().toString() + Math.random().toString(36).substr(2, 5); });
+        let besoinDeSauvegarder = false;
+        notes.forEach(n => { 
+            if (!n.id) {
+                n.id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
+                besoinDeSauvegarder = true;
+            }
+        });
+        
+        if (besoinDeSauvegarder) {
+            await supabaseClient
+                .from('historique_visites')
+                .update({ commentaires: notes })
+                .eq('hubspot_id', hubspotId);
+        }
+
         const notesVisibles = notes.filter(n => !n.archived);
 
         let htmlContenu = '<ul class="notes-list">';
