@@ -120,6 +120,32 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    notesList.addEventListener('click', async (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const noteId = btn.getAttribute('data-id');
+        if (!noteId) return;
+
+        const noteIndex = notesGlobales.findIndex(n => n.id === noteId);
+        if (noteIndex === -1) return;
+
+        if (btn.classList.contains('btn-edit-note')) {
+            const nouveauTexte = prompt("Modifier votre note :", notesGlobales[noteIndex].text);
+            if (nouveauTexte !== null && nouveauTexte.trim() !== "") {
+                notesGlobales[noteIndex].text = nouveauTexte.trim();
+                if (!notesGlobales[noteIndex].date.includes('(modifié)')) {
+                    notesGlobales[noteIndex].date += " (modifié)";
+                }
+                await synchroniserNotesSupabase();
+            }
+        } else if (btn.classList.contains('btn-archive-note')) {
+            if (confirm("Archiver cette note ? Elle disparaîtra de l'historique.")) {
+                notesGlobales[noteIndex].archived = true;
+                await synchroniserNotesSupabase();
+            }
+        }
+    });
+
     btnSaveNote.addEventListener('click', async () => {
       const noteText = newNoteTextarea.value.trim();
       if (!noteText) return;
@@ -131,28 +157,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const datePropre = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth()+1).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 
       const nouvelleNote = {
+        id: Date.now().toString(),
         date: datePropre,
         user: currentUser,
-        text: noteText
+        text: noteText,
+        archived: false
       };
 
       notesGlobales.push(nouvelleNote);
-
-      const { error } = await window.supabaseInstance
-        .from('historique_visites')
-        .upsert({
-          hubspot_id: hubspotIdLocal,
-          commentaires: notesGlobales
-        }, { onConflict: 'hubspot_id' });
-
-      if (error) {
-        alert("Erreur lors de la sauvegarde : " + error.message);
-      } else {
-        newNoteTextarea.value = '';
-        if (notesModal.style.display === 'block') {
-          displayNotes();
-        }
-      }
+      await synchroniserNotesSupabase();
+      
+      newNoteTextarea.value = '';
       
       btnSaveNote.textContent = "Sauvegarder la note";
       btnSaveNote.disabled = false;
