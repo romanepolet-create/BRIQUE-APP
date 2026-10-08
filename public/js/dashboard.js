@@ -46,9 +46,9 @@ const OBJ_SEPT_2026 = {
 };
 
 const OBJECTIFS_MOIS_EN_COURS = {
-    "arnaud.ladougne@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
-    "etienne.firmin@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
-    "romane.polet@briquehouse.fr": { obj_dn: 72, obj_mea: 17, obj_direct: 3 },
+    "arnaud.ladougne@briquehouse.fr": { obj_dn: 50, obj_mea: 25, obj_direct: 3 },
+    "etienne.firmin@briquehouse.fr": { obj_dn: 45, obj_mea: 25, obj_direct: 3 },
+    "romane.polet@briquehouse.fr": { obj_dn: 35, obj_mea: 17, obj_direct: 3 },
     "lorelei.duplat@briquehouse.fr": { obj_dn: 20, obj_mea: 2.9, obj_direct: 0 },
     "jeanmichel.dole@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 }
 };
