@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
               📋 Copier
             </button>
           </div>
+          </div>
           <div style="font-size: 13px; color: #333; line-height: 1.4; white-space: pre-wrap;">${safeTextHTML}</div>
         `;
         
