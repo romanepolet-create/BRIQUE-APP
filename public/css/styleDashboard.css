@@ -80,7 +80,7 @@ body {
   display: inline-block;
   font-size: 25px;
   color: black;
-  margin-left: 130px;
+  text-align: right;
   font-style: italic;
 }
 
