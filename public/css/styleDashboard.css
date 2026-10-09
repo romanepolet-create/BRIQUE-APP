@@ -79,6 +79,7 @@ body {
   display: inline-block;
   font-size: 25px;
   color: black;
+  margin-left: 20px;
 }
 
 .kpi-evolution { 
