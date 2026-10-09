@@ -51,8 +51,9 @@ body {
 }    
 
 #card-visite {
-  dipslay: flex;
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .kpi-title { 
