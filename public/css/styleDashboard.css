@@ -58,7 +58,12 @@ body {
   margin-bottom: 10px; 
 }
 
+kpi-visites {
+  display: inline-block;
+}
+
 #DvisiteAvOpen {
+  display: inline-block;
   font-size: 10px;
   color: black;
   text-align: right;
