@@ -56,7 +56,13 @@ body {
   text-transform: uppercase; 
   font-weight: bold; 
   margin-bottom: 10px; 
-}    
+}
+
+#DvisiteAvOpen {
+  font-size: 10px;
+  color: black;
+  text-align: left;
+}
 
 .kpi-value { 
   font-size: 32px; 
@@ -64,6 +70,11 @@ body {
   color: #333; 
   margin: 0; 
 }   
+
+#visiteAvOpen {
+  font-size: 25px;
+  color: black;
+}
 
 .kpi-evolution { 
   font-size: 13px; 
