@@ -62,6 +62,7 @@ body {
   font-size: 10px;
   color: black;
   text-align: right;
+  font-style: italic;
 }
 
 .kpi-value { 
@@ -80,6 +81,7 @@ body {
   font-size: 25px;
   color: black;
   margin-left: 130px;
+  font-style: italic;
 }
 
 .kpi-evolution { 
