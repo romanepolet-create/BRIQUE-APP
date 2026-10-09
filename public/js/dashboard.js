@@ -122,6 +122,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // ============================
         const kpiVisitesElement = document.getElementById('kpi-visites');
         const carteVisites = kpiVisitesElement.parentNode;
+        const visiteAvOpen = document.getElementById('visiteAvOpen');
 
         carteVisites.style.cursor = 'pointer';
         carteVisites.style.transition = '0.2s';
@@ -135,7 +136,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            kpiVisitesElement.parentNode.insertBefore(hint, visiteAvOpenElement.nextSibling);
+            kpiVisitesElement.parentNode.insertBefore(hint, visiteAvOpen.nextSibling);
         }
         
         carteVisites.onclick = () => ouvrirModalVisites(visitesMois, donneesGlobales.listeMagasins);
@@ -148,7 +149,6 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
 
         const kpiDnElement = document.getElementById('kpi-dn');
         const carteDn = kpiDnElement.parentNode;
-        const evovisitesElement = document.getElementById('evo-visites');
 
         carteDn.style.cursor = 'pointer';
         carteDn.style.transition = '0.2s';
@@ -161,7 +161,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            kpiDnElement.parentNode.insertBefore(hint, evovisitesElement);
+            kpiDnElement.parentNode.insertBefore(hint, kpiDnElement.nextSibling);
         }
         
         
