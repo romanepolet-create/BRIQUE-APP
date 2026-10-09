@@ -135,7 +135,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            kpiVisitesElement.parentNode.insertBefore(hint, kpiVisitesElement.nextSibling);
+            kpiVisitesElement.parentNode.insertBefore(hint, evoVisitesElement.nextSibling);
         }
         
         carteVisites.onclick = () => ouvrirModalVisites(visitesMois, donneesGlobales.listeMagasins);
