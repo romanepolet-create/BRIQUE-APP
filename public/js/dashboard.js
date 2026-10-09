@@ -109,6 +109,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
 
         const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth);
         const visitesPrec = visitesFiltrees.filter(v => v.created_at < firstDayThisMonth);
+        const av8h30 = visitesMois.filter(v => v.created_at.split(" ")[1] < "12:30:00.000000");
 
         // ==========================================
         // KPIs
@@ -116,6 +117,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
         
         document.getElementById('kpi-visites').textContent = visitesMois.length;
+        document.getElementById('visiteAvOpen').textContent = av8h30.length;
 
         // ============================
         // ANIMATION CARTE VISITES
