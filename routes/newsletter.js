@@ -5,12 +5,12 @@ const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 const OBJECTIFS_MOIS = {
-    "arnaud.ladougne@briquehouse.fr": { nom: "Arnaud Ladougne", dn: 72, mea: 25, direct: 3 },
-    "etienne.firmin@briquehouse.fr": { nom: "Etienne Firmin", dn: 33.5, mea: 11.5, direct: 1.4 },
-    "romane.polet@briquehouse.fr": { nom: "Romane Polet", dn: 38.88, mea: 13.5, direct: 1.62 },
-    "lorelei.duplat@briquehouse.fr": { nom: "Lorelei Duplat", dn: 10, mea: 2, direct: 0 },
-    "leo.blanchet@briquehouse.fr": { nom: "Léo Blanchet", dn: 0, mea: 0, direct: 5 },
-    "jeanmichel.dole@briquehouse.fr": { nom: "J-M Dole", dn: 0, mea: 0, direct: 0 }
+        "arnaud.ladougne@briquehouse.fr": { obj_dn: 50, obj_mea: 25, obj_direct: 3 },
+    "etienne.firmin@briquehouse.fr": { obj_dn: 45, obj_mea: 25, obj_direct: 3 },
+    "romane.polet@briquehouse.fr": { obj_dn: 35, obj_mea: 17, obj_direct: 3 },
+    "lorelei.duplat@briquehouse.fr": { obj_dn: 20, obj_mea: 2.9, obj_direct: 0 },
+    "jeanmichel.dole@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
+    "leo.blanchet@briquehouse.fr": { nom: "Léo Blanchet", dn: 0, mea: 0, direct: 0 },
 };
 
 const ENSEIGNES_DIRECTES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "MATCH", "LECLERC DRIVE", "U EXPRESS", "G 20", "AUTRES"];
