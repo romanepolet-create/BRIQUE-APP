@@ -98,23 +98,12 @@ window.chargerTourneeEquipe = function(index, nom) {
 };
 
 
-
-const sauvegardeOriginale = window.sauvegarderTourneeMemoire;
-window.sauvegarderTourneeMemoire = async function() {
-    if (modeVisionnage) {
-        console.log("Lecture seule : Sauvegarde bloquée.");
-        return; 
-    }
-    await sauvegardeOriginale();
-};
-
-
 let chargementReussi = false;
 
 window.sauvegarderTourneeMemoire = async function () {
    if (modeVisionnage) return;
 
-    memoireGlobaleTournees[jourSelectionneId] = [..etapesItineraire];
+    memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
     localStorage.setItem('brique_app_tournees', JSON.stringify(memoireGlobaleTournees));
 
     if (!window.emailActuelPourTournee) return;
