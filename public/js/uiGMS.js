@@ -287,7 +287,7 @@ window.ouvrirPopupDynamique = function(layer) {
 
     let alerteChef = "";
     if (m.presence_chef && jourSelectionneId) {
-        const dateChoisie new Date(jourSelectionneId);
+        const dateChoisie = new Date(jourSelectionneId);
         const joursMap = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
         const codeJour = joursMap[dateChoisie.getDay()];
 
