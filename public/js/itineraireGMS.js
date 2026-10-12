@@ -7,6 +7,27 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   if(activeCount >= 9) { showPopup(); return; }
 
   const magasinDejaPresent = etapesItineraire.some(etape => etape.hubspot_id === hubspot_id);
+
+  const dateRef = new Date(jourSelectionneId);
+  const dayOfWeek = dateRef.getDay() || 7;
+  const monday = new Date(dateRef);
+  monday.setDate(dateRef.getDate() - dayOfWeek + 1);
+  const friday = new Date(monday);
+  friday.setDate(monday.getDate() + 4);
+
+  const formatYYYYMMDD = (d) => d.toISOString().split('T')[0];
+  const stringMonday = formatYYYYMMDD(monday);
+  const stringFriday = formatYYYYMMDD(friday);
+  let joursPresentsSemaine = [];
+
+  for (const [jour, etapes] of Object.entries(memoireGlobaleTournees)) {
+      if (jour >= stringMonday && jour <= stringFriday && jour !== jourSelectionneId) {
+          if (etapes.some(e => String(e.hubspot_id) === String(hubspot_id))) {
+              joursPresentsSemaine.push(jour);
+          }
+      }
+  }
+  
   const executerAjout = () => {
     etapesItineraire.push({lat: lat, lng: lng, nom: nom, hubspot_id: hubspot_id, enseigne: enseigne, masque: false, isFinal: false});
     actualiserPanneauGPS();
@@ -16,7 +37,15 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   };
 
   if (magasinDejaPresent) { PopupDejaDansTournee(executerAjout); } 
-  else { executerAjout(); }
+  else if (joursPresentsSemaine.length > 0) {
+    const joursFormates = joursPresentsSemaine.map(j => {
+          const d = new Date(j);
+          const noms = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+          return `${noms[d.getDay()]} ${d.getDate()}`;
+      }).join(', ');
+      
+      PopupDejaDansSemaine(joursFormates, executerAjout);
+  } else { executerAjout(); }
 };
 
 window.supprimerEtape = function(index) {
@@ -242,4 +271,27 @@ function PopupDejaDansTournee(onConfirm) {
   document.body.appendChild(DejaPopup);
   document.getElementById('DejaPopupOUI').onclick = function() { DejaPopup.remove(); if(typeof onConfirm === "function") onConfirm(); };
   document.getElementById('DejaPopupNON').onclick = function() { DejaPopup.remove(); };
+}
+function PopupDejaDansSemaine(joursTexte, onConfirm) {
+  const DejaPopup = document.createElement("div");
+  DejaPopup.className = "custom-modal";
+  DejaPopup.style.top = "50%";
+  DejaPopup.style.left = "50%";
+  DejaPopup.style.width = "250px";
+  DejaPopup.innerHTML = `
+    <p>⚠️ Attention, cet établissement est déjà prévu cette semaine le(s) : <strong>${joursTexte}</strong>.</p>
+    <p>Voulez-vous quand même l'ajouter à la journée en cours ?</p>
+    <div class="modal-actions">
+        <button id="SemainePopupOUI" class="btn-modal-yes">OUI</button>
+        <button id="SemainePopupNON" class="btn-modal-no">NON</button>
+    </div>`;
+  document.body.appendChild(DejaPopup);
+  
+  document.getElementById('SemainePopupOUI').onclick = function() { 
+      DejaPopup.remove(); 
+      if(typeof onConfirm === "function") onConfirm(); 
+  };
+  document.getElementById('SemainePopupNON').onclick = function() { 
+      DejaPopup.remove(); 
+  };
 }
