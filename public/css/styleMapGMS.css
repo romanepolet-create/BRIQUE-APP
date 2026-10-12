@@ -738,7 +738,29 @@ input:checked + .slider:before { transform: translateX(20px); }
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Bulle (Popup) Leaflet */
+/* Bulle (Popup) */
+#cdrok {
+   background: #d4edda; 
+   color: #155724; 
+   padding: 4px; 
+   border-radius: 4px; 
+   margin-bottom: 8px; 
+   font-weight: bold; 
+   font-size: 11px; 
+   text-align: center;
+}
+
+#cdrnok {
+   background: #f8d7da; 
+   color: #721c24; 
+   padding: 4px; 
+   border-radius: 4px; 
+   margin-bottom: 8px; 
+   font-weight: bold; 
+   font-size: 11px; 
+   text-align: center;
+}
+
 .popup-container {
   text-align: center;
   font-family: Arial, sans-serif;
