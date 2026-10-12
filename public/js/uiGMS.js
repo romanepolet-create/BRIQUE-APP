@@ -292,7 +292,9 @@ window.ouvrirPopupDynamique = function(layer) {
         const codeJour = joursMap[dateChoisie.getDay()];
 
         if (codeJour !== 'DIM' && codeJour !== 'SAM') {
-            const pres = m.presence_chef[codeJour];
+            const dataChef = Array.isArray(m.presence_chef) ? m.presence_chef[0] : m.presence_chef;
+            const pres = dataChef ? dataChef[codeJour] : null;
+            
             if (pres && !pres.AM && !pres.PM) {
                 alerteChef = `<div id="cdrnok">🚫 Le.a CDR sera absent.e ce jour</div>`;
             } else if (pres && (pres.AM || pres.PM)) {
@@ -302,9 +304,7 @@ window.ouvrirPopupDynamique = function(layer) {
                 alerteChef = `<div id="cdrok">✅ Le.a CDR sera présent.e ce jour${precision}</div>`;
             }
         }
-    }
-                
-        
+    }      
   
     const contenuBulle = `
         <div class="popup-container">
