@@ -48,13 +48,8 @@ body {
   border-radius: 10px; 
   box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
   border-top: 4px solid #002ab6; 
+  position: relative;
 }    
-
-#card-visite {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
 
 .kpi-title { 
   font-size: 14px; 
@@ -65,10 +60,14 @@ body {
 }
 
 #DvisiteAvOpen {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   font-size: 10px;
   color: black;
   text-align: right;
   font-style: italic;
+  margin: 0;
 }
 
 .kpi-value { 
@@ -79,16 +78,18 @@ body {
 }   
 
 #kpi-visites {
-  display: inline-block;
+  margin: 0;
+  display: block;
 }
 
 #visiteAvOpen {
-  display: inline-block;
+  position: absolute;
+  top: 46px;
+  right: 20px;
   font-size: 25px;
   color: black;
-  margin-right: 0px;
-  margin-left: 150px;
   font-style: italic;
+  margin: 0;
 }
 
 .kpi-evolution { 
