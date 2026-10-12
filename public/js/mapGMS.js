@@ -55,7 +55,6 @@ markerConteneur = L.markerClusterGroup({
   chunkDelay: 10
 }).addTo(map);
 
-// --- FONCTIONS CORE ---
 function formatEmailToName(email) {
   if (!email) return "Utilisateur inconnu";
 
@@ -91,6 +90,7 @@ async function chargerUtilisateurConnecte() {
     const reponse = await fetch('/api/config');
     const data = await reponse.json();
     if (data.emailActuel) {
+      window.emailActuelPourTournee = data.emailActuel;
       proprietaireActuel = formatEmailToName(data.emailActuel); 
       console.log("Connecté en tant que :", proprietaireActuel);
     } else {
