@@ -49,16 +49,15 @@ document.addEventListener("DOMContentLoaded", function() {
 let modeVisionnage = false;
 
 window.ouvrirMenuEquipe = async function() {
+    if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Leo Blanchet")) {
+        afficherToast("❌ Accès réservé aux managers."); return;
+    }
     try {
-        const response = await fetch('/api/tournee/equipe');
-        if (response.status === 403) {
-            afficherToast("❌ Accès réservé aux managers.");
-            return;
-        }
-        const data = await response.json();
+        const { data, error } = await supabaseClient.from('tournees').select('email, magasins');
+        if (error) throw error;
         
-        const tourneesValides = data.tournees.filter(t => t.email);
-        
+        const tourneesValides = data.filter(t => t.email);
+
         window.tempTourneesEquipe = [];
 
         const EquipePopup = document.createElement("div");
