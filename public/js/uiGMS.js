@@ -294,7 +294,7 @@ window.ouvrirPopupDynamique = function(layer) {
         if (codeJour !== 'DIM' && codeJour !== 'SAM') {
             const pres = m.presence_chef[codeJour];
             if (pres && !pres.AM && !pres.PM) {
-                alerteChef = `<div id="cdrnok">🚫 Le.a CDR Absent.e ce jour</div>`;
+                alerteChef = `<div id="cdrnok">🚫 Le.a CDR sera absent.e ce jour</div>`;
             } else if (pres && (pres.AM || pres.PM)) {
                 let precision = "";
                 if (pres.AM && !pres.PM) precision = " (Matin uniquement)";
