@@ -308,7 +308,8 @@ window.ouvrirPopupDynamique = function(layer) {
   
     const contenuBulle = `
         <div class="popup-container">
-          <h4 class="popup-title">${m.nom}</h4>
+          <h4 class="popup-title">${nomEchappe}</h4>
+          ${alerteChef} <!-- C'EST CETTE LIGNE QUI MANQUAIT ! -->
           <p class="popup-address">${m.adresse ? m.adresse + ', ' : ''}${m.code_postal || ''} ${m.ville || ''}</p>
           <p class="popup-prio">${prio}${dateTexte}</p>
           <div class="popup-row">
