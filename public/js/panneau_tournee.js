@@ -1,27 +1,27 @@
-// ==========================================
-// OUTILS DE MÉMOIRE (SUPABASE)
-// ==========================================
-
-// 1. Charger la tournée au démarrage de la page
 window.chargerTourneeMemoire = async function() {
     genererJoursOuvres();
     afficherSliderJours();
+    if (!window.emailActuelPourTournee) return;
     try {
-        const response = await fetch('/api/tournee/charger');
-        const data = await response.json();
-
-        if (data.success && data.tournee) {
-            if (Array.isArray(data.tournee.magasins)) {
-                memoireGlobaleTournees[jourSelectionneId] = data.tournee.magasins;
-            } else {
-                memoireGlobaleTournees = data.tournee.magasins || {};
-            }
-            etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
-            actualiserPanneauGPS();
-            filtrerMagasins();
-            }
+        const { data, error } = await supabaseClient.from('tournees').select('magasins').eq('email', window.emailActuelPourTournee).maybeSingle();
+        if (error) throw error;
+        
+        if (data && data.magasins) memoireGlobaleTournees = data.magasins;
+        else {
+            const backup = localStorage.getItem('brique_app_tournees');
+            if (backup) memoireGlobaleTournees = JSON.parse(backup);
+        }
+        
+        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+        actualiserPanneauGPS();
+        filtrerMagasins();
     } catch (erreur) {
         console.error("Erreur de chargement :", erreur);
+        const backup = localStorage.getItem('brique_app_tournees');
+        if (backup) memoireGlobaleTournees = JSON.parse(backup);
+        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+        actualiserPanneauGPS();
+        filtrerMagasins();
     }
 };
 
