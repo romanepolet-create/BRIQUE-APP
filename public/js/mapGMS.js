@@ -160,7 +160,7 @@ async function chargerDonneesMagasins() {
 
     const { data: historique, error } = await supabaseClient
       .from('historique_visites')
-      .select('hubspot_id, derniere_visite, references');
+      .select('hubspot_id, derniere_visite, references, presence_chef');
 
     if (!error && historique) {
       const dicoHistorique = {};     
@@ -169,7 +169,7 @@ async function chargerDonneesMagasins() {
         if (h.references && typeof h.references === 'object') {
             aDesBieres = Object.values(h.references).some(val => val === "OUI" || val === "Gagné" || val === "Constaté");
         }
-        dicoHistorique[h.hubspot_id] = { derniere_visite: h.derniere_visite, aFormulaire: true, possedeBH: aDesBieres, references: h.references || {} };
+        dicoHistorique[h.hubspot_id] = { derniere_visite: h.derniere_visite, aFormulaire: true, possedeBH: aDesBieres, references: h.references || {}, presence_chef: h.presence_chef || null };
       });
 
       listeMagasins.forEach(magasin => {
@@ -179,11 +179,13 @@ async function chargerDonneesMagasins() {
             magasin.aFormulaire = true;
             magasin.possedeBH = hist.possedeBH;
             magasin.references = hist.references;
+            magasin.presence_chef = hist.presence_chef;
         } else {
             magasin.derniere_visite = null;
             magasin.aFormulaire = false;
             magasin.possedeBH = false;
             magasin.references = {};
+            magasin.presence_chef = null;
         }
       });
     } else {
