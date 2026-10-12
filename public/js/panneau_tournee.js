@@ -124,3 +124,57 @@ window.sauvegarderTourneeMemoire = async function() {
     }
     await sauvegardeOriginale();
 };
+
+
+let chargementReussi = false;
+
+window.chargerTourneeMemoire = async function() {
+    genererJoursOuvres();
+    afficherSliderJours();
+    try {
+        const response = await fetch('api/tournee/charger');
+        if (response.status === 401) {
+            alert("Session expirée suite à une mise à jour. Veuillez rafraîchir la page et vous reconnecter avant de modifier la tournée.");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            chargementReussi = true;
+
+            if (data.tournee) {
+                if (Array.isArray(data.tournee.magasins)) {
+                    memoireGlobaleTournees[jourSelectionneId] = data.tournee.magasins;
+                } else {
+                    memoireGlobaleTournees = data.tournee.magasins || {};
+                }
+            }
+            etapesItineraire = memoireGlobaleTournees[jourSelectionneId] ||;
+            actualiserPanneauGPS();
+            filtrerMagasins();
+        }
+    } catch (erreur) {
+        console.error('Erreur de chargement:', erreur);
+    }
+};
+
+window.sauvegarderTourneeMemoire = async function () {
+    if (!chargementReussi && modeVisionnage === false) {
+        console.warn("Sauvegarde bloquée : La tournée n'a pas été chargée correctement.");
+        return;
+    }
+    
+    memoireGlobaleTournees[jourSelectonneId] = [...etapesItineraire];
+    try {
+        const response = await fetch('api/tournee/sauvegarder', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ magasins: memoireGlobaleTournees })
+        });
+
+        if (!response.ok) throw new Error ("Erreur " + response.status);
+    } catch (erreur) {
+        console.error("Erreur de sauvegarde", erreur);
+    }
+};
