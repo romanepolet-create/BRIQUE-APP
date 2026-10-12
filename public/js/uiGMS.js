@@ -284,6 +284,27 @@ window.ouvrirPopupDynamique = function(layer) {
         const diffJours = Math.floor((new Date() - dateVisite) / (1000 * 60 * 60 * 24));
         dateTexte = ` - ${jj}/${mm} (il y a ${diffJours} j)`;
     }
+
+    let alerteChef = "";
+    if (m.presence_chef && jourSelectionneId) {
+        const dateChoisie new Date(jourSelectionneId);
+        const joursMap = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+        const codeJour = joursMap[dateChoisie.getDay()];
+
+        if (codeJour !== 'DIM' && codeJour !== 'SAM') {
+            const pres = m.presence_chef[codeJour];
+            if (pres && !pres.AM && !pres.PM) {
+                alerteChef = `<div id="cdrnok">🚫 Le.a CDR Absent.e ce jour</div>`;
+            } else if (pres && (pres.AM || pres.PM)) {
+                let precision = "";
+                if (pres.AM && !pres.PM) precision = " (Matin uniquement)";
+                if (!pres.AM && pres.PM) precision = " (Aprem uniquement)";
+                alerteChef = `<div id="cdrok">✅ Le.a CDR sera présent.e ce jour${precision}</div>`;
+            }
+        }
+    }
+                
+        
   
     const contenuBulle = `
         <div class="popup-container">
