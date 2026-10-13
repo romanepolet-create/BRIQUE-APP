@@ -139,10 +139,10 @@ h1 {
 	color: white; 
 	border: none; 
 	border-radius: 50%; 
-	width: 28px; 
-	height: 28px; 
+	width: 15px; 
+	height: 15px; 
 	font-weight: bold; 
-	font-size: 18px; 
+	font-size: 9px; 
 	cursor: pointer; 
 	display: inline-flex; 
 	align-items: center; 
