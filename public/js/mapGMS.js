@@ -89,12 +89,22 @@ async function chargerUtilisateurConnecte() {
   try {
     const reponse = await fetch('/api/config');
     const data = await reponse.json();
+    
     if (data.emailActuel) {
       window.emailActuelPourTournee = data.emailActuel;
+      localStorage.setItem('backup_email_utilisateur', data.emailActuel);
+      
       proprietaireActuel = formatEmailToName(data.emailActuel); 
       console.log("Connecté en tant que :", proprietaireActuel);
     } else {
-      console.warn("Aucune session utilisateur trouvée via le serveur.");
+      const emailSauvegarde = localStorage.getItem('backup_email_utilisateur');
+      if (emailSauvegarde) {
+          window.emailActuelPourTournee = emailSauvegarde;
+          proprietaireActuel = formatEmailToName(emailSauvegarde);
+          console.warn("Session serveur perdue : Email restauré via le stockage local.");
+      } else {
+          console.warn("Aucune session utilisateur trouvée.");
+      }
     }
   } catch (err) {
     console.error("Erreur de récupération de l'utilisateur :", err);
