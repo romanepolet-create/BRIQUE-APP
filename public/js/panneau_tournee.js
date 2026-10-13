@@ -126,29 +126,22 @@ window.chargerTourneeEquipe = function(index, nom) {
 };
 
 
-window.sauvegarderTourneeMemoire = async function () {
-    if (modeVisionnage) return;
-
-    memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
+if (!window.emailActuelPourTournee) return;
     
     try {
-        localStorage.setItem('brique_app_tournees', JSON.stringify(memoireGlobaleTournees));
-    } catch (e) {
-        console.warn("Stockage local inaccessible.");
-    }
-
-    if (!chargementReussi) {
-        console.warn("Sauvegarde Cloud bloquée : risque d'écrasement des données.");
-        return; 
-    }
-
-    if (!window.emailActuelPourTournee) return;
-    try {
-        await supabaseClient.from('tournees').upsert({
+        // AJOUT : on récupère la variable "error" de Supabase
+        const { data, error } = await supabaseClient.from('tournees').upsert({
             email: window.emailActuelPourTournee,
             magasins: memoireGlobaleTournees
         }, { onConflict: 'email' });
+        
+        // Si Supabase renvoie une erreur, on l'affiche EN ROUGE !
+        if (error) {
+            console.error("❌ Refus de Supabase :", error);
+            afficherToast("Erreur de synchronisation Cloud !");
+        } else {
+            console.log("✅ Sauvegarde Cloud réussie !");
+        }
     } catch (erreur) {
-        console.error("Erreur de sauvegarde", erreur);
+        console.error("Erreur critique de sauvegarde :", erreur);
     }
-};
