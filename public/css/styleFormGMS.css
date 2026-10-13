@@ -134,6 +134,23 @@ h1 {
   margin: 20px 0;
 }
 
+#btn-help {
+	background-color: #4a7cf6; 
+	color: white; 
+	border: none; 
+	border-radius: 50%; 
+	width: 28px; 
+	height: 28px; 
+	font-weight: bold; 
+	font-size: 18px; 
+	cursor: pointer; 
+	display: inline-flex; 
+	align-items: center; 
+	justify-content: center; 
+	margin-left: 10px; 
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 #mea_details {
   display: none; 
   background: #f9f9f9; 
