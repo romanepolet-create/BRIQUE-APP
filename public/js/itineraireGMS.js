@@ -9,22 +9,27 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
   const magasinDejaPresent = etapesItineraire.some(etape => etape.hubspot_id === hubspot_id);
 
   const dateRef = new Date(jourSelectionneId);
-  const dayOfWeek = dateRef.getDay() || 7;
-  const monday = new Date(dateRef);
-  monday.setDate(dateRef.getDate() - dayOfWeek + 1);
-  const friday = new Date(monday);
-  friday.setDate(monday.getDate() + 4);
-
-  const formatYYYYMMDD = (d) => d.toISOString().split('T')[0];
-  const stringMonday = formatYYYYMMDD(monday);
-  const stringFriday = formatYYYYMMDD(friday);
   let joursPresentsSemaine = [];
 
   for (const [jour, etapes] of Object.entries(memoireGlobaleTournees)) {
-      if (jour >= stringMonday && jour <= stringFriday && jour !== jourSelectionneId) {
+      if (jour !== jourSelectionneId) {
+        const dateJour = new Date(jour)
+
+        let start = new Date(Math.min(dateRef, dateJour));
+        let end = new Date(Math.max(dateRef, dateJour));
+        let ecartJoursOuvres = 0;
+
+        while (start < end) {
+          if (start.getDay() !== 0 && start.getDay() !== 6) {
+            ecartJoursOuvres++;
+          }
+          start.setDate(start.getDate() + 1);
+        }
+        if (ecartJoursOuvres <= 7) {
           if (etapes.some(e => String(e.hubspot_id) === String(hubspot_id))) {
               joursPresentsSemaine.push(jour);
           }
+        }
       }
   }
   
