@@ -134,6 +134,12 @@ h1 {
   margin: 20px 0;
 }
 
+.references-header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 #btn-help {
 	background-color: #4a7cf6; 
 	color: white; 
