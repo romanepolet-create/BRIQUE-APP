@@ -20,15 +20,32 @@ window.chargerTourneeMemoire = async function() {
         const { data, error } = await supabaseClient.from('tournees').select('magasins').eq('email', window.emailActuelPourTournee).maybeSingle();
         if (error) throw error;
         
+        let reparationNecessaire = false;
+
         if (data && data.magasins) {
-            memoireGlobaleTournees = { ...memoireGlobaleTournees, ...data.magasins };
+            for (const jour in data.magasins) {
+                const etapesCloud = data.magasins[jour];
+                const etapesLocal = memoireGlobaleTournees[jour];
+
+                if (Array.isArray(etapesCloud) && etapesCloud.length === 0 && Array.isArray(etapesLocal) && etapesLocal.length > 0) {
+                    reparationNecessaire = true;
+                } else {
+                    memoireGlobaleTournees[jour] = etapesCloud;
+                }
+            }
         }
         
-        chargementReussi = true; // On déverrouille l'envoi vers le Cloud
+        chargementReussi = true; 
+        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+
+        if (reparationNecessaire) {
+            console.log("Données locales restaurées, réparation du Cloud en cours...");
+            sauvegarderTourneeMemoire();
+        }
         
     } catch (erreur) {
         console.error("Erreur de chargement Cloud :", erreur);
-        chargementReussi = false; // On verrouille le Cloud
+        chargementReussi = false; 
         afficherToast("⚠️ Mode hors-ligne : Sauvegarde Cloud suspendue.");
     }
 
@@ -36,7 +53,6 @@ window.chargerTourneeMemoire = async function() {
     actualiserPanneauGPS();
     filtrerMagasins();
 };
-
 document.addEventListener("DOMContentLoaded", function() {
     const liste = document.getElementById('liste-tournee');
     
