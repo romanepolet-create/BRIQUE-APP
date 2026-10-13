@@ -284,8 +284,8 @@ function PopupDejaDansSemaine(joursTexte, onConfirm) {
   DejaPopup.style.left = "50%";
   DejaPopup.style.width = "250px";
   DejaPopup.innerHTML = `
-    <p>⚠️ Attention, cet établissement est déjà prévu cette semaine le(s) : <strong>${joursTexte}</strong>.</p>
-    <p>Voulez-vous quand même l'ajouter à la journée en cours ?</p>
+    <p>⚠️ Etablissement déjà prévu -7 jours ouvrés : <strong>${joursTexte}</strong>.</p>
+    <p>Voulez-vous quand même l'ajouter ce jour ?</p>
     <div class="modal-actions">
         <button id="SemainePopupOUI" class="btn-modal-yes">OUI</button>
         <button id="SemainePopupNON" class="btn-modal-no">NON</button>
