@@ -1,28 +1,40 @@
+let chargementReussi = false; 
+
 window.chargerTourneeMemoire = async function() {
     genererJoursOuvres();
     afficherSliderJours();
-    if (!window.emailActuelPourTournee) return;
+    
+    const backup = localStorage.getItem('brique_app_tournees');
+    if (backup) {
+        try { memoireGlobaleTournees = JSON.parse(backup); } catch(e) {}
+    }
+
+    if (!window.emailActuelPourTournee) {
+        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+        actualiserPanneauGPS();
+        filtrerMagasins();
+        return;
+    }
+
     try {
         const { data, error } = await supabaseClient.from('tournees').select('magasins').eq('email', window.emailActuelPourTournee).maybeSingle();
         if (error) throw error;
         
-        if (data && data.magasins) memoireGlobaleTournees = data.magasins;
-        else {
-            const backup = localStorage.getItem('brique_app_tournees');
-            if (backup) memoireGlobaleTournees = JSON.parse(backup);
+        if (data && data.magasins) {
+            memoireGlobaleTournees = { ...memoireGlobaleTournees, ...data.magasins };
         }
         
-        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
-        actualiserPanneauGPS();
-        filtrerMagasins();
+        chargementReussi = true; // On déverrouille l'envoi vers le Cloud
+        
     } catch (erreur) {
-        console.error("Erreur de chargement :", erreur);
-        const backup = localStorage.getItem('brique_app_tournees');
-        if (backup) memoireGlobaleTournees = JSON.parse(backup);
-        etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
-        actualiserPanneauGPS();
-        filtrerMagasins();
+        console.error("Erreur de chargement Cloud :", erreur);
+        chargementReussi = false; // On verrouille le Cloud
+        afficherToast("⚠️ Mode hors-ligne : Sauvegarde Cloud suspendue.");
     }
+
+    etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+    actualiserPanneauGPS();
+    filtrerMagasins();
 };
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -98,13 +110,21 @@ window.chargerTourneeEquipe = function(index, nom) {
 };
 
 
-let chargementReussi = false;
-
 window.sauvegarderTourneeMemoire = async function () {
-   if (modeVisionnage) return;
+    if (modeVisionnage) return;
 
     memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
-    localStorage.setItem('brique_app_tournees', JSON.stringify(memoireGlobaleTournees));
+    
+    try {
+        localStorage.setItem('brique_app_tournees', JSON.stringify(memoireGlobaleTournees));
+    } catch (e) {
+        console.warn("Stockage local inaccessible.");
+    }
+
+    if (!chargementReussi) {
+        console.warn("Sauvegarde Cloud bloquée : risque d'écrasement des données.");
+        return; 
+    }
 
     if (!window.emailActuelPourTournee) return;
     try {
