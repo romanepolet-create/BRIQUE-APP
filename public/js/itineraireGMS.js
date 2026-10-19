@@ -25,7 +25,7 @@ window.ajouterEtape = function(lng, lat, nom, hubspot_id, enseigne) {
           }
           start.setDate(start.getDate() + 1);
         }
-        if (ecartJoursOuvres <= 7) {
+        if (ecartJoursOuvres <= 14) {
           if (etapes.some(e => String(e.hubspot_id) === String(hubspot_id))) {
               joursPresentsSemaine.push(jour);
           }
@@ -284,7 +284,7 @@ function PopupDejaDansSemaine(joursTexte, onConfirm) {
   DejaPopup.style.left = "50%";
   DejaPopup.style.width = "250px";
   DejaPopup.innerHTML = `
-    <p>⚠️ Etablissement déjà prévu -7 jours ouvrés : <strong>${joursTexte}</strong>.</p>
+    <p>⚠️ Etablissement déjà prévu -14 jours ouvrés : <strong>${joursTexte}</strong>.</p>
     <p>Voulez-vous quand même l'ajouter ce jour ?</p>
     <div class="modal-actions">
         <button id="SemainePopupOUI" class="btn-modal-yes">OUI</button>
