@@ -105,11 +105,10 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
 
 function getURLParams() {
   const params = new URLSearchParams(window.location.search);
-  return {
-    adresse: params.get('adresse') || 'adresse inconnue',
-    ville: params.get('ville') || 'ville inconnue',
-    cp: params.get('code_postal') || 'code postal inconnue',
-    
+  adresse: params.get('adresse') || 'adresse inconnue';
+    ville: params.get('ville') || 'ville inconnue';
+    cp: params.get('code_postal') || 'code postal inconnue';
+  return { 
     id_hubspot: params.get('id_hubspot') || '',
     nom: params.get('nom') || 'Magasin Inconnu',
     adresse_complete: [adresse, cp, ville].filter(Boolean).join(' ') || 'Adresse inconnue',
