@@ -131,23 +131,19 @@ window.sauvegarderTourneeMemoire = async function () {
 
     memoireGlobaleTournees[jourSelectionneId] = [...etapesItineraire];
     
-    // 1. Sauvegarde locale de sécurité
     try {
         localStorage.setItem('brique_app_tournees', JSON.stringify(memoireGlobaleTournees));
     } catch (e) {
         console.warn("Stockage local inaccessible.");
     }
 
-    // 2. Vérification du verrou
     if (!chargementReussi) {
         console.warn("Sauvegarde Cloud bloquée : risque d'écrasement des données.");
         return; 
     }
 
-    // 3. Vérification de l'email
     if (!window.emailActuelPourTournee) return;
     
-    // 4. Envoi vers Supabase
     try {
         const { data, error } = await supabaseClient.from('tournees').upsert({
             email: window.emailActuelPourTournee,
@@ -164,3 +160,68 @@ window.sauvegarderTourneeMemoire = async function () {
         console.error("Erreur critique de sauvegarde :", erreur);
     }
 };
+
+let modeSemaineActif = false;
+
+window.toggleVueSemaine = function() {
+    modeSemaineActif = !modeSemaineActif;
+    let container = document.getElementById('agenda-semaine-overlay');
+
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'agenda-semaine-overlay';
+        document.body.appendChild(container);
+    }
+
+    if (modeSemaineActif) {
+        document.body.classList.add('agenda-ouvert');
+        renderAgendaSemaine();
+        setTimeout(() => { if (typeof map !== 'undefined' map.invalidateSize();}, 300);
+    } else {
+        document.body.classList.remove('agenda-ouvert');
+        setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
+    }
+}
+
+window.renderAgendaSemaine = function() {
+    const container = document.getElementById('agenda-semaine-overlay');
+    let html = `
+        <div id="modal-h-calendar">
+            <h2 id="h-modal-calendar">📆 Agenda Brique APP</h2>
+            <button onclick="toggleVueSemaine()" id="btn-fullScreen-calendar">✖</button>
+        </div>
+        <div id="modal-calendar">
+        <!--No /div coz added later after everything is added-->
+    `;
+
+    const joursAffiches = joursOuvres.slice(0, 5);
+
+    joursAffiches.forEach(jour => {
+        const etapes = memoireGlobaleTournees[jour.id] || [];
+
+        html += `
+            <div class="colonne-jour-semaine">
+                <h3 class="h-jour-sem">${jour.label}</h3>
+            <!--No /div coz added later after everything is added-->
+        `;
+
+        if (etapes.length === 0) {
+            html += `<p style="text-align:center; color:#888; font-style:italic;">Libre</p>`;
+        } else {
+            html += `<ul id="ul-d">`
+            etapes.forEach((etape, index) => {
+                if (!etape.masque) {
+                    html += `
+                        <li class='etape-calendar'>
+                            <strong>${index + 1}.${etape.nom}</strong><br>
+                            <span style="color:#666;">📍 ${etape.enseigne}</span>
+                        </li>
+                    `;
+                }
+            }); html += `</ul>`;
+        } html += `</div>`;
+    }); html += `</div>`;
+    container.innerHTML = html;
+};
+
+
