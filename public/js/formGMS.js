@@ -80,6 +80,17 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
           const divDetails = document.getElementById('details_${nomInput}');
           if (divChoix) divChoix.style.display = isChecked ? 'flex' : 'none';
           if (divDetails) divDetails.style.display = isChecked ? 'flex' : 'none';
+
+          const etatInitial = this.dataset.initial === 'true';
+          const parentItem = this.closest('.biere-item');
+          if (isChecked !== etatInitial) {
+            parentItem.style.backgroundColor = '#fff3cd';
+            parentItem.style.borderLeft = '4px solid #ffc107';
+            parentItem.style.paddingLeft = '5px';
+          } else {
+            parentItem.style.backgroundColor = '';
+            parentItem.style.borderLeft = '';
+            parentItem.style.paddingLeft = '';
       "`;
       
       html += `
