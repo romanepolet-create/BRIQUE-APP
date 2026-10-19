@@ -802,7 +802,7 @@ body.agenda-ouvert #map {
    cursor: pointer;
 }
 
-modal-calendar {
+#modal-calendar {
    display: flex; 
    gap: 15px; 
    overflow-x: auto; 
