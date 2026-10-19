@@ -91,6 +91,7 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
             parentItem.style.backgroundColor = '';
             parentItem.style.borderLeft = '';
             parentItem.style.paddingLeft = '';
+          }
       "`;
       
       html += `
