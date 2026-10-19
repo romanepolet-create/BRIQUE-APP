@@ -724,6 +724,41 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 .details-content { margin-top: 10px; }
 
+
+/* full screen calendar */
+#agenda-semaine-overlay {
+    position: fixed;
+    bottom: -50vh;
+    left: 0;
+    width: 100vw;
+    height: 40vh;
+    background: #f3b0cf;
+    z-index: 9999;
+    padding: 15px;
+    box-sizing: border-box;
+    transition: bottom 0.3s ease-in-out;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+}
+
+body.agenda-ouvert #agenda-semaine-overlay {
+    bottom: 0;
+}
+
+body.agenda-ouvert #map {
+    height: calc(100vh - 40vh) !important;
+}
+
+.colonne-jour-semaine {
+    flex: 1;
+    min-width: 220px;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    border: 2px solid #002ab6;
+}
+
 /*============================
    JS PUSH - CARTE ET POPUPS
 ============================*/
