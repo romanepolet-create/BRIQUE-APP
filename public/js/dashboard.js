@@ -190,17 +190,17 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const directsHisto = [];
 
         Object.values(mapDirects).forEach(v => {
-            // On vérifie s'il y a eu une VRAIE transformation (gain) ce mois-ci
             const dnF = calculerScoreDNUnique(visitesFiltrees.filter(vis => vis.hubspot_id === v.hubspot_id));
             const dnI = calculerScoreDNUnique(visitesPrec.filter(vis => vis.hubspot_id === v.hubspot_id));
-            const aGagneCeMois = (dnF - dnI > 0);
 
-            if (aGagneCeMois && v.created_at >= firstDayThisMonth) {
+            const estNouveauDirectCeMois = (dnI === 0 && dnF > 0 && v.created_at >= firstDayThisMonth);
+
+            if (estNouveauDirectCeMois) {
                 directsMois.push(v);
-            } else if ((parseInt(v.score_dn) || 0) > 0) {
+            } else if (dnF > 0) {
                 directsHisto.push(v);
             }
-        })
+        });
 
         const kpiDirectsElement = document.getElementById('kpi-directs');
         const evoDirectsElement = document.getElementById('evo-directs');
