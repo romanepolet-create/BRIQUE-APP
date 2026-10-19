@@ -759,6 +759,58 @@ body.agenda-ouvert #map {
     border: 2px solid #002ab6;
 }
 
+#modal-h-calendar {
+   display: flex; 
+   justify-content: space-between; 
+   align-items: center; 
+   width: 100%; 
+   margin-bottom: 10px;
+}
+
+#h-modal-calendar {
+   color: #002ab6; 
+   margin: 0;
+}
+
+#btn-fullScreen-calendar {
+   background: #dc3545; 
+   color: white; 
+   border: none; 
+   padding: 8px 15px; 
+   border-radius: 5px; 
+   font-weight: bold; 
+   cursor: pointer;
+}
+
+modal-calendar {
+   display: flex; 
+   gap: 15px; 
+   overflow-x: auto; 
+   height: calc(100% - 50px); 
+   padding-bottom: 10px;
+}
+
+.h-jour-sem {
+   text-align: center; 
+   color: #002ab6; 
+   border-bottom: 2px solid #f3b0cf; 
+   padding-bottom: 5px; 
+   margin-top: 0;  
+}
+
+#ul-d {
+   list-style: none; 
+   padding: 0; 
+   margin: 0;
+}
+
+.etape-calendar {
+   font-size: 12px; 
+   margin-bottom: 8px; 
+   padding-bottom: 8px; 
+   border-bottom: 1px solid #eee;
+}
+
 /*============================
    JS PUSH - CARTE ET POPUPS
 ============================*/
