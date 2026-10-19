@@ -208,7 +208,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
 
         // Affichage des chiffres (Total en grand, Mois en petit)
         kpiDirectsElement.textContent = directsMois.length + directsHisto.length; 
-        evoDirectsElement.textContent = `Dont ${directsMois.length} vus ce mois-ci`;
+        evoDirectsElement.textContent = `Dont ${directsMois.length} gagnés ce mois-ci`;
 
         // Animation au survol
         carteDirects.style.cursor = 'pointer';
