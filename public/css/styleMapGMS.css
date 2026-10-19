@@ -181,7 +181,16 @@ h1 {
   z-index: 99;
 }
 
-#ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px; display: inline-block}
+#titletourneediv {
+   display: flex; 
+   align-items: center; 
+   justify-content: center; 
+   gap: 10px; 
+   margin-bottom: 15px;
+}
+
+
+#ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px;}
 
 #fullScreenCalendar {
    background:#002ab6; 
