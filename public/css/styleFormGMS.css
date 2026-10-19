@@ -344,6 +344,7 @@ h1 {
 }
 
 .biere-item {
+  transition: all 0.3s ease;
   border-bottom: 1px dashed #ccc;
   padding-bottom: 5px;
   display: flex;
