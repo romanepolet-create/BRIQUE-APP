@@ -236,7 +236,7 @@ window.majListeMagasinsVisibles = function() {
       if (userPosition && item.distance !== Infinity) {
         distanceTexte = item.distance < 1000 ? `<span class="list-dist">${Math.round(item.distance)} m</span>` : `<span class="list-dist">${(item.distance / 1000).toFixed(1)} km</span>`;
       }
-      const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}`;
+      const urlFormList = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}&adresse=${m.adresse}&ville=${m.ville}&code_postal=${m.code_postal}`;
       
       html += `
         <div onclick="clicSurListe(${item.layer._leaflet_id})" class="list-item">
