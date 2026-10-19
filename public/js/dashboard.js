@@ -298,7 +298,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         magsDirects.forEach(idMag => {
             const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
             const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
-            if (dnF - dnI > 0) actuelDirect++;
+            if (dnI === 0 && dnF > 0) actuelDirect++;
         });
 
         const obj = OBJECTIFS_MOIS_EN_COURS[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
