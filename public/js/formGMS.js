@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const infos = getURLParams();
   
   document.getElementById('hubspot_id').value = infos.id_hubspot;
-  document.getElementById('nom_magasin').value = infos.nom;
+  document.getElementById('nom_magasin').value = `${infos.nom} - ${infos.adresse}` ;
   document.getElementById('enseigne').value = infos.enseigne;
   document.getElementById('huspot_link').href = `https://app.hubspot.com/contacts/146794478/company/${infos.id_hubspot}`
 
