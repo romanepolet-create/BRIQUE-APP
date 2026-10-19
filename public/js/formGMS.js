@@ -112,7 +112,7 @@ function getURLParams() {
     
     id_hubspot: params.get('id_hubspot') || '',
     nom: params.get('nom') || 'Magasin Inconnu',
-    adresse_complete: [adresse, cp, ville].filter(Boolean).join(' ') || 'Adresse inconnue';
+    adresse_complete: [adresse, cp, ville].filter(Boolean).join(' ') || 'Adresse inconnue',
     enseigne: params.get('enseigne') || 'Inconnue',
     premiere_visite: params.get('premiere_visite') === 'true',
     open_notes: params.get('open_notes') === 'true'
