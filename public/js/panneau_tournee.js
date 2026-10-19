@@ -176,7 +176,7 @@ window.toggleVueSemaine = function() {
     if (modeSemaineActif) {
         document.body.classList.add('agenda-ouvert');
         renderAgendaSemaine();
-        setTimeout(() => { if (typeof map !== 'undefined' map.invalidateSize();}, 300);
+        setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
     } else {
         document.body.classList.remove('agenda-ouvert');
         setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
