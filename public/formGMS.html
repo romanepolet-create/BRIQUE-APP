@@ -180,7 +180,10 @@
           for (const [key, value] of Object.entries(data.references)) {
             const checkbox = document.querySelector(`input[name="${key}"]`);
             if (checkbox) {
-              checkbox.checked = (value === "OUI" || value === "Gagné" || value === "Constaté");
+              const estCocheBDD = (value === "OUI" || value === "Gagné" || value === "Constaté");
+              checkbox.checked = estCocheBDD;
+              checkbox.dataset.initial = estCocheBDD ? 'true' : 'false';
+
             }
           }
         }
