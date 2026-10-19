@@ -84,13 +84,14 @@ router.get('/', async (req, res) => {
             });
 
             let actuelDirect = 0;
-            const MagsDirects = [...new Set(visMois.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
+            const MagsDirects = [...new Set(toutesVisitesEmail.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
             
             MagsDirects.forEach(idMag => {
                 const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
                 const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
+                const aEteVisiteCeMois = visMois.some(v => v.hubspot_id === idMag);
 
-                if (dnI === 0 && dnF > 0) {
+                if (dnI === 0 && dnF > 0 && aEteVisiteCeMois) {
                     actuelDirect++;
                 }
 
