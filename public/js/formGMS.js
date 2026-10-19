@@ -108,6 +108,10 @@ function getURLParams() {
   return {
     id_hubspot: params.get('id_hubspot') || '',
     nom: params.get('nom') || 'Magasin Inconnu',
+    adresse: params.get('adresse') || 'adresse inconnue',
+    ville: params.get('ville') || 'ville inconnue',
+    cp: params.get('code_postal') || 'code postal inconnue',
+    adress_complete: this.adresse + this.cp + this.ville || 'Adresse inconnue',
     enseigne: params.get('enseigne') || 'Inconnue',
     premiere_visite: params.get('premiere_visite') === 'true',
     open_notes: params.get('open_notes') === 'true'
@@ -118,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const infos = getURLParams();
   
   document.getElementById('hubspot_id').value = infos.id_hubspot;
-  document.getElementById('nom_magasin').value = `${infos.nom} - ${infos.adresse}` ;
+  document.getElementById('nom_magasin').value = `${infos.nom} - ${infos.adresse_complete}` ;
   document.getElementById('enseigne').value = infos.enseigne;
   document.getElementById('huspot_link').href = `https://app.hubspot.com/contacts/146794478/company/${infos.id_hubspot}`
 
