@@ -89,14 +89,21 @@ router.get('/', async (req, res) => {
             MagsDirects.forEach(idMag => {
                 const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
                 const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
+
+                if (dnI === 0 && dnF > 0 && aEteVisiteCeMois) {
+                    actuelDirect++;
+                }
+
+                if (dnF > 0) {
+                    const mag = listeMagasins.find(m => String(m.hubspot_id) === String(idMag));
+
                 
-                actuelDirect++;
-                const mag = listeMagasins.find(m => String(m.hubspot_id) === String(idMag));
-                topDirects.push({
-                    commercial: obj.nom,
-                    enseigne: mag ? mag.enseigne : (visMois.find(v => v.hubspot_id === idMag).enseigne || "Direct"),
-                    magasin: mag ? mag.nom : idMag
-                });
+                    topDirects.push({
+                        commercial: obj.nom,
+                        enseigne: mag ? mag.enseigne : (visMois.find(v => v.hubspot_id === idMag).enseigne || "Direct"),
+                        magasin: mag ? mag.nom : idMag
+                    });
+                }
             })
             
             if (email !== "leo.blanchet@briquehouse.fr") {
