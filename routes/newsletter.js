@@ -90,7 +90,7 @@ router.get('/', async (req, res) => {
                 const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
                 const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
 
-                if (dnI === 0 && dnF > 0 && aEteVisiteCeMois) {
+                if (dnI === 0 && dnF > 0) {
                     actuelDirect++;
                 }
 
