@@ -96,7 +96,7 @@ function genererMatriceProduits(enseigne, bieresCocheesAvant = []) {
       html += `
         <div class="biere-item">
           <div class="biere-main-row">
-            <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" ${estCoche} ${evtChange} class="biere-checkbox">
+            <input type="checkbox" id="${nomInput}" name="${nomInput}" value="OUI" data-initial="${estCoche ? 'true' : 'false'}" ${estCoche} ${evtChange} class="biere-checkbox">
             <label for="${nomInput}" class="biere-label">${biere}</label>
           </div>
           ${blocChoix}
