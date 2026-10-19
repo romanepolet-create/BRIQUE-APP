@@ -97,7 +97,7 @@ router.get('/', async (req, res) => {
                     enseigne: mag ? mag.enseigne : (visMois.find(v => v.hubspot_id === idMag).enseigne || "Direct"),
                     magasin: mag ? mag.nom : idMag
                 });
-            }
+            })
             
             if (email !== "leo.blanchet@briquehouse.fr") {
             statsCommerciaux.push({
