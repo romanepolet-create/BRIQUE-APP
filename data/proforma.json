@@ -127,5 +127,23 @@
    "accise" : 0.11783,
    "eco": 0.0080,
    "PUnetHTVA": 2.11
+  },
+
+  {
+    "id": "Sauv’ Qui Peut 33cl",
+    "designation": "SAUVE QUI PEUT (24x0,33L) 4,0° VP",
+    "PUbrutHT": 1.57522,
+    "accise": 0.05438,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.6400
+  },
+
+  {
+    "id": "Blonde d’Hiver 33cl",
+    "designation": "BLONDE D’HIVER (24x0,33L) 8,0° VP",
+    "PUbrutHT": 1.6454,
+    "accise": 0.10877,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.7646
   }
  ]
