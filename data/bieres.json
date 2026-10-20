@@ -786,5 +786,125 @@
     "delaiAppro": 30,
     "MatBout": "Aluminum",
     "PoidBout": 14
+  },
+
+  {
+    "id": "Sauv’ Qui Peut 33cl",
+    "type": "Grape Ale",
+    "degre": 4.0,
+    "prix": 39.36,
+    "PMC": 2.79,
+    "nombre": 24,
+    "codeArticleFournisseur": "SV33",
+    "degrePlato": 8.3,
+    "Nomenclature": 22030001,
+    "DroitsDAccises": "03 - DROITS REDUITS PETITES BRASSERIES",
+    "typesDroits": "Suspendus (avec DAE)",
+    "PaysOrigine": "FRANCE",
+    "Péremption": 12,
+    "UVC": {
+      "type": "BOUTEILLE",
+      "Gencod": 3760394010791,
+      "long": 64,
+      "larg": 64,
+      "hauteur": 238,
+      "poids": 0.57
+    },
+    "UD": {
+      "type": "Carton",
+      "Gencod": 3760394010883,
+      "long": 370,
+      "larg": 250,
+      "hauteur": 240,
+      "poids": 14,
+      "Volume": 7.92,
+      "nbUVC": 24
+    },
+    "palette": {
+      "type": "PALETTE EUROPE",
+      "Gencod": 3760394010890,
+      "long": 1200,
+      "larg": 800,
+      "hauteur": 1350,
+      "poids": 651,
+      "Volume": 356.4,
+      "nbUVC": 1080,
+      "nbPerCouche": 216,
+      "nbCouche": 5
+    },
+    "delaiAppro": 30,
+    "MatBout": "verre",
+    "PoidBout": 250,
+    "MatCapsule": "Alu",
+    "PoidCapsule": 2
+  }
+
+{
+    "id": "Sauv’ Qui Peut 33cl",
+    "designation": "SAUVE QUI PEUT (24x0,33L) 4,0° VP",
+    "PUbrutHT": 1.57522,
+    "accise": 0.05438,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.6400
+  },
+
+  {
+    "id": "Blonde d’Hiver 33cl",
+    "type": "Blonde",
+    "degre": 8.0,
+    "prix": 42.35,
+    "PMC": 2.95,
+    "nombre": 24,
+    "codeArticleFournisseur": "BD33",
+    "degrePlato": 17.5,
+    "Nomenclature": 22030001,
+    "DroitsDAccises": "03 - DROITS REDUITS PETITES BRASSERIES",
+    "typesDroits": "Suspendus (avec DAE)",
+    "PaysOrigine": "FRANCE",
+    "Péremption": 12,
+    "UVC": {
+      "type": "BOUTEILLE",
+      "Gencod": 3760394010906,
+      "long": 64,
+      "larg": 64,
+      "hauteur": 238,
+      "poids": 0.57
+    },
+    "UD": {
+      "type": "Carton",
+      "Gencod": 3760394010937,
+      "long": 370,
+      "larg": 250,
+      "hauteur": 240,
+      "poids": 14,
+      "Volume": 7.92,
+      "nbUVC": 24
+    },
+    "palette": {
+      "type": "PALETTE EUROPE",
+      "Gencod": 3760394010944,
+      "long": 1200,
+      "larg": 800,
+      "hauteur": 1350,
+      "poids": 651,
+      "Volume": 356.4,
+      "nbUVC": 1080,
+      "nbPerCouche": 216,
+      "nbCouche": 5
+    },
+    "delaiAppro": 30,
+    "MatBout": "verre",
+    "PoidBout": 250,
+    "MatCapsule": "Alu",
+    "PoidCapsule": 2
+  }
+
+{
+    "id": "Blonde d’Hiver 33cl",
+    "designation": "BLONDE D’HIVER (24x0,33L) 8,0° VP",
+    "PUbrutHT": 1.6454,
+    "accise": 0.10877,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.7646
   }
 ]
