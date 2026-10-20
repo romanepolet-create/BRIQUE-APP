@@ -743,7 +743,7 @@
     "id": "Sanguinale CAN 44cl",
     "type": "Pastry Sour Rouge",
     "degre": 6.5,
-    "prix": 30.24,
+    "prix": 25.32,
     "PMC": 3.05,
     "nombre": 12,
     "codeArticleFournisseur": "SG44",
@@ -755,7 +755,8 @@
     "Péremption": 12,
     "UVC": {
       "type": "CANETTE",
-      "Gencod": 3760394010852,"long": 70,
+      "Gencod": 3760394010852,
+      "long": 70,
       "larg": 70,
       "hauteur": 150,
       "poids": 0.46
