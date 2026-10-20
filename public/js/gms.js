@@ -62,7 +62,7 @@ async function voirDetails(id) {
       }
 
       const nomPropre = biere.id.replace(/(33cl|75cl|CAN 44cl)/i, '').trim();
-      const nomFormate = nomPropre.replace(/'/g, '').replace(/\s+/g, '_');
+      const nomFormate = nomPropre.replace(/['’]/g, '').replace(/\s+/g, '_');
       const cheminImage = `/images/${taille}/${nomFormate}_${taille}.png`;
       document.getElementById('modaleImage').src = cheminImage;
       document.getElementById('modaleBiere').style.display = "block";
