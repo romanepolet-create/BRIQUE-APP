@@ -145,5 +145,15 @@
     "accise": 0.10877,
     "eco": 0.0104,
     "PUnetHTVA": 1.7646
+  },
+
+  {
+    "id": "Night Mode 33cl",
+    "designation": "NIGHT MODE (24x0,33L) 4,5° VP",
+    "PUbrutHT": 1.5784,
+    "accise": 0.0612,
+    "eco": 0.0104,
+    "PUnetHTVA": 1.6500
   }
+
  ]
