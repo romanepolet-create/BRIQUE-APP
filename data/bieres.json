@@ -888,5 +888,56 @@
     "PoidBout": 250,
     "MatCapsule": "Alu",
     "PoidCapsule": 2
+  },
+
+  {
+    "id": "Night Mode 33cl",
+    "type": "Stout",
+    "degre": 4.5,
+    "prix": 39.60,
+    "PMC": 2.65,
+    "nombre": 24,
+    "codeArticleFournisseur": "NM33",
+    "degrePlato": 8.3,
+    "Nomenclature": 22030001,
+    "DroitsDAccises": "03 - DROITS REDUITS PETITES BRASSERIES",
+    "typesDroits": "Suspendus (avec DAE)",
+    "PaysOrigine": "FRANCE",
+    "Péremption": 12,
+    "UVC": {
+      "type": "BOUTEILLE",
+      "Gencod": 3760394010685,
+      "long": 64,
+      "larg": 64,
+      "hauteur": 238,
+      "poids": 0.57
+    },
+    "UD": {
+      "type": "Carton",
+      "Gencod": 3760394010951,
+      "long": 370,
+      "larg": 250,
+      "hauteur": 240,
+      "poids": 14,
+      "Volume": 7.92,
+      "nbUVC": 24
+    },
+    "palette": {
+      "type": "PALETTE EUROPE",
+      "Gencod": 3760394010968,
+      "long": 1200,
+      "larg": 800,
+      "hauteur": 1350,
+      "poids": 651,
+      "Volume": 356.4,
+      "nbUVC": 1080,
+      "nbPerCouche": 216,
+      "nbCouche": 5
+    },
+    "delaiAppro": 30,
+    "MatBout": "verre",
+    "PoidBout": 250,
+    "MatCapsule": "Alu",
+    "PoidCapsule": 2
   }
 ]
