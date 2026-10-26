@@ -6,7 +6,7 @@ function genererJoursOuvres() {
     let date = new Date();
     const nomsJours = ['DIM', 'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
     while (joursOuvres.length < 10) {
-        if (date.getDay() !== 0 && date.getDay() !== 6) {
+        if (date.getDay() !== 0) {
             joursOuvres.push({
                 id: date.toISOString().split('T')[0],
                 label: joursOuvres.length === 0 ? "Auj." : `${nomsJours[date.getDay()]} ${date.getDate()}`
