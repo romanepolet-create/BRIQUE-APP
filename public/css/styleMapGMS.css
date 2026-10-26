@@ -751,10 +751,10 @@ input:checked + .slider:before { transform: translateX(20px); }
     bottom: -50vh;
     left: 0;
     width: 100vw;
-    height: 45vh;
+    height: 42vh;
     background: #f3b0cf;
     z-index: 9999;
-    padding: 15px;
+    padding: 10px 20px;
     box-sizing: border-box;
     transition: bottom 0.3s ease-in-out;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
@@ -765,13 +765,7 @@ body.agenda-ouvert #agenda-semaine-overlay {
     bottom: 0;
 }
 
-body.agenda-ouvert #map {
-    height: calc(100vh - 40vh) !important;
-}
-
-body.agenda-ouvert .map-container {
-    height: calc(100vh - 80px - 45vh) !important; 
-}
+.map-container { transition: height 0.3s ease-in-out; }
 
 #modal-h-calendar {
    display: flex; 
@@ -786,10 +780,22 @@ body.agenda-ouvert .map-container {
    margin: 0;
 }
 
+#btn-fullScreen-calendar {
+   background: #dc3545; 
+   color: white; 
+   border: none; 
+   padding: 8px 15px; 
+   border-radius: 5px; 
+   font-weight: bold; 
+   cursor: pointer;
+}
+
+
 .agenda-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
+    height: calc(100% - 50px);
 }
 
 .agenda-table th {
@@ -800,25 +806,22 @@ body.agenda-ouvert .map-container {
     border-radius: 8px 8px 0 0;
 }
 
-.agenda-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+.agenda-table td {
+    background: white; 
+    padding: 0; 
+    vertical-align: top; 
+    border: 2px solid #002ab6; 
+    height: 100%;
 }
 
-.agenda-table th {
-    color: #002ab6;
-    border-bottom: 2px solid #f3b0cf;
-    padding: 10px;
-    background: white;
-    border-radius: 8px 8px 0 0;
-}
 
 .agenda-sortable-list {
     list-style: none;
     padding: 0;
     margin: 0;
     min-height: 80px;
+    height: 100%; 
+    box-sizing: border-box;
 }
 
 .etape-calendar {
@@ -831,6 +834,8 @@ body.agenda-ouvert .map-container {
     cursor: grab;
 }
 .etape-calendar:active { cursor: grabbing; }
+
+.sortable-ghost { opacity: 0.4; background-color: #f3b0cf; }
 
 /*============================
    JS PUSH - CARTE ET POPUPS
