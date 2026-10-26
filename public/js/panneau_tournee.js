@@ -166,7 +166,10 @@ let modeSemaineActif = false;
 window.toggleVueSemaine = function() {
     modeSemaineActif = !modeSemaineActif;
     let container = document.getElementById('agenda-semaine-overlay');
-    const mapContainer = document.querySelector('.map-container');
+    const mapElement = document.getElementById('map');
+    const leftPanel = document.getElementById('left');
+    const rightPanel = document.getElementById('panneau-visibles');
+
 
     if (!container) {
         container = document.createElement('div');
@@ -176,13 +179,19 @@ window.toggleVueSemaine = function() {
 
     if (modeSemaineActif) {
         document.body.classList.add('agenda-ouvert');
-        if (mapContainer) mapContainer.style.height = 'calc(100vh - 80px - 42vh)'; 
+        if (mapElement) mapElement.style.height = '50vh';
+        if (leftPanel) leftPanel.style.height = '50vh';
+        if (rightPanel) rightPanel.style.height = '50vh';
+
         renderAgendaSemaine();
-        setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
+        setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize(); }, 350);
     } else {
         document.body.classList.remove('agenda-ouvert');
-        if (mapContainer) mapContainer.style.height = ''; 
-        setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
+         if (mapElement) mapElement.style.height = '';
+        if (leftPanel) leftPanel.style.height = '';
+        if (rightPanel) rightPanel.style.height = '';
+ 
+         setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize(); }, 350);
     }
 }
 
