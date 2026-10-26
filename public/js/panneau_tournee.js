@@ -206,7 +206,7 @@ window.renderAgendaSemaine = function() {
 
         html += `<td><ul class="agenda-sortable-list" data-jour="${jour.id}">`;
 
-        etape.forEach((etape, index) => {
+        etapes.forEach((etape, index) => {
             if (!etape.masque) {
                 html += `
                 <li class='etape-calendar' data-index="${index}">
