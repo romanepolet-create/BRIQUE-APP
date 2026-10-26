@@ -270,10 +270,22 @@ window.ouvrirPopupDynamique = function(layer) {
     const m = layer.magasinData;
     if (!m) return;
 
-    const nomEchappe = m.nom ? m.nom.replace(/'/g, "\\'") : "Magasin";
+    const echapperTexte = (texte) => {
+        if (!texte) return "";
+        return String(texte)
+            .replace(/'/g, "\\'")
+            .replace(/"/g, "&quot;")
+            .replace(/[\n\r]+/g, " ")
+            .trim();
+    };
+
+    const nomEchappe = echapperTexte(m.nom) || "Magasin";
+    const enseigneEchappe = echapperTexte(m.enseigne) || "Inconnue";
+    
     const lienHubspot = `https://app.hubspot.com/contacts/${PORTAL_ID}/company/${m.hubspot_id}`;
     const urlFormPopup = `/formGMS.html?id_hubspot=${m.hubspot_id}&nom=${encodeURIComponent(m.nom)}&enseigne=${encodeURIComponent(m.enseigne)}&premiere_visite=${!m.derniere_visite}&adresse=${encodeURIComponent(m.adresse)}&ville=${encodeURIComponent(m.ville)}&code_postal=${encodeURIComponent(m.code_postal)}`;
-    const adresseEchappe = `${m.adresse || ''} ${m.ville || ''}`.replace(/'/g, "\\'");
+    
+    const adresseEchappe = echapperTexte(`${m.adresse || ''} ${m.ville || ''}`);
     let prio = m.Priorité || "?";
     let dateTexte = " - Aucune visite";
 
