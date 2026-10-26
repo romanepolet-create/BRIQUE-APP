@@ -223,7 +223,6 @@ window.renderAgendaSemaine = function() {
                 html += `
                 <li class='etape-calendar' data-index="${index}">
                     <strong>${index + 1}.${etape.nom}</strong><br>
-                    <span style="color:#666;">📍 ${etape.enseigne}</span>
                 </li>
             `
             }
