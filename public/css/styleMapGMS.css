@@ -751,13 +751,14 @@ input:checked + .slider:before { transform: translateX(20px); }
     bottom: -50vh;
     left: 0;
     width: 100vw;
-    height: 40vh;
+    height: 45vh;
     background: #f3b0cf;
     z-index: 9999;
     padding: 15px;
     box-sizing: border-box;
     transition: bottom 0.3s ease-in-out;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+    overflow-y: auto;
 }
 
 body.agenda-ouvert #agenda-semaine-overlay {
@@ -768,15 +769,8 @@ body.agenda-ouvert #map {
     height: calc(100vh - 40vh) !important;
 }
 
-.colonne-jour-semaine {
-    flex: 1;
-    min-width: 220px;
-    background: white;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    overflow-y: auto;
-    border: 2px solid #002ab6;
+body.agenda-ouvert .map-container {
+    height: calc(100vh - 80px - 45vh) !important; 
 }
 
 #modal-h-calendar {
@@ -784,7 +778,7 @@ body.agenda-ouvert #map {
    justify-content: space-between; 
    align-items: center; 
    width: 100%; 
-   margin-bottom: 10px;
+   margin-bottom: 15px;
 }
 
 #h-modal-calendar {
@@ -792,44 +786,51 @@ body.agenda-ouvert #map {
    margin: 0;
 }
 
-#btn-fullScreen-calendar {
-   background: #dc3545; 
-   color: white; 
-   border: none; 
-   padding: 8px 15px; 
-   border-radius: 5px; 
-   font-weight: bold; 
-   cursor: pointer;
+.agenda-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
-#modal-calendar {
-   display: flex; 
-   gap: 15px; 
-   overflow-x: auto; 
-   height: calc(100% - 50px); 
-   padding-bottom: 10px;
+.agenda-table th {
+    color: #002ab6;
+    border-bottom: 2px solid #f3b0cf;
+    padding: 10px;
+    background: white;
+    border-radius: 8px 8px 0 0;
 }
 
-.h-jour-sem {
-   text-align: center; 
-   color: #002ab6; 
-   border-bottom: 2px solid #f3b0cf; 
-   padding-bottom: 5px; 
-   margin-top: 0;  
+.agenda-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
-#ul-d {
-   list-style: none; 
-   padding: 0; 
-   margin: 0;
+.agenda-table th {
+    color: #002ab6;
+    border-bottom: 2px solid #f3b0cf;
+    padding: 10px;
+    background: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.agenda-sortable-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-height: 80px;
 }
 
 .etape-calendar {
-   font-size: 12px; 
-   margin-bottom: 8px; 
-   padding-bottom: 8px; 
-   border-bottom: 1px solid #eee;
+    font-size: 12px; 
+    margin-bottom: 8px; 
+    padding: 8px; 
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+    border-radius: 4px;
+    cursor: grab;
 }
+.etape-calendar:active { cursor: grabbing; }
 
 /*============================
    JS PUSH - CARTE ET POPUPS
