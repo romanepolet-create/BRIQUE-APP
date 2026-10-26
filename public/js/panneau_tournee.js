@@ -18,6 +18,7 @@ window.chargerTourneeMemoire = async function() {
 
     try {
         const { data, error } = await supabaseClient.from('tournees').select('magasins').eq('email', window.emailActuelPourTournee).maybeSingle();
+
         if (error) throw error;
         
         let reparationNecessaire = false;
@@ -34,6 +35,25 @@ window.chargerTourneeMemoire = async function() {
                 }
             }
         }
+
+
+        const aujourdHui = new Date();
+        aujourdHui.setHours(0, 0, 0, 0);
+
+        for (const jour in memoireGlobaleTournees) {
+            const dateJour = new Date(jour);
+            if (!isNaN(dateJour)) {
+                const diffJours = (aujourdHui - dateJour) / (1000 * 3600 * 24);
+                
+                if (diffJours > 7) {
+                    delete memoireGlobaleTournees[jour];
+                    reparationNecessaire = true;
+                    console.log(`🧹 Nettoyage auto : Historique du ${jour} supprimé (> 7j)`);
+                }
+            }
+        }
+        
+
         
         chargementReussi = true; 
         etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
