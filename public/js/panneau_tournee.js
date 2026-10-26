@@ -190,8 +190,12 @@ window.renderAgendaSemaine = function() {
             <h2 id="h-modal-calendar">📆 Agenda Brique APP</h2>
             <button onclick="toggleVueSemaine()" id="btn-fullScreen-calendar">✖</button>
         </div>
-        <div id="modal-calendar">
-        <!--No /div coz added later after everything is added-->
+        <table class="agenda-table">
+            <thead>
+                <tr>${joursAffiches.map(jour => `<th>${jour.label}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+                <tr>
     `;
 
     const joursAffiches = joursOuvres.slice(0, 6);
@@ -199,29 +203,57 @@ window.renderAgendaSemaine = function() {
     joursAffiches.forEach(jour => {
         const etapes = memoireGlobaleTournees[jour.id] || [];
 
-        html += `
-            <div class="colonne-jour-semaine">
-                <h3 class="h-jour-sem">${jour.label}</h3>
-            <!--No /div coz added later after everything is added-->
-        `;
+        html += `<td><ul class="agenda-sortable-list" data-jour="${jour-id}">`;
 
-        if (etapes.length === 0) {
-            html += `<p style="text-align:center; color:#888; font-style:italic;">Libre</p>`;
-        } else {
-            html += `<ul id="ul-d">`
-            etapes.forEach((etape, index) => {
-                if (!etape.masque) {
-                    html += `
-                        <li class='etape-calendar'>
-                            <strong>${index + 1}.${etape.nom}</strong><br>
-                            <span style="color:#666;">📍 ${etape.enseigne}</span>
-                        </li>
-                    `;
-                }
-            }); html += `</ul>`;
-        } html += `</div>`;
-    }); html += `</div>`;
+        etape.forEach((etape, index) => {
+            if (!etape.masque) {
+                html += `
+                <li class='etape-calendar' data-index="${index}">
+                    <strong>${index + 1}.${etape.nom}</strong><br>
+                    <span style="color:#666;">📍 ${etape.enseigne}</span>
+                </li>
+            `
+            }
+        });
+
+        html += `</ul></td>`;
+    });
+
+    html += `
+                </tr>
+            </tbody>
+        </table>
+    `;
+
     container.innerHTML = html;
+
+    const listes = document.querySelectorAll('.agenda-sortable-list');
+    listes.forEach(ul => {
+        new Sortable(ul, {
+            group: 'agenda-semaine',
+            animation: 150,
+            onEnd: function (evt) {
+                const idJourDepart = evt.from.dataset.jour;
+                const idJourArrivee = evt.to.dataset.jour;
+                const ancienIndex = evt.oldIndex;
+                const nouvelIndex = evt.newIndex;
+
+                if (idJourDepart === idJourArrivee && ancienIndex === nouvelIndex) return
+
+                if (!memoireGlobaleTournees[idJourDepart]) memoireGlobaleTournees[idJourDepart] = [];
+                const magasinDeplace = memoireGlobaleTournees[idJourDepart].splice(ancienIndex, 1)[0];
+
+                if (!memoireGlobaleTournees[idJourArrivee]) memoireGlobaleTournees[idJourArrivee] =[];
+                memoireGlobaleTournees[idJourArrivee].splice(nouvelIndex, 0, magasinDeplace);
+
+                if (idJourDepart === jourSelectionneId || idJourArrivee === jourSelectionneId) {
+                    etapesItineraire = memoireGlobaleTournees[jourSelectionneId] || [];
+                    actualiserPanneauGPS();
+                }
+
+                sauvegarderTourneeMemoire();
+                renderAgendaSemaine(); 
+            }
+        });
+    });
 };
-
-
