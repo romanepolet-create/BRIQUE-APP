@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
 let modeVisionnage = false;
 
 window.ouvrirMenuEquipe = async function() {
-    if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Leo Blanchet")) {
+    if (proprietaireActuel && normaliserTexte(proprietaireActuel) !== normaliserTexte("Leo Blanchet") && normaliserTexte(proprietaireActuel) !== normaliserTexte("Romane Polet")) {
         afficherToast("❌ Accès réservé aux managers."); return;
     }
     try {
