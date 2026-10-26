@@ -204,7 +204,7 @@ window.renderAgendaSemaine = function() {
     joursAffiches.forEach(jour => {
         const etapes = memoireGlobaleTournees[jour.id] || [];
 
-        html += `<td><ul class="agenda-sortable-list" data-jour="${jour-id}">`;
+        html += `<td><ul class="agenda-sortable-list" data-jour="${jour.id}">`;
 
         etape.forEach((etape, index) => {
             if (!etape.masque) {
