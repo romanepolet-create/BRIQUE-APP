@@ -185,6 +185,8 @@ window.toggleVueSemaine = function() {
 
 window.renderAgendaSemaine = function() {
     const container = document.getElementById('agenda-semaine-overlay');
+    const joursAffiches = joursOuvres.slice(0, 6);
+
     let html = `
         <div id="modal-h-calendar">
             <h2 id="h-modal-calendar">📆 Agenda Brique APP</h2>
@@ -198,7 +200,6 @@ window.renderAgendaSemaine = function() {
                 <tr>
     `;
 
-    const joursAffiches = joursOuvres.slice(0, 6);
 
     joursAffiches.forEach(jour => {
         const etapes = memoireGlobaleTournees[jour.id] || [];
