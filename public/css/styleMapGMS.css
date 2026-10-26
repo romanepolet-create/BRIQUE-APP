@@ -193,11 +193,11 @@ h1 {
 #ma_tournee { margin: 0 0 10px 0; color: #002ab6; font-size: 16px;}
 
 #fullScreenCalendar {
-   background:#002ab6; 
-   color:white; 
-   border:none; 
-   border-radius:4px; 
-   cursor:pointer; 
+   background: #002ab6; 
+   color: white; 
+   border: none; 
+   border-radius: 4px; 
+   cursor: pointer; 
    padding: 2px 6px; 
    font-size: 14px; 
    margin-left: 10px;
@@ -758,21 +758,19 @@ input:checked + .slider:before { transform: translateX(20px); }
     box-sizing: border-box;
     transition: bottom 0.3s ease-in-out;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
-    overflow-y: auto;
+    overflow-x: auto;
 }
 
 body.agenda-ouvert #agenda-semaine-overlay {
     bottom: 0;
 }
 
-.map-container { transition: height 0.3s ease-in-out; }
-
 #modal-h-calendar {
    display: flex; 
    justify-content: space-between; 
    align-items: center; 
    width: 100%; 
-   margin-bottom: 15px;
+   margin-bottom: 10px;
 }
 
 #h-modal-calendar {
@@ -790,12 +788,11 @@ body.agenda-ouvert #agenda-semaine-overlay {
    cursor: pointer;
 }
 
-
 .agenda-table {
     width: 100%;
+    min-width: 900px;
     border-collapse: collapse;
     table-layout: fixed;
-    height: calc(100% - 50px);
 }
 
 .agenda-table th {
@@ -813,29 +810,6 @@ body.agenda-ouvert #agenda-semaine-overlay {
     border: 2px solid #002ab6; 
     height: 100%;
 }
-
-
-.agenda-sortable-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    min-height: 80px;
-    height: 100%; 
-    box-sizing: border-box;
-}
-
-.etape-calendar {
-    font-size: 12px; 
-    margin-bottom: 8px; 
-    padding: 8px; 
-    border-bottom: 1px solid #eee;
-    background: #f9f9f9;
-    border-radius: 4px;
-    cursor: grab;
-}
-.etape-calendar:active { cursor: grabbing; }
-
-.sortable-ghost { opacity: 0.4; background-color: #f3b0cf; }
 
 /*============================
    JS PUSH - CARTE ET POPUPS
