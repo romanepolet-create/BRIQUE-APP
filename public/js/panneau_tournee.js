@@ -166,6 +166,7 @@ let modeSemaineActif = false;
 window.toggleVueSemaine = function() {
     modeSemaineActif = !modeSemaineActif;
     let container = document.getElementById('agenda-semaine-overlay');
+    const mapContainer = document.querySelector('.map-container');
 
     if (!container) {
         container = document.createElement('div');
@@ -175,10 +176,12 @@ window.toggleVueSemaine = function() {
 
     if (modeSemaineActif) {
         document.body.classList.add('agenda-ouvert');
+        if (mapContainer) mapContainer.style.height = 'calc(100vh - 80px - 42vh)'; 
         renderAgendaSemaine();
         setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
     } else {
         document.body.classList.remove('agenda-ouvert');
+        if (mapContainer) mapContainer.style.height = ''; 
         setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize();}, 300);
     }
 }
@@ -233,6 +236,8 @@ window.renderAgendaSemaine = function() {
         new Sortable(ul, {
             group: 'agenda-semaine',
             animation: 150,
+            forceFallback: true,
+            ghostClass: 'sortable-ghost',
             onEnd: function (evt) {
                 const idJourDepart = evt.from.dataset.jour;
                 const idJourArrivee = evt.to.dataset.jour;
@@ -244,7 +249,7 @@ window.renderAgendaSemaine = function() {
                 if (!memoireGlobaleTournees[idJourDepart]) memoireGlobaleTournees[idJourDepart] = [];
                 const magasinDeplace = memoireGlobaleTournees[idJourDepart].splice(ancienIndex, 1)[0];
 
-                if (!memoireGlobaleTournees[idJourArrivee]) memoireGlobaleTournees[idJourArrivee] =[];
+                if (!memoireGlobaleTournees[idJourArrivee]) memoireGlobaleTournees[idJourArrivee] = [];
                 memoireGlobaleTournees[idJourArrivee].splice(nouvelIndex, 0, magasinDeplace);
 
                 if (idJourDepart === jourSelectionneId || idJourArrivee === jourSelectionneId) {
