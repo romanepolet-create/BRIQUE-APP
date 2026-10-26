@@ -194,7 +194,7 @@ window.renderAgendaSemaine = function() {
         <!--No /div coz added later after everything is added-->
     `;
 
-    const joursAffiches = joursOuvres.slice(0, 5);
+    const joursAffiches = joursOuvres.slice(0, 6);
 
     joursAffiches.forEach(jour => {
         const etapes = memoireGlobaleTournees[jour.id] || [];
