@@ -349,7 +349,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         trTotal.style.borderTop = "3px solid #002ab6";
         trTotal.style.backgroundColor = "#f4f7f6";
         trTotal.innerHTML = `
-            <td style="padding: 12px; text-align: left;"><b>Total</b></td>
+            <td style="padding: 12px; text-align: left; color:#e41b19"><b>Total</b></td>
             <td style="padding: 12px;">${rendreCell(totalActuelDN, parseFloat(totalObjDN.toFixed(2)))}</td>
             <td style="padding: 12px;">${rendreCell(totalActuelMEA, parseFloat(totalObjMEA.toFixed(2)), "HL")}</td>
             <td style="padding: 12px;">${rendreCell(totalActuelDirect, parseFloat(totalObjDirect.toFixed(2)), "Mag.")}</td>
