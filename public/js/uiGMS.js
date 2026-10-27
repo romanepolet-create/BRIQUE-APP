@@ -512,3 +512,155 @@ window.actionNoteCarte = async function(action, hubspotId, noteId) {
         alert("Erreur lors de la modification de la note.");
     }
 };
+
+
+// ==========================================
+// MOTEUR DE VUES PERSONNALISÉES
+// ==========================================
+
+const INDEPENDANTES = ["ITM SM", "ITM PROXI", "SUPER U", "U EXPRESS", "LECLERC", "LECLERC PROXI", "G 20"];
+const CENTRALISEES = ["AUCHAN HM", "AUCHAN SM", "CRF HYPER", "CRF MARKET", "CRF PROXI", "CASINO", "MONOPRIX", "MATCH", "FRANPRIX", "OTERA"];
+
+const VUES_DEFAUT = [
+    { id: "default", nom: "🌍 Par défaut", filtres: { bh: "0", enseignes: [], prios: [], visite: "all" } },
+    { id: "v1", nom: "🛒 Mes Directs", filtres: { bh: "1", enseignes: INDEPENDANTES, prios: [], visite: "all" } },
+    { id: "v2", nom: "🏢 Centrale sans BH", filtres: { bh: "-1", enseignes: CENTRALISEES, prios: [], visite: "all" } },
+    { id: "v3", nom: "🚨 Prios >30j)", filtres: { bh: "1", enseignes: [], prios: ["A", "B", "C", "D"], visite: "2months" } }
+]
+
+let vuesUtilisateur = [];
+let vueActiveId = "default";
+
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(chargerVuesPersonnalisees, 1000); 
+});
+
+function chargerVuesPersonnalisees() {
+    const email = window.emailActuelPourTournee || "anonyme";
+    const backup = localStorage.getItem('brique_vues_' + email);
+    if (backup) {
+        try { vuesUtilisateur = JSON.parse(backup); } catch(e) { vuesUtilisateur = []; }
+    }
+    afficherOngletsVues();
+}
+
+function afficherOngletsVues() {
+    const conteneur = document.getElementById('onglets-vues');
+    if (!conteneur) return;
+    
+    const toutesLesVues = [...VUES_DEFAUT, ...vuesUtilisateur];
+    let html = "";
+    
+    toutesLesVues.forEach(vue => {
+        const estActif = vue.id === vueActiveId ? "active" : "";
+        const estCustom = !VUES_DEFAUT.some(v => v.id === vue.id);
+        const btnDelete = estCustom ? `<button class="vue-tab-delete" onclick="supprimerVue('${vue.id}', event)">✖</button>` : "";
+        
+        html += `
+            <div class="vue-tab ${estActif}" onclick="appliquerVue('${vue.id}')">
+                ${vue.nom} ${btnDelete}
+            </div>
+        `;
+    });
+
+    conteneur.innerHTML = html;
+}
+
+window.appliquerVue = function(idVue) {
+    vueActiveId = idVue;
+    const toutesLesVues = [...VUES_DEFAUT, ...vuesUtilisateur];
+    const vue = toutesLesVues.find(v => v.id === idVue);
+    if (!vue) return;
+
+    reinitialiserFiltresSansMettreAJour();
+
+    const filtres = vue.filtres;
+
+    const toggleBh = document.getElementById('toggle-bh');
+    if (toggleBh) toggleBh.value = filtres.bh || "0";
+
+    cocherDansDropdown('dropdown-enseigne', filtres.enseignes || []);
+
+    cocherDansDropdown('dropdown-prio', filtres.prios || []);
+
+    if (filtres.visite) {
+        const radioVisite = document.querySelector(`input[name="filtre_visite"][value="${filtres.visite}"]`);
+        if (radioVisite) radioVisite.checked = true;
+    }
+
+    filtrerMagasins();
+    afficherOngletsVues();
+};
+
+window.sauvegarderVueActuelle = function() {
+    const totalVues = VUES_DEFAUT.length + vuesUtilisateur.length;
+    if (totalVues >= 10) {
+        afficherToast("❌ Limite atteinte : 10 vues maximum par personne.");
+        return;
+    }
+
+    const nomVue = prompt("Nom de vue ?");
+    if (!nomVue || nomVue.trim() === "") return;
+
+    const getCheckedValues = (id) => {
+        const container = document.getElementById(id);
+        return container ? Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value) : [];
+    };
+
+    const nouvelleVue = {
+        id: "vue_perso_" + Date.now(),
+        nom: "⭐ " + nomVue.trim(),
+        filtres: {
+            bh: document.getElementById('toggle-bh') ? document.getElementById('toggle-bh').value : "0",
+            enseignes: getCheckedValues('dropdown-enseigne'),
+            prios: getCheckedValues('dropdown-prio'),
+            visite: document.querySelector('input[name="filtre_visite"]:checked')?.value || "all"
+        }
+    };
+
+    vuesUtilisateur.push(nouvelleVue);
+    sauvegarderVuesEnLocal();
+    appliquerVue(nouvelleVue.id);
+    afficherToast("✅ Vue enregistrée ");
+};
+
+window.supprimerVue = function(idVue, event) {
+    event.stopPropagation();
+    if(confirm("Supprimer cette vue personnalisée ?")) {
+        vuesUtilisateur = vuesUtilisateur.filter(v => v.id !== idVue);
+        if (vueActiveId === idVue) vueActiveId = "default";
+        sauvegarderVuesEnLocal();
+        appliquerVue(vueActiveId);
+    }
+};
+
+function sauvegarderVuesEnLocal() {
+    const email = window.emailActuelPourTournee || "anonyme";
+    localStorage.setItem('brique_vues_' + email, JSON.stringify(vuesUtilisateur));
+}
+
+function cocherDansDropdown(idContainer, valeursACocher) {
+    const container = document.getElementById(idContainer);
+    if (!container) return;
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = valeursACocher.includes(cb.value);
+    });
+}
+
+function reinitialiserFiltresSansMettreAJour() {
+    const searchBar = document.getElementById('search-bar');
+    if (searchBar) searchBar.value = "";
+    
+    document.querySelectorAll('.dropdown-list input[type="checkbox"]').forEach(cb => {
+        if (!cb.closest('#dropdown-proprio')) cb.checked = false;
+    });
+
+    const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
+    if (radioAll) radioAll.checked = true;
+    
+    const filterTdn = document.getElementById('filter-tdn');
+    if (filterTdn) { filterTdn.value = "-1"; document.getElementById('tdn-val').innerText = "Tous"; }
+
+    const filterTdn75 = document.getElementById('filter-tdn75');
+    if (filterTdn75) { filterTdn75.value = "-1"; document.getElementById('tdn75-val').innerText = "Tous"; }
+}
