@@ -280,7 +280,28 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
     tbody.innerHTML = '';
     const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))]
         .filter(email => email && Object.keys(OBJECTIFS_MOIS_EN_COURS).includes(email.toLowerCase()));
-    const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;;
+    const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;
+
+    let totalActuelDN = 0, totalObjDN = 0;
+    let totalActuelMEA = 0, totalObjMEA = 0;
+    let totalActuelDirect = 0, totalObjDirect = 0;
+
+     const rendreCell = (actuel, objectif, unit = "") => {
+        const actuelClean = parseFloat(Number(actuel).toFixed(2));
+
+        if (objectif === null || objectif === undefined) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
+            if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
+
+             if (vuePourcentage) {
+                 const pct = Math.round((actuelClean / objectif) * 100);
+                 const col = pct >= 100 ? 'green' : (pct > 50 ? 'orange': 'red');
+                 return `<b style="color:${col};">${pct}%</b><br><span style="font-size:12px; color:#666;">(Obj: ${objectif})</span>`;
+             } else {
+                 const reste = parseFloat((objectif - actuelClean).toFixed(2));
+                 return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuelClean})</span>`;
+            }
+        };
+
 
     commerciauxMails.forEach(email => {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
@@ -303,22 +324,14 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
 
         const obj = OBJECTIFS_MOIS_EN_COURS[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
 
-   
-        const rendreCell = (actuel, objectif, unit = "") => {
-            const actuelClean = parseFloat(Number(actuel).toFixed(2));
-            
-            if (objectif === null || objectif === undefined) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
-            if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
-            
-            if (vuePourcentage) {
-                const pct = Math.round((actuelClean / objectif) * 100);
-                const col = pct >= 100 ? 'green' : (pct > 50 ? 'orange' : 'red');
-                return `<b style="color:${col};">${pct}%</b><br><span style="font-size:12px; color:#666;">(Obj: ${objectif})</span>`;
-            } else {
-                const reste = parseFloat((objectif - actuelClean).toFixed(2));
-                return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuelClean})</span>`;
-            }
-        };
+        totalActuelDN += actuelDN;
+        totalObjDN += (obj.obj_dn || 0);
+
+        totalActuelMEA += actuelMEA;
+        totalObjMEA += (obj.obj_mea || 0);
+
+        totalActuelDirect += actuelDirect;
+        totalObjDirect += (obj.obj_direct || 0);
 
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid #eee";
@@ -331,6 +344,20 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         tbody.appendChild(tr);
     });
 
+    if (commerciauxMails.length > 0) {
+        const trTotal = document.createElement('tr');
+        trTotal.style.borderTop = "3px solid #002ab6";
+        trTotal.style.backgroundColor = "#f4f7f6";
+        trTotal.innerHTML = `
+            <td style="padding: 12px;">${rendreCell(totalActuelDN, parseFloat(totalObjDN.toFixed(2)))}</td>
+            <td style="padding: 12px;">${rendreCell(totalActuelMEA, parseFloat(totalObjMEA.toFixed(2)), "HL")}</td>
+            <td style="padding: 12px;">${rendreCell(totalActuelDirect, parseFloat(totalObjDirect.toFixed(2)), "Mag.")}</td>
+        `;
+
+        tbody.appendChild(trTotal);
+    }
+
+
     const btnBascule = document.getElementById('btn-bascule-perf');
     if (btnBascule) {
         const newBtn = btnBascule.cloneNode(true);
@@ -338,7 +365,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         newBtn.addEventListener('click', () => {
             vuePourcentage = !vuePourcentage;
             newBtn.textContent = vuePourcentage ? "🔄 Voir le Reste à faire" : "🔄 Voir les Pourcentages";
-            genererTableauPerformance(toutesVisites, objectifs, startOfMonth); // On redessine juste le tableau !
+            genererTableauPerformance(toutesVisites, objectifs, startOfMonth);
         });
     }
 }
