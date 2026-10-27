@@ -518,7 +518,7 @@ window.actionNoteCarte = async function(action, hubspotId, noteId) {
 // MOTEUR DE VUES PERSONNALISÉES
 // ==========================================
 
-const INDEPENDANTES = ["ITM SM", "ITM PROXI", "SUPER U", "U EXPRESS", "LECLERC", "LECLERC PROXI", "E. LECLERC DRIVE", "G 20"];
+const INDEPENDANTES = ["ITM SM", "ITM PROXI", "SUPER U", "U EXPRESS", "LECLERC", "LECLERC PROXI", "LECLERC DRIVE", "G 20"];
 const CENTRALISEES = ["AUCHAN HM", "AUCHAN SM", "CRF HYPER", "CRF MARKET", "CRF PROXI", "CASINO", "MONOPRIX", "MATCH", "FRANPRIX", "OTERA", "NICOLAS"];
 
 const VUES_DEFAUT = [
