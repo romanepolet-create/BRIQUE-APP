@@ -2,56 +2,34 @@ let listeInitialeChargee = false;
 let graphVisites = null;
 let donneesGlobales = null;
 let graphFlopDN = null;
+
+// NOUVEAU : Variables pour Supabase et Objectifs dynamiques
+let supabaseClient = null;
+let objectifsDynamiques = {}; 
+
 const ENSEIGNES_DIRECTES_GLOBALES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "G 20", "G20", "AUTRES", "LECLERC DRIVE", "MATCH", "U EXPRESS"];
 const MAX_DN_ENSEIGNE = {
-    "AUCHAN HM": 7,
-    "AUCHAN SM": 0,
-    "CASINO": 4,
-    "FRANPRIX": 2,
-    "MONOPRIX": 4,
-    "CRF HYPER": 7,
-    "CRF MARKET": 7,
-    "CRF PROXI": 7,
-    "OTERA": 4,
-    "ITM PROXI": 0,
-    "ITM SM": 0,
-    "LECLERC": 0,
-    "LECLERC PROXI": 0,
-    "SUPER U": 0,
-    "U EXPRESS": 0,
-    "MATCH": 0,
-    "G 20": 0,
-    "LECLERC DRIVE": 0,
-    "NICOLAS": 4,
-    "AUTRES": 0
+    "AUCHAN HM": 7, "AUCHAN SM": 0, "CASINO": 4, "FRANPRIX": 2, "MONOPRIX": 4,
+    "CRF HYPER": 7, "CRF MARKET": 7, "CRF PROXI": 7, "OTERA": 4, "ITM PROXI": 0,
+    "ITM SM": 0, "LECLERC": 0, "LECLERC PROXI": 0, "SUPER U": 0, "U EXPRESS": 0,
+    "MATCH": 0, "G 20": 0, "LECLERC DRIVE": 0, "NICOLAS": 4, "AUTRES": 0
 };
 
 const OBJECTIFS_PRIO = {
-    "A": 0.95,
-    "B": 0.90,
-    "C": 0.85,
-    "D": 0.65,
-    "E": 0.42,
-    "F": 0.30,
-    "X": 0.10,
-    "DRIVE": 0.00
+    "A": 0.95, "B": 0.90, "C": 0.85, "D": 0.65, "E": 0.42, "F": 0.30, "X": 0.10, "DRIVE": 0.00
 };
 
-const OBJ_SEPT_2026 = {
-    "arnaud.ladougne@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 },
-    "etienne.firmin@briquehouse.fr": { obj_dn: 33.5, obj_mea: 11.5, obj_direct: 1.4 },
-    "romane.polet@briquehouse.fr": { obj_dn: 38.88, obj_mea: 13.5, obj_direct: 1.62 },
-    "lorelei.duplat@briquehouse.fr": { obj_dn: 10, obj_mea: 2, obj_direct: 0 },
-    "jeanmichel.dole@briquehouse.fr": { obj_dn: 0, obj_mea: 0, obj_direct: 0 }
-};
-
-const OBJECTIFS_MOIS_EN_COURS = {
-    "arnaud.ladougne@briquehouse.fr": { obj_dn: 50, obj_mea: 25, obj_direct: 3 },
-    "etienne.firmin@briquehouse.fr": { obj_dn: 45, obj_mea: 25, obj_direct: 3 },
-    "romane.polet@briquehouse.fr": { obj_dn: 35, obj_mea: 17, obj_direct: 3 },
-    "lorelei.duplat@briquehouse.fr": { obj_dn: 20, obj_mea: 2.9, obj_direct: 0 },
-    "jeanmichel.dole@briquehouse.fr": { obj_dn: 72, obj_mea: 25, obj_direct: 3 }
-};
+// ==========================================
+// INITIALISATION SUPABASE
+// ==========================================
+async function getSupabase() {
+    if (!supabaseClient) {
+        const reponse = await fetch('/api/config');
+        const config = await reponse.json();
+        supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    }
+    return supabaseClient;
+}
 
 // ==========================================
 // MATHS
@@ -62,7 +40,6 @@ function formatEmailToName(email) {
     return email.split('@')[0].split('.').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
 }
 
-// DN TOTAL
 function calculerScoreDNUnique(visites) {
     const mapMagasins = {};
     visites.forEach(v => {
@@ -78,6 +55,24 @@ function calculerScoreDNUnique(visites) {
 // ==========================================
 async function chargerDonneesEtAfficher(filtreEmail = 'general') {
     try {
+        const now = new Date();
+        const moisActuel = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        
+        // 1. On charge les objectifs dynamiques du mois EN PREMIER
+        if (Object.keys(objectifsDynamiques).length === 0) {
+            const supa = await getSupabase();
+            const { data: objData } = await supa.from('objectifs_mensuels').select('*').eq('mois', moisActuel);
+            if (objData) {
+                objData.forEach(row => {
+                    objectifsDynamiques[row.email.toLowerCase()] = {
+                        obj_dn: parseFloat(row.obj_dn),
+                        obj_mea: parseFloat(row.obj_mea),
+                        obj_direct: parseFloat(row.obj_direct)
+                    };
+                });
+            }
+        }
+
         if (!donneesGlobales) {
             const reponse = await fetch(`/api/dashboard/data?nocache=${new Date().getTime()}`); 
             donneesGlobales = await reponse.json();
@@ -86,9 +81,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             initialiserMenuDeroulant(donneesGlobales, filtreEmail);
         }
 
-        const { visitesBrutes, objectifs } = donneesGlobales;
-
-        const now = new Date();
+        const { visitesBrutes } = donneesGlobales;
         const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
         let visitesFiltrees = visitesBrutes;
@@ -98,13 +91,8 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
 
         if (filtreEmail !== 'general') {
             visitesFiltrees = visitesBrutes.filter(v => v.commercial_email === filtreEmail);
-            
             const nomCommercialFormate = formatEmailToName(filtreEmail).toLowerCase();
-            
-            magasinsFiltres = magasinsFiltres.filter(m => {
-                const proprietaire = (m.Propriétaire || "").toLowerCase();
-                return proprietaire === nomCommercialFormate;
-            });
+            magasinsFiltres = magasinsFiltres.filter(m => (m.Propriétaire || "").toLowerCase() === nomCommercialFormate);
         }
 
         const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth);
@@ -115,13 +103,9 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // KPIs
         // ==========================================
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
-        
         document.getElementById('kpi-visites').textContent = visitesMois.length;
         document.getElementById('visiteAvOpen').textContent = av8h30.length;
 
-        // ============================
-        // ANIMATION CARTE VISITES
-        // ============================
         const kpiVisitesElement = document.getElementById('kpi-visites');
         const carteVisites = kpiVisitesElement.parentNode;
         const visiteAvOpen = document.getElementById('visiteAvOpen');
@@ -166,20 +150,14 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             kpiDnElement.parentNode.insertBefore(hint, kpiDnElement.nextSibling);
         }
         
-        
         carteDn.onclick = () => ouvrirModalDN(visitesMois, visitesPrec, donneesGlobales.listeMagasins);
 
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
 
-        // ============================
-        // ANIMATION CARTE DIRECTS & CALCUL
-        // ============================
-        const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;;
-        
         const mapDirects = {};
         visitesFiltrees.forEach(v => {
-            if (enseignesDirectes.includes(v.enseigne)) {
+            if (ENSEIGNES_DIRECTES_GLOBALES.includes(v.enseigne)) {
                 if (!mapDirects[v.hubspot_id] || v.created_at > mapDirects[v.hubspot_id].created_at) {
                     mapDirects[v.hubspot_id] = v;
                 }
@@ -192,7 +170,6 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         Object.values(mapDirects).forEach(v => {
             const dnF = calculerScoreDNUnique(visitesFiltrees.filter(vis => vis.hubspot_id === v.hubspot_id));
             const dnI = calculerScoreDNUnique(visitesPrec.filter(vis => vis.hubspot_id === v.hubspot_id));
-
             const estNouveauDirectCeMois = (dnI === 0 && dnF > 0 && v.created_at >= firstDayThisMonth);
 
             if (estNouveauDirectCeMois) {
@@ -206,17 +183,14 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const evoDirectsElement = document.getElementById('evo-directs');
         const carteDirects = kpiDirectsElement.parentNode;
 
-        // Affichage des chiffres (Total en grand, Mois en petit)
         kpiDirectsElement.textContent = directsMois.length + directsHisto.length; 
         evoDirectsElement.textContent = `Dont ${directsMois.length} gagnés ce mois-ci`;
 
-        // Animation au survol
         carteDirects.style.cursor = 'pointer';
         carteDirects.style.transition = '0.2s';
         carteDirects.onmouseover = () => carteDirects.style.transform = 'translateY(-2px)';
         carteDirects.onmouseout = () => carteDirects.style.transform = 'translateY(0)';
 
-       // Ajout du petit texte "Cliquez pour voir" s'il n'existe pas
         if (!document.getElementById('directs-click-hint')) {
             const hint = document.createElement('div');
             hint.id = 'directs-click-hint';
@@ -224,17 +198,16 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             hint.style.fontSize = '12px';
             hint.style.color = '#999';
             hint.style.marginTop = '8px';
-            hint.style.marginBottom = '8px'; // Petit espace ajouté pour aérer avec le badge en dessous
+            hint.style.marginBottom = '8px';
             carteDirects.insertBefore(hint, evoDirectsElement);
         }
 
-        // Action au clic
         carteDirects.onclick = () => ouvrirModalDirects(directsMois, directsHisto, donneesGlobales.listeMagasins);
 
         // ==========================================
-        // GENERATION
+        // GENERATION (On passe objectifsDynamiques !)
         // ==========================================
-        genererTableauPerformance(donneesGlobales.visitesBrutes, objectifs, firstDayThisMonth);
+        genererTableauPerformance(donneesGlobales.visitesBrutes, objectifsDynamiques, firstDayThisMonth);
         genererFocusDN(magasinsFiltres, visitesFiltrees);
         genererFocusMEA(visitesFiltrees);
         genererFocusDirect(magasinsFiltres, visitesFiltrees);
@@ -245,23 +218,14 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
     }
 }
 
-// ==========================================
-//OBJECTIFS SELON PRIO
-// ==========================================
-
 function calculerObjectifDNDynamique(emailCommercial, listeMagasins) {
     const nomCommercial = formatEmailToName(emailCommercial).toLowerCase();
-    
-    const parcCommercial = listeMagasins.filter(m => 
-        (m.Propriétaire || "").toLowerCase() === nomCommercial
-    );
-
+    const parcCommercial = listeMagasins.filter(m => (m.Propriétaire || "").toLowerCase() === nomCommercial);
     let objectifTotal = 0;
     
     parcCommercial.forEach(mag => {
         const maxObligatoire = MAX_DN_ENSEIGNE[mag.enseigne] || 0;
         const pourcentageObjectif = OBJECTIFS_PRIO[mag.Priorité] || 0; 
-        
         objectifTotal += (maxObligatoire * pourcentageObjectif);
     });
 
@@ -278,8 +242,10 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
     if (!tbody) return;
 
     tbody.innerHTML = '';
+    const emailsAvecObjectifs = Object.keys(objectifs);
     const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))]
-        .filter(email => email && Object.keys(OBJECTIFS_MOIS_EN_COURS).includes(email.toLowerCase()));
+        .filter(email => email && emailsAvecObjectifs.includes(email.toLowerCase()));
+        
     const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;
 
     let totalActuelDN = 0, totalObjDN = 0;
@@ -290,24 +256,24 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         const actuelClean = parseFloat(Number(actuel).toFixed(2));
 
         if (objectif === null || objectif === undefined) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
-            if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
+        if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
 
-             if (vuePourcentage) {
-                 const pct = Math.round((actuelClean / objectif) * 100);
-                 const col = pct >= 100 ? 'green' : (pct > 50 ? 'orange': 'red');
-                 return `<b style="color:${col};">${pct}%</b><br><span style="font-size:12px; color:#666;">(Obj: ${objectif})</span>`;
-             } else {
-                 const reste = parseFloat((objectif - actuelClean).toFixed(2));
-                 return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuelClean})</span>`;
-            }
-        };
+         if (vuePourcentage) {
+             const pct = Math.round((actuelClean / objectif) * 100);
+             const col = pct >= 100 ? 'green' : (pct > 50 ? 'orange': 'red');
+             return `<b style="color:${col};">${pct}%</b><br><span style="font-size:12px; color:#666;">(Obj: ${objectif})</span>`;
+         } else {
+             const reste = parseFloat((objectif - actuelClean).toFixed(2));
+             return `<b>${reste <= 0 ? '✅ Atteint' : reste + ' ' + unit}</b><br><span style="font-size:12px; color:#666;">(Actuel: ${actuelClean})</span>`;
+         }
+    };
 
 
     commerciauxMails.forEach(email => {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
         const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < startOfMonth);
-        
         const toutesVisitesEmail = toutesVisites.filter(v => v.commercial_email === email);
+        
         const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
         const dnInitiale = calculerScoreDNUnique(visPrec);
         const actuelDN = dnFinale - dnInitiale;
@@ -322,14 +288,13 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
             if (dnI === 0 && dnF > 0) actuelDirect++;
         });
 
-        const obj = OBJECTIFS_MOIS_EN_COURS[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
+        // On utilise les objectifs dynamiques récupérés
+        const obj = objectifs[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
 
         totalActuelDN += actuelDN;
         totalObjDN += (obj.obj_dn || 0);
-
         totalActuelMEA += actuelMEA;
         totalObjMEA += (obj.obj_mea || 0);
-
         totalActuelDirect += actuelDirect;
         totalObjDirect += (obj.obj_direct || 0);
 
@@ -358,7 +323,6 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         tbody.appendChild(trTotal);
     }
 
-
     const btnBascule = document.getElementById('btn-bascule-perf');
     if (btnBascule) {
         const newBtn = btnBascule.cloneNode(true);
@@ -378,7 +342,8 @@ function initialiserMenuDeroulant(data, defaultFiltre) {
 
     selectFiltre.innerHTML = '<option value="general">🌍 Général (Tous)</option>';
     
-    const emailsActifs = Object.keys(OBJECTIFS_MOIS_EN_COURS).map(e => e.toLowerCase());
+    // On utilise les clés de la base de données
+    const emailsActifs = Object.keys(objectifsDynamiques);
 
     data.listeCommerciaux.forEach(email => {
         if (email && emailsActifs.includes(email.toLowerCase())) {
