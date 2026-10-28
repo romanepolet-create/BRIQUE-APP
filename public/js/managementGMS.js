@@ -144,10 +144,9 @@ async function sauvegarderObjectif() {
             // On recharge le tableau pour afficher la modification
             chargerObjectifsMois();
 
-            } catch (e) {
-                console.error("Erreur sauvegarde :", e);
-                btn.innerText = "❌ Erreur";
-                setTimeout(() => btn.innerText = "💾 Enregistrer cet objectif", 2000);
-            }
-      }
-}
+        } catch (e) {
+            console.error("Erreur sauvegarde :", e);
+            btn.innerText = "❌ Erreur";
+            setTimeout(() => btn.innerText = "💾 Enregistrer cet objectif", 2000);
+        }
+    }
