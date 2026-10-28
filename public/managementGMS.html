@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMS Management - Brique App</title>
+    <link rel="stylesheet" href="css/styleNavBar.css">
+  <link rel="stylesheet" href="css/styleManagementGMS.css">
+    <meta name="theme-color" content="#002AB6">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <div id="access-denied">
+        <h1>❌ Accès Refusé</h1>
+        <p>Cette page est strictement réservée aux managers GMS.</p>
+    </div>
+
+    <div class="container" id="manager-content">
+        <h1>⚙️ GMS Management</h1>
+        <p style="color: #666; margin-bottom: 30px;">Définissez les objectifs mensuels de l'équipe GMS.</p>
+
+        <div style="background: #fdf3f9; padding: 20px; border-radius: 10px; border: 1px solid #f3b0cf; margin-bottom: 30px;">
+            <div class="row">
+                <div class="form-group">
+                    <label>📅 Mois cible :</label>
+                    <input type="month" id="input-mois">
+                </div>
+                <div class="form-group">
+                    <label>👤 Commercial :</label>
+                    <select id="input-commercial">
+                        <option value="arnaud.ladougne@briquehouse.fr">Arnaud Ladougne</option>
+                        <option value="etienne.firmin@briquehouse.fr">Etienne Firmin</option>
+                        <option value="romane.polet@briquehouse.fr">Romane Polet</option>
+                        <option value="lorelei.duplat@briquehouse.fr">Lorelei Duplat</option>
+                        <option value="jeanmichel.dole@briquehouse.fr">J-M Dole</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Objectif DN (pts)</label>
+                    <input type="number" id="input-dn" step="0.1" placeholder="Ex: 50">
+                </div>
+                <div class="form-group">
+                    <label>Objectif MEA (HL)</label>
+                    <input type="number" id="input-mea" step="0.1" placeholder="Ex: 25">
+                </div>
+                <div class="form-group">
+                    <label>Objectif Directs (Mag)</label>
+                    <input type="number" id="input-direct" step="0.1" placeholder="Ex: 3">
+                </div>
+            </div>
+
+            <button class="btn-save" onclick="sauvegarderObjectif()">💾 Enregistrer cet objectif</button>
+        </div>
+
+        <h2>Récapitulatif pour : <span id="titre-recap-mois" style="color: #c2137a;"></span></h2>
+        <table class="table-obj">
+            <thead>
+                <tr>
+                    <th>Commercial</th>
+                    <th>Obj. DN</th>
+                    <th>Obj. MEA</th>
+                    <th>Obj. Directs</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-objectifs">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/js/navbar.js"></script>
+    <script src="/js/managementGMS.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>
