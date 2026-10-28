@@ -173,28 +173,11 @@
             </table>
             <p class="chargement">*Basé sur les jours de saisie d'un formulaire de visite</p>
         </div>
-
-
-
-
-       
     </div>
 
-    <script src="/js/dashboard.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((reg) => console.log('Service worker enregistré !', reg))
-        .catch((err) => console.log('Erreur Service Worker', err));
-    });
-   }
-   </script>
-   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
-
-   <!-- HIDDEN - FOR NOW - POPUP DETAILS-->
+    <!-- HIDDEN - FOR NOW - POPUP DETAILS-->
 
     <!-- MODAL DÉTAIL VISITE -->
     <div id="modal-detail-visites">
@@ -258,6 +241,23 @@
         </div>
       </div>
     </div>
+
+    
+
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('Service worker enregistré !', reg))
+        .catch((err) => console.log('Erreur Service Worker', err));
+    });
+   }
+   </script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)"></script>
+
 
 </body>
 </html>
