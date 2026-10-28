@@ -2,16 +2,33 @@
   <div class="logo">🍻 Brique App</div>
   <button class="menu-burger" id="menu-burger">☰</button>
   <ul class="nav-links" id="nav-links">
-    <li><a href="/index.html" class="active">Accueil</a></li>
+    
+    <!-- LIENS STANDARDS -->
+    <li><a href="/index.html">Accueil</a></li>
     <li><a href="/desc.html">Bières BH</a></li>
-    <li><a href="/lexique.html" class="active">Glossaire</a></li>
-    <li><a href="/gms.html">Espace GMS</a></li>
-    <li><a href="/distrib.html" class="active">Distributeurs</a></li>
-    <li><a href="/form.html">Formulaires</a></li>
-    <li><a href="/mapGMS.html" class="active">Map GMS</a></li>
-    <li><a href="/mapCHR.html">Map CHR</a></li>
-    <li><a href="/dashboard.html" class="active">Dashboard</a></li>
-    <li><a href="/newsletter">Newsletter</a></li>
+    <li><a href="/lexique.html">Glossaire</a></li>
+
+    <!-- MENU DÉROULANT GMS -->
+    <li class="dropdown">
+      <a href="#" class="dropbtn">GMS ▾</a>
+      <ul class="dropdown-content">
+        <li><a href="/gms.html">Espace GMS</a></li>
+        <li><a href="/mapGMS.html">Map GMS</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/newsletter">Newsletter</a></li>
+        <li><a href="/managementGMS.html">GMS Management</a></li>
+      </ul>
+    </li>
+
+    <!-- MENU DÉROULANT CHR -->
+    <li class="dropdown">
+      <a href="#" class="dropbtn">CHR ▾</a>
+      <ul class="dropdown-content">
+        <li><a href="/mapCHR.html">Map CHR</a></li>
+        <li><a href="/distrib.html">Distributeurs</a></li>
+        <li><a href="/form.html">Formulaires</a></li>
+      </ul>
+    </li>
+    
   </ul>
 </nav>
-
