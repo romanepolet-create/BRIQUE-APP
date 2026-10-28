@@ -188,7 +188,7 @@ router.get('/', async (req, res) => {
                       <div style="font-size: 11px; letter-spacing: .12em; opacity: .85; text-transform: uppercase; margin-bottom: 10px;">🍻 PILOTAGE COMMERCIAL GMS</div>
                       <h1 style="margin: 0 0 4px; font-size: 19px; letter-spacing: .03em; font-weight: 700; color: #ffffff;">Newsletter GMS</h1>
                       <p style="font-size: 12.5px; opacity: .9; margin: 0; color: #ffffff;">Suivi de l'activité et des objectifs de croissance nette</p>
-                      <p style="font-size: 11.5px; opacity: .8; margin: 6px 0 0; font-style: italic; color: #ffffff;">${dateFr} — Soit${pctMois}% du mois écoulé</p>
+                      <p style="font-size: 11.5px; opacity: .8; margin: 6px 0 0; font-style: italic; color: #ffffff;">${dateFr} — Soit ${pctMois}% du mois écoulé</p>
                     </div>
 
                     <!-- TABLE 1 : PERFS GENERALES -->
@@ -196,3 +196,132 @@ router.get('/', async (req, res) => {
                       <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Les Perfs Générales</p>
                       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                         <thead>
+                          <!-- LIGNE 1 : Les grands titres -->
+                          <tr>
+                            <th rowspan="2" style="text-align: left; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Commercial</th>
+                            <th colspan="3" style="text-align: center; color: #c2137a; font-weight: 700; font-size: 10px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">SUIVI DN</th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">MEA<br><span style="font-size: 8px; text-transform: none;">(HL)</span></th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Directs<br><span style="font-size: 8px; text-transform: none;">(Vend.)</span></th>
+                            <th rowspan="2" style="text-align: center; color: #8c7385; font-weight: 600; font-size: 9px; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid #f1dde9; vertical-align: bottom;">Dév.<br>Outils</th>
+                          </tr>
+                          <!-- LIGNE 2 : Les sous-titres de la DN -->
+                          <tr>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Gagnées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Constatées</th>
+                            <th style="text-align: center; color: #8c7385; font-weight: 600; font-size: 8.5px; text-transform: uppercase; padding: 4px; border-bottom: 1px solid #f1dde9; background-color: #fdf3f9;">Scorées</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${statsCommerciaux.map((s, index) => {
+                              const bg = index % 2 !== 0 ? 'background-color: #fafafa;' : '';
+                              const dnBg = index % 2 !== 0 ? 'background-color: #fdf3f9;' : 'background-color: #fff9fc;'; 
+                              const checkboxOutil = ["Romane Polet", "Lorelei Duplat"].includes(s.nom) ? '☑️' : '◻️';
+                              
+                              return `
+                              <tr style="${bg}">
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600; font-size: 11px;">${s.nom}</td>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #1f9d5c; font-size: 14px; font-weight: 700; ${dnBg}">${s.dnGagne}</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; color: #b8862c; font-size: 14px; font-weight: 700; ${dnBg}">${s.dnConstate}</td>
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; ${dnBg}">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.dn.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.dn.pct >= 100 ? '#1f9d5c' : (s.dn.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.dn.pct}%)</div>
+                                </td>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.mea.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.mea.pct >= 100 ? '#1f9d5c' : (s.mea.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.mea.pct}%)</div>
+                                </td>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center;">
+                                  <div style="font-size: 14px; font-weight: 700; color: #3a2233;">${s.direct.actuel}</div>
+                                  <div style="font-size: 9px; color: ${s.direct.pct >= 100 ? '#1f9d5c' : (s.direct.pct === 'N/A' ? '#888' : '#d63a56')}; font-weight: 600;">(${s.direct.pct}%)</div>
+                                </td>
+                                
+                                <td style="padding: 10px 4px; border-bottom: 1px solid #f6ecf2; text-align: center; font-size: 16px;">
+                                  ${checkboxOutil}
+                                </td>
+                              </tr>`;
+                          }).join('')}
+
+                          <!-- LIGNE TOTAL -->
+                          <tr style="background-color: #fdf3f9; border-top: 2px solid #c2137a;">
+                            <td style="padding: 10px 4px; text-align: left; font-weight: 800; font-size: 12px; color: #c2137a; text-transform: uppercase;">TOTAL</td>
+                            
+                            <td style="padding: 10px 4px; text-align: center; color: #1f9d5c; font-size: 15px; font-weight: 800;">${totalDnGagne}</td>
+                            <td style="padding: 10px 4px; text-align: center; color: #b8862c; font-size: 15px; font-weight: 800;">${totalDnConstate}</td>
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalDnActuel}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalDN >= 100 ? '#1f9d5c' : (pctGlobalDN === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalDN}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalMeaActuel.toFixed(1)}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalMEA >= 100 ? '#1f9d5c' : (pctGlobalMEA === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalMEA}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalDirectActuel}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalDirect >= 100 ? '#1f9d5c' : (pctGlobalDirect === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalDirect}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div style="height: 1px; background-color: #f1dde9; margin: 12px 24px 0;"></div>
+
+                    <!-- TABLE 2 : MEA -->
+                    <div style="padding: 18px 24px 6px;">
+                      <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Mise en avant (HL)</p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                        ${topMEA.map(m => `
+                        <tr>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; color: #8c7385; font-size: 11.5px;">${m.commercial}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; font-weight: 600;">${m.magasin}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: right;"><span style="color: #c2137a; font-weight: 800; font-size: 14px;">${m.volume}</span></td>
+                        </tr>`).join('')}
+                        ${topMEA.length === 0 ? '<tr><td colspan="3" style="color: #888; text-align: center; padding: 10px;">Aucune MEA ce mois-ci.</td></tr>' : ''}
+                      </table>
+                    </div>
+
+                    <div style="height: 1px; background-color: #f1dde9; margin: 12px 24px 0;"></div>
+
+                    <!-- TABLE 3 : DIRECTS -->
+                    <div style="padding: 18px 24px 22px;">
+                      <p style="font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #c2137a; margin: 0 0 10px;">● Magasins Vendeurs en Direct</p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 12.5px; border-collapse: collapse;">
+                        ${topDirects.map(d => `
+                        <tr>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left; color: #8c7385; font-size: 11.5px;">${d.commercial}</td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: left;"><span style="background-color: #fdf3f9; color: #c2137a; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${d.enseigne}</span></td>
+                          <td style="padding: 8px 6px; border-bottom: 1px solid #f6ecf2; text-align: right; font-weight: 600;">${d.magasin}</td>
+                        </tr>`).join('')}
+                        ${topDirects.length === 0 ? '<tr><td colspan="3" style="color: #888; text-align: center; padding: 10px;">Aucun magasin direct ce mois-ci.</td></tr>' : ''}
+                      </table>
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div style="text-align: center; font-size: 10.5px; color: #8c7385; padding: 0 24px 20px;">
+                      Généré automatiquement par Brique App
+                    </div>
+                    
+                  </td>
+                </tr>
+              </table>
+              
+            </td>
+          </tr>
+        </table>
+        `;
+        res.send(html);
+
+    } catch (err) {
+        console.error("Erreur génération newsletter:", err);
+        res.status(500).send("Erreur lors de la génération de la newsletter");
+    }
+});
+
+module.exports = router;
