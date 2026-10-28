@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GMS Management - Brique App</title>
     <link rel="stylesheet" href="css/styleNavBar.css">
-  <link rel="stylesheet" href="css/styleManagementGMS.css">
+    <link rel="stylesheet" href="css/styleManagementGMS.css">
     <meta name="theme-color" content="#002AB6">
 </head>
 <body>
@@ -18,9 +18,9 @@
 
     <div class="container" id="manager-content">
         <h1>⚙️ GMS Management</h1>
-        <p style="color: #666; margin-bottom: 30px;">Définissez les objectifs mensuels de l'équipe GMS.</p>
+        <p class="subtitle">Définissez les objectifs mensuels de l'équipe GMS.</p>
 
-        <div style="background: #fdf3f9; padding: 20px; border-radius: 10px; border: 1px solid #f3b0cf; margin-bottom: 30px;">
+        <div class="form-card">
             <div class="row">
                 <div class="form-group">
                     <label>📅 Mois cible :</label>
@@ -56,7 +56,7 @@
             <button class="btn-save" onclick="sauvegarderObjectif()">💾 Enregistrer cet objectif</button>
         </div>
 
-        <h2>Récapitulatif pour : <span id="titre-recap-mois" style="color: #c2137a;"></span></h2>
+        <h2>Récapitulatif pour : <span id="titre-recap-mois"></span></h2>
         <table class="table-obj">
             <thead>
                 <tr>
