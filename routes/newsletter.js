@@ -126,6 +126,43 @@ router.get('/', async (req, res) => {
         const pctMois = Math.round((joursEcoules / joursDansMois) * 100);
         const dateFr = now.toLocaleDateString('fr-FR');
 
+
+
+
+        // ==========================================
+        // CALCUL DES TOTAUX GLOBAUX
+        // ==========================================
+        let totalDnGagne = 0, totalDnConstate = 0, totalDnActuel = 0;
+        let totalMeaActuel = 0, totalDirectActuel = 0;
+        let objGlobalDN = 0, objGlobalMEA = 0, objGlobalDirect = 0;
+
+        // On additionne les performances
+        statsCommerciaux.forEach(s => {
+            totalDnGagne += s.dnGagne;
+            totalDnConstate += s.dnConstate;
+            totalDnActuel += s.dn.actuel;
+            totalMeaActuel += parseFloat(s.mea.actuel);
+            totalDirectActuel += s.direct.actuel;
+        });
+
+        // On additionne les objectifs (en excluant Léo)
+        Object.entries(OBJECTIFS_MOIS).forEach(([email, obj]) => {
+            if (email !== "leo.blanchet@briquehouse.fr") {
+                objGlobalDN += obj.dn;
+                objGlobalMEA += obj.mea;
+                objGlobalDirect += obj.direct;
+            }
+        });
+
+        // Calcul des pourcentages d'équipe
+        const pctGlobalDN = objGlobalDN > 0 ? Math.round((totalDnActuel / objGlobalDN) * 100) : 'N/A';
+        const pctGlobalMEA = objGlobalMEA > 0 ? Math.round((totalMeaActuel / objGlobalMEA) * 100) : 'N/A';
+        const pctGlobalDirect = objGlobalDirect > 0 ? Math.round((totalDirectActuel / objGlobalDirect) * 100) : 'N/A';
+
+
+
+        
+
         const html = `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 30px 0; font-family: 'Segoe UI', Arial, sans-serif;">
           <tr>
@@ -196,7 +233,35 @@ router.get('/', async (req, res) => {
                                 </td>
                               </tr>`;
                           }).join('')}
+
+                          <!-- LIGNE TOTAL -->
+                          <tr style="background-color: #fdf3f9; border-top: 2px solid #c2137a;">
+                            <td style="padding: 10px 4px; text-align: left; font-weight: 800; font-size: 12px; color: #c2137a; text-transform: uppercase;">TOTAL</td>
+                            
+                            <td style="padding: 10px 4px; text-align: center; color: #1f9d5c; font-size: 15px; font-weight: 800;">${totalDnGagne}</td>
+                            <td style="padding: 10px 4px; text-align: center; color: #b8862c; font-size: 15px; font-weight: 800;">${totalDnConstate}</td>
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalDnActuel}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalDN >= 100 ? '#1f9d5c' : (pctGlobalDN === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalDN}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalMeaActuel.toFixed(1)}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalMEA >= 100 ? '#1f9d5c' : (pctGlobalMEA === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalMEA}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;">
+                              <div style="font-size: 15px; font-weight: 800; color: #c2137a;">${totalDirectActuel}</div>
+                              <div style="font-size: 10px; color: ${pctGlobalDirect >= 100 ? '#1f9d5c' : (pctGlobalDirect === 'N/A' ? '#888' : '#d63a56')}; font-weight: 700;">(${pctGlobalDirect}%)</div>
+                            </td>
+                            
+                            <td style="padding: 10px 4px; text-align: center;"></td>
+                          </tr>
+
+
+                          
                         </tbody>
+
                       </table>
                     </div>
 
