@@ -9,7 +9,7 @@ let objectifsDuMois = [];
 document.addEventListener("DOMContentLoaded", async () => {
     // Définir le mois en cours par défaut
     const now = new Date();
-    const moisActuel = `now.getFullYear()-{String(now.getMonth() + 1).padStart(2, '0')}`;
+    const moisActuel = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     document.getElementById('input-mois').value = moisActuel;
     
     await initialiserSupabase();
@@ -39,10 +39,10 @@ async function verifierDroitsAcces() {
         const emailUser = data.emailActuel || localStorage.getItem('backup_email_utilisateur') || "";
 
         if (MANAGERS.includes(emailUser.toLowerCase())) {
-            document.getElementById('manager-content').style.display = 'block';
+            document.getElementById('manager-content').classList.add('show');
             await chargerObjectifsMois(); // On charge les datas si accès OK
         } else {
-            document.getElementById('access-denied').style.display = 'block';
+            document.getElementById('access-denied').classList.add('show');
         }
     } catch (err) {
         console.error("Erreur de vérification des droits :", err);
@@ -77,7 +77,7 @@ function afficherTableau(donnees) {
     tbody.innerHTML = '';
 
     if (donnees.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #888;">Aucun objectif défini pour ce mois.</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Aucun objectif défini pour ce mois.</td></tr>';
         return;
     }
 
