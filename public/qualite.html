@@ -5,19 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Suivi Qualité - Lots de bière</title>
     <link rel="stylesheet" href="css/styleQualite.css">
-    <link rel="manifest" href="/manifest.json">
   </head>
   
   <body>
     <div id="nav-placeholder"></div>
 
     <main class="container">
-        <h1>Rapports Qualité par Lot</h1>
+        <div class="header-actions">
+            <h1>Rapports Qualité</h1>
+            <button id="btn-add-issue" class="btn-primary">+1 PB Qualité</button>
+        </div>
         
-        <div id="lots-container" class="lots-grid"></div>
+        <!-- Le JS générera 1 section par référence ici -->
+        <div id="references-container"></div>
     </main>
 
+    <!-- POPUP (Modale) pour la saisie -->
+    <div id="modal-issue" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Signaler un problème</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <form id="form-issue">
+                <div class="form-group">
+                    <label for="reference">Référence</label>
+                    <select id="reference" name="reference" required>
+                        <option value="">-- Choisir une bière --</option>
+                        <optgroup label="Gamme Forever" id="opt-forever"></optgroup>
+                        <optgroup label="Gamme Expérimentales" id="opt-experimentales"></optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numero_lot">N° de Lot</label>
+                    <input type="text" id="numero_lot" name="numero_lot" placeholder="Ex: 26092" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="format">Format</label>
+                    <select id="format" name="format" required>
+                        <option value="">-- Choisir un format --</option>
+                        <option value="33cl">33cl</option>
+                        <option value="44cl">44cl</option>
+                        <option value="75cl">75cl</option>
+                        <option value="20L">20L</option>
+                        <option value="30L">30L</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">C'est quoi le problème ?</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Wtf is wrong with the shit..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Valider la remontée</button>
+                <p id="form-feedback" class="feedback-msg"></p>
+            </form>
+        </div>
+    </div>
+
     <script src="/js/qualite.js"></script>
-    <script src="/js/navbar.js"></script>
   </body>
 </html>
