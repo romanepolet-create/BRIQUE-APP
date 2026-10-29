@@ -180,6 +180,15 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
 
         const meaHl = visitesMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
         document.getElementById('kpi-mea').textContent = parseFloat(meaHl.toFixed(2)) + ' HL';
+        
+        if(document.getElementById('evo-visites')) {
+            document.getElementById('evo-visites').textContent = `Réalisées en ${nomMois}`;
+            document.getElementById('evo-visites').className = "kpi-evolution evolution-neutral";
+        }
+        if(document.getElementById('evo-mea')) {
+            document.getElementById('evo-mea').textContent = `Volume en ${nomMois}`;
+            document.getElementById('evo-mea').className = "kpi-evolution evolution-neutral";
+        }
 
         const mapDirects = {};
         visitesFiltrees.forEach(v => {
@@ -210,7 +219,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         const carteDirects = kpiDirectsElement.parentNode;
 
         kpiDirectsElement.textContent = directsMois.length + directsHisto.length; 
-        evoDirectsElement.textContent = `Dont ${directsMois.length} gagnés ce mois-ci`;
+        evoDirectsElement.textContent = `Dont ${directsMois.length} gagnés en ${nomMois}`;
 
         carteDirects.style.cursor = 'pointer';
         carteDirects.style.transition = '0.2s';
