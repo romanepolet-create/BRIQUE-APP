@@ -100,10 +100,15 @@ function initModal() {
             if (result.success) {
                 feedback.textContent = result.message;
                 feedback.classList.add('success');
+                
+                // 👈 AJOUTEZ CETTE LIGNE POUR ACTUALISER L'AFFICHAGE
+                chargerDonnees(); 
+
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     form.reset();
                     feedback.textContent = "";
+                    feedback.className = "feedback-msg";
                 }, 2000);
             } else {
                 feedback.textContent = result.error;
