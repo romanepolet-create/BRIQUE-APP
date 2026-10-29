@@ -491,3 +491,38 @@ body {
 .direct-row-histo .direct-enseigne { color: #ccc; }
 .direct-date { text-align: center; font-size: 13px; }
 .direct-separator td { text-align: center; padding: 12px; color: #d63a56; font-weight: bold; font-size: 16px; opacity: 0.3; }
+
+
+
+
+
+@media screen and (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  #titre {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .graphs {
+    overflow-x: auto;
+    padding: 10px;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  #modal-detail-visites,
+  #modal-detail-dn,
+  #modal-detail-directs {
+    width: 95%;
+    left: 2.5%;
+    transform: none;
+    top: 10%;
+  }
+}
