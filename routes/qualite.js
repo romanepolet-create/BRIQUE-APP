@@ -37,4 +37,15 @@ router.post('/remontee', async (req, res) => {
     return res.json({ success: true, message: "Problème signalé avec succès !" });
 });
 
+// ROUTE : Récupérer toutes les remontées pour générer les grilles
+router.get('/donnees', async (req, res) => {
+    // Optionnel : vérifier si l'utilisateur est connecté
+    if (!req.session.userId) return res.status(401).json({ error: "Non connecté" });
+
+    const { data, error } = await supabase.from('remontees_qualite').select('*');
+    
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ success: true, remontees: data });
+});
+
 module.exports = router;
