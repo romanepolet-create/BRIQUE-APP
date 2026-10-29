@@ -75,79 +75,75 @@ function initModal() {
     });
 }
 
-// --- GESTION DE L'AFFICHAGE PAR RÉFÉRENCE ---
+// --- GESTION DE L'AFFICHAGE (1 CARTE PAR RÉFÉRENCE) ---
 function initGrids() {
     const container = document.getElementById('references-container');
     container.innerHTML = '';
+    container.className = 'lots-grid'; // On applique directement la grille au conteneur
 
-    // On crée un bloc pour chaque bière qui possède des données
     allReferences.forEach(ref => {
+        // On récupère tous les lots pour cette référence
         const lotsForRef = donneesLots.filter(d => d.reference === ref);
-        if (lotsForRef.length === 0) return; // On ignore les bières sans lot actif
+        if (lotsForRef.length === 0) return; // S'il n'y a pas de lot, on passe
 
-        const refSection = document.createElement('div');
-        refSection.className = 'reference-section';
+        // Création de la carte
+        const card = document.createElement('div');
+        card.className = 'lot-card';
 
-        // Extraction des numéros de lot pour le dropdown
+        // Création des options du menu déroulant (N° de lot)
         const optionsLots = lotsForRef.map(l => `<option value="${l.lot}">Lot n°${l.lot}</option>`).join('');
+        
+        // Le lot affiché par défaut (le premier de la liste)
+        const initialLot = lotsForRef[0];
 
-        refSection.innerHTML = `
-            <div class="ref-header">
-                <h2>${ref}</h2>
-                <select class="lot-selector" data-ref="${ref}">
-                    <option value="all">Tous les lots</option>
+        // Structure HTML de la carte
+        card.innerHTML = `
+            <div class="lot-header">
+                <h3 class="card-ref-title">${ref}</h3>
+                <select class="card-lot-selector">
                     ${optionsLots}
                 </select>
             </div>
-            <div class="lots-grid" id="grid-${ref.replace(/\s+/g, '-')}">
-                <!-- Les cartes seront injectées ici -->
+            <div class="card-body">
+                <!-- Le contenu (formats/remontées) sera injecté ici par JS -->
             </div>
         `;
-        container.appendChild(refSection);
         
-        // Rendu initial (tous les lots)
-        renderCards(ref, lotsForRef);
+        container.appendChild(card);
         
-        // Event sur le dropdown pour filtrer
-        const selector = refSection.querySelector('.lot-selector');
-        selector.addEventListener('change', (e) => {
-            const selectedLot = e.target.value;
-            const filteredLots = selectedLot === 'all' 
-                ? lotsForRef 
-                : lotsForRef.filter(l => l.lot === selectedLot);
-            renderCards(ref, filteredLots);
-        });
-    });
-}
-
-function renderCards(refName, lotsArray) {
-    const gridId = `grid-${refName.replace(/\s+/g, '-')}`;
-    const grid = document.getElementById(gridId);
-    grid.innerHTML = '';
-
-    lotsArray.forEach(item => {
-        let formatsHtml = '';
-        for (const [format, statut] of Object.entries(item.formats)) {
-            let statClass = statut.toLowerCase() === 'conforme' ? 'status-conforme' : (statut.toLowerCase() === 'nd' ? 'status-nd' : 'status-non-conforme');
-            formatsHtml += `
-                <li class="format-item">
-                    <span class="format-volume">${format}</span>
-                    <span class="status-badge ${statClass}">${statut}</span>
-                </li>
-            `;
-        }
-
-        grid.innerHTML += `
-            <div class="lot-card">
-                <div class="lot-header">
-                    <span class="lot-number">Lot n°${item.lot}</span>
-                </div>
+        // Éléments interactifs de la carte
+        const bodyContainer = card.querySelector('.card-body');
+        const selector = card.querySelector('.card-lot-selector');
+        
+        // Fonction pour mettre à jour l'intérieur de la carte quand on change de lot
+        const updateCardBody = (lotData) => {
+            let formatsHtml = '';
+            for (const [format, statut] of Object.entries(lotData.formats)) {
+                let statClass = statut.toLowerCase() === 'conforme' ? 'status-conforme' : (statut.toLowerCase() === 'nd' ? 'status-nd' : 'status-non-conforme');
+                formatsHtml += `
+                    <li class="format-item">
+                        <span class="format-volume">${format}</span>
+                        <span class="status-badge ${statClass}">${statut}</span>
+                    </li>
+                `;
+            }
+            bodyContainer.innerHTML = `
                 <ul class="format-list">${formatsHtml}</ul>
                 <div class="lot-footer">
                     <span>Remontées :</span>
-                    <span class="remontees-count ${item.remontees > 0 ? 'alert' : 'ok'}">${item.remontees}</span>
+                    <span class="remontees-count ${lotData.remontees > 0 ? 'alert' : 'ok'}">${lotData.remontees}</span>
                 </div>
-            </div>
-        `;
+            `;
+        };
+
+        // 1er affichage
+        updateCardBody(initialLot);
+
+        // Mise à jour au changement du menu déroulant
+        selector.addEventListener('change', (e) => {
+            const selectedLotNum = e.target.value;
+            const selectedLotData = lotsForRef.find(l => l.lot === selectedLotNum);
+            updateCardBody(selectedLotData);
+        });
     });
 }
