@@ -71,6 +71,7 @@ const routesGms = require('./routes/gms');
 const routesTournee = require('./routes/tournee');
 const routesVisite = require('./routes/visite');
 const routesDashboard = require('./routes/dashboard');
+const routesQualite = require('./routes/qualite');
 
 
 app.get('/api/config', (req, res) => {
@@ -91,7 +92,9 @@ app.use('/api/gms', verifierBriqueHouse, routesGms);
 app.use('/api/tournee', verifierBriqueHouse, routesTournee);
 app.use('/api/visite', verifierBriqueHouse, routesVisite);
 app.use('/api/dashboard', verifierBriqueHouse, routesDashboard);
+app.use('/api/qualite', verifierBriqueHouse, routesQualite);
 app.use('/newsletter', require('./routes/newsletter'));
+
 
 app.get('/login.html', (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
