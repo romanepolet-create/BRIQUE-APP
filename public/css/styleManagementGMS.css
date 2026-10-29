@@ -119,3 +119,16 @@ h1, h2 {
 .show {
     display: block !important;
 }
+
+
+
+/* ==========================================
+   Mobile Adjustments for managementGMS.html
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 15px auto; /* Reduces top/bottom margin */
+    padding: 0 10px; /* Adds a small buffer on the sides */
+    width: 100%;
+  }
+}
