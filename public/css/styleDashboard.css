@@ -513,18 +513,37 @@ body {
     padding: 6px 4px !important;
   }
 
-  /* 2. KPI CARDS (Properly scaled) */
+  /* 1. KPI CARDS: Perfect 2x2 Square */
+  .kpi-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* This creates the 2x2 square */
+    gap: 10px !important; /* Tightens the space between them */
+  }
+
+  .kpi-card {
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
   .kpi-title {
     font-size: 11px !important; 
     white-space: normal !important;
+    line-height: 1.2 !important;
+    margin-bottom: 5px !important;
   }
   
   .kpi-value {
     font-size: 18px !important; 
+    margin: 5px 0 !important;
   }
   
-  #DvisiteAvOpen, .kpi-evolution {
+  /* Stops "Avant 8h30" from overlapping the title */
+  #DvisiteAvOpen, .kpi-evolution, #visiteAvOpen {
     font-size: 9px !important; 
+    display: block !important;
+    margin-top: 2px !important;
   }
 
   /* 3. FIX "NON VENDEUR" BADGE */
