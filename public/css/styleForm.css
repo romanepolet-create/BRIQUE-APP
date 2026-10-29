@@ -135,7 +135,31 @@ h1 {
 
 
 
+/* ==========================================
+   Mobile Adjustments for form.html
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .menu-typeform {
+    flex-direction: column; /* Stacks the form selection buttons */
+    padding: 0;
+  }
 
+  .btn-form {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  #zone-typeform {
+    width: 100%;
+    height: 80vh; /* Gives the iframe enough height on mobile */
+  }
+
+  #imgFontDistrib {
+    width: 100%; /* Ensures the welcome image doesn't overflow */
+    height: auto;
+  }
+}
 
 
 
