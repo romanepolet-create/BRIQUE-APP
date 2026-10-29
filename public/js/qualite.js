@@ -3,12 +3,6 @@ const gammeForever = ["La Bagarre", "Yankee Trouble", "Mick Lager", "New Queen I
 const gammeExperimentales = ["Double Bagarre", "Sanguin’ale", "Bière de Noël", "Brique Blonde"];
 const allReferences = [...gammeForever, ...gammeExperimentales];
 
-
-// --- DONNÉES DE RÉFÉRENCE ---
-const gammeForever = ["La Bagarre", "Yankee Trouble", "Mick Lager", "New Queen In Town", "Triple Chuc", "Shiny Hoppy", "Young Pug", "Accro Blanche"];
-const gammeExperimentales = ["Double Bagarre", "Sanguin’ale", "Bière de Noël", "Brique Blonde"];
-const allReferences = [...gammeForever, ...gammeExperimentales];
-
 let donneesLots = []; // Devient une variable vide remplie par Supabase
 
 document.addEventListener('DOMContentLoaded', () => {
