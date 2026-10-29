@@ -53,11 +53,23 @@ function calculerScoreDNUnique(visites) {
 // ==========================================
 // API
 // ==========================================
-async function chargerDonneesEtAfficher(filtreEmail = 'general') {
+async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = false) {
     try {
-        const now = new Date();
-        const moisActuel = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        const inputPeriode = document.getElementById('filtre-periode');
+        const moisActuel = inputPeriode && inputPeriode.value ? inputPeriode.value : `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
         
+        const [anneeStr, moisStr] = moisActuel.split('-');
+        const annee = parseInt(anneeStr, 10);
+        const mois = parseInt(moisStr, 10) - 1;
+        
+        const firstDayThisMonth = new Date(annee, mois, 1).toISOString();
+        const lastDayThisMonth = new Date(annee, mois + 1, 0, 23, 59, 59).toISOString();
+
+        let nomMois = new Date(annee, mois, 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        nomMois = nomMois.charAt(0).toUpperCase() + nomMois.slice(1);
+
+        if (forceRefresh) objectifsDynamiques = {};
+
         // 1. On charge les objectifs dynamiques du mois EN PREMIER
         if (Object.keys(objectifsDynamiques).length === 0) {
             const supa = await getSupabase();
@@ -82,8 +94,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         }
 
         const { visitesBrutes } = donneesGlobales;
-        const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-
+        
         let visitesFiltrees = visitesBrutes;
         let magasinsFiltres = donneesGlobales.listeMagasins || [];
 
@@ -95,9 +106,18 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
             magasinsFiltres = magasinsFiltres.filter(m => (m.Propriétaire || "").toLowerCase() === nomCommercialFormate);
         }
 
-        const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth);
+        const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth && v.created_at <= lastDayThisMonth);
         const visitesPrec = visitesFiltrees.filter(v => v.created_at < firstDayThisMonth);
+        const visitesFiltreesJusquaFin = visitesFiltrees.filter(v => v.created_at <= lastDayThisMonth);
         const av8h30 = visitesMois.filter(v => v.created_at.split(" ")[1] < "12:30:00.000000");
+
+        document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
+        if(document.getElementById('titre-focus-mea')) document.getElementById('titre-focus-mea').textContent = `🍺 Focus MEA : Détail des réalisations (${nomMois})`;
+        if(document.getElementById('titre-productivite')) document.getElementById('titre-productivite').textContent = `⏱️ Productivité (${nomMois})`;
+        if(document.getElementById('detail-visites-titre')) document.getElementById('detail-visites-titre').textContent = `📍 Détail des Visites (${nomMois})`;
+        if(document.getElementById('detail-DN-titre')) document.getElementById('detail-DN-titre').textContent = `📊 Détail des DN (${nomMois})`;
+        if(document.getElementById('evo-visites')) document.getElementById('evo-visites').textContent = `Réalisées en ${nomMois}`;
+        if(document.getElementById('evo-mea')) document.getElementById('evo-mea').textContent = `En ${nomMois}`;
 
         // ==========================================
         // KPIs
@@ -168,9 +188,9 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         const directsHisto = [];
 
         Object.values(mapDirects).forEach(v => {
-            const dnF = calculerScoreDNUnique(visitesFiltrees.filter(vis => vis.hubspot_id === v.hubspot_id));
+            const dnF = calculerScoreDNUnique(visitesFiltreesJusquaFin.filter(vis => vis.hubspot_id === v.hubspot_id));
             const dnI = calculerScoreDNUnique(visitesPrec.filter(vis => vis.hubspot_id === v.hubspot_id));
-            const estNouveauDirectCeMois = (dnI === 0 && dnF > 0 && v.created_at >= firstDayThisMonth);
+            const estNouveauDirectCeMois = (dnI === 0 && dnF > 0 && v.created_at >= firstDayThisMonth && v.created_at <= lastDayThisMonth);;
 
             if (estNouveauDirectCeMois) {
                 directsMois.push(v);
@@ -207,11 +227,11 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general') {
         // ==========================================
         // GENERATION (On passe objectifsDynamiques !)
         // ==========================================
-        genererTableauPerformance(donneesGlobales.visitesBrutes, objectifsDynamiques, firstDayThisMonth);
-        genererFocusDN(magasinsFiltres, visitesFiltrees);
-        genererFocusMEA(visitesFiltrees);
-        genererFocusDirect(magasinsFiltres, visitesFiltrees);
-        genererProductivite(visitesBrutes);
+        genererTableauPerformance(donneesGlobales.visitesBrutes, objectifsDynamiques, firstDayThisMonth, lastDayThisMonth);
+        genererFocusDN(magasinsFiltres, visitesFiltreesJusquaFin);
+        genererFocusMEA(visitesFiltrees, firstDayThisMonth, lastDayThisMonth);
+        genererFocusDirect(magasinsFiltres, visitesFiltreesJusquaFin);
+        genererProductivite(donneesGlobales.visitesBrutes, firstDayThisMonth, lastDayThisMonth);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
@@ -237,7 +257,7 @@ function calculerObjectifDNDynamique(emailCommercial, listeMagasins) {
 // ==========================================
 let vuePourcentage = true;
 
-function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
+function genererTableauPerformance(toutesVisites, objectifs, start, end) {
     const tbody = document.getElementById('tbody-performance');
     if (!tbody) return;
 
@@ -270,9 +290,9 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
 
 
     commerciauxMails.forEach(email => {
-        const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
-        const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < startOfMonth);
-        const toutesVisitesEmail = toutesVisites.filter(v => v.commercial_email === email);
+        const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= start && v.created_at <= end);
+        const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < start);
+        const toutesVisitesEmail = toutesVisites.filter(v => v.commercial_email === email && v.created_at <= end);
         
         const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
         const dnInitiale = calculerScoreDNUnique(visPrec);
@@ -330,7 +350,7 @@ function genererTableauPerformance(toutesVisites, objectifs, startOfMonth) {
         newBtn.addEventListener('click', () => {
             vuePourcentage = !vuePourcentage;
             newBtn.textContent = vuePourcentage ? "🔄 Voir le Reste à faire" : "🔄 Voir les Pourcentages";
-            genererTableauPerformance(toutesVisites, objectifs, startOfMonth);
+            genererTableauPerformance(toutesVisites, objectifs, start, end);
         });
     }
 }
@@ -453,6 +473,14 @@ function genererFocusDN(magasins, visites) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const inputPeriode = document.getElementById('filtre-periode');
+    if (inputPeriode) {
+        inputPeriode.value = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+        inputPeriode.addEventListener('change', () => {
+            chargerDonneesEtAfficher(document.getElementById('filtre-commercial').value, true);
+        });
+    }
+    
     chargerDonneesEtAfficher('general');
 
     // Fermeture des modals
@@ -479,16 +507,13 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 // FOCUS MEA
 // ==========================================
-function genererFocusMEA(visites) {
+function genererFocusMEA(visites, start, end) {
     const tbody = document.getElementById('tbody-focus-mea');
     if (!tbody) return;
     
     tbody.innerHTML = '';
-
-    const now = new Date();
-    const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
     
-    let visitesMEA = visites.filter(v => v.created_at >= firstDayThisMonth && (parseFloat(v.volume_mea) > 0));
+    let visitesMEA = visites.filter(v => v.created_at >= start && v.created_at <= end && (parseFloat(v.volume_mea) > 0));
 
     visitesMEA.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -600,13 +625,11 @@ function genererFocusDirect(magasins, visites) {
 // ==========================================
 // PRODUCTIVITÉ
 // ==========================================
-function genererProductivite(toutesVisites) {
+function genererProductivite(toutesVisites, start, end) {
     const tbody = document.getElementById('tbody-productivite');
     if (!tbody) return;
     
-    const now = new Date();
-    const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-    const visitesMois = toutesVisites.filter(v => v.created_at >= firstDayThisMonth);
+    const visitesMois = toutesVisites.filter(v => v.created_at >= start && v.created_at <= end);
 
     const statsCommerciaux = {};
     
