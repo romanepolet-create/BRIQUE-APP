@@ -57,33 +57,28 @@ h1 {
 /* =========================================
    3. SECTIONS ET GRILLES PAR RÉFÉRENCE
 ========================================= */
-.reference-section {
-    background: #fff;
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.ref-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid var(--beer-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-.ref-header h2 {
+.card-ref-title {
     margin: 0;
+    font-size: 1.15rem;
     color: var(--beer-color);
+    font-weight: 700;
 }
 
-.lot-selector {
-    padding: 8px;
+/* Menu déroulant des lots dans la carte (Encadré Rouge) */
+.card-lot-selector {
+    padding: 4px 8px;
     border-radius: 6px;
-    border: 1px solid #ccc;
-    font-weight: bold;
+    border: 1px solid #ddd;
+    background-color: #f9fafb;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #444;
+    cursor: pointer;
+    outline: none;
+}
+
+.card-lot-selector:focus {
+    border-color: var(--beer-color);
 }
 
 .lots-grid {
