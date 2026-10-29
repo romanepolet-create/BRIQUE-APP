@@ -181,13 +181,29 @@ select-nouvelle-biere {
 .btn-action-biere.retirer { color: red; border-color: red; }
 .btn-action-biere.ajouter { color: green; border-color: green; }
 
-/*CARTE DISTRIB*/
-@media (max-width: 768px) {
+/* ==========================================
+   Mobile Adjustments for distrib.html
+   ========================================================================== */
+@media screen and (max-width: 768px) {
   .controls {
-    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .rechercheInput, #distribSelect {
+    width: 100%;
   }
 
-  select, .rechercheInput {
+  .conteneur-carte-panneau {
+    flex-direction: column;
+  }
+
+  #map {
+    height: 50vh !important;
+  }
+
+  #panneau-distrib {
     width: 100%;
+    margin-top: 15px;
   }
 }
