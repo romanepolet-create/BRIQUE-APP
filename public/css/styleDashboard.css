@@ -494,41 +494,107 @@ body {
 
 
 
-
-
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 768px) {
+  
   .kpi-grid {
     display: grid;
-    gap: 16px;
-    padding: 10px 0;
-    grid-template-columns: 1fr;
-  }
-
-  .graphs, #D1MEA, #DDirect3, #D2Flop {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -20px;
-    padding: 0 20px 20px 20px;
-  }
-
-  #titre {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+  }
+  
+  .kpi-card {
+    padding: 12px 8px;
+  }
+  
+  .kpi-title {
+    font-size: 12px;
+  }
+  
+  .kpi-value {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .kpi-evolution, #DvisiteAvOpen, #visiteAvOpen {
+    font-size: 10px;
+  }
+
+  .graphs {
+    margin-bottom: 30px;
+    padding: 15px; 
+    overflow-x: auto;
+  }
+
+  .titre-graph {
+    font-size: 15px;
+    line-height: 1.3;
+    margin-bottom: 15px;
   }
 
   table {
-    min-width: 500px;
-    border-collapse: separate;
-    border-spacing: 0;
+    width: 100%;
+    font-size: 11px;
+  }
+
+  th, td {
+    padding: 6px 4px; 
+  }
+
+  td:first-child {
+    max-width: 110px;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+  }
+
+  #DFlop {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  #D1Flop, #D2Flop {
+    width: 100%;
+  }
+
+  #tableMEA th:nth-child(1),
+  #tableMEA td:nth-child(1) {
+    display: none;
+  }
+
+  #table-prod th, #table-prod td,
+  #tableDirect th, #tableDirect td {
+    text-align: center;
+    padding: 6px 2px;
   }
 
   #modal-detail-visites,
   #modal-detail-dn,
   #modal-detail-directs {
     width: 95%;
-    left: 2.5%;
-    transform: none;
-    top: 10%;
+    padding: 15px;
+  }
+
+  #modal-detail-visites h3,
+  #modal-detail-dn h3,
+  #modal-detail-directs h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #table-detail-visites,
+  #table-detail-DN,
+  #table-detail-directs {
+    font-size: 11px;
+    table-layout: fixed; 
+  }
+
+  #table-detail-visites td:first-child,
+  #table-detail-DN td:first-child,
+  #table-detail-directs td:first-child {
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
