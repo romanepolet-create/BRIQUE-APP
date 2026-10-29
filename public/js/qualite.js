@@ -3,17 +3,58 @@ const gammeForever = ["La Bagarre", "Yankee Trouble", "Mick Lager", "New Queen I
 const gammeExperimentales = ["Double Bagarre", "Sanguin’ale", "Bière de Noël", "Brique Blonde"];
 const allReferences = [...gammeForever, ...gammeExperimentales];
 
-// Exemple de données simulées (À remplacer par un fetch(GET) sur votre BDD plus tard)
-const donneesLots = [
-    { reference: "La Bagarre", lot: "26092", formats: { "33cl": "ND", "44cl": "Conforme", "75cl": "ND", "20L": "Conforme", "30L": "ND" }, remontees: 0 },
-    { reference: "La Bagarre", lot: "26093", formats: { "33cl": "Conforme", "44cl": "Conforme", "75cl": "ND", "20L": "Conforme", "30L": "Non Conforme" }, remontees: 2 },
-    { reference: "Yankee Trouble", lot: "27010", formats: { "33cl": "Conforme", "44cl": "ND", "75cl": "ND", "20L": "Conforme", "30L": "Conforme" }, remontees: 0 }
-];
+
+// --- DONNÉES DE RÉFÉRENCE ---
+const gammeForever = ["La Bagarre", "Yankee Trouble", "Mick Lager", "New Queen In Town", "Triple Chuc", "Shiny Hoppy", "Young Pug", "Accro Blanche"];
+const gammeExperimentales = ["Double Bagarre", "Sanguin’ale", "Bière de Noël", "Brique Blonde"];
+const allReferences = [...gammeForever, ...gammeExperimentales];
+
+let donneesLots = []; // Devient une variable vide remplie par Supabase
 
 document.addEventListener('DOMContentLoaded', () => {
     initModal();
-    initGrids();
+    chargerDonnees(); // Au lieu de initGrids(), on appelle la BDD
 });
+
+// --- CHARGEMENT DEPUIS LA BDD ---
+async function chargerDonnees() {
+    try {
+        const res = await fetch('/api/qualite/donnees');
+        const result = await res.json();
+
+        if (result.success) {
+            const lotsMap = {};
+            // Tout est considéré conforme par défaut
+            const baseFormats = { "33cl": "Conforme", "44cl": "Conforme", "75cl": "Conforme", "20L": "Conforme", "30L": "Conforme" };
+
+            // On regroupe les problèmes par Référence + Numéro de lot
+            result.remontees.forEach(row => {
+                const key = `${row.reference}-${row.numero_lot}`;
+                
+                if (!lotsMap[key]) {
+                    lotsMap[key] = {
+                        reference: row.reference,
+                        lot: row.numero_lot,
+                        formats: { ...baseFormats },
+                        remontees: 0
+                    };
+                }
+                
+                // Le format ciblé par la remontée passe en Non Conforme
+                if (row.format && lotsMap[key].formats[row.format]) {
+                    lotsMap[key].formats[row.format] = "Non Conforme";
+                }
+                lotsMap[key].remontees += 1;
+            });
+
+            // On transforme l'objet en tableau pour la fonction initGrids
+            donneesLots = Object.values(lotsMap);
+            initGrids(); // On dessine les grilles
+        }
+    } catch (error) {
+        console.error("Erreur lors du chargement des données", error);
+    }
+}
 
 // --- GESTION DE LA MODALE & DU FORMULAIRE ---
 function initModal() {
