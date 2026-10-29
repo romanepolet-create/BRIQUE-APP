@@ -493,109 +493,52 @@ body {
 .direct-separator td { text-align: center; padding: 12px; color: #d63a56; font-weight: bold; font-size: 16px; opacity: 0.3; }
 
 
-/* ==========================================================================
-   Mobile Adjustments for Dashboard (Ultra-Compact)
-   ========================================================================== */
 @media screen and (max-width: 768px) {
   
-  /* 1. PREVENT EMPTY SIDE SPACE (Force strict viewport boundaries) */
-  html, body {
-    width: 100vw;
-    overflow-x: hidden;
-  }
-  .container {
-    width: 100%;
-    max-width: 100vw;
-    padding: 0 10px;
-    box-sizing: border-box;
-    overflow-x: hidden;
+  /* 1. GENUINELY SHRINK FONTS & ALLOW TEXT TO WRAP */
+  table, th, td {
+    font-size: 10px !important; /* Force text to actually shrink */
+    line-height: 1.2 !important; /* Keep wrapped lines tight together */
+    white-space: normal !important; /* CRITICAL: Allow text to wrap to the next line naturally */
+    word-wrap: break-word !important; /* Prevent long words from breaking the table */
+    overflow: visible !important; /* Stop hiding text! */
   }
 
-  /* 2. KPI CARDS & OVERLAP FIX ("Avant 8h30") */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+  th {
+    font-size: 11px !important; /* Keep headers slightly bolder/larger */
+    padding: 6px 4px !important;
   }
-  .kpi-card {
-    padding: 10px 5px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+
+  td {
+    padding: 6px 4px !important;
   }
+
+  /* 2. KPI CARDS (Properly scaled) */
   .kpi-title {
-    font-size: 10px; /* Smaller title */
-    margin-bottom: 4px;
-    line-height: 1.1;
-  }
-  /* Force the "Avant 8h30" to sit properly below the title instead of fusing */
-  #DvisiteAvOpen {
-    position: relative; /* Removes it from absolute positioning if it was floating */
-    font-size: 8px;
-    margin-top: 2px;
-    display: block;
-  }
-  .kpi-value {
-    font-size: 16px;
-    margin: 4px 0;
-  }
-
-  /* 3. GRAPHS CONTAINER */
-  .graphs {
-    margin-bottom: 20px;
-    padding: 10px; 
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: auto; /* Contain any overflowing tables */
-  }
-
-  /* 4. TABLES: Tiny fonts, no line-breaks, strict widths */
-  table {
-    width: 100%;
-    font-size: 9px; /* Drastically reduced */
-    table-layout: fixed; /* Forces strict column widths */
-  }
-  th, td {
-    padding: 4px 2px;
-    white-space: nowrap; /* Prevents text from dropping to a new line */
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* 5. FOCUS DN & STORE NAMES (Restrict to 35% of table) */
-  td:first-child, th:first-child {
-    width: 35%; /* Hard limit on the store name column */
-    max-width: 80px;
-  }
-
-  /* 6. "NON VENDEUR" FIX (Focus Direct) */
-  /* Targets the status column to prevent the red badge from becoming huge */
-  #tableDirect td:last-child {
-    font-size: 8px;
-    padding: 2px;
-    text-align: center;
-  }
-  #tableDirect td:last-child span, 
-  #tableDirect td:last-child div {
-    padding: 2px 4px;
-    white-space: nowrap; /* Stops 'Non' and 'Vendeur' from stacking */
-  }
-
-  /* 7. HIDE USELESS COLUMNS & FIX SPACING */
-  #tableMEA th:nth-child(1),
-  #tableMEA td:nth-child(1) {
-    display: none;
-  }
-  #DFlop {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    font-size: 11px !important; 
+    white-space: normal !important;
   }
   
-  /* 8. PRODUCTIVITY TABLE (Mois en cours) */
-  #table-prod td {
-    white-space: normal; /* Allow slight wrapping ONLY for the "vis./jour" math if needed */
-    line-height: 1.2;
+  .kpi-value {
+    font-size: 18px !important; 
+  }
+  
+  #DvisiteAvOpen, .kpi-evolution {
+    font-size: 9px !important; 
+  }
+
+  /* 3. FIX "NON VENDEUR" BADGE */
+  /* Instead of stretching, let the text wrap inside a smaller badge */
+  #tableDirect td:last-child {
+    font-size: 9px !important;
+    text-align: center;
+  }
+
+  /* 4. MODALS (Shrink fonts here too) */
+  #table-detail-visites,
+  #table-detail-DN,
+  #table-detail-directs {
+    font-size: 10px !important;
+    white-space: normal !important;
   }
 }
