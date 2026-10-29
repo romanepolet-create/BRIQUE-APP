@@ -123,7 +123,7 @@ window.filtrerMagasins = function() {
   const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
   const prioSel = getValeursSelectionnees('dropdown-prio');
   const propriosSel = getValeursSelectionnees('dropdown-proprio');
-  const visiteSel = Array.from(document.querySelector('input[name="filtre_visite"]:checked'))?.map(cb => cb.value);
+  const visiteSel = Array.from(document.querySelectorAll('input[name="filtre_visite"]:checked'))?.map(cb => cb.value);
   const hasAllVisites = visitesSel.length === 0 || visitesSel.includes("all");
 
   const magasinsFiltres = listeMagasins.filter(magasin => {
@@ -155,7 +155,7 @@ window.filtrerMagasins = function() {
             const joursEcoules = (new Date() - new Date(magasin.derniere_visite)) / (1000 * 60 * 60 * 24);
             if (visiteSel.includes("1week") && joursEcoules <= 7) matchVisite = true;
             if (visiteSel.includes("2weeks") && (joursEcoules > 7 && joursEcoules <= 14)) matchVisite = true;
-            if (visiteSel.includes("1month") && (joursEcoules > 14 &&| joursEcoules <= 30)) matchVisite = true;
+            if (visiteSel.includes("1month") && (joursEcoules > 14 && joursEcoules <= 30)) matchVisite = true;
             if (visiteSel.includes("2months") && joursEcoules > 30) matchVisite = true;
         }
         if (!matchVisite) return false;
