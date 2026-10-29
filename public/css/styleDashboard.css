@@ -33,6 +33,23 @@ body {
   background: white; 
   color: #333;
 }
+
+.filtres-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#filtre-periode {
+  padding: 10px;
+  border-radius: 8px; 
+  border: 2px solid #002ab6; 
+  font-weight: bold; 
+  cursor: pointer; 
+  background: white; 
+  color: #333;
+  font-family: inherit;
+}
         
 /* Grille des KPIs */  
 .kpi-grid { 
