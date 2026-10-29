@@ -39,3 +39,25 @@ h1 {
 .indexa {
   color: blue !important;
 }
+
+
+
+@media screen and (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .indexp {
+    font-size: 20px !important;
+  }
+
+  .indexul {
+    font-size: 18px !important;
+    padding-left: 20px;
+  }
+}
