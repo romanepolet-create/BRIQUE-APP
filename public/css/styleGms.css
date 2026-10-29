@@ -284,3 +284,31 @@ body {
   border-radius: 4px; 
   text-align: center;
 }
+
+
+
+/* ==========================================
+   Mobile Adjustments for gms.html
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  #liste.grid {
+    grid-template-columns: 1fr; /* Stacks the beer cards */
+    gap: 15px;
+  }
+
+  .modale-contenu {
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
+  }
+
+  .modale-layout {
+    flex-direction: column; /* Stacks the beer image above the text */
+    align-items: center;
+    text-align: center;
+  }
+
+  .modale-image-container img {
+    max-width: 150px; /* Prevents the image from being too tall on phones */
+  }
+}
