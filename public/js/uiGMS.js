@@ -153,10 +153,10 @@ window.filtrerMagasins = function() {
         }
         if (magasin.derniere_visite) {
             const joursEcoules = (new Date() - new Date(magasin.derniere_visite)) / (1000 * 60 * 60 * 24);
-            if (visiteSel.includes("1week") && joursEcoules <= 7) matchVisite = true;
-            if (visiteSel.includes("2weeks") && (joursEcoules > 7 && joursEcoules <= 14)) matchVisite = true;
-            if (visiteSel.includes("1month") && (joursEcoules > 14 && joursEcoules <= 30)) matchVisite = true;
-            if (visiteSel.includes("2months") && joursEcoules > 30) matchVisite = true;
+            if (visitesSel.includes("1week") && joursEcoules <= 7) matchVisite = true;
+            if (visitesSel.includes("2weeks") && (joursEcoules > 7 && joursEcoules <= 14)) matchVisite = true;
+            if (visitesSel.includes("1month") && (joursEcoules > 14 && joursEcoules <= 30)) matchVisite = true;
+            if (visitesSel.includes("2months") && joursEcoules > 30) matchVisite = true;
         }
         if (!matchVisite) return false;
     }
