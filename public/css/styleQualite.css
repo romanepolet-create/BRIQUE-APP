@@ -1,0 +1,119 @@
+/* Variables pour un design cohérent */
+:root {
+    --bg-color: #f4f7f6;
+    --text-main: #333;
+    --beer-color: #d97706;
+    --card-bg: #ffffff;
+    --border-radius: 8px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: var(--beer-color);
+    margin-bottom: 30px;
+}
+
+/* Grille responsive pour les cartes */
+.lots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Style de la carte */
+.lot-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    border-top: 4px solid var(--beer-color);
+}
+
+.lot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.lot-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #222;
+}
+
+.lot-number {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #666;
+    background: #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Liste des formats */
+.format-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.format-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.format-volume {
+    font-weight: 500;
+}
+
+/* Badges de statut */
+.status-badge {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.status-conforme { background-color: #d1fae5; color: #065f46; } /* Vert */
+.status-nd { background-color: #f3f4f6; color: #4b5563; } /* Gris */
+.status-non-conforme { background-color: #fee2e2; color: #991b1b; } /* Rouge */
+
+/* Pied de carte (Remontées) */
+.lot-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed #ccc;
+    padding-top: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.remontees-count {
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.remontees-count.ok { color: #666; }
+.remontees-count.alert { background-color: #ef4444; color: white; }
