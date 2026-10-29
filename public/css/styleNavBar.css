@@ -152,16 +152,15 @@
     display: flex !important;
   }
 
-  /* Ajustements des sous-menus pour le mobile */
   .dropdown {
     display: block;
   }
   
   .dropdown-content {
-    position: static; /* Rentre dans le flux de la liste verticale */
+    position: static;
     transform: none;
     box-shadow: none;
-    background-color: rgba(0, 0, 0, 0.15); /* Assombrit le fond pour démarquer le sous-menu */
+    background-color: rgba(0, 0, 0, 0.15);
     width: 100%;
     margin-top: 15px;
     border-radius: 0;
@@ -178,9 +177,27 @@
     font-size: clamp(12px, 1.1vw, 1.1em);
   }
 
-  /* Sur mobile, on affiche les sous-menus au tap/clic */
   .dropdown:hover .dropdown-content,
   .dropdown:active .dropdown-content {
     display: block;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+  }
+
+  .menu-burger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
+  
+  .navbar .logo {
+    font-size: 1.2em;
   }
 }
