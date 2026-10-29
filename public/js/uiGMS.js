@@ -123,7 +123,8 @@ window.filtrerMagasins = function() {
   const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
   const prioSel = getValeursSelectionnees('dropdown-prio');
   const propriosSel = getValeursSelectionnees('dropdown-proprio');
-  const visiteSel = document.querySelector('input[name="filtre_visite"]:checked')?.value || "all";
+  const visiteSel = Array.from(document.querySelector('input[name="filtre_visite"]:checked'))?.map(cb => cb.value);
+  const hasAllVisites = visitesSel.length === 0 || visitesSel.includes("all");
 
   const magasinsFiltres = listeMagasins.filter(magasin => {
     if (afficherSeulementTournee && !etapesItineraire.some(e => e.lat === magasin.lat && e.lng === magasin.lng && !e.masque)) return false;
@@ -144,16 +145,20 @@ window.filtrerMagasins = function() {
 
     if (prioSel.length > 0 && !prioSel.includes(magasin.Priorité)) return false;
 
-    if (visiteSel !== "all") {
-      if (visiteSel === "never") { if (magasin.derniere_visite) return false; } 
-      else {
-        if (!magasin.derniere_visite) return false;
-        const joursEcoules = (new Date() - new Date(magasin.derniere_visite)) / (1000 * 60 * 60 * 24);
-        if (visiteSel === "1week" && joursEcoules > 7) return false;
-        if (visiteSel === "2weeks" && (joursEcoules <= 7 || joursEcoules > 14)) return false;
-        if (visiteSel === "1month" && (joursEcoules <= 14 || joursEcoules > 30)) return false;
-        if (visiteSel === "2months" && joursEcoules <= 30) return false;
-      }
+    if (!hasAllVisites) {
+        let matchVisite = false;
+
+        if (visitesSel.includes("never") && !magasin.derniere_visite) {
+            matchVisite = true;
+        }
+        if (magasin.derniere_visite) {
+            const joursEcoules = (new Date() - new Date(magasin.derniere_visite)) / (1000 * 60 * 60 * 24);
+            if (visiteSel.includes("1week") && joursEcoules <= 7) matchVisite = true;
+            if (visiteSel.includes("2weeks") && (joursEcoules > 7 && joursEcoules <= 14)) matchVisite = true;
+            if (visiteSel.includes("1month") && (joursEcoules > 14 &&| joursEcoules <= 30)) matchVisite = true;
+            if (visiteSel.includes("2months") && joursEcoules > 30) matchVisite = true;
+        }
+        if (!matchVisite) return false;
     }
 
     if (propriosSel.length > 0 && !propriosSel.some(p => normaliserTexte(p) === normaliserTexte(magasin.Propriétaire || ""))) return false;
