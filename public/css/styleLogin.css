@@ -57,3 +57,18 @@ h2 { color: #002ab6; }
   font-weight: bold;
 }
   
+@media screen and (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  #box {
+    padding: 20px;
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  #btn-login {
+    padding: 12px 20px;
+  }
+}
