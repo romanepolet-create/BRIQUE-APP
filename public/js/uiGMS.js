@@ -197,8 +197,9 @@ window.reinitialiserFiltres = function() {
   document.querySelectorAll('.dropdown-list input[type="checkbox"]').forEach(cb => {
       if (!cb.closest('#dropdown-proprio')) cb.checked = false;
   });
-  const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
-  if (radioAll) radioAll.checked = true;
+  document.querySelectorAll('input[name="filtre_visite"]').forEach(cb => cb.checked = false);
+  const cbAll = document.querySelector('input[name="filtre_visite"][value="all"]');
+  if (cbAll) cbAll.checked = true;
   filtrerMagasins();
 };
 
@@ -527,10 +528,10 @@ const INDEPENDANTES = ["ITM SM", "ITM PROXI", "SUPER U", "U EXPRESS", "LECLERC",
 const CENTRALISEES = ["AUCHAN HM", "AUCHAN SM", "CRF HYPER", "CRF MARKET", "CRF PROXI", "CASINO", "MONOPRIX", "FRANPRIX", "OTERA", "NICOLAS"];
 
 const VUES_DEFAUT = [
-    { id: "default", nom: "🌍 Par défaut", filtres: { bh: "0", enseignes: [], prios: [], visite: "all" } },
-    { id: "v1", nom: "🛒 Mes Directs", filtres: { bh: "1", enseignes: INDEPENDANTES, prios: [], visite: "all" } },
-    { id: "v2", nom: "🏢 Centrale sans BH", filtres: { bh: "-1", enseignes: CENTRALISEES, prios: [], visite: "all" } },
-    { id: "v3", nom: "🚨 Prios >30j)", filtres: { bh: "1", enseignes: [], prios: ["A", "B", "C", "D"], visite: "2months" } }
+    { id: "default", nom: "🌍 Par défaut", filtres: { bh: "0", enseignes: [], prios: [], visite: ["all"] } },
+    { id: "v1", nom: "🛒 Mes Directs", filtres: { bh: "1", enseignes: INDEPENDANTES, prios: [], visite: ["all"] } },
+    { id: "v2", nom: "🏢 Centrale sans BH", filtres: { bh: "-1", enseignes: CENTRALISEES, prios: [], visite: ["all"] } },
+    { id: "v3", nom: "🚨 Prios >30j)", filtres: { bh: "1", enseignes: [], prios: ["A", "B", "C", "D"], visite: ["2months"] } }
 ]
 
 let vuesUtilisateur = [];
@@ -589,8 +590,11 @@ window.appliquerVue = function(idVue) {
     cocherDansDropdown('dropdown-prio', filtres.prios || []);
 
     if (filtres.visite) {
-        const radioVisite = document.querySelector(`input[name="filtre_visite"][value="${filtres.visite}"]`);
-        if (radioVisite) radioVisite.checked = true;
+        const visites = Array.isArray(filtres.visite) ? filtres.visite : [filtres.visite];
+        visites.forEach(val => {
+            const cb = document.querySelector(`input[name="filtre_visite"][value="${val}"]`);
+            if (cb) cb.checked = true;
+        });
     }
 
     filtrerMagasins();
@@ -619,7 +623,7 @@ window.sauvegarderVueActuelle = function() {
             bh: document.getElementById('toggle-bh') ? document.getElementById('toggle-bh').value : "0",
             enseignes: getCheckedValues('dropdown-enseigne'),
             prios: getCheckedValues('dropdown-prio'),
-            visite: document.querySelector('input[name="filtre_visite"]:checked')?.value || "all"
+            visite: Array.from(document.querySelectorAll('input[name="filtre_visite"]:checked')).map(cb => cb.value)
         }
     };
 
@@ -660,8 +664,9 @@ function reinitialiserFiltresSansMettreAJour() {
         if (!cb.closest('#dropdown-proprio')) cb.checked = false;
     });
 
-    const radioAll = document.querySelector('input[name="filtre_visite"][value="all"]');
-    if (radioAll) radioAll.checked = true;
+    document.querySelectorAll('input[name="filtre_visite"]').forEach(cb => cb.checked = false);
+  const cbAll = document.querySelector('input[name="filtre_visite"][value="all"]');
+  if (cbAll) cbAll.checked = true;
     
     const filterTdn = document.getElementById('filter-tdn');
     if (filterTdn) { filterTdn.value = "-1"; document.getElementById('tdn-val').innerText = "Tous"; }
