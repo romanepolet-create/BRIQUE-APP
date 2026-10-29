@@ -591,6 +591,12 @@ window.appliquerVue = function(idVue) {
 
     if (filtres.visite) {
         const visites = Array.isArray(filtres.visite) ? filtres.visite : [filtres.visite];
+        
+        if (!visites.includes("all")) {
+            const cbAll = document.querySelector('input[name="filtre_visite"][value="all"]');
+            if (cbAll) cbAll.checked = false;
+        }
+
         visites.forEach(val => {
             const cb = document.querySelector(`input[name="filtre_visite"][value="${val}"]`);
             if (cb) cb.checked = true;
