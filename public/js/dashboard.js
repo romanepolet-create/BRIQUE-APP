@@ -112,17 +112,23 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         const av8h30 = visitesMois.filter(v => v.created_at.split(" ")[1] < "12:30:00.000000");
 
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
+        
+        if(document.getElementById('titre-perf-generale')) {
+            const btnHtml = document.getElementById('titre-perf-generale').innerHTML.split('<button')[1] ? '<button' + document.getElementById('titre-perf-generale').innerHTML.split('<button')[1] : '';
+            document.getElementById('titre-perf-generale').innerHTML = `Performance Générale (${nomMois}) \n ${btnHtml}`;
+        }
+        if(document.getElementById('titre-focus-dn')) document.getElementById('titre-focus-dn').textContent = `🎯 Focus DN : Top Opportunités (${nomMois})`;
         if(document.getElementById('titre-focus-mea')) document.getElementById('titre-focus-mea').textContent = `🍺 Focus MEA : Détail des réalisations (${nomMois})`;
+        if(document.getElementById('titre-focus-direct')) document.getElementById('titre-focus-direct').textContent = `🏪 Focus Direct (${nomMois})`;
         if(document.getElementById('titre-productivite')) document.getElementById('titre-productivite').textContent = `⏱️ Productivité (${nomMois})`;
+        
         if(document.getElementById('detail-visites-titre')) document.getElementById('detail-visites-titre').textContent = `📍 Détail des Visites (${nomMois})`;
         if(document.getElementById('detail-DN-titre')) document.getElementById('detail-DN-titre').textContent = `📊 Détail des DN (${nomMois})`;
-        if(document.getElementById('evo-visites')) document.getElementById('evo-visites').textContent = `Réalisées en ${nomMois}`;
-        if(document.getElementById('evo-mea')) document.getElementById('evo-mea').textContent = `En ${nomMois}`;
+        if(document.getElementById('detail-directs-titre')) document.getElementById('detail-directs-titre').textContent = `📦 Détail des Directs (${nomMois})`;
 
         // ==========================================
         // KPIs
         // ==========================================
-        document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
         document.getElementById('kpi-visites').textContent = visitesMois.length;
         document.getElementById('visiteAvOpen').textContent = av8h30.length;
 
