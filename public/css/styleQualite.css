@@ -1,4 +1,36 @@
-/* Entête avec le bouton */
+/* =========================================
+   1. VARIABLES ET BASE
+========================================= */
+:root {
+    --bg-color: #f4f7f6;
+    --text-main: #333;
+    --beer-color: #d97706; /* Couleur orange/bière */
+    --card-bg: #ffffff;
+    --border-radius: 8px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    margin: 0;
+    color: var(--beer-color);
+}
+
+/* =========================================
+   2. ENTÊTE ET BOUTONS
+========================================= */
 .header-actions {
     display: flex;
     justify-content: space-between;
@@ -19,10 +51,12 @@
 }
 
 .btn-primary:hover {
-    background-color: #b46000; /* Version plus foncée */
+    background-color: #b46000;
 }
 
-/* Nouvelles sections par référence */
+/* =========================================
+   3. SECTIONS ET GRILLES PAR RÉFÉRENCE
+========================================= */
 .reference-section {
     background: #fff;
     border-radius: var(--border-radius);
@@ -52,7 +86,91 @@
     font-weight: bold;
 }
 
-/* Modale (Popup) */
+.lots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* =========================================
+   4. CARTES DE LOTS
+========================================= */
+.lot-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    border-top: 4px solid var(--beer-color);
+}
+
+.lot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.lot-number {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #666;
+    background: #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.format-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.format-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.format-volume {
+    font-weight: 500;
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.status-conforme { background-color: #d1fae5; color: #065f46; }
+.status-nd { background-color: #f3f4f6; color: #4b5563; }
+.status-non-conforme { background-color: #fee2e2; color: #991b1b; }
+
+.lot-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed #ccc;
+    padding-top: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.remontees-count {
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+.remontees-count.ok { color: #666; }
+.remontees-count.alert { background-color: #ef4444; color: white; }
+
+/* =========================================
+   5. MODALE (POPUP) ET FORMULAIRE
+========================================= */
 .modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -83,10 +201,9 @@
     margin-bottom: 20px;
 }
 
-.modal-header h2 { margin: 0; }
+.modal-header h2 { margin: 0; color: var(--text-main); }
 .close-modal { font-size: 1.5rem; cursor: pointer; font-weight: bold; color: #666; }
 
-/* Formulaire */
 .form-group {
     margin-bottom: 15px;
     display: flex;
