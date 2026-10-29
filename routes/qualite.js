@@ -2,38 +2,39 @@ const express = require('express');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
 
-// Initialisation de Supabase
-const supabaseUrl = process.env.SUPABASE_URL; 
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Initialisation identique à votre route fonctionnelle
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-// --- ROUTE : POST /api/qualite/remontee ---
+// ROUTE : Sauvegarder une remontée qualité
 router.post('/remontee', async (req, res) => {
-  const { reference, numero_lot, format, description } = req.body;
+    const userId = req.session.userId;
+    const email = req.session.email;
+    
+    // On vérifie la connexion comme dans votre route "tournee"
+    if (!userId) return res.status(401).json({ error: "Non connecté" });
 
-  if (!reference || !numero_lot || !format || !description) {
-    return res.status(400).json({ error: "Tous les champs sont obligatoires." });
-  }
+    const { reference, numero_lot, format, description } = req.body;
 
-  // Insertion dans Supabase (table: remontees_qualite)
-  const { data, error } = await supabase
-    .from('remontees_qualite')
-    .insert([
-      { 
-        reference, 
-        numero_lot, 
-        format, 
-        description,
-        user_email: req.session.email // On trace le commercial qui fait la remontée grâce à la session express
-      }
-    ]);
+    if (!reference || !numero_lot || !format || !description) {
+        return res.status(400).json({ error: "Tous les champs sont obligatoires." });
+    }
 
-  if (error) {
-    console.error("Erreur d'insertion Supabase (Qualité):", error);
-    return res.status(500).json({ error: "Erreur lors de l'enregistrement dans la base." });
-  }
+    const { data, error } = await supabase
+        .from('remontees_qualite')
+        .insert([
+            { 
+                reference: reference, 
+                numero_lot: numero_lot, 
+                format: format, 
+                description: description,
+                user_email: email // On utilise l'email de la session
+            }
+        ]);
 
-  return res.json({ success: true, message: "Problème signalé avec succès !" });
+    // On retourne le message d'erreur Supabase exact s'il y en a une, comme dans votre exemple
+    if (error) return res.status(500).json({ error: error.message });
+    
+    return res.json({ success: true, message: "Problème signalé avec succès !" });
 });
 
 module.exports = router;
