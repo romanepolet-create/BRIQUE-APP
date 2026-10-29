@@ -234,3 +234,26 @@ h1 {
 #modal button:hover {
   background-color: #555;
 }
+
+
+/* ==========================================
+   Mobile Adjustments for lexique.html
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .menu-boutons {
+    flex-wrap: wrap; /* Allows buttons to flow to the next row */
+    gap: 10px;
+  }
+
+  .menu-boutons .btn {
+    flex: 1 1 100%; /* Makes each category button full width */
+    margin: 0;
+  }
+
+  #modal {
+    width: 90%;
+    left: 5%;
+    transform: translateY(-50%);
+    padding: 20px;
+  }
+}
