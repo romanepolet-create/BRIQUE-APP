@@ -496,10 +496,19 @@ body {
 
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1150px) {
   .kpi-grid {
+    display: grid;
+    gap: 16px;
+    padding: 10px 0;
     grid-template-columns: 1fr;
-    gap: 15px;
+  }
+
+  .graphs, #D1MEA, #DDirect3, #D2Flop {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -20px;
+    padding: 0 20px 20px 20px;
   }
 
   #titre {
@@ -508,13 +517,18 @@ body {
     gap: 10px;
   }
 
-  .graphs {
-    overflow-x: auto;
-    padding: 10px;
+  table {
+    min-width: 500px;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
-  table {
-    min-width: 600px;
+  th:first-child, td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    z-index: 2;
+    box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1);
   }
 
   #modal-detail-visites,
