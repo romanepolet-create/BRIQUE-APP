@@ -1,119 +1,130 @@
-/* Variables pour un design cohérent */
-:root {
-    --bg-color: #f4f7f6;
-    --text-main: #333;
-    --beer-color: #d97706;
-    --card-bg: #ffffff;
-    --border-radius: 8px;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: var(--beer-color);
+/* Entête avec le bouton */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
 }
 
-/* Grille responsive pour les cartes */
-.lots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-/* Style de la carte */
-.lot-card {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    padding: 20px;
-    border-top: 4px solid var(--beer-color);
-}
-
-.lot-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 12px;
-    margin-bottom: 15px;
-}
-
-.lot-header h2 {
-    margin: 0;
-    font-size: 1.3rem;
-    color: #222;
-}
-
-.lot-number {
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: #666;
-    background: #e5e7eb;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
-
-/* Liste des formats */
-.format-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 15px 0;
-}
-
-.format-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-}
-
-.format-volume {
-    font-weight: 500;
-}
-
-/* Badges de statut */
-.status-badge {
-    font-size: 0.8rem;
+.btn-primary {
+    background-color: var(--beer-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
     font-weight: bold;
-    padding: 3px 10px;
-    border-radius: 12px;
-    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s;
 }
 
-.status-conforme { background-color: #d1fae5; color: #065f46; } /* Vert */
-.status-nd { background-color: #f3f4f6; color: #4b5563; } /* Gris */
-.status-non-conforme { background-color: #fee2e2; color: #991b1b; } /* Rouge */
+.btn-primary:hover {
+    background-color: #b46000; /* Version plus foncée */
+}
 
-/* Pied de carte (Remontées) */
-.lot-footer {
+/* Nouvelles sections par référence */
+.reference-section {
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.ref-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px dashed #ccc;
-    padding-top: 12px;
+    border-bottom: 2px solid var(--beer-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.ref-header h2 {
+    margin: 0;
+    color: var(--beer-color);
+}
+
+.lot-selector {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+
+/* Modale (Popup) */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 { margin: 0; }
+.close-modal { font-size: 1.5rem; cursor: pointer; font-weight: bold; color: #666; }
+
+/* Formulaire */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
     font-weight: 600;
     font-size: 0.9rem;
 }
 
-.remontees-count {
-    padding: 2px 8px;
-    border-radius: 4px;
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
 }
 
-.remontees-count.ok { color: #666; }
-.remontees-count.alert { background-color: #ef4444; color: white; }
+.btn-submit {
+    width: 100%;
+    background-color: #222;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-submit:hover { background-color: #444; }
+
+.feedback-msg {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    min-height: 20px;
+}
+.feedback-msg.success { color: #065f46; }
+.feedback-msg.error { color: #991b1b; }
