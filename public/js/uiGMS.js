@@ -123,7 +123,7 @@ window.filtrerMagasins = function() {
   const enseignesSel = getValeursSelectionnees('dropdown-enseigne');
   const prioSel = getValeursSelectionnees('dropdown-prio');
   const propriosSel = getValeursSelectionnees('dropdown-proprio');
-  const visiteSel = Array.from(document.querySelectorAll('input[name="filtre_visite"]:checked'))?.map(cb => cb.value);
+  const visitesSel = Array.from(document.querySelectorAll('input[name="filtre_visite"]:checked'))?.map(cb => cb.value);
   const hasAllVisites = visitesSel.length === 0 || visitesSel.includes("all");
 
   const magasinsFiltres = listeMagasins.filter(magasin => {
