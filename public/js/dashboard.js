@@ -7,7 +7,7 @@ let graphFlopDN = null;
 let supabaseClient = null;
 let objectifsDynamiques = {}; 
 
-const ENSEIGNES_DIRECTES_GLOBALES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "G 20", "G20", "AUTRES", "LECLERC DRIVE", "MATCH", "U EXPRESS"];
+const ENSEIGNES_DIRECTES_GLOBALES = ["ITM PROXI", "ITM SM", "LECLERC", "LECLERC PROXI", "SUPER U", "G 20", "G20", "AUTRES", "LECLERC DRIVE", "MATCH", "U EXPRESS", "AUTRES"];
 const MAX_DN_ENSEIGNE = {
     "AUCHAN HM": 7, "AUCHAN SM": 0, "CASINO": 4, "FRANPRIX": 2, "MONOPRIX": 4,
     "CRF HYPER": 7, "CRF MARKET": 7, "CRF PROXI": 7, "OTERA": 4, "ITM PROXI": 0,
