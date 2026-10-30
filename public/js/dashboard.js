@@ -1022,7 +1022,7 @@ function genererFondRayon(toutesVisites, start, end, emailsAvecObjectifs) {
             <td style="padding: 12px; text-align: left;">${isBold ? `<b style="color:#e41b19">${titre}</b>` : `<b>${titre}</b>`}</td>
             <td style="padding: 12px; font-weight: bold;">${data.mags}</td>
             <td style="padding: 12px; font-weight: bold;">${data.dn}</td>
-            <td style="padding: 12px;">${dnPct}%</td>
+            <td style="padding: 12px; font-weight: bold;">${dnPct}%</td>
             <td style="padding: 12px; font-weight: bold;">${data.facings}</td>
             <td style="padding: 12px; font-weight: bold; color: #002ab6;">${facingParDN}</td>
         `;
