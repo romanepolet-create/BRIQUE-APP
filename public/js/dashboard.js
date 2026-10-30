@@ -124,6 +124,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         if(document.getElementById('titre-focus-mea')) document.getElementById('titre-focus-mea').textContent = `🍺 Focus MEA : Détail des réalisations (${nomMois})`;
         if(document.getElementById('titre-focus-direct')) document.getElementById('titre-focus-direct').textContent = `🏪 Focus Direct (${nomMois})`;
         if(document.getElementById('titre-productivite')) document.getElementById('titre-productivite').textContent = `⏱️ Productivité (${nomMois})`;
+        if(document.getElementById('titre-fond-rayon')) document.getElementById('titre-fond-rayon').textContent = `🛒 Fond de Rayon (${nomMois})`;
         
         if(document.getElementById('detail-visites-titre')) document.getElementById('detail-visites-titre').textContent = `📍 Détail des Visites (${nomMois})`;
         if(document.getElementById('detail-DN-titre')) document.getElementById('detail-DN-titre').textContent = `📊 Détail des DN (${nomMois})`;
@@ -250,6 +251,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         genererFocusMEA(visitesFiltrees, firstDayThisMonth, lastDayThisMonth);
         genererFocusDirect(magasinsFiltres, visitesFiltreesJusquaFin);
         genererProductivite(donneesGlobales.visitesBrutes, firstDayThisMonth, lastDayThisMonth);
+        genererFondRayon(donneesGlobales.visitesBrutes, firstDayThisMonth, lastDayThisMonth, Object.keys(objectifsDynamiques));
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
@@ -889,4 +891,142 @@ function ouvrirModalDirects(directsMois, directsHisto, listeMagasins) {
     }
 
     document.getElementById('modal-detail-directs').style.display = 'flex';
+}
+
+
+
+
+// ==========================================
+// FOND DE RAYON (Sales / Hors Secteur / Total)
+// ==========================================
+
+const matriceGMS = {
+  "AUCHAN HM": {obligatoire: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33",  "YT33"], facultatif: [], direct: ["LB44", "NQ44", "YT44", "ML44", "SH75", "TC75", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"]},
+  "AUCHAN SM": { obligatoire: [], facultatif: ["LB75", "NQ75", "YT75", "ML75", "LB33", "NQ33", "YT33"], direct: ["SH75", "TC75", "LB44", "NQ44", "YT44", "ML44", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] }, 
+  "CASINO": { obligatoire: ["LB44", "NQ44", "YT44", "LB33"], facultatif: [], direct: ["LB75", "NQ75", "ML75", "YT75", "SH75", "TC75", "ML44", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "FRANPRIX": { obligatoire: ["LB44", "YT44"], facultatif: [], direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "NQ44", "ML44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "MONOPRIX": { obligatoire: ["LB75", "LB44", "NQ44", "YT44"], facultatif: [], direct: ["NQ75", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "CRF HYPER": { obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"], facultatif: [], direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "CRF MARKET": { obligatoire: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"], facultatif: [], direct: ["NQ44", "YT44", "SH75", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "CRF PROXI": { obligatoire: [], facultatif: ["LB75", "ML75", "NQ75", "YT75", "TC75", "LB44", "ML44"], direct: ["SH75", "NQ44", "YT44", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "ITM PROXI": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "ITM SM": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "LECLERC": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "LECLERC PROXI": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "OTERA": { obligatoire: ["LB44", "NQ44", "YT44", "ML44"], facultatif: [], direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB33", "NQ33", "YT33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "SUPER U": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "G 20": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "U EXPRESS": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "LECLERC DRIVE": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "MATCH": { obligatoire: [], facultatif: [], direct: ["LB44", "LB75", "NQ44", "NQ75", "YT44", "YT75", "SH75", "TC75", "ML75", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "NICOLAS": { obligatoire: ["NQ33", "YT33", "ML44", "LB44"], facultatif: [], direct: ["LB75", "ML75", "TC75", "NQ75", "SH75", "YT75", "NQ44","YT44", "LB33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] },
+  "AUTRES": { obligatoire: [], facultatif: [], direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB44", "NQ44", "YT44", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] }
+};
+
+function calculerFacings(visite) {
+    let totalFacings = 0;
+    
+    if (visite.details_produits) {
+        let details = visite.details_produits;
+        if (typeof details === 'string') {
+            try { details = JSON.parse(details); } catch(e) { details = {}; }
+        }
+        
+        const cles = Object.keys(details);
+        if (cles.length > 0) {
+            cles.forEach(key => {
+                const facingSaisi = parseInt(details[key].facings) || 0;
+                if (facingSaisi > 0) {
+                    totalFacings += facingSaisi;
+                } else {
+                    totalFacings += 1;
+                }
+            });
+            return totalFacings;
+        }
+    }
+    
+    return parseInt(visite.score_dn) || 0;
+}
+
+function genererFondRayon(toutesVisites, start, end, emailsAvecObjectifs) {
+    const tbody = document.getElementById('tbody-fond-rayon');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const commerciauxMails = [...new Set(toutesVisites.map(v => v.commercial_email))]
+        .filter(email => email && emailsAvecObjectifs.includes(email.toLowerCase()));
+
+    const visJusquaFinGlob = toutesVisites.filter(v => v.created_at <= end);
+    const mapFin = {};
+    
+    visJusquaFinGlob.forEach(v => {
+        if (!mapFin[v.hubspot_id] || v.created_at > mapFin[v.hubspot_id].created_at) {
+            mapFin[v.hubspot_id] = v;
+        }
+    });
+
+    const stats = {
+        sales: { mags: 0, dn: 0, dnPourCentNum: 0, maxOblig: 0, facings: 0 },
+        hors: { mags: 0, dn: 0, dnPourCentNum: 0, maxOblig: 0, facings: 0 },
+        total: { mags: 0, dn: 0, dnPourCentNum: 0, maxOblig: 0, facings: 0 }
+    };
+
+    Object.values(mapFin).forEach(visite => {
+        const dnActuelle = parseInt(visite.score_dn) || 0;
+        
+        if (dnActuelle > 0) {
+            const enseignePropre = visite.enseigne ? visite.enseigne.toUpperCase() : "AUTRES";
+            const maxStore = (matriceGMS[enseignePropre] || matriceGMS["AUTRES"]).obligatoire.length;
+            
+            const facings = calculerFacings(visite);
+            const isSales = commerciauxMails.includes(visite.commercial_email);
+            const cat = isSales ? 'sales' : 'hors';
+
+            stats[cat].mags++;
+            stats[cat].dn += dnActuelle;
+            stats[cat].facings += facings;
+            if (maxStore > 0) {
+                stats[cat].dnPourCentNum += dnActuelle;
+                stats[cat].maxOblig += maxStore;
+            }
+
+            stats.total.mags++;
+            stats.total.dn += dnActuelle;
+            stats.total.facings += facings;
+            if (maxStore > 0) {
+                stats.total.dnPourCentNum += dnActuelle;
+                stats.total.maxOblig += maxStore;
+            }
+        }
+    });
+
+    const renderRow = (titre, data, isBold = false) => {
+        const dnPct = data.maxOblig > 0 ? Math.round((data.dnPourCentNum / data.maxOblig) * 100) : null;
+        const dnPctAffichage = dnPct !== null ? `<b style="color: ${dnPct >= 100 ? 'green' : (dnPct >= 70 ? 'orange' : 'red')}">${dnPct}%</b>` : `<span style="color:#999">-</span>`;
+        
+        const facingParDN = data.dn > 0 ? (data.facings / data.dn).toFixed(2) : "0.00";
+
+        const tr = document.createElement('tr');
+        if (isBold) {
+            tr.style.borderTop = "3px solid #002ab6";
+            tr.style.backgroundColor = "#f4f7f6";
+        } else {
+            tr.style.borderBottom = "1px solid #eee";
+        }
+        
+        tr.innerHTML = `
+            <td style="padding: 12px; text-align: left;">${isBold ? `<b style="color:#e41b19">${titre}</b>` : `<b>${titre}</b>`}</td>
+            <td style="padding: 12px; font-weight: bold;">${data.mags}</td>
+            <td style="padding: 12px; font-weight: bold;">${data.dn}</td>
+            <td style="padding: 12px;">${dnPctAffichage}</td>
+            <td style="padding: 12px; font-weight: bold;">${data.facings}</td>
+            <td style="padding: 12px; font-weight: bold; color: #002ab6;">${facingParDN}</td>
+        `;
+        tbody.appendChild(tr);
+    };
+
+    renderRow("Commerciaux (Sales)", stats.sales);
+    if (stats.hors.mags > 0) renderRow("<i>Autres (Hors secteur)</i>", stats.hors);
+    renderRow("Total", stats.total, true);
 }
