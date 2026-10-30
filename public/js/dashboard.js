@@ -283,6 +283,42 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
         
     const enseignesDirectes = ENSEIGNES_DIRECTES_GLOBALES;
 
+    const visPeriodeGlob = toutesVisites.filter(v => v.created_at >= start && v.created_at <= end);
+    const visPrecGlob = toutesVisites.filter(v => v.created_at < start);
+    const visJusquaFinGlob = toutesVisites.filter(v => v.created_at <= end);
+
+    const mapInit = {};
+    visPecGlob.forEach(v => { if (!mapInit[v.hubspot_id] || v.created_at > mapInit[v.hubspot_id].created_at) mapInit[v.hubspot_id] = v });
+
+    const mapFin = {};
+    visJusquaFinGlob.forEach(v => { if (!mapFin[v.hubspot_id] || v.created_at > mapFin[v.hubspot_id].created_at) mapFin[v.hubspot_id] = v; });
+
+    const mapDernierVisiteurPeriode = {};
+    visPeriodeGlob.forEach(v => {
+        if (!mapDernierVisiteurPeriode[v.hubspot_id] || v.created_at > mapDernierVisiteurPeriode[v.hubspot_id].created_at) {
+            mapDernierVisiteurPeriode[v.hubspot_id] = v.commercial_email;
+        }
+    });
+
+    const dnGagneeParCommercial = {};
+    const directsGagnesParCommercial = {};
+
+    Object.keys(mapFin).forEach(id => {
+        const dnI = mapInit[id] ? (parseInt(mapInit[id].score_dn) || 0) : 0;
+        const dnF = parseInt(mapFin[id].score_dn) || 0;
+        const email = mapDernierVisiteurPeriode[id];
+        
+        if (email) { 
+            if (dnF - dnI !== 0) {
+                dnGagneeParCommercial[email] = (dnGagneeParCommercial[email] || 0) + (dnF - dnI);
+            }
+            if (enseignesDirectes.includes(mapFin[id].enseigne) && dnI === 0 && dnF > 0) {
+                directsGagnesParCommercial[email] = (directsGagnesParCommercial[email] || 0) + 1;
+            }
+        }
+    });
+
+
     let totalActuelDN = 0, totalObjDN = 0;
     let totalActuelMEA = 0, totalObjMEA = 0;
     let totalActuelDirect = 0, totalObjDirect = 0;
@@ -305,22 +341,10 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
 
     commerciauxMails.forEach(email => {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= start && v.created_at <= end);
-        const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < start);
-        const visJusquaFin = toutesVisites.filter(v => v.commercial_email === email && v.created_at <= end);
         
-        const dnFinale = calculerScoreDNUnique(visJusquaFin);
-        const dnInitiale = calculerScoreDNUnique(visPrec);
-        const actuelDN = dnFinale - dnInitiale;
-
+        const actuelDN = dnGagneeParCommercial[email] || 0;
         const actuelMEA = visMois.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
-
-        let actuelDirect = 0;
-        const magsDirects = [...new Set(visMois.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id))];
-        magsDirects.forEach(idMag => {
-            const dnF = calculerScoreDNUnique(visJusquaFin.filter(v => v.hubspot_id === idMag));
-            const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
-            if (dnI === 0 && dnF > 0) actuelDirect++;
-        });
+        const actuelDirect = directsGagnesParCommercial[email] || 0;
 
         // On utilise les objectifs dynamiques récupérés
         const obj = objectifs[(email || "").toLowerCase()] || { obj_dn: null, obj_mea: null, obj_direct: null };
@@ -344,26 +368,21 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
     });
 
 
-    const visitesHorsSecteur = toutesVisites.filter(v => !commerciauxMails.includes(v.commercial_email));
-    const visMoisHors = visitesHorsSecteur.filter(v => v.created_at >= start && v.created_at <= end);
-    const visPrecHors = visitesHorsSecteur.filter(v => v.created_at < start);
-    const visJusquaFinHors = visitesHorsSecteur.filter(v => v.created_at <= end);
-
-    const dnFinaleHors = calculerScoreDNUnique(visJusquaFinHors);
-    const dnInitialeHors = calculerScoreDNUnique(visPrecHors);
-    const actuelDNHors = dnFinaleHors - dnInitialeHors;
-
-    const actuelMEAHors = visMoisHors.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
-
+    let actuelDNHors = 0;
     let actuelDirectHors = 0;
-    const magsDirectsHors = [...new Set(visMoisHors.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id))];
-    magsDirectsHors.forEach(idMag => {
-        const dnF = calculerScoreDNUnique(visJusquaFinHors.filter(v => v.hubspot_id === idMag));
-        const dnI = calculerScoreDNUnique(visPrecHors.filter(v => v.hubspot_id === idMag));
-        if (dnI === 0 && dnF > 0) actuelDirectHors++;
+    
+    Object.entries(dnGagneeParCommercial).forEach(([email, val]) => {
+        if (!commerciauxMails.includes(email)) actuelDNHors += val;
+    });
+    Object.entries(directsGagnesParCommercial).forEach(([email, val]) => {
+        if (!commerciauxMails.includes(email)) actuelDirectHors += val;
     });
 
-    if (actuelDNHors > 0 || actuelMEAHors > 0 || actuelDirectHors > 0) {
+    const visitesHorsSecteur = toutesVisites.filter(v => !commerciauxMails.includes(v.commercial_email));
+    const visMoisHors = visitesHorsSecteur.filter(v => v.created_at >= start && v.created_at <= end);
+    const actuelMEAHors = visMoisHors.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
+
+    if (actuelDNHors !== 0 || actuelMEAHors > 0 || actuelDirectHors > 0) {
         totalActuelDN += actuelDNHors;
         totalActuelMEA += actuelMEAHors;
         totalActuelDirect += actuelDirectHors;
