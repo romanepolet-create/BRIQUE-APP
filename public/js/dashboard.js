@@ -288,7 +288,7 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
     const visJusquaFinGlob = toutesVisites.filter(v => v.created_at <= end);
 
     const mapInit = {};
-    visPecGlob.forEach(v => { if (!mapInit[v.hubspot_id] || v.created_at > mapInit[v.hubspot_id].created_at) mapInit[v.hubspot_id] = v });
+    visPrecGlob.forEach(v => { if (!mapInit[v.hubspot_id] || v.created_at > mapInit[v.hubspot_id].created_at) mapInit[v.hubspot_id] = v });
 
     const mapFin = {};
     visJusquaFinGlob.forEach(v => { if (!mapFin[v.hubspot_id] || v.created_at > mapFin[v.hubspot_id].created_at) mapFin[v.hubspot_id] = v; });
