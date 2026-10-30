@@ -111,7 +111,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         const visitesFiltreesJusquaFin = visitesFiltrees.filter(v => v.created_at <= lastDayThisMonth);
         const av8h30 = visitesMois.filter(v => {
             const d = new Date(v.created_at);
-            return d.getHours() < 7 || (d.getHours() === 8 && d.getMinutes() < 30);
+            return d.getHours() < 7 || (d.getHours() === 7 && d.getMinutes() < 30);
         });
 
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
