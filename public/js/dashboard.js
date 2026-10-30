@@ -109,7 +109,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         const visitesMois = visitesFiltrees.filter(v => v.created_at >= firstDayThisMonth && v.created_at <= lastDayThisMonth);
         const visitesPrec = visitesFiltrees.filter(v => v.created_at < firstDayThisMonth);
         const visitesFiltreesJusquaFin = visitesFiltrees.filter(v => v.created_at <= lastDayThisMonth);
-        const av8h30 = visitesMois.filter(v => v.created_at.split(" ")[1] < "12:30:00.000000");
+        const av8h30 = visitesMois.filter(v => v.created_at.split(" ")[1] < "7:30:00.000000");
 
         document.getElementById('titre-commercial').textContent = `Résumé de l'activité : ${formatEmailToName(filtreEmail)}`;
         
