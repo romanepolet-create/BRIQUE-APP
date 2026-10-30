@@ -920,6 +920,32 @@ const matriceGMS = {
   "AUTRES": { obligatoire: [], facultatif: [], direct: ["LB75", "NQ75", "YT75", "SH75", "TC75", "ML75", "LB44", "NQ44", "YT44", "ML44", "LB33", "YT33", "NQ33", "UA33 (Ltd)", "DB44 (Ltd)", "SG44 (Ltd)", "SQP33 (Ltd)", "FT44 (Ltd)"] }
 };
 
+function calculerFacings(visite) {
+    let totalFacings = 0;
+    
+    if (visite.details_produits) {
+        let details = visite.details_produits;
+        if (typeof details === 'string') {
+            try { details = JSON.parse(details); } catch(e) { details = {}; }
+        }
+        
+        const cles = Object.keys(details);
+        if (cles.length > 0) {
+            cles.forEach(key => {
+                const facingSaisi = parseInt(details[key].facings) || 0;
+                if (facingSaisi > 0) {
+                    totalFacings += facingSaisi;
+                } else {
+                    totalFacings += 1;
+                }
+            });
+            return totalFacings;
+        }
+    }
+    
+    return parseInt(visite.score_dn) || 0;
+}
+
 function genererFondRayon(toutesVisites, start, end, emailsAvecObjectifs) {
     const tbody = document.getElementById('tbody-fond-rayon');
     if (!tbody) return;
