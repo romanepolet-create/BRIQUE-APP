@@ -318,6 +318,14 @@ body {
 }
 
 
+#fondRayonTable {
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: center; 
+  margin-top: 15px;
+}
+
+
 
 
 /*HIDDEN - FOR NOW - POPUP DETAILS*/
