@@ -923,8 +923,16 @@ const matriceGMS = {
 function calculerFacings(visite) {
     let totalFacings = 0;
     
-    if (visite.details_produits) {
-        let details = visite.details_produits;
+    let details = visite.details_produits;
+    
+    if (!details && donneesGlobales && donneesGlobales.listeMagasins) {
+        const mag = donneesGlobales.listeMagasins.find(m => String(m.hubspot_id) === String(visite.hubspot_id));
+        if (mag && mag.details_produits) {
+            details = mag.details_produits;
+        }
+    }
+    
+    if (details) {
         if (typeof details === 'string') {
             try { details = JSON.parse(details); } catch(e) { details = {}; }
         }
@@ -933,6 +941,7 @@ function calculerFacings(visite) {
         if (cles.length > 0) {
             cles.forEach(key => {
                 const facingSaisi = parseInt(details[key].facings) || 0;
+                
                 if (facingSaisi > 0) {
                     totalFacings += facingSaisi;
                 } else {
@@ -945,7 +954,6 @@ function calculerFacings(visite) {
     
     return parseInt(visite.score_dn) || 0;
 }
-
 function genererFondRayon(toutesVisites, start, end, emailsAvecObjectifs) {
     const tbody = document.getElementById('tbody-fond-rayon');
     if (!tbody) return;
