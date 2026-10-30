@@ -154,7 +154,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         carteVisites.onclick = () => ouvrirModalVisites(visitesMois, donneesGlobales.listeMagasins);
         
         const dnInitiale = calculerScoreDNUnique(visitesPrec);
-        const dnFinale = calculerScoreDNUnique(visitesFiltrees);
+        const dnFinale = calculerScoreDNUnique(visitesFiltreesJusquaFin);
         const dnGagnee = dnFinale - dnInitiale;
         document.getElementById('kpi-dn').textContent = dnGagnee >= 0 ? `+${dnGagnee}` : dnGagnee;
         document.getElementById('evo-dn').textContent = `Base : ${dnInitiale} ➔ ${dnFinale}`;
@@ -191,7 +191,7 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
         }
 
         const mapDirects = {};
-        visitesFiltrees.forEach(v => {
+        visitesFiltreesJusquaFin.forEach(v => {
             if (ENSEIGNES_DIRECTES_GLOBALES.includes(v.enseigne)) {
                 if (!mapDirects[v.hubspot_id] || v.created_at > mapDirects[v.hubspot_id].created_at) {
                     mapDirects[v.hubspot_id] = v;
@@ -290,8 +290,7 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
      const rendreCell = (actuel, objectif, unit = "") => {
         const actuelClean = parseFloat(Number(actuel).toFixed(2));
 
-        if (objectif === null || objectif === undefined) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
-        if (objectif === 0) return `<span style="color:#999; font-size:12px;">Pas d'objectif</span><br><b>${actuelClean}</b>`;
+        if (objectif === null || objectif === undefined || objectif === 0) return `<span style="color:#999; font-size:12px;">Non défini</span><br><b>${actuelClean}</b>`;
 
          if (vuePourcentage) {
              const pct = Math.round((actuelClean / objectif) * 100);
@@ -307,9 +306,9 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
     commerciauxMails.forEach(email => {
         const visMois = toutesVisites.filter(v => v.commercial_email === email && v.created_at >= start && v.created_at <= end);
         const visPrec = toutesVisites.filter(v => v.commercial_email === email && v.created_at < start);
-        const toutesVisitesEmail = toutesVisites.filter(v => v.commercial_email === email && v.created_at <= end);
+        const visJusquaFin = toutesVisites.filter(v => v.commercial_email === email && v.created_at <= end);
         
-        const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
+        const dnFinale = calculerScoreDNUnique(visJusquaFin);
         const dnInitiale = calculerScoreDNUnique(visPrec);
         const actuelDN = dnFinale - dnInitiale;
 
@@ -318,7 +317,7 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
         let actuelDirect = 0;
         const magsDirects = [...new Set(visMois.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id))];
         magsDirects.forEach(idMag => {
-            const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
+            const dnF = calculerScoreDNUnique(visJusquaFin.filter(v => v.hubspot_id === idMag));
             const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
             if (dnI === 0 && dnF > 0) actuelDirect++;
         });
@@ -344,7 +343,45 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
         tbody.appendChild(tr);
     });
 
-    if (commerciauxMails.length > 0) {
+
+    const visitesHorsSecteur = toutesVisites.filter(v => !commerciauxMails.includes(v.commercial_email));
+    const visMoisHors = visitesHorsSecteur.filter(v => v.created_at >= start && v.created_at <= end);
+    const visPrecHors = visitesHorsSecteur.filter(v => v.created_at < start);
+    const visJusquaFinHors = visitesHorsSecteur.filter(v => v.created_at <= end);
+
+    const dnFinaleHors = calculerScoreDNUnique(visJusquaFinHors);
+    const dnInitialeHors = calculerScoreDNUnique(visPrecHors);
+    const actuelDNHors = dnFinaleHors - dnInitialeHors;
+
+    const actuelMEAHors = visMoisHors.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
+
+    let actuelDirectHors = 0;
+    const magsDirectsHors = [...new Set(visMoisHors.filter(v => enseignesDirectes.includes(v.enseigne)).map(v => v.hubspot_id))];
+    magsDirectsHors.forEach(idMag => {
+        const dnF = calculerScoreDNUnique(visJusquaFinHors.filter(v => v.hubspot_id === idMag));
+        const dnI = calculerScoreDNUnique(visPrecHors.filter(v => v.hubspot_id === idMag));
+        if (dnI === 0 && dnF > 0) actuelDirectHors++;
+    });
+
+    if (actuelDNHors > 0 || actuelMEAHors > 0 || actuelDirectHors > 0) {
+        totalActuelDN += actuelDNHors;
+        totalActuelMEA += actuelMEAHors;
+        totalActuelDirect += actuelDirectHors;
+
+        const trHors = document.createElement('tr');
+        trHors.style.borderBottom = "1px solid #eee";
+        trHors.style.backgroundColor = "#fafafa";
+        trHors.innerHTML = `
+            <td style="padding: 12px; text-align: left; color: #888;"><i>Autres (Hors secteur)</i></td>
+            <td style="padding: 12px;">${rendreCell(actuelDNHors, 0)}</td>
+            <td style="padding: 12px;">${rendreCell(actuelMEAHors, 0, "HL")}</td>
+            <td style="padding: 12px;">${rendreCell(actuelDirectHors, 0, "Mag.")}</td>
+        `;
+        tbody.appendChild(trHors);
+    }
+    
+
+    if (commerciauxMails.length > 0 || actuelDNHors > 0) {
         const trTotal = document.createElement('tr');
         trTotal.style.borderTop = "3px solid #002ab6";
         trTotal.style.backgroundColor = "#f4f7f6";
