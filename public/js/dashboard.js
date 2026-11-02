@@ -89,9 +89,8 @@ async function chargerDonneesEtAfficher(filtreEmail = 'general', forceRefresh = 
             const reponse = await fetch(`/api/dashboard/data?nocache=${new Date().getTime()}`); 
             donneesGlobales = await reponse.json();
             if (!donneesGlobales.success) throw new Error("Erreur serveur");
-            
-            initialiserMenuDeroulant(donneesGlobales, filtreEmail);
-        }
+        }   
+        initialiserMenuDeroulant(donneesGlobales, filtreEmail);
 
         const { visitesBrutes } = donneesGlobales;
         
@@ -432,26 +431,31 @@ function genererTableauPerformance(toutesVisites, objectifs, start, end) {
 }
 
 function initialiserMenuDeroulant(data, defaultFiltre) {
-    if (listeInitialeChargee) return;
     const selectFiltre = document.getElementById('filtre-commercial');
     if (!selectFiltre) return;
 
+    const valeurActuelle = selectFiltre.value || defaultFiltre;
+
     selectFiltre.innerHTML = '<option value="general">🌍 Général (Tous)</option>';
+    
+    const emailsActifs = Object.keys(objectifsDynamiques);
 
     data.listeCommerciaux.forEach(email => {
-        if (email) {
+        if (email && emailsActifs.includes(email.toLowerCase())) {
             selectFiltre.add(new Option(`👤 ${formatEmailToName(email)}`, email));
         }
     });
 
-    if (defaultFiltre !== 'general' && data.listeCommerciaux.includes(defaultFiltre.toLowerCase())) {
-        selectFiltre.value = defaultFiltre;
+    if (valeurActuelle !== 'general' && emailsActifs.includes(valeurActuelle.toLowerCase())) {
+        selectFiltre.value = valeurActuelle;
     } else {
         selectFiltre.value = 'general';
     }
     
-    selectFiltre.addEventListener('change', (e) => chargerDonneesEtAfficher(e.target.value));
-    listeInitialeChargee = true;
+    if (!listeInitialeChargee) {
+        selectFiltre.addEventListener('change', (e) => chargerDonneesEtAfficher(e.target.value));
+        listeInitialeChargee = true;
+    }
 }
 
 
