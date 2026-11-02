@@ -27,14 +27,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch('/newsletter');
         const { visitesBrutes, listeMagasins, objectifsData } = await response.json();
         
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-        const joursEcoules = now.getDate();
-        const joursDansMois = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-        const pctMois = Math.round((joursEcoules / joursDansMois) * 100);
-        const dateFr = now.toLocaleDateString('fr-FR');
+        const inputPeriode = document.getElementById('filtre-periode');
+        const moisActuel = inputPeriode && inputPeriode.value ? inputPeriode.value : `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+        
+        const [anneeStr, moisStr] = moisActuel.split('-');
+        const annee = parseInt(anneeStr, 10);
+        const mois = parseInt(moisStr, 10) - 1;
+        
+        const firstDayThisMonth = new Date(annee, mois, 1).toISOString();
+        const lastDayThisMonth = new Date(annee, mois + 1, 0, 23, 59, 59).toISOString();
 
-        document.getElementById('date-subtitle').innerText = `${dateFr} — Soit ${pctMois}% du mois écoulé`;
+        let nomMois = new Date(annee, mois, 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        nomMois = nomMois.charAt(0).toUpperCase() + nomMois.slice(1);
+
+        const now = new Date();
+        const joursDansMois = new Date(annee, mois + 1, 0).getDate();
+        let joursEcoules = 0;
+
+        if (annee === now.getFullYear() && mois === now.getMonth()) {
+            joursEcoules = now.getDate();
+        } else if (new Date(annee, mois, 1) < now) {
+            joursEcoules = joursDansMois;
+        }
+        
+        const pctMois = Math.round((joursEcoules / joursDansMois) * 100);
+
+        document.getElementById('date-subtitle').innerText = `Bilan ${nomMois} — Soit ${pctMois}% du mois écoulé`;
 
         const OBJECTIFS_MOIS = {};
         objectifsData.forEach(row => {
@@ -51,9 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         let topDirects = [];
 
         for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
-            const visMois = visitesBrutes.filter(v => v.commercial_email === email && v.created_at >= startOfMonth);
-            const visPrec = visitesBrutes.filter(v => v.commercial_email === email && v.created_at < startOfMonth);
-            const toutesVisitesEmail = visitesBrutes.filter(v => v.commercial_email === email);
+            const toutesVisitesEmail = visitesBrutes.filter(v => v.commercial_email === email && v.created_at <= lastDayThisMonth);
+            const visMois = toutesVisitesEmail.filter(v => v.created_at >= firstDayThisMonth);
+            const visPrec = toutesVisitesEmail.filter(v => v.created_at < firstDayThisMonth);
 
             const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
             const dnInitiale = calculerScoreDNUnique(visPrec);
@@ -229,3 +247,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.getSelection().removeAllRanges();
     });
 });
+
+
+document.getElementById('filtre-periode').addEventListener('change', () => {
+    const mois = document.getElementById('filtre-periode').value;
+    if (mois) {
+        const url = new URL(window.location);
+        url.searchParams.set('month', mois);
+        window.history.pushState({}, '', url);
+        window.location.reload();
+    }
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.has('month')) {
+    document.getElementById('filtre-periode').value = urlParams.get('month');
+}
