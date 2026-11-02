@@ -18,26 +18,37 @@ router.get('/data', async (req, res) => {
         let listeMagasins = [];
         try {
             const { data: gmsData } = await supabase.from('GMS').select('hubspot_id, nom, enseigne, "Propriétaire", "Priorité"');
-            if (gmsData) listeMagasins = gmsData;
+            
+            const { data: historiqueData } = await supabase.from('historique_visites').select('hubspot_id, details_produits');
+
+            if (gmsData) {
+                listeMagasins = gmsData.map(mag => {
+                    const hist = historiqueData?.find(h => String(h.hubspot_id) === String(mag.hubspot_id));
+                    return {
+                        ...mag,
+                        details_produits: hist ? hist.details_produits : null
+                    };
+                });
+            }
         } catch (e) {
-            console.error("Erreur GMS :", e);
+            console.error("Erreur GMS / Historique :", e);
         }
 
         let listeCommerciaux = [];
-            let tousLesEmails = [
-                ...visitesBrutes.map(v => v.commercial_email),
-                ...objectifs.map(o => o.commercial_email)
-            ];
+        let tousLesEmails = [
+            ...visitesBrutes.map(v => v.commercial_email),
+            ...objectifs.map(o => o.commercial_email)
+        ];
 
-            const proprietairesGMS = [...new Set(listeMagasins.map(m => m.Propriétaire))].filter(p => p && p !== "Vacant" && p !== "Vacant Nord");
-            const emailsDepuisGMS = proprietairesGMS.map(nom => {
-                return nom.toLowerCase().trim().replace(/\s+/g, '.') + '@briquehouse.fr';
-            });
-            tousLesEmails = [...tousLesEmails, ...emailsDepuisGMS];
-            
-            listeCommerciaux = [...new Set(tousLesEmails)].filter(Boolean);
+        const proprietairesGMS = [...new Set(listeMagasins.map(m => m.Propriétaire))].filter(p => p && p !== "Vacant" && p !== "Vacant Nord");
+        const emailsDepuisGMS = proprietairesGMS.map(nom => {
+            return nom.toLowerCase().trim().replace(/\s+/g, '.') + '@briquehouse.fr';
+        });
+        tousLesEmails = [...tousLesEmails, ...emailsDepuisGMS];
         
-            res.json({ success: true, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });        
+        listeCommerciaux = [...new Set(tousLesEmails)].filter(Boolean);
+        
+        res.json({ success: true, listeCommerciaux, visitesBrutes, objectifs, listeMagasins });        
     } catch (error) {
         console.error("🚨 Erreur Route Dashboard:", error);
         res.json({ success: false, error: "Erreur serveur" });
