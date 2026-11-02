@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const moisParam = new URLSearchParams(window.location.search).get('month');
         const moisActuel = moisParam || (inputPeriode && inputPeriode.value ? inputPeriode.value : `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`);
         
-        const response = await fetch(`/newsletter?month=${moisActuel}`);
+        const response = await fetch(`/api/newsletter?month=${moisActuel}`);
         const { visitesBrutes, listeMagasins, objectifsData } = await response.json();
         
         const [anneeStr, moisStr] = moisActuel.split('-');
