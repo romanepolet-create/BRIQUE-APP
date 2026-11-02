@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { visitesBrutes, listeMagasins, objectifsData } = await response.json();
         
         const inputPeriode = document.getElementById('filtre-periode');
-        const moisActuel = inputPeriode && inputPeriode.value ? inputPeriode.value : `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+        const moisParam = req.headers.referer ? new URLSearchParams(req.headers.referer.split('?')[1]).get('month') : null;
+        const moisActuel = moisParam || `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;;
         
         const [anneeStr, moisStr] = moisActuel.split('-');
         const annee = parseInt(anneeStr, 10);
