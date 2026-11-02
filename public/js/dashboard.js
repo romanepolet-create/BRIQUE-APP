@@ -437,26 +437,22 @@ function initialiserMenuDeroulant(data, defaultFiltre) {
     if (!selectFiltre) return;
 
     selectFiltre.innerHTML = '<option value="general">🌍 Général (Tous)</option>';
-    
-    // On utilise les clés de la base de données
-    const emailsActifs = Object.keys(objectifsDynamiques);
 
     data.listeCommerciaux.forEach(email => {
-        if (email && emailsActifs.includes(email.toLowerCase())) {
+        if (email) {
             selectFiltre.add(new Option(`👤 ${formatEmailToName(email)}`, email));
         }
     });
 
-    if (defaultFiltre !== 'general' && !emailsActifs.includes(defaultFiltre.toLowerCase())) {
-        selectFiltre.value = 'general';
-    } else {
+    if (defaultFiltre !== 'general' && data.listeCommerciaux.includes(defaultFiltre.toLowerCase())) {
         selectFiltre.value = defaultFiltre;
+    } else {
+        selectFiltre.value = 'general';
     }
     
     selectFiltre.addEventListener('change', (e) => chargerDonneesEtAfficher(e.target.value));
     listeInitialeChargee = true;
 }
-
 
 
 
