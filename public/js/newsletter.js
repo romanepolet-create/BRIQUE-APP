@@ -65,18 +65,60 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
         });
 
-        const statsCommerciaux = [];
-        let topMEA = [];
+        const visPeriodeGlob = visitesBrutes.filter(v => v.created_at >= firstDayThisMonth && v.created_at <= lastDayThisMonth);
+        const visPrecGlob = visitesBrutes.filter(v => v.created_at < firstDayThisMonth);
+        const visJusquaFinGlob = visitesBrutes.filter(v => v.created_at <= lastDayThisMonth);
+
+        const mapInit = {};
+        visPrecGlob.forEach(v => { if (!mapInit[v.hubspot_id] || v.created_at > mapInit[v.hubspot_id].created_at) mapInit[v.hubspot_id] = v; });
+
+        const mapFin = {};
+        visJusquaFinGlob.forEach(v => { if (!mapFin[v.hubspot_id] || v.created_at > mapFin[v.hubspot_id].created_at) mapFin[v.hubspot_id] = v; });
+
+        const mapDernierVisiteurPeriode = {};
+        visPeriodeGlob.forEach(v => {
+            if (!mapDernierVisiteurPeriode[v.hubspot_id] || v.created_at > mapDernierVisiteurPeriode[v.hubspot_id].created_at) {
+                mapDernierVisiteurPeriode[v.hubspot_id] = v.commercial_email;
+            }
+        });
+
+        const dnGagneeParCommercial = {};
+        const directsGagnesParCommercial = {};
         let topDirects = [];
 
-        for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
-            const toutesVisitesEmail = visitesBrutes.filter(v => v.commercial_email === email && v.created_at <= lastDayThisMonth);
-            const visMois = toutesVisitesEmail.filter(v => v.created_at >= firstDayThisMonth);
-            const visPrec = toutesVisitesEmail.filter(v => v.created_at < firstDayThisMonth);
+        Object.keys(mapFin).forEach(id => {
+            const dnI = mapInit[id] ? (parseInt(mapInit[id].score_dn) || 0) : 0;
+            const dnF = parseInt(mapFin[id].score_dn) || 0;
+            const email = mapDernierVisiteurPeriode[id];
+            
+            if (email) { 
+                const emailMin = email.toLowerCase();
+                if (dnF - dnI !== 0) {
+                    dnGagneeParCommercial[emailMin] = (dnGagneeParCommercial[emailMin] || 0) + (dnF - dnI);
+                }
+                if (ENSEIGNES_DIRECTES.includes(mapFin[id].enseigne) && dnI === 0 && dnF > 0) {
+                    directsGagnesParCommercial[emailMin] = (directsGagnesParCommercial[emailMin] || 0) + 1;
+                    
+                    const mag = listeMagasins.find(m => String(m.hubspot_id) === String(id));
+                    const objComm = OBJECTIFS_MOIS[emailMin];
+                    topDirects.push({
+                        commercial: objComm ? objComm.nom : formatEmailToName(email),
+                        enseigne: mag ? mag.enseigne : (mapFin[id].enseigne || "Direct"),
+                        magasin: mag ? mag.nom : id
+                    });
+                }
+            }
+        });
 
-            const dnFinale = calculerScoreDNUnique(toutesVisitesEmail);
-            const dnInitiale = calculerScoreDNUnique(visPrec);
-            const actuelDN = dnFinale - dnInitiale;
+        const statsCommerciaux = [];
+        let topMEA = [];
+        const commerciauxMails = Object.keys(OBJECTIFS_MOIS);
+
+        for (const [email, obj] of Object.entries(OBJECTIFS_MOIS)) {
+            const visMois = visPeriodeGlob.filter(v => v.commercial_email === email);
+
+            const actuelDN = dnGagneeParCommercial[email] || 0;
+            const actuelDirect = directsGagnesParCommercial[email] || 0;
 
             let dnConstate = 0;
             const magsMois = [...new Set(visMois.map(v => v.hubspot_id))];
@@ -101,28 +143,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     volume: parseFloat(v.volume_mea)
                 });
             });
-
-            let actuelDirect = 0;
-            const MagsDirects = [...new Set(toutesVisitesEmail.filter(v => ENSEIGNES_DIRECTES.includes(v.enseigne)).map(v => v.hubspot_id))];
-            
-            MagsDirects.forEach(idMag => {
-                const dnF = calculerScoreDNUnique(toutesVisitesEmail.filter(v => v.hubspot_id === idMag));
-                const dnI = calculerScoreDNUnique(visPrec.filter(v => v.hubspot_id === idMag));
-                const aEteVisiteCeMois = visMois.some(v => v.hubspot_id === idMag);
-
-                if (dnI === 0 && dnF > 0 && aEteVisiteCeMois) {
-                    actuelDirect++;
-                }
-
-                if (dnF > 0) {
-                    const mag = listeMagasins.find(m => String(m.hubspot_id) === String(idMag));
-                    topDirects.push({
-                        commercial: obj.nom,
-                        enseigne: mag ? mag.enseigne : (visMois.find(v => v.hubspot_id === idMag).enseigne || "Direct"),
-                        magasin: mag ? mag.nom : idMag
-                    });
-                }
-            });
             
             if (email !== "leo.blanchet@briquehouse.fr") {
                 statsCommerciaux.push({
@@ -134,6 +154,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                     direct: { actuel: actuelDirect, pct: obj.direct > 0 ? Math.round((actuelDirect / obj.direct) * 100) : 'N/A' }
                 });
             }
+        }
+
+        let actuelDNHors = 0;
+        let actuelDirectHors = 0;
+        
+        Object.entries(dnGagneeParCommercial).forEach(([email, val]) => {
+            if (!commerciauxMails.includes(email)) actuelDNHors += val;
+        });
+        Object.entries(directsGagnesParCommercial).forEach(([email, val]) => {
+            if (!commerciauxMails.includes(email)) actuelDirectHors += val;
+        });
+
+        const visitesHorsSecteur = visitesBrutes.filter(v => !commerciauxMails.includes((v.commercial_email || "").toLowerCase()));
+        const visMoisHors = visitesHorsSecteur.filter(v => v.created_at >= firstDayThisMonth && v.created_at <= lastDayThisMonth);
+        const actuelMEAHors = visMoisHors.reduce((tot, v) => tot + (parseFloat(v.volume_mea) || 0), 0);
+
+        if (actuelDNHors !== 0 || actuelMEAHors > 0 || actuelDirectHors > 0) {
+            statsCommerciaux.push({
+                nom: "<i>Autres (Hors secteur)</i>",
+                dnGagne: actuelDNHors,
+                dnConstate: 0,
+                dn: { actuel: actuelDNHors, pct: 'N/A' },
+                mea: { actuel: actuelMEAHors.toFixed(1), pct: 'N/A' },
+                direct: { actuel: actuelDirectHors, pct: 'N/A' }
+            });
         }
 
         topMEA.sort((a, b) => b.volume - a.volume);
