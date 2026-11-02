@@ -7,7 +7,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 router.get('/', async (req, res) => {
     try {
         const now = new Date();
-        const moisActuel = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        const moisActuel = req.query.month || `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
         const [resVisites, resMagasins, resObjectifs] = await Promise.all([
             supabase.from('dashboard_visites').select('*').limit(10000),
