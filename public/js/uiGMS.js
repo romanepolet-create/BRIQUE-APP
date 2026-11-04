@@ -164,19 +164,43 @@ window.filtrerMagasins = function() {
     if (propriosSel.length > 0 && !propriosSel.some(p => normaliserTexte(p) === normaliserTexte(magasin.Propriétaire || ""))) return false;
 
     if (tdnValue !== -1 || tdn75Value !== -1) {
-      const regles = matriceGMS[(magasin.enseigne || "").toUpperCase()];
-      if (regles && regles.obligatoire) {
+      const enseigne = (magasin.enseigne || "").toUpperCase();
+      const regles = matriceGMS[enseigne];
+      
+      let bieresCibles = [];
+      if (regles) {
+          if (regles.obligatoire && regles.obligatoire.length > 0) {
+              bieresCibles = regles.obligatoire;
+          } else if (enseigne === "CRF PROXI" && regles.facultatif) {
+              bieresCibles = regles.facultatif;
+          }
+      }
+
+      if (bieresCibles.length > 0) {
         let manquantTotal = 0, manquant75 = 0;
-        regles.obligatoire.forEach(biere => {
+        
+        bieresCibles.forEach(biere => {
           const valBDD = magasin.references && magasin.references[`ref_${biere.replace(/\s+/g, '')}`];
           if (!(valBDD === "OUI" || valBDD === "Gagné" || valBDD === "Constaté")) {
             manquantTotal++;
             if (biere.includes("75")) manquant75++;
           }
         });
-        if (tdnValue !== -1 && (tdnValue === 5 ? manquantTotal < 5 : manquantTotal !== tdnValue)) return false;
-        if (tdn75Value !== -1 && (tdn75Value === 5 ? manquant75 < 5 : manquant75 !== tdn75Value)) return false;
-      } else if (tdnValue > 0 || tdn75Value > 0) return false;
+
+        if (tdnValue !== -1) {
+            if (tdnValue === 0 && manquantTotal !== 0) return false;
+            if (tdnValue === 1 && manquantTotal > 3) return false;
+            if (tdnValue === 2 && manquantTotal > 5) return false;
+        }
+        
+        if (tdn75Value !== -1) {
+            if (tdn75Value === 0 && manquant75 !== 0) return false;
+            if (tdn75Value === 1 && manquant75 > 3) return false;
+            if (tdn75Value === 2 && manquant75 > 5) return false;
+        }
+      } else {
+        return false;
+      }
     }
 
     return true; 
