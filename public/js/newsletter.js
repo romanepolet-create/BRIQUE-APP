@@ -75,6 +75,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         const mapFin = {};
         visJusquaFinGlob.forEach(v => { if (!mapFin[v.hubspot_id] || v.created_at > mapFin[v.hubspot_id].created_at) mapFin[v.hubspot_id] = v; });
 
+        let baseDirects = 0, finDirects = 0;
+        let baseVendeurs = 0, finVendeurs = 0;
+        let baseDN = 0, finDN = 0;
+
+        Object.values(mapInit).forEach(v => {
+            const dn = parseInt(v.score_dn) || 0;
+            if (dn > 0) {
+                baseVendeurs++;
+                baseDN += dn;
+                if (ENSEIGNES_DIRECTES.includes(v.enseigne)) baseDirects++;
+            }
+        });
+
+        Object.values(mapFin).forEach(v => {
+            const dn = parseInt(v.score_dn) || 0;
+            if (dn > 0) {
+                finVendeurs++;
+                finDN += dn;
+                if (ENSEIGNES_DIRECTES.includes(v.enseigne)) finDirects++;
+            }
+        });
+
+        const kpiHtml = `
+            <tr>
+                <td width="33%" style="padding: 10px 5px;">
+                    <div style="font-size: 9px; color: #8c7385; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Magasins en Direct</div>
+                    <div style="font-size: 14px; font-weight: 800; color: #3a2233;">${baseDirects} <span style="color: #c2137a; font-size: 12px; margin: 0 4px;">➔</span> <span style="color: #1f9d5c;">${finDirects}</span></div>
+                </td>
+                <td width="33%" style="padding: 10px 5px; border-left: 1px solid #f1dde9; border-right: 1px solid #f1dde9;">
+                    <div style="font-size: 9px; color: #8c7385; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Magasins Vendeurs</div>
+                    <div style="font-size: 14px; font-weight: 800; color: #3a2233;">${baseVendeurs} <span style="color: #c2137a; font-size: 12px; margin: 0 4px;">➔</span> <span style="color: #1f9d5c;">${finVendeurs}</span></div>
+                </td>
+                <td width="33%" style="padding: 10px 5px;">
+                    <div style="font-size: 9px; color: #8c7385; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">DN Brique House (Réf)</div>
+                    <div style="font-size: 14px; font-weight: 800; color: #3a2233;">${baseDN} <span style="color: #c2137a; font-size: 12px; margin: 0 4px;">➔</span> <span style="color: #1f9d5c;">${finDN}</span></div>
+                </td>
+            </tr>
+        `;
+        const blocBaseEvol = document.getElementById('bloc-base-evol');
+        if (blocBaseEvol) blocBaseEvol.innerHTML = kpiHtml;
+
         const mapDernierVisiteurPeriode = {};
         visPeriodeGlob.forEach(v => {
             if (!mapDernierVisiteurPeriode[v.hubspot_id] || v.created_at > mapDernierVisiteurPeriode[v.hubspot_id].created_at) {
