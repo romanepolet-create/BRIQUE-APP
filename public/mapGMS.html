@@ -65,25 +65,25 @@
         </div>
 			
 
-        <div class="tdn-container">
-  <div class="filter-group">
-    <label class="tdn-label">TDN Global 
-      <span id="tdn-val" class="tdn-value">Tous</span>
-    </label>
-    <input type="range" id="filter-tdn" class="tdn-slider" min="-1" max="2" value="-1" 
-        onchange="filtrerMagasins()" 
-        oninput="const v={'-1':'Tous','0':'0','1':'<= 3','2':'<= 5'}; document.getElementById('tdn-val').innerText = v[this.value];">
-  </div>
+    	<div class="tdn-container">
+  			<div class="filter-group">
+    			<label class="tdn-label">TDN Global 
+      				<span id="tdn-val" class="tdn-value">Tous</span>
+    			</label>
+    			<input type="range" id="filter-tdn" class="tdn-slider" min="-1" max="2" value="-1" 
+        			onchange="filtrerMagasins()" 
+       				oninput="const v={'-1':'Tous','0':'0','1':'<= 3','2':'<= 5'}; document.getElementById('tdn-val').innerText = v[this.value];">
+  			</div>
 
-  <div class="filter-group">
-    <label class="tdn-label">TDN 75
-      <span id="tdn75-val" class="tdn-value">Tous</span>
-    </label>
-    <input type="range" id="filter-tdn75" class="tdn-slider" min="-1" max="2" value="-1" 
-        onchange="filtrerMagasins()" 
-        oninput="const v={'-1':'Tous','0':'0','1':'<= 3','2':'<= 5'}; document.getElementById('tdn75-val').innerText = v[this.value];">
-  </div>
-</div>
+  			<div class="filter-group">
+    			<label class="tdn-label">TDN 75
+      				<span id="tdn75-val" class="tdn-value">Tous</span>
+    			</label>
+    			<input type="range" id="filter-tdn75" class="tdn-slider" min="-1" max="2" value="-1" 
+        			onchange="filtrerMagasins()" 
+        			oninput="const v={'-1':'Tous','0':'0','1':'<= 3','2':'<= 5'}; document.getElementById('tdn75-val').innerText = v[this.value];">
+  			</div>
+		</div>
         </div>
 			 </details> 
       </div> <!-- Fin sidebar-filters -->
@@ -230,9 +230,5 @@
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-</body>
-</html>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
 </body>
 </html>
