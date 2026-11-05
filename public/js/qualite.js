@@ -1,13 +1,8 @@
-// --- DONNÉES DE RÉFÉRENCE ---
-const gammeForever = ["La Bagarre", "Yankee Trouble", "Mick Lager", "New Queen In Town", "Triple Chuc", "Shiny Hoppy", "Young Pug", "Accro Blanche"];
-const gammeExperimentales = ["Double Bagarre", "Sanguin’ale", "Bière de Noël", "Brique Blonde"];
-const allReferences = [...gammeForever, ...gammeExperimentales];
-
-let donneesLots = []; // Devient une variable vide remplie par Supabase
+let donneesGlobales = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     initModal();
-    chargerDonnees(); // Au lieu de initGrids(), on appelle la BDD
+    chargerDonnees();
 });
 
 // --- CHARGEMENT DEPUIS LA BDD ---
@@ -17,173 +12,129 @@ async function chargerDonnees() {
         const result = await res.json();
 
         if (result.success) {
-            const lotsMap = {};
-            // Tout est considéré conforme par défaut
-            const baseFormats = { "33cl": "Conforme", "44cl": "Conforme", "75cl": "Conforme", "20L": "Conforme", "30L": "Conforme" };
-
-            // On regroupe les problèmes par Référence + Numéro de lot
-            result.remontees.forEach(row => {
-                const key = `${row.reference}-${row.numero_lot}`;
-                
-                if (!lotsMap[key]) {
-                    lotsMap[key] = {
-                        reference: row.reference,
-                        lot: row.numero_lot,
-                        formats: { ...baseFormats },
-                        remontees: 0
-                    };
-                }
-                
-                // Le format ciblé par la remontée passe en Non Conforme
-                if (row.format && lotsMap[key].formats[row.format]) {
-                    lotsMap[key].formats[row.format] = "Non Conforme";
-                }
-                lotsMap[key].remontees += 1;
-            });
-
-            // On transforme l'objet en tableau pour la fonction initGrids
-            donneesLots = Object.values(lotsMap);
-            initGrids(); // On dessine les grilles
+            donneesGlobales = result.remontees;
+            initGrids();
         }
     } catch (error) {
-        console.error("Erreur lors du chargement des données", error);
+        console.error("Erreur API:", error);
     }
 }
 
-// --- GESTION DE LA MODALE & DU FORMULAIRE ---
+// --- GESTION DE L'AFFICHAGE (1 CARTE PAR BIÈRE) ---
+function initGrids() {
+    const container = document.getElementById('references-container');
+    container.innerHTML = '';
+
+    // Extraire la liste unique des bières présentes dans la BDD
+    const bieresUniques = [...new Set(donneesGlobales.map(d => d.biere))];
+
+    bieresUniques.forEach(nomBiere => {
+        // Lots pour cette bière
+        const lots = donneesGlobales.filter(d => d.biere === nomBiere);
+        
+        const card = document.createElement('div');
+        card.className = 'lot-card';
+
+        const optionsLots = lots.map(l => `<option value="${l.lot}">Lot n°${l.lot} (Condi: ${l.condi || '?'})</option>`).join('');
+        const lotParDefaut = lots[0]; // Le plus récent (car trié côté back)
+
+        card.innerHTML = `
+            <div class="lot-header">
+                <h3 class="card-ref-title">${nomBiere}</h3>
+                <select class="card-lot-selector">${optionsLots}</select>
+            </div>
+            <div class="card-body"></div>
+        `;
+        
+        container.appendChild(card);
+        
+        const bodyContainer = card.querySelector('.card-body');
+        const selector = card.querySelector('.card-lot-selector');
+        
+        const updateCardBody = (data) => {
+            const decisionClass = data.Décision === 'OK' ? 'status-conforme' : 'status-non-conforme';
+            bodyContainer.innerHTML = `
+                <ul class="format-list">
+                    <li class="format-item">
+                        <span class="format-volume">Décision</span>
+                        <span class="status-badge ${decisionClass}">${data.Décision || 'N/A'}</span>
+                    </li>
+                    <li class="format-item">
+                        <span class="format-volume">pH Après</span>
+                        <span style="font-weight:bold;">${data.pH_après || '-'}</span>
+                    </li>
+                    <li class="format-item">
+                        <span class="format-volume">Carbo g/L</span>
+                        <span style="font-weight:bold;">${data.Carbo_condi_gL || '-'}</span>
+                    </li>
+                </ul>
+                <div class="lot-footer">
+                    <span>Défauts :</span>
+                    <span style="color:#991b1b; font-size:0.85rem;">${data.Défauts || 'Aucun'}</span>
+                </div>
+            `;
+        };
+
+        updateCardBody(lotParDefaut);
+
+        selector.addEventListener('change', (e) => {
+            // Attention : e.target.value est une string, on compare intelligemment
+            const selectedLotData = lots.find(l => l.lot == e.target.value);
+            updateCardBody(selectedLotData);
+        });
+    });
+}
+
+// --- GESTION DU FORMULAIRE ---
 function initModal() {
     const modal = document.getElementById('modal-issue');
     const btnOpen = document.getElementById('btn-add-issue');
     const btnClose = document.querySelector('.close-modal');
     const form = document.getElementById('form-issue');
 
-    // Remplir les selects du formulaire
-    const optForever = document.getElementById('opt-forever');
-    gammeForever.forEach(beer => optForever.innerHTML += `<option value="${beer}">${beer}</option>`);
-    
-    const optExp = document.getElementById('opt-experimentales');
-    gammeExperimentales.forEach(beer => optExp.innerHTML += `<option value="${beer}">${beer}</option>`);
+    // On préremplit la date du jour
+    form.querySelector('[name="date"]').value = new Date().toISOString().split('T')[0];
 
-    // Ouvrir / Fermer
     btnOpen.addEventListener('click', () => modal.classList.remove('hidden'));
     btnClose.addEventListener('click', () => modal.classList.add('hidden'));
     window.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
 
-    // Soumission du formulaire
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const feedback = document.getElementById('form-feedback');
         feedback.textContent = "Envoi en cours...";
         feedback.className = "feedback-msg";
 
-        const formData = {
-            reference: document.getElementById('reference').value,
-            numero_lot: document.getElementById('numero_lot').value,
-            format: document.getElementById('format').value,
-            description: document.getElementById('description').value
-        };
+        // Collecte automatique de tous les champs du form
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
 
         try {
             const response = await fetch('/api/qualite/remontee', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
             const result = await response.json();
 
             if (result.success) {
                 feedback.textContent = result.message;
                 feedback.classList.add('success');
-                
-                // 👈 AJOUTEZ CETTE LIGNE POUR ACTUALISER L'AFFICHAGE
-                chargerDonnees(); 
-
+                chargerDonnees(); // Actualisation !
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     form.reset();
+                    form.querySelector('[name="date"]').value = new Date().toISOString().split('T')[0];
                     feedback.textContent = "";
                     feedback.className = "feedback-msg";
-                }, 2000);
+                }, 1500);
             } else {
                 feedback.textContent = result.error;
                 feedback.classList.add('error');
             }
         } catch (err) {
-            feedback.textContent = "Erreur de connexion au serveur.";
+            feedback.textContent = "Erreur serveur.";
             feedback.classList.add('error');
         }
-    });
-}
-
-// --- GESTION DE L'AFFICHAGE (1 CARTE PAR RÉFÉRENCE) ---
-function initGrids() {
-    const container = document.getElementById('references-container');
-    container.innerHTML = '';
-    container.className = 'lots-grid'; // On applique directement la grille au conteneur
-
-    allReferences.forEach(ref => {
-        // On récupère tous les lots pour cette référence
-        const lotsForRef = donneesLots.filter(d => d.reference === ref);
-        if (lotsForRef.length === 0) return; // S'il n'y a pas de lot, on passe
-
-        // Création de la carte
-        const card = document.createElement('div');
-        card.className = 'lot-card';
-
-        // Création des options du menu déroulant (N° de lot)
-        const optionsLots = lotsForRef.map(l => `<option value="${l.lot}">Lot n°${l.lot}</option>`).join('');
-        
-        // Le lot affiché par défaut (le premier de la liste)
-        const initialLot = lotsForRef[0];
-
-        // Structure HTML de la carte
-        card.innerHTML = `
-            <div class="lot-header">
-                <h3 class="card-ref-title">${ref}</h3>
-                <select class="card-lot-selector">
-                    ${optionsLots}
-                </select>
-            </div>
-            <div class="card-body">
-                <!-- Le contenu (formats/remontées) sera injecté ici par JS -->
-            </div>
-        `;
-        
-        container.appendChild(card);
-        
-        // Éléments interactifs de la carte
-        const bodyContainer = card.querySelector('.card-body');
-        const selector = card.querySelector('.card-lot-selector');
-        
-        // Fonction pour mettre à jour l'intérieur de la carte quand on change de lot
-        const updateCardBody = (lotData) => {
-            let formatsHtml = '';
-            for (const [format, statut] of Object.entries(lotData.formats)) {
-                let statClass = statut.toLowerCase() === 'conforme' ? 'status-conforme' : (statut.toLowerCase() === 'nd' ? 'status-nd' : 'status-non-conforme');
-                formatsHtml += `
-                    <li class="format-item">
-                        <span class="format-volume">${format}</span>
-                        <span class="status-badge ${statClass}">${statut}</span>
-                    </li>
-                `;
-            }
-            bodyContainer.innerHTML = `
-                <ul class="format-list">${formatsHtml}</ul>
-                <div class="lot-footer">
-                    <span>Remontées :</span>
-                    <span class="remontees-count ${lotData.remontees > 0 ? 'alert' : 'ok'}">${lotData.remontees}</span>
-                </div>
-            `;
-        };
-
-        // 1er affichage
-        updateCardBody(initialLot);
-
-        // Mise à jour au changement du menu déroulant
-        selector.addEventListener('change', (e) => {
-            const selectedLotNum = e.target.value;
-            const selectedLotData = lotsForRef.find(l => l.lot === selectedLotNum);
-            updateCardBody(selectedLotData);
-        });
     });
 }
