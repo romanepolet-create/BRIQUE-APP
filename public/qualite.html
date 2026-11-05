@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Suivi Qualité - Lots de bière</title>
+    <title>Qualité Labo - Brique House</title>
     <link rel="stylesheet" href="css/styleQualite.css">
   </head>
   
@@ -13,60 +13,111 @@
     <main class="container">
         <div class="header-actions">
             <h1>Rapports Qualité</h1>
-            <button id="btn-add-issue" class="btn-primary">+1 PB Qualité</button>
+            <button id="btn-add-issue" class="btn-primary">+ Nouveau Rapport Labo</button>
         </div>
         
-        <!-- Le JS générera 1 section par référence ici -->
-        <div id="references-container"></div>
+        <!-- Les petites cartes (1 par bière) s'afficheront ici -->
+        <div id="references-container" class="lots-grid"></div>
     </main>
 
-    <!-- POPUP (Modale) pour la saisie -->
+    <!-- MODALE COMPLÈTE LABO -->
     <div id="modal-issue" class="modal hidden">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <div class="modal-header">
-                <h2>Signaler un problème</h2>
+                <h2>Saisir un rapport de qualité</h2>
                 <span class="close-modal">&times;</span>
             </div>
             
             <form id="form-issue">
-                <div class="form-group">
-                    <label for="reference">Référence</label>
-                    <select id="reference" name="reference" required>
-                        <option value="">-- Choisir une bière --</option>
-                        <optgroup label="Gamme Forever" id="opt-forever"></optgroup>
-                        <optgroup label="Gamme Expérimentales" id="opt-experimentales"></optgroup>
-                    </select>
-                </div>
+                <!-- Section 1 : ID -->
+                <fieldset>
+                    <legend>1. Identification</legend>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Bière</label>
+                            <input type="text" name="biere" placeholder="Ex: La Bagarre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>N° Lot</label>
+                            <input type="number" name="lot" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Style</label>
+                            <input type="text" name="style">
+                        </div>
+                        <div class="form-group">
+                            <label>Condi (cl/L)</label>
+                            <input type="number" name="condi">
+                        </div>
+                        <div class="form-group">
+                            <label>Date Condi</label>
+                            <input type="date" name="date_condi">
+                        </div>
+                        <div class="form-group">
+                            <label>Tps Vieil (Jours)</label>
+                            <input type="number" name="tps_vieil">
+                        </div>
+                    </div>
+                </fieldset>
 
-                <div class="form-group">
-                    <label for="numero_lot">N° de Lot</label>
-                    <input type="text" id="numero_lot" name="numero_lot" placeholder="Ex: 26092" required>
-                </div>
+                <!-- Section 2 : Sensoriel -->
+                <fieldset>
+                    <legend>2. Analyse Sensorielle</legend>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Aspect</label><input type="text" name="Aspect"></div>
+                        <div class="form-group"><label>Arôme</label><input type="text" name="Arôme"></div>
+                        <div class="form-group"><label>Goût</label><input type="text" name="Goût"></div>
+                        <div class="form-group"><label>Corps</label><input type="text" name="Corps"></div>
+                    </div>
+                </fieldset>
 
-                <div class="form-group">
-                    <label for="format">Format</label>
-                    <select id="format" name="format" required>
-                        <option value="">-- Choisir un format --</option>
-                        <option value="33cl">33cl</option>
-                        <option value="44cl">44cl</option>
-                        <option value="75cl">75cl</option>
-                        <option value="20L">20L</option>
-                        <option value="30L">30L</option>
-                    </select>
-                </div>
+                <!-- Section 3 : Technique -->
+                <fieldset>
+                    <legend>3. Physico-Chimie</legend>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Carbo (g/L)</label><input type="number" step="0.01" name="Carbo_condi_gL"></div>
+                        <div class="form-group"><label>Carbonatation</label><input type="text" name="Carbonatation"></div>
+                        <div class="form-group"><label>Oxydation</label><input type="text" name="Oxydation"></div>
+                        <div class="form-group"><label>DO</label><input type="number" step="0.01" name="DO"></div>
+                        <div class="form-group"><label>EBC Avant</label><input type="number" step="0.01" name="EBC_avant"></div>
+                        <div class="form-group"><label>EBC</label><input type="number" step="0.01" name="EBC"></div>
+                        <div class="form-group"><label>Écart EBC</label><input type="number" step="0.01" name="Ecart_EBC"></div>
+                        <div class="form-group"><label>pH Avant</label><input type="number" step="0.01" name="pH_avant"></div>
+                        <div class="form-group"><label>pH Après</label><input type="number" step="0.01" name="pH_après"></div>
+                    </div>
+                </fieldset>
 
-                <div class="form-group">
-                    <label for="description">C'est quoi le problème ?</label>
-                    <textarea id="description" name="description" rows="3" placeholder="Wtf is wrong with the shit..." required></textarea>
-                </div>
+                <!-- Section 4 : Conclusion -->
+                <fieldset>
+                    <legend>4. Conclusion</legend>
+                    <div class="form-group">
+                        <label>Défauts</label>
+                        <input type="text" name="Défauts" placeholder="Ex: RAS ou H2S...">
+                    </div>
+                    <div class="form-group">
+                        <label>Décision</label>
+                        <select name="Décision">
+                            <option value="OK">OK</option>
+                            <option value="A retester">À retester</option>
+                            <option value="Bloqué">Bloqué</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Commentaires</label>
+                        <textarea name="Commentaires" rows="2"></textarea>
+                    </div>
+                </fieldset>
 
-                <button type="submit" class="btn-submit">Valider la remontée</button>
+                <button type="submit" class="btn-submit">Valider le rapport</button>
                 <p id="form-feedback" class="feedback-msg"></p>
             </form>
         </div>
     </div>
 
     <script src="/js/qualite.js"></script>
-    <script src="/js/navbar.js"></script>
   </body>
 </html>
