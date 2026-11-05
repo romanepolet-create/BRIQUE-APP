@@ -20,17 +20,41 @@ async function chargerDonnees() {
     }
 }
 
+// --- FONCTION DE NETTOYAGE DES NOMS ---
+// Transforme "NEw Queen_In-town  " en "new queen in town" pour le tri
+function normaliserNom(nom) {
+    if (!nom) return "Inconnu";
+    return nom.toLowerCase()
+              .replace(/[-_]/g, ' ') // Remplace les tirets et underscores par des espaces
+              .replace(/\s+/g, ' ')  // Écrase les espaces multiples en un seul
+              .trim();               // Retire les espaces au début et à la fin
+}
+
 // --- GESTION DE L'AFFICHAGE (1 CARTE PAR BIÈRE) ---
 function initGrids() {
     const container = document.getElementById('references-container');
     container.innerHTML = '';
 
-    // Extraire la liste unique des bières présentes dans la BDD
-    const bieresUniques = [...new Set(donneesGlobales.map(d => d.biere))];
+    // 1. Regrouper intelligemment les bières avec le nom normalisé
+    const groupesBieres = {};
 
-    bieresUniques.forEach(nomBiere => {
-        // Lots pour cette bière
-        const lots = donneesGlobales.filter(d => d.biere === nomBiere);
+    donneesGlobales.forEach(d => {
+        const nomPropre = normaliserNom(d.biere);
+        
+        if (!groupesBieres[nomPropre]) {
+            groupesBieres[nomPropre] = {
+                // On garde la typographie du premier élément trouvé pour faire joli à l'affichage
+                nomAffichage: d.biere, 
+                lots: []
+            };
+        }
+        groupesBieres[nomPropre].lots.push(d);
+    });
+
+    // 2. Créer les cartes pour chaque groupe unique
+    Object.values(groupesBieres).forEach(groupe => {
+        const nomBiere = groupe.nomAffichage;
+        const lots = groupe.lots;
         
         const card = document.createElement('div');
         card.className = 'lot-card';
@@ -78,7 +102,6 @@ function initGrids() {
         updateCardBody(lotParDefaut);
 
         selector.addEventListener('change', (e) => {
-            // Attention : e.target.value est une string, on compare intelligemment
             const selectedLotData = lots.find(l => l.lot == e.target.value);
             updateCardBody(selectedLotData);
         });
