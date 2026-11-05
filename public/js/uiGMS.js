@@ -451,7 +451,12 @@ window.afficherNotesMagasinSurCarte = async function(hubspotId, nomMagasin) {
                 const safeTextHTML = note.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 
                 let actionsAuteur = '';
-                if (note.user === proprietaireActuel) {
+                
+                const isManager = proprietaireActuel && 
+                    (normaliserTexte(proprietaireActuel) === normaliserTexte("Leo Blanchet") || 
+                     normaliserTexte(proprietaireActuel) === normaliserTexte("Romane Polet"));
+
+                if (note.user === proprietaireActuel || isManager) {
                     actionsAuteur = `
                         <button onclick="actionNoteCarte('edit', '${hubspotId}', '${note.id}')" style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">✏️</button>
                         <button onclick="actionNoteCarte('archive', '${hubspotId}', '${note.id}')" style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">📦</button>
@@ -515,7 +520,7 @@ window.actionNoteCarte = async function(action, hubspotId, noteId) {
         if (error || !data) return;
         
         let notes = data.commentaires || [];
-        let noteIndex = notes.findIndex(n => n.id === noteId);
+        let noteIndex = notes.findIndex(n => String(n.id) === String(noteId));        
         if (noteIndex === -1) return;
 
         if (action === 'edit') {
