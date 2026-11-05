@@ -2,50 +2,63 @@ const express = require('express');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
 
-// Initialisation identique à votre route fonctionnelle
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-// ROUTE : Sauvegarder une remontée qualité
-router.post('/remontee', async (req, res) => {
-    const userId = req.session.userId;
-    const email = req.session.email;
-    
-    // On vérifie la connexion comme dans votre route "tournee"
-    if (!userId) return res.status(401).json({ error: "Non connecté" });
-
-    const { reference, numero_lot, format, description } = req.body;
-
-    if (!reference || !numero_lot || !format || !description) {
-        return res.status(400).json({ error: "Tous les champs sont obligatoires." });
-    }
+router.get('/donnees', async (req, res) => {
+    if (!req.session.userId) return res.status(401).json({ error: "Non connecté" });
 
     const { data, error } = await supabase
         .from('remontees_qualite')
-        .insert([
-            { 
-                reference: reference, 
-                numero_lot: numero_lot, 
-                format: format, 
-                description: description,
-                user_email: email // On utilise l'email de la session
-            }
-        ]);
-
-    // On retourne le message d'erreur Supabase exact s'il y en a une, comme dans votre exemple
-    if (error) return res.status(500).json({ error: error.message });
-    
-    return res.json({ success: true, message: "Problème signalé avec succès !" });
-});
-
-// ROUTE : Récupérer toutes les remontées pour générer les grilles
-router.get('/donnees', async (req, res) => {
-    // Optionnel : vérifier si l'utilisateur est connecté
-    if (!req.session.userId) return res.status(401).json({ error: "Non connecté" });
-
-    const { data, error } = await supabase.from('remontees_qualite').select('*');
+        .select('*')
+        .order('date', { ascending: false });
     
     if (error) return res.status(500).json({ error: error.message });
     return res.json({ success: true, remontees: data });
+});
+
+router.post('/remontee', async (req, res) => {
+    if (!req.session.userId) return res.status(401).json({ error: "Non connecté" });
+
+    const parseNum = (val) => (val === "" || val === undefined) ? null : parseFloat(val);
+    const parseStr = (val) => (val === "" || val === undefined) ? null : val;
+
+    const payload = {
+        date: req.body.date || new Date().toISOString().split('T')[0],
+        biere: req.body.biere,
+        lot: parseNum(req.body.lot),
+        condi: parseNum(req.body.condi),
+        date_condi: parseStr(req.body.date_condi),
+        tps_vieil: parseNum(req.body.tps_vieil),
+        style: parseStr(req.body.style),
+        
+        Aspect: parseStr(req.body.Aspect),
+        Arôme: parseStr(req.body.Arôme),
+        Goût: parseStr(req.body.Goût),
+        Corps: parseStr(req.body.Corps),
+        
+        Carbo_condi_gL: parseNum(req.body.Carbo_condi_gL),
+        Carbonatation: parseStr(req.body.Carbonatation),
+        Oxydation: parseStr(req.body.Oxydation),
+        DO: parseNum(req.body.DO),
+        EBC_avant: parseNum(req.body.EBC_avant),
+        EBC: parseNum(req.body.EBC),
+        Ecart_EBC: parseNum(req.body.Ecart_EBC),
+        pH_avant: parseNum(req.body.pH_avant),
+        pH_après: parseNum(req.body.pH_après),
+        
+        Défauts: parseStr(req.body.Défauts),
+        Décision: parseStr(req.body.Décision),
+        Commentaires: parseStr(req.body.Commentaires)
+    };
+
+    if (!payload.biere || !payload.lot) {
+        return res.status(400).json({ error: "La bière et le lot sont obligatoires." });
+    }
+
+    const { error } = await supabase.from('remontees_qualite').insert([payload]);
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json({ success: true, message: "Rapport qualité enregistré avec succès." });
 });
 
 module.exports = router;
