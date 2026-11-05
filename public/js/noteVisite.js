@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let notesGlobales = [];
     let currentUser = "Commercial";
+    let isManager = false;
 
     function formatEmailToName(email) {
       if (!email) return "Commercial";
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (config.emailActuel) {
         currentUser = formatEmailToName(config.emailActuel);
+        if (currentUser === "Leo Blanchet" || currentUser === "Romane Polet") {
+            isManager = true;
+        }
       }
 
       const { data } = await supabase
@@ -65,12 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const notesVisibles = notesGlobales.filter(n => !n.archived);
       
-      if (notesGlobales.length === 0) {
+      if (notesVisibles.length === 0) {
         notesList.innerHTML = '<li style="color: #888; font-style: italic;">Aucune note pour le moment.</li>';
         return;
       }
 
-      [...notesGlobales].reverse().forEach(note => {
+      [...notesVisibles].reverse().forEach(note => {
         if (!note.id) note.id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
 
         const li = document.createElement('li');
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .replace(/>/g, '&gt;');
 
         let actionsAuteur = '';
-        if (note.user === currentUser) {
+        if (note.user === currentUser || isManager) {
             actionsAuteur = `
                 <button type="button" class="btn-edit-note" data-id="${note.id}" style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">✏️</button>
                 <button type="button" class="btn-archive-note" data-id="${note.id}" style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px; margin-right: 5px;">📦</button>
@@ -127,11 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const noteId = btn.getAttribute('data-id');
         if (!noteId) return;
 
-        const noteIndex = notesGlobales.findIndex(n => n.id === noteId);
+        const noteIndex = notesGlobales.findIndex(n => String(n.id) === String(noteId));
         if (noteIndex === -1) return;
 
         if (btn.classList.contains('btn-edit-note')) {
-            const nouveauTexte = prompt("Modifier votre note :", notesGlobales[noteIndex].text);
+            const nouveauTexte = prompt("Modifier la note :", notesGlobales[noteIndex].text);
             if (nouveauTexte !== null && nouveauTexte.trim() !== "") {
                 notesGlobales[noteIndex].text = nouveauTexte.trim();
                 if (!notesGlobales[noteIndex].date.includes('(modifié)')) {
@@ -191,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initialiserNotes();
 
-    if (urlParamsLocal.get('open_notes') === 'true') {
+    if (urlParams.get('open_notes') === 'true') {
       setTimeout(() => {
         btnViewNotes.click();
       }, 500);
