@@ -19,7 +19,6 @@ router.post('/signup', async (req, res) => {
   return res.json({ success: true, message: "Un e-mail de confirmation vient d'être envoyé." });
 });
 
-// --- ROUTE 2 : CONNEXION ---
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -27,22 +26,32 @@ router.post('/login', async (req, res) => {
     return res.status(403).json({ error: "Email non autorisé." });
   }
 
-  // Supabase vérifie le mot de passe
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return res.status(401).json({ error: "Email ou mot de passe incorrect (ou non vérifié)." });
   }
-  req.session.userId = data.user.id;
 
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profileError && profileError.code !== 'PGRST116') {
+    console.error("Erreur récupération rôle:", profileError);
+  }
+
+  req.session.userId = data.user.id;
   req.session.email = email;
+  req.session.role = profile ? profile.role : 'basic';
+
   req.session.save((err) => {
     if (err) {
       console.error("Erreur de session:", err);
       return res.status(500).json({ error: "Erreur interne du serveur." });
     }
-    // On ne répond "success" que quand on est SÛR que c'est mémorisé
-    return res.json({ success: true });
+    return res.json({ success: true, role: req.session.role });
   });
 });
 
