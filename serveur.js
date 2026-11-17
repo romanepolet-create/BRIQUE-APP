@@ -54,6 +54,24 @@ function verifierBriqueHouse(req, res, next) {
   }
   res.redirect('/login.html');
 }
+
+function requireRole(allowedRoles) {
+  return (req, res, next) => {
+    if (!req.session || !req.session.role) {
+      return res.status(403).json({ error: "Accès refusé. Veuillez vous reconnecter." });
+    }
+    
+    if (req.session.role === 'developer') {
+      return next();
+    }
+    
+    if (allowedRoles.includes(req.session.role)) {
+      return next();
+    }
+    
+    return res.status(403).json({ error: "Vous n'avez pas accès à cette page." });
+  };
+}
 // ==========================================
 // 3. BRANCHEMENT DES ROUTES
 // ==========================================
