@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Console Administration | Brique House</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #000; color: #fff; }
+    select { padding: 5px; border-radius: 4px; }
+    #message { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>Console de Management des Rôles</h1>
+  <p>Accès restreint : Développeur uniquement.</p>
+  <div id="message"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Rôle Actuel</th>
+        <th>Modifier le Rôle</th>
+      </tr>
+    </thead>
+    <tbody id="users-table-body">
+      <tr><td colspan="3">Chargement des utilisateurs...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const messageEl = document.getElementById('message');
+    const tableBody = document.getElementById('users-table-body');
+
+    async function loadUsers() {
+      try {
+        const response = await fetch('/admin/users');
+        if (!response.ok) throw new Error("Accès refusé ou erreur serveur.");
+        
+        const users = await response.json();
+        renderTable(users);
+      } catch (error) {
+        tableBody.innerHTML = `<tr><td colspan="3" style="color:red;">${error.message}</td></tr>`;
+      }
+    }
+
+    function renderTable(users) {
+      tableBody.innerHTML = '';
+      users.forEach(user => {
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+          <td>${user.email}</td>
+          <td><strong>${user.role}</strong></td>
+          <td>
+            <select onchange="updateRole('${user.id}', this.value)">
+              <option value="basic" ${user.role === 'basic' ? 'selected' : ''}>Basic</option>
+              <option value="GMS" ${user.role === 'GMS' ? 'selected' : ''}>GMS</option>
+              <option value="CHR" ${user.role === 'CHR' ? 'selected' : ''}>CHR</option>
+              <option value="Qualite" ${user.role === 'Qualite' ? 'selected' : ''}>Qualité</option>
+              <option value="developer" ${user.role === 'developer' ? 'selected' : ''}>Développeur</option>
+            </select>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    async function updateRole(targetUserId, newRole) {
+      messageEl.style.color = "blue";
+      messageEl.innerText = "Mise à jour en cours...";
+
+      try {
+        const response = await fetch('/admin/update-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetUserId, newRole })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          messageEl.style.color = "green";
+          messageEl.innerText = "✅ " + data.message;
+          loadUsers();
+        } else {
+          messageEl.style.color = "red";
+          messageEl.innerText = "❌ " + data.error;
+        }
+      } catch (error) {
+        messageEl.style.color = "red";
+        messageEl.innerText = "❌ Erreur de connexion.";
+      }
+      
+      setTimeout(() => messageEl.innerText = "", 3000);
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
