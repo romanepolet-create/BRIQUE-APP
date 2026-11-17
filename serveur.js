@@ -90,6 +90,7 @@ const routesTournee = require('./routes/tournee');
 const routesVisite = require('./routes/visite');
 const routesDashboard = require('./routes/dashboard');
 const routesQualite = require('./routes/qualite');
+const routesAdmin = require('./routes/admin'); 
 
 
 app.get('/api/config', (req, res) => {
@@ -112,6 +113,7 @@ app.use('/api/visite', verifierBriqueHouse, routesVisite);
 app.use('/api/dashboard', verifierBriqueHouse, routesDashboard);
 app.use('/api/qualite', verifierBriqueHouse, routesQualite);
 app.use('/newsletter', require('./routes/newsletter'));
+app.use('/api/admin', verifierBriqueHouse, routesAdmin);
 
 
 app.get('/login.html', (req, res) => {
