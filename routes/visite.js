@@ -93,7 +93,7 @@ router.post('/soumettre', upload.array('photos', 5), async (req, res) => {
       val('ref_LB33'), val('ref_NQ33'), val('ref_YT33'), 
       val('ref_LB75'), val('ref_NQ75'), val('ref_YT75'), val('ref_SH75'), val('ref_TC75'), val('ref_ML75'),
       val('ref_LB44'), val('ref_NQ44'), val('ref_YT44'), val('ref_ML44'), val('ref_YP33'),
-      val('ref_UA33'), val('ref_DB44'), val('ref_SG44'), val('ref_SQP33'), val('ref_FT44'), val('ref_BHiver33')
+      val('ref_UA33'), val('ref_DB44'), val('ref_SG44'), val('ref_SQP33'), val('ref_FT44'), val('ref_BHiver33'),
 
       data.mea_status,
       data.mea_volume || "",
